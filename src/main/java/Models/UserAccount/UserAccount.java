@@ -1,4 +1,10 @@
 package Models.UserAccount;
 
-public class UserAccount {
+public abstract class UserAccount {
+
+    String name;
+
+    public String getName() {
+        return name;
+    }
 }

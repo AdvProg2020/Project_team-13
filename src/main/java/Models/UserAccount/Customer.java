@@ -1,4 +1,4 @@
 package Models.UserAccount;
 
-public class Customer {
+public class Customer extends UserAccount{
 }
