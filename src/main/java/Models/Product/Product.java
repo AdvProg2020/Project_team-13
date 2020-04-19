@@ -11,20 +11,20 @@ import java.util.HashMap;
 
 public class Product {
 
-    String productId;
-    ProductStatus productStatus;
-    String productName;
-    String productCompany;
-    Seller seller;
-    ArrayList<Score> allScores;
-    double productCost, costAfterOff;
-    Category productsCategory;
-    String describtion;
-    ArrayList<Comment> commentList;
-    int numberOfAvailableProducts;
-    HashMap<String, ArrayList<String>> featuresOfCategoryThatHas;
-    ArrayList<Customer> allBuyers;
-    Offer offer;
+    private String productId;
+    private ProductStatus productStatus;
+    private String productName;
+    private String productCompany;
+    private Seller seller;
+    private ArrayList<Score> allScores;
+    private double productCost, costAfterOff;
+    private Category productsCategory;
+    private String describtion;
+    private ArrayList<Comment> commentList;
+    private int numberOfAvailableProducts;
+    private HashMap<String, ArrayList<String>> featuresOfCategoryThatHas;
+    private ArrayList<Customer> allBuyers;
+    private Offer offer;
 
     public Product(String productId, ProductStatus productStatus, String productName, Seller seller, double productCost, Category productsCategory, String describtion, int numberOfAvailableProducts, HashMap<String, ArrayList<String>> featuresOfCategoryThatHas) {
         this.productId = productId;
@@ -153,7 +153,7 @@ public class Product {
 
     public void addFeaturesOfCategoryThatHas(String feature, String featursType) {
         if (!this.featuresOfCategoryThatHas.containsKey(feature)) {
-            ArrayList<String> featuresTypes=new ArrayList<>();
+            ArrayList<String> featuresTypes = new ArrayList<>();
             featuresTypes.add(featursType);
             this.featuresOfCategoryThatHas.put(feature, featuresTypes);
         } else {
@@ -177,6 +177,6 @@ public class Product {
 
     public void setOffer(Offer offer) {
         this.offer = offer;
-        costAfterOff=((100-offer.getAmount())/100)*productCost;
+        costAfterOff = ((100 - offer.getAmount()) / 100) * productCost;
     }
 }

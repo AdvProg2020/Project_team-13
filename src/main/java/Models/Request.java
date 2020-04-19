@@ -3,10 +3,10 @@ package Models;
 import java.util.ArrayList;
 
 public class Request {
-    RequestType type;
-    RequestStatus status;
-    String requestId;
-    ArrayList<String> details;
+    private RequestType type;
+    private RequestStatus status;
+    private String requestId;
+    private ArrayList<String> details;
 
     public Request(RequestType type, RequestStatus status, String requestId, ArrayList<String> details) {
         this.type = type;
