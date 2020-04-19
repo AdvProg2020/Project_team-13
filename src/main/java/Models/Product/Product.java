@@ -2,7 +2,6 @@ package Models.Product;
 
 import Models.Comment;
 import Models.Offer;
-import Models.ProductStatus;
 import Models.Score;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
@@ -69,7 +68,7 @@ public class Product {
         projectInformation += this.describtion + "\\*\\";
         projectInformation += this.productCost + "\\*\\";
         projectInformation += this.productsCategory.getName() + "\\*\\";
-        projectInformation += this.seller.getName() + "\\*\\";
+        projectInformation += this.seller.getUsername() + "\\*\\";
         projectInformation += this.getCostAfterOff() + "\\*\\";
         projectInformation += this.getAverageScore() + "\\*\\";
 
