@@ -4,9 +4,9 @@ import Models.Product.Product;
 import Models.UserAccount.Customer;
 
 public class Score {
-    Customer customer;
-    Product product;
-    int rate;
+    private Customer customer;
+    private Product product;
+    private int rate;
 
     public Score(Customer customer, Product product, int rate) {
         this.customer = customer;
