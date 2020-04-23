@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 public abstract class UserAccount {
 
-    private String username,password,firstName,lastName,email,phoneNumber;
-    private ArrayList<DiscountCode> allDiscountCodes;
-    private int credit;
-    private ArrayList<Log> historyOfTransaction;
+    protected String username,password,firstName,lastName,email,phoneNumber;
+    protected ArrayList<DiscountCode> allDiscountCodes;
+    protected int credit;
+    protected ArrayList<Log> historyOfTransaction;
 
     public UserAccount(String username, String password, String firstName, String lastName, String email,
                        String phoneNumber, int credit) {
