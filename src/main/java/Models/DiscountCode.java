@@ -8,46 +8,40 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class DiscountCode {
-   private String discountCode;
-   private Date exactStartTime;
-   private Date exactEndTime;
-   private ArrayList<UserAccount> allUserAccountsThatHaveDiscount;
-   private int discountPercent;
-   private double maxDiscountAmount;
-   private int MaximumUsingTime;
-   private HashMap<Customer, Integer> remainingTimesForEachCustomer;
+    private String discountCodeID;
+    private Date startTime;
+    private Date endTime;
+    private ArrayList<UserAccount> allUserAccountsThatHaveDiscount;
+    private int discountPercent;
+    private double maxDiscountAmount;
+    private HashMap<Customer,Integer> maxUsingTime;
+    private HashMap<Customer,Integer> remainingTimesForEachCustomer;
 
-    public DiscountCode(String discountCode, Date exactStartTime, Date exactEndTime, ArrayList<UserAccount> allUserAccountsThatHaveDiscount, int discountPercent, double maxDiscountAmount) {
-        this.discountCode = discountCode;
-        this.exactStartTime = exactStartTime;
-        this.exactEndTime = exactEndTime;
+    public DiscountCode(String discountCodeID, Date startTime, Date endTime, ArrayList<UserAccount> allUserAccountsThatHaveDiscount, int discountPercent, double maxDiscountAmount, HashMap<Customer, Integer> maxUsingTime, HashMap<Customer, Integer> remainingTimesForEachCustomer) {
+        this.discountCodeID = discountCodeID;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.allUserAccountsThatHaveDiscount = allUserAccountsThatHaveDiscount;
         this.discountPercent = discountPercent;
         this.maxDiscountAmount = maxDiscountAmount;
+        this.maxUsingTime = maxUsingTime;
+        this.remainingTimesForEachCustomer = remainingTimesForEachCustomer;
     }
 
-    public String getDiscountCode() {
-        return discountCode;
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public void setDiscountCode(String discountCode) {
-        this.discountCode = discountCode;
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
-    public Date getExactStartTime() {
-        return exactStartTime;
+    public Date getEndTime() {
+        return endTime;
     }
 
-    public void setExactStartTime(Date exactStartTime) {
-        this.exactStartTime = exactStartTime;
-    }
-
-    public Date getExactEndTime() {
-        return exactEndTime;
-    }
-
-    public void setExactEndTime(Date exactEndTime) {
-        this.exactEndTime = exactEndTime;
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public ArrayList<UserAccount> getAllUserAccountsThatHaveDiscount() {
@@ -74,12 +68,12 @@ public class DiscountCode {
         this.maxDiscountAmount = maxDiscountAmount;
     }
 
-    public int getMaximumUsingTime() {
-        return MaximumUsingTime;
+    public HashMap<Customer, Integer> getMaxUsingTime() {
+        return maxUsingTime;
     }
 
-    public void setMaximumUsingTime(int maximumUsingTime) {
-        MaximumUsingTime = maximumUsingTime;
+    public void setMaxUsingTime(HashMap<Customer, Integer> maxUsingTime) {
+        this.maxUsingTime = maxUsingTime;
     }
 
     public HashMap<Customer, Integer> getRemainingTimesForEachCustomer() {
@@ -88,17 +82,5 @@ public class DiscountCode {
 
     public void setRemainingTimesForEachCustomer(HashMap<Customer, Integer> remainingTimesForEachCustomer) {
         this.remainingTimesForEachCustomer = remainingTimesForEachCustomer;
-    }
-
-    @Override
-    public String toString() {
-        return "DiscountCode{" +
-                "discountCode='" + discountCode + '\'' +
-                ", exactStartTime=" + exactStartTime +
-                ", exactEndTime=" + exactEndTime +
-                ", discountPercent=" + discountPercent +
-                ", maxDiscountAmount=" + maxDiscountAmount +
-                ", MaximumUsingTime=" + MaximumUsingTime +
-                '}';
     }
 }

@@ -1,7 +1,5 @@
 package Models;
 
 public enum CommentStatus {
-    CheckingInProgress,
-    Accepted,
-    Declined;
+    accepted,decliend,unChecked
 }
