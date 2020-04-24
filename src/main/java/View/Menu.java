@@ -12,13 +12,14 @@ public abstract class Menu {
     ArrayList<Menu> subMenu;
 
 
-    public void setScanner(Scanner scanner) {
-        this.scanner=scanner;
+    public Menu setScanner(Scanner scanner) {
+        this.scanner = scanner;
+        return this;
     }
 
     public void back() {
-           ClientController.getInstance().setCurrentMenu(parentMenu);
-           parentMenu.execute();
+        ClientController.getInstance().setCurrentMenu(parentMenu);
+        parentMenu.execute();
     }
 
     public void printError(String error) {
@@ -30,7 +31,6 @@ public abstract class Menu {
     }
 
     public abstract void help();
-
 
     public abstract void execute();
 

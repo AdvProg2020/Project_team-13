@@ -1,7 +1,11 @@
+import View.MainMenu;
+
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("I'm Hope So this project will work compeletly ");
-        System.out.println("Salam Chetori ");
-        System.out.println("yani vaghean dorost shod?");
+
+        new MainMenu().setScanner(new Scanner(System.in)).execute();
+        System.out.println("test run is Owk");
     }
 }
