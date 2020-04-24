@@ -1,7 +1,12 @@
 package View;
 
+import Models.Product.Product;
+
 public class MainMenu extends Menu {
 
+    public MainMenu(Menu parentMenu) {
+        super(parentMenu);
+    }
 
     @Override
     public void help() {
@@ -15,6 +20,20 @@ public class MainMenu extends Menu {
 
     @Override
     public void execute() {
+        while (true) {
+            String command=scanner.nextLine().trim();
+            if (command.equalsIgnoreCase("products")) {
+
+            } else if(command.equalsIgnoreCase("products")) {
+
+            }else if(command.equalsIgnoreCase("products")) {
+
+            }else if (command.equalsIgnoreCase("help")) {
+                help();
+            }else {
+                System.out.println("Invalid Command");
+            }
+        }
 
     }
 }
