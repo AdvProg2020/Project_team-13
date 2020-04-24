@@ -19,21 +19,21 @@ public class Product {
     private ArrayList<Score> allScores;
     private double productCost, costAfterOff;
     private Category productsCategory;
-    private String describtion;
+    private String description;
     private ArrayList<Comment> commentList;
     private int numberOfAvailableProducts;
     private HashMap<String, ArrayList<String>> featuresOfCategoryThatHas;
     private ArrayList<Customer> allBuyers;
     private Offer offer;
 
-    public Product(String productId, ProductStatus productStatus, String productName, Seller seller, double productCost, Category productsCategory, String describtion, int numberOfAvailableProducts, HashMap<String, ArrayList<String>> featuresOfCategoryThatHas) {
+    public Product(String productId, ProductStatus productStatus, String productName, Seller seller, double productCost, Category productsCategory, String description, int numberOfAvailableProducts, HashMap<String, ArrayList<String>> featuresOfCategoryThatHas) {
         this.productId = productId;
         this.productStatus = productStatus;
         this.productName = productName;
         this.seller = seller;
         this.productCost = productCost;
         this.productsCategory = productsCategory;
-        this.describtion = describtion;
+        this.description = description;
         this.numberOfAvailableProducts = numberOfAvailableProducts;
         this.featuresOfCategoryThatHas = featuresOfCategoryThatHas;
     }
@@ -65,7 +65,7 @@ public class Product {
     public String viewProduct() {
         String projectInformation = "";
         projectInformation += this.productName + "\\*\\";
-        projectInformation += this.describtion + "\\*\\";
+        projectInformation += this.description + "\\*\\";
         projectInformation += this.productCost + "\\*\\";
         projectInformation += this.productsCategory.getName() + "\\*\\";
         projectInformation += this.seller.getUsername() + "\\*\\";
@@ -103,6 +103,7 @@ public class Product {
         return productCompany;
     }
 
+
     public Seller getSeller() {
         return seller;
     }
@@ -115,8 +116,8 @@ public class Product {
         return productsCategory;
     }
 
-    public String getDescribtion() {
-        return describtion;
+    public String getDescription() {
+        return description;
     }
 
     public int getNumberOfAvailableProducts() {
@@ -143,8 +144,8 @@ public class Product {
         this.productsCategory = productsCategory;
     }
 
-    public void setDescribtion(String describtion) {
-        this.describtion = describtion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setNumberOfAvailableProducts(int numberOfAvailableProducts) {

@@ -20,7 +20,7 @@ public class Comment {
 
     @Override
     public String toString() {
-        return "Comment{" +
+        return "Comment" +
                 "customer=" + customer +
                 ", product=" + product +
                 ", commentStatus=" + commentStatus +

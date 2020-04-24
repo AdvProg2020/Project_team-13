@@ -4,7 +4,6 @@ import Models.Log;
 import Models.Offer;
 import Models.Product.Product;
 import Models.Request;
-import Models.SellLog;
 
 import java.util.ArrayList;
 
@@ -105,7 +104,7 @@ public class Seller extends UserAccount {
         productInfo += product.getProductStatus() + "\\*\\";
         productInfo += product.getProductsCategory() + "\\*\\";
         productInfo += product.getNumberOfAvailableProducts() + "\\*\\";
-        productInfo += product.getDescribtion() + "\\*\\";
+        productInfo += product.getDescription() + "\\*\\";
         productInfo += product.getAverageScore() + "\\*\\";
         productInfo += product.getCostAfterOff() + "\\*\\";
         productInfo += product.getComments() + "\\*\\";
