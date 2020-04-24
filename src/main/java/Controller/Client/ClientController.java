@@ -28,4 +28,8 @@ public class ClientController {
     public void sendMessageToServer(String message) {
         ServerController.getIncstance().getMessageFromClient(message);
     }
+
+    public void getMessageFromServer(String message){
+        MessageController.getInstance().processMessage(message);
+    }
 }
