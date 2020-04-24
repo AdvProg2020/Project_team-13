@@ -1,6 +1,7 @@
 package View;
 
 import Models.Product.Product;
+import View.UserMenu.UserMenu;
 
 public class MainMenu extends Menu {
 
@@ -11,8 +12,8 @@ public class MainMenu extends Menu {
     @Override
     public void help() {
         String mainMenuOptions="";
-        mainMenuOptions+="1.products\n";
-        mainMenuOptions+="2.UserMenu\n";
+        mainMenuOptions+="1.EnterUserMenu\n";
+        mainMenuOptions+="2.products\n";
         mainMenuOptions+="3.offs";
         System.out.println(mainMenuOptions);
 
@@ -24,10 +25,10 @@ public class MainMenu extends Menu {
             String command=scanner.nextLine().trim();
             if (command.equalsIgnoreCase("products")) {
 
-            } else if(command.equalsIgnoreCase("products")) {
+            } else if(command.equalsIgnoreCase("offs")) {
 
-            }else if(command.equalsIgnoreCase("products")) {
-
+            }else if(command.equalsIgnoreCase("EnterUserMenu")) {
+                new UserMenu(this).setScanner(this.scanner).execute();
             }else if (command.equalsIgnoreCase("help")) {
                 help();
             }else {
