@@ -1,4 +1,7 @@
 package Models;
 
-public class CommentStatus {
+public enum CommentStatus {
+    CheckingInProgress,
+    Accepted,
+    Declined;
 }

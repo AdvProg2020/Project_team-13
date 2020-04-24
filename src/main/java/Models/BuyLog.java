@@ -1,4 +1,6 @@
 package Models;
 
-public class BuyLog {
+public class BuyLog extends Log{
+    private ReceivingStatus receivingStatus;
+    private double discountAmount;
 }
