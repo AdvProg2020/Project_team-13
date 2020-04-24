@@ -1,4 +1,5 @@
 package Models;
 
-public class CommentStatus {
+public enum CommentStatus {
+    accepted,decliend,unChecked
 }
