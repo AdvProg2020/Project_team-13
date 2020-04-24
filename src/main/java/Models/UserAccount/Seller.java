@@ -1,5 +1,6 @@
 package Models.UserAccount;
 
+import Models.Log;
 import Models.Offer;
 import Models.Product.Product;
 import Models.Request;
@@ -74,9 +75,9 @@ public class Seller extends UserAccount {
 
     public String viewSalesHistory() {
         String history = "";
-        for (SellLog sellLog : this.historyOfTransaction) {
-            history += sellLog.getID() + "\\*\\";
-            history += sellLog.getreceiverUsername() + "\\*\\";
+        for (Log sellLog : this.historyOfTransaction) {
+            history += sellLog.getId() + "\\*\\";
+            history += sellLog.getReceiverUserName() + "\\*\\";
             history += sellLog.getPrice() + "\\*\\";
             history += '\n';
         }
@@ -118,5 +119,6 @@ public class Seller extends UserAccount {
             if (product.getProductId().equals(productID))
                 return product;
         }
+        return null;
     }
 }

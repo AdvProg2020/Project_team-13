@@ -12,14 +12,18 @@ public class Log {
     private String receiverUserName;
     private String otherSideUserName;
     private ArrayList<Product> allProducts;
+    private ReceivingStatus receivingStatus;
+    private double reduceCostForOffs;
 
-    public Log(String id, Date date, int price, String receiverUserName, String otherSideUserName, ArrayList<Product> allProducts) {
+    public Log(String id, Date date, int price, String receiverUserName, String otherSideUserName, ArrayList<Product> allProducts, ReceivingStatus receivingStatus, double reduceCostForOffs) {
         this.id = id;
         this.date = date;
         this.price = price;
         this.receiverUserName = receiverUserName;
         this.otherSideUserName = otherSideUserName;
         this.allProducts = allProducts;
+        this.receivingStatus = receivingStatus;
+        this.reduceCostForOffs = reduceCostForOffs;
     }
 
     public String getId() {
@@ -68,5 +72,13 @@ public class Log {
 
     public void setAllProducts(ArrayList<Product> allProducts) {
         this.allProducts = allProducts;
+    }
+
+    public ReceivingStatus getReceivingStatus() {
+        return receivingStatus;
+    }
+
+    public double getReduceCostForOffs() {
+        return reduceCostForOffs;
     }
 }

@@ -32,4 +32,24 @@ public class Category {
     public  void editFeatureName(String featureName){
 
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setFeatureName(ArrayList<String> featureName) {
+        this.featureName = featureName;
+    }
+
+    public void addAllProducts(Product product) {
+        this.allProducts.add(product);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<Product> getAllProducts() {
+        return allProducts;
+    }
 }
