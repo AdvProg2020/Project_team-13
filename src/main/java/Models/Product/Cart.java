@@ -15,7 +15,8 @@ public class Cart {
     private String receivingInformation;
 
     public void addProduct(Product product) {
-        countOfEachProduct.put(product, 1);
+        countOfEachProduct.put(product.getProductId(), 1);
+        allproduct.add(product);
     }
 
     public void changeCountOfProduct(String productID, int count) {
@@ -37,5 +38,6 @@ public class Cart {
                 return product;
             }
         }
+        return null;
     }
 }
