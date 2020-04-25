@@ -21,7 +21,12 @@ public class MessageController {
     }
 
     public void processMessage(String message) {
+        if(message.equals("@Error@There is a User With this userName")){
 
+        }else if(message.equals("@Successful@Register Successful")){
 
+        }else if(){
+
+        }
     }
 }
