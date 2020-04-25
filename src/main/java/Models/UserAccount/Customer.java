@@ -14,6 +14,7 @@ public class Customer extends UserAccount{
     public Customer(String username, String password, String firstName, String lastName, String email, String phoneNumber, int credit, Cart cart) {
         super(username, password, firstName, lastName, email, phoneNumber, credit);
         this.cart = cart;
+        this.type="@Customer";
     }
 
     public Cart getCart() {

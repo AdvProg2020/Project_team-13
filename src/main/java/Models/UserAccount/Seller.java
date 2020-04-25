@@ -18,6 +18,7 @@ public class Seller extends UserAccount {
         super(username, password, firstName, lastName, email, phoneNumber, credit);
         this.companyName = companyName;
         this.isAccepted = isAccepted;
+        this.type="@Seller";
     }
 
     public String getCompanyName() {
