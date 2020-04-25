@@ -37,7 +37,7 @@ public class RegisterMenu extends Menu {
                 phoneNumber = getPhoneNumber();
                 while (true) {
                     credit=scanner.nextLine().trim();
-                    if(Pattern.matches("\\d+\\.?\\d+")) {
+                    if(Pattern.matches("\\d+\\.?\\d+",credit)) {
                         break;
                     }else {
                         System.out.println("credit is Invalid");
