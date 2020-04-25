@@ -11,18 +11,15 @@ public class RegisterController {
     }
 
     public static RegisterController getInstance() {
-        if(registerController==null){
-            registerController=new RegisterController();
+        if (registerController == null) {
+            registerController = new RegisterController();
         }
         return registerController;
     }
 
-    public void createNewUserAccount(UserAccount userAccount){
-      if(userAccount.getType().equalsIgnoreCase("@Seller")) {
-          userAccount=(Seller) userAccount;
-      }
-            String message="@Register@" + new Gson().toJson(userAccount);
-            ClientController.getInstance().sendMessageToServer(message);
+    public void createNewUserAccount(UserAccount userAccount) {
+        String message = "@Register@" + new Gson().toJson(userAccount);
+        ClientController.getInstance().sendMessageToServer(message);
     }
 
 }

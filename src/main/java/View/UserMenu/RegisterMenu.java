@@ -21,8 +21,8 @@ public class RegisterMenu extends Menu {
         String registerMenuOptions = "";
         registerMenuOptions += "1.Register As a Customer\n";
         registerMenuOptions += "2.Register As a Seller\n";
-        registerMenuOptions += "3.Register As a Manager";
-        registerMenuOptions += "4.help";
+        registerMenuOptions += "3.Register As a Manager\n";
+        registerMenuOptions += "4.help\n";
         registerMenuOptions += "5.back";
         System.out.println(registerMenuOptions);
     }
@@ -212,7 +212,7 @@ public class RegisterMenu extends Menu {
     }
 
     private boolean checkNameIsvalid(String name) {
-        if (Pattern.matches("([a-z]|[A-z])+", name) && !name.isEmpty()) {
+        if (Pattern.matches("([a-z]|[A-Z])+", name) && !name.isEmpty()) {
             return true;
         }
         return false;
