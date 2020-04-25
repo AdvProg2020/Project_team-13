@@ -46,7 +46,7 @@ public class RegisterMenu extends Menu {
                     if (checkuserNameIsvalid(username)) {
                         break;
                     } else {
-                        System.out.println("Username is invalid:use alphabetCharacters and atleast 4words");
+                        System.out.println("Username is invalid:use alphabetCharacters and at least 4words");
                     }
                 }
                 while (true) {
@@ -55,7 +55,7 @@ public class RegisterMenu extends Menu {
                     if (checkuserNameIsvalid(password)) {
                         break;
                     } else {
-                        System.out.println("password is invalid:password must contains atleast 8 characters and less than 19 characterrs");
+                        System.out.println("password is invalid:password must contains at least 8 characters and less than 19 characters");
                     }
                 }
                 while (true) {

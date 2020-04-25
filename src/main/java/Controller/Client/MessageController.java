@@ -21,10 +21,10 @@ public class MessageController {
     }
 
     public void processMessage(String message) {
-        if(message.equals("@Error@")){
+        if(message.startsWith("@Error@")){
            message=message.substring(7, message.length());
            ClientController.getInstance().getCurrentMenu().printError(message);
-        }else if(message.equals("@Successful@")){
+        }else if(message.startsWith("@Successful@")){
            message=message.substring(12, message.length());
            ClientController.getInstance().getCurrentMenu().showMessage(message);
         }
