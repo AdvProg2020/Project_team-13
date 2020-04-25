@@ -75,8 +75,8 @@ public class Seller extends UserAccount {
     public String viewSalesHistory() {
         String history = "";
         for (SellLog sellLog : this.historyOfTransaction) {
-            history += sellLog.getID() + "\\*\\";
-            history += sellLog.getreceiverUsername() + "\\*\\";
+            history += sellLog.getId() + "\\*\\";
+            history += sellLog.getReceiverUserName() + "\\*\\";
             history += sellLog.getPrice() + "\\*\\";
             history += '\n';
         }
