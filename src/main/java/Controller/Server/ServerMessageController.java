@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 public class ServerMessageController {
     private static ServerMessageController serverMessageController;
 
+
     private ServerMessageController() {
 
     }

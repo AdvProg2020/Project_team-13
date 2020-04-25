@@ -1,11 +1,12 @@
 package Controller.Client;
 
 import Models.UserAccount.UserAccount;
+import com.google.gson.Gson;
 
 public class RegisterController {
     private static RegisterController registerController;
 
-    public RegisterController() {
+    private RegisterController() {
     }
 
     public static RegisterController getInstance() {
@@ -15,8 +16,9 @@ public class RegisterController {
         return registerController;
     }
 
-    public void createNewUserAccount(String[] fields){
-
+    public void createNewUserAccount(UserAccount userAccount){
+            String message="@Register@"+new Gson().toJson(userAccount);
+            ClientController.getInstance().sendMessageToServer(message);
     }
 
 }

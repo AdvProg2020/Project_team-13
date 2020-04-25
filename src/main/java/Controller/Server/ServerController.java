@@ -15,7 +15,7 @@ public class ServerController {
         return serverController;
     }
     public void getMessageFromClient(String message){
-        ServerMessageController.getIncstance().processMessage(message);
+        ServerMessageController.getInstance().processMessage(message);
     }
     public void sendMessageToClient(String message){
         ClientController.getInstance().getMessageFromServer(message);

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public abstract class UserAccount {
 
-    protected String username,password,firstName,lastName,email,phoneNumber;
+    protected String username,password,firstName,lastName,email,phoneNumber,type;
     protected ArrayList<DiscountCode> allDiscountCodes;
     protected int credit;
     protected ArrayList<Log> historyOfTransaction;
