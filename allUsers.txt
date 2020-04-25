@@ -1,1 +1,1 @@
-[{"companyName":"apple","isAccepted":false,"username":"pey13","password":"peyman1379","firstName":"peyman","lastName":"hme","email":"pe.33@gmail.com","phoneNumber":"09122345678","type":"@Seller","credit":0}]
+[{"companyName":"apple","isAccepted":false,"username":"pey13","password":"peyman1379","firstName":"peyman","lastName":"hme","email":"pey@gmail.com","phoneNumber":"09123334566","type":"@Seller","credit":0.0}]
