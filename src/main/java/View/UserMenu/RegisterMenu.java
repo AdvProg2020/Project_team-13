@@ -75,6 +75,11 @@ public class RegisterMenu extends Menu {
                 break;
             }else System.out.println("Invalid command");
         }
+    }
+
+    @Override
+    public void showMessage(String message) {
+        System.out.println(message);
         Menu menu = new LoginMenu(this).setScanner(this.scanner);
         ClientController.getInstance().setCurrentMenu(menu);
         menu.execute();
@@ -200,7 +205,7 @@ public class RegisterMenu extends Menu {
     }
 
     private boolean checkPasswordIsvalid(String word) {
-        if (word.length() > 8 && word.length() < 18) {
+       if (word.length() > 8 && word.length() < 18) {
             return true;
         }
         return false;
