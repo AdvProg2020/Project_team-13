@@ -26,11 +26,23 @@ public class UserMenu extends Menu {
             }else if(command.equalsIgnoreCase("Login")) {
 
             }else if (command.equalsIgnoreCase("help")) {
-
+                help();
             }else {
                 System.out.println("Invalid Command");
             }
         }
+
+    }
+
+    @Override
+    public void showMessage(String message){
+        System.out.println(message);
+
+    }
+
+    @Override
+    public void printError(String error){
+        System.out.println(error);
 
     }
 }
