@@ -32,6 +32,8 @@ public class UserCenter {
             Customer customer=gson.fromJson(json, Customer.class);
             if(!isThereUserWithThisUsername(customer.getUsername())){
                 allUserAccount.add(customer);
+                String arrayData = gson.toJson(allUserAccount);
+                DataBase.getIncstance().updateAllUsers(arrayData);
             }
         }
     }
