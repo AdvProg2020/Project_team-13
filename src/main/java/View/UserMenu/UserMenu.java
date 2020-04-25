@@ -1,5 +1,7 @@
 package View.UserMenu;
 
+import Controller.Client.ClientController;
+import View.MainMenu;
 import View.Menu;
 
 public class UserMenu extends Menu {
@@ -19,18 +21,29 @@ public class UserMenu extends Menu {
 
     @Override
     public void execute() {
-        while (true) {
-            String command=scanner.nextLine();
+        String command;
+        while (!(command=scanner.nextLine()).equalsIgnoreCase("back")) {
             if(command.equalsIgnoreCase("Register")) {
 
             }else if(command.equalsIgnoreCase("Login")) {
 
             }else if (command.equalsIgnoreCase("help")) {
-
+                help();
             }else {
                 System.out.println("Invalid Command");
             }
         }
+    }
 
+    @Override
+    public void showMessage(String message){
+        System.out.println(message);
+        new RegisterMenu(this).setScanner(this.scanner).execute();
+
+    }
+
+    @Override
+    public void printError(String error){
+        System.out.println(error);
     }
 }

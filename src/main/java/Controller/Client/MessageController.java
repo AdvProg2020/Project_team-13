@@ -21,12 +21,12 @@ public class MessageController {
     }
 
     public void processMessage(String message) {
-        if(message.equals("@Error@There is a User With this userName")){
-
-        }else if(message.equals("@Successful@Register Successful")){
-
-        }else if(){
-
+        if(message.equals("@Error@")){
+           message=message.substring(7, message.length());
+           ClientController.getInstance().getCurrentMenu().printError(message);
+        }else if(message.equals("@Successful@")){
+           message=message.substring(12, message.length());
+           ClientController.getInstance().getCurrentMenu().showMessage(message);
         }
     }
 }
