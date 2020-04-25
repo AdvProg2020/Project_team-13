@@ -39,11 +39,11 @@ public class UserMenu extends Menu {
     @Override
     public void showMessage(String message){
         System.out.println(message);
-
+        if() {
+            new RegisterMenu(this).setScanner(this.scanner).execute();
+        }else if(){
+            new LoginMenu(this).setcanner(this.scanner).execute();
+        }
     }
 
-    @Override
-    public void printError(String error){
-        System.out.println(error);
-    }
 }
