@@ -14,7 +14,7 @@ public class Seller extends UserAccount {
     private ArrayList<Offer> allOffer;
     private ArrayList<Request> allRequests;
 
-    public Seller(String username, String password, String firstName, String lastName, String email, String phoneNumber, int credit, String companyName, boolean isAccepted) {
+    public Seller(String username, String password, String firstName, String lastName, String email, String phoneNumber, double credit, String companyName, boolean isAccepted) {
         super(username, password, firstName, lastName, email, phoneNumber, credit);
         this.companyName = companyName;
         this.isAccepted = isAccepted;
