@@ -1,5 +1,7 @@
 package Controller.Server;
 
+import Controller.Client.ClientController;
+
 public class ServerController {
     public static ServerController serverController;
     private ServerController() {
@@ -16,6 +18,6 @@ public class ServerController {
         ServerMessageController.getIncstance().processMessage(message);
     }
     public void sendMessageToClient(String message){
-        
+        ClientController.getInstance().getMessageFromServer(message);
     }
 }

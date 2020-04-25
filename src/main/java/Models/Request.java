@@ -6,9 +6,9 @@ public class Request {
     private RequestType type;
     private RequestStatus status;
     private String requestId;
-    private ArrayList<String> details;
+    private String details;
 
-    public Request(RequestType type, RequestStatus status, String requestId, ArrayList<String> details) {
+    public Request(RequestType type, RequestStatus status, String requestId, String details) {
         this.type = type;
         this.status = status;
         this.requestId = requestId;
@@ -27,7 +27,7 @@ public class Request {
         return requestId;
     }
 
-    public ArrayList<String> getDetails() {
+    public String getDetails() {
         return details;
     }
 
@@ -43,7 +43,7 @@ public class Request {
         this.requestId = requestId;
     }
 
-    public void setDetails(ArrayList<String> details) {
+    public void setDetails(String details) {
         this.details = details;
     }
 }
