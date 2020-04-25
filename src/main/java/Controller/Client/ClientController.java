@@ -1,5 +1,6 @@
 package Controller.Client;
 
+import Controller.Server.ServerController;
 import View.Menu;
 
 public class ClientController {
@@ -18,5 +19,13 @@ public class ClientController {
 
     public void setCurrentMenu(Menu menu) {
         this.currentMenu=menu;
+    }
+
+    public Menu getCurrentMenu() {
+        return currentMenu;
+    }
+
+    public void sendMessageToServer(String message) {
+        ServerController.getIncstance().getMessageFromClient(message);
     }
 }
