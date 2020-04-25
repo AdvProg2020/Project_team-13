@@ -3,10 +3,11 @@ package Models.UserAccount;
 import Models.Offer;
 import Models.Product.Product;
 import Models.Request;
+import Models.SellLog;
 
 import java.util.ArrayList;
 
-public class Seller extends UserAccount{
+public class Seller extends UserAccount {
     private String companyName;
     private boolean isAccepted;
     private ArrayList<Product> allProducts;
@@ -69,5 +70,53 @@ public class Seller extends UserAccount{
         personalInfo += this.phoneNumber + "\\*\\";
         personalInfo += this.companyName + "\\*\\";
         return personalInfo;
+    }
+
+    public String viewSalesHistory() {
+        String history = "";
+        for (SellLog sellLog : this.historyOfTransaction) {
+            history += sellLog.getID() + "\\*\\";
+            history += sellLog.getreceiverUsername() + "\\*\\";
+            history += sellLog.getPrice() + "\\*\\";
+            history += '\n';
+        }
+        return history;
+    }
+
+    public String viewAllProducts() {
+        String products = "";
+        for (Product product : this.allProducts) {
+            products += product.getProductId() + "\\*\\";
+            products += product.getProductName() + "\\*\\";
+            products += product.getProductCost() + "\\*\\";
+            products += '\n';
+        }
+        return products;
+    }
+
+    public String viewProduct(String productID) {
+        String productInfo = "";
+        Product product = getProductByID(productID);
+        productInfo += product.getProductId() + "\\*\\";
+        productInfo += product.getProductName() + "\\*\\";
+        productInfo += product.getProductCompany() + "\\*\\";
+        productInfo += product.getProductCost() + "\\*\\";
+        productInfo += product.getProductStatus() + "\\*\\";
+        productInfo += product.getProductsCategory() + "\\*\\";
+        productInfo += product.getNumberOfAvailableProducts() + "\\*\\";
+        productInfo += product.getDescribtion() + "\\*\\";
+        productInfo += product.getAverageScore() + "\\*\\";
+        productInfo += product.getCostAfterOff() + "\\*\\";
+        productInfo += product.getComments() + "\\*\\";
+        productInfo += product.getFeaturesOfCategoryThatHas() + "\\*\\";
+        return productInfo;
+
+    }
+
+    public Product getProductByID(String productID) {
+        for (Product product : allProducts) {
+            if (product.getProductId().equals(productID))
+                return product;
+        }
     }
 }
