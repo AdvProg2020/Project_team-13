@@ -25,7 +25,7 @@ public class RequestCenter {
         allRequests.add(request);
     }
     public String makeRequestID(){
-        lastRequestID="@r"+Integer.parseInt(lastRequestID.substring(2,9))+1;
+        lastRequestID="@r"+Integer.parseInt(lastRequestID.substring(2,8))+1;
         return lastRequestID;
     }
     public Request makeRequest(String type,String details){
