@@ -8,31 +8,36 @@ import java.util.HashMap;
 
 public class Cart {
     private Customer customer;
-    private HashMap<String,Integer> countOfEachProduct;
+    private HashMap<String, Integer> countOfEachProduct;
     private DiscountCode discountCode;
     private ArrayList<Product> allproduct;
-    private double totalPrice=0;
+    private double totalPrice = 0;
     private String receivingInformation;
 
-    public void addProduct(Product product){
-        countOfEachProduct.put(product,1);
+    public void addProduct(Product product) {
+        countOfEachProduct.put(product.getProductId(), 1);
+        allproduct.add(product);
     }
-    public void changeCountOfProduct(String productID,int count){
-        countOfEachProduct.replace(productID,countOfEachProduct.get(productID)+count);
+
+    public void changeCountOfProduct(String productID, int count) {
+        countOfEachProduct.replace(productID, countOfEachProduct.get(productID) + count);
     }
-    public double getTotalPrice(){
-        totalPrice=0;
+
+    public double getTotalPrice() {
+        totalPrice = 0;
         for (String productID : countOfEachProduct.keySet()) {
-            Product product=getProductByID(productID);
-            totalPrice+=countOfEachProduct.get(productID)*product.getProductCost();
+            Product product = getProductByID(productID);
+            totalPrice += countOfEachProduct.get(productID) * product.getProductCost();
         }
         return totalPrice;
     }
+
     public Product getProductByID(String productID) {
         for (Product product : allproduct) {
-            if(product.getProductId().equals(productID)){
+            if (product.getProductId().equals(productID)) {
                 return product;
             }
         }
+        return null;
     }
 }
