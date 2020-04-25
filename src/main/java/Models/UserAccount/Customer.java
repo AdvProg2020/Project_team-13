@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public class Customer extends UserAccount{
     private Cart cart;
-    private ArrayList<DiscountCode> allDiscountCodes;
     private ArrayList<Request> allRequests;
 
     public Customer(String username, String password, String firstName, String lastName, String email, String phoneNumber, int credit, Cart cart) {
