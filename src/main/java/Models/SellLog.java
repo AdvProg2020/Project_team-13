@@ -1,19 +1,12 @@
 package Models;
 
+import Models.Product.Product;
+
+import java.util.ArrayList;
+import java.util.Date;
+
 public class SellLog extends Log {
-    private ReceivingStatus receivingStatus;
-    private double reduceCostForOffs;
-
-    public SellLog(ReceivingStatus receivingStatus, double reduceCostForOffs) {
-        this.receivingStatus = receivingStatus;
-        this.reduceCostForOffs = reduceCostForOffs;
-    }
-
-    public ReceivingStatus getReceivingStatus() {
-        return receivingStatus;
-    }
-
-    public double getReduceCostForOffs() {
-        return reduceCostForOffs;
+    public SellLog(String id, Date date, int price, String receiverUserName, String otherSideUserName, ArrayList<Product> allProducts, ReceivingStatus receivingStatus, double reduceCostForOffs) {
+        super(id, date, price, receiverUserName, otherSideUserName, allProducts, receivingStatus, reduceCostForOffs);
     }
 }
