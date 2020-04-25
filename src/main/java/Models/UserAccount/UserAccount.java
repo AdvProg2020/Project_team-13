@@ -23,6 +23,10 @@ public abstract class UserAccount {
         this.credit = credit;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public String getUsername() {
         return username;
     }

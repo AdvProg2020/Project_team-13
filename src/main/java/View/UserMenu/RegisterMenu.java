@@ -52,7 +52,7 @@ public class RegisterMenu extends Menu {
                 while (true) {
                     System.out.println("Enter Password");
                     password = scanner.nextLine().trim();
-                    if (checkuserNameIsvalid(password)) {
+                    if (checkPasswordIsvalid(password)) {
                         break;
                     } else {
                         System.out.println("password is invalid:password must contains at least 8 characters and less than 19 characters");
@@ -88,16 +88,7 @@ public class RegisterMenu extends Menu {
                 while (true) {
                     System.out.println("Enter PhoneNumber");
                     phoneNumber = scanner.nextLine().trim();
-                    if (Pattern.matches("09\\d+", phoneNumber) && phoneNumber.length() < 11) {
-                        break;
-                    } else {
-                        System.out.println("Please enter a valid phoneNumber address.");
-                    }
-                }
-                while (true) {
-                    System.out.println("Enter PhoneNumber");
-                    phoneNumber = scanner.nextLine().trim();
-                    if (Pattern.matches("09\\d+", phoneNumber) && phoneNumber.length() < 11) {
+                    if (Pattern.matches("09\\d+", phoneNumber) && phoneNumber.length() == 11) {
                         break;
                     } else {
                         System.out.println("Please enter a valid phoneNumber address.");
