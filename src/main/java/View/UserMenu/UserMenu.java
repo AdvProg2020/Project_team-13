@@ -22,7 +22,7 @@ public class UserMenu extends Menu {
         while (true) {
             String command=scanner.nextLine();
             if(command.equalsIgnoreCase("Register")) {
-
+                new RegisterMenu(this).setScanner(this.scanner).execute();
             }else if(command.equalsIgnoreCase("Login")) {
 
             }else if (command.equalsIgnoreCase("help")) {
