@@ -18,8 +18,8 @@ public class ServerMessageController {
     }
 
     void processMessage(String message) {
-        if (message.startsWith("@checkIsThereAnyUsername@")) {
-            message = message.substring(25, message.length());
+        if (message.startsWith("@Register@")) {
+            message = message.substring(10, message.length());
             UserCenter.getIncstance().createNewUserAccount(message);
         }
     }
