@@ -15,6 +15,7 @@ public class MainMenu extends Menu {
         mainMenuOptions+="1.EnterUserMenu\n";
         mainMenuOptions+="2.products\n";
         mainMenuOptions+="3.offs";
+        mainMenuOptions+="4.help";
         System.out.println(mainMenuOptions);
 
     }
