@@ -5,11 +5,10 @@ import Controller.Client.ManagerController;
 import Controller.Client.MessageController;
 import Controller.Client.RegisterController;
 import Models.UserAccount.Customer;
+import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
 import View.Menu;
-import com.google.gson.Gson;
 
-import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class RegisterMenu extends Menu {
@@ -19,43 +18,44 @@ public class RegisterMenu extends Menu {
 
     @Override
     public void help() {
-
+        String registerMenuOptions = "";
+        registerMenuOptions += "1.Register As a Customer\n";
+        registerMenuOptions += "2.Register As a Seller\n";
+        registerMenuOptions += "3.Register As a Manager";
+        registerMenuOptions += "4.help";
+        registerMenuOptions += "5.back";
+        System.out.println(registerMenuOptions);
     }
 
     @Override
     public void execute() {
         while (true) {
-            System.out.println("Enter UserType");
-            String userType = scanner.nextLine().trim();
-            if (userType.equalsIgnoreCase("Manager")) {
-                String username, password, firstName, lastName, email, phoneNumber, companyName,credit;
+            String command = scanner.nextLine().trim();
+            if (command.equalsIgnoreCase("Register As a Customer")) {
+                String username, password, firstName, lastName, email, phoneNumber, credit;
                 username = getUserNamer();
                 password = getPassword();
                 firstName = getFirstName();
                 lastName = getLastName();
                 email = getEmail();
                 phoneNumber = getPhoneNumber();
-                while (true) {
-                    credit=scanner.nextLine().trim();
-                    if(Pattern.matches("\\d+\\.?\\d+",credit)) {
-                        break;
-                    }else {
-                        System.out.println("credit is Invalid");
-                    }
-                }
+                credit = getCredit();
                 Customer customer = new Customer(username, password, firstName, lastName, email, phoneNumber, Double.parseDouble(credit));
                 RegisterController.getInstance().createNewUserAccount(customer);
                 break;
-            } else if (userType.equalsIgnoreCase("Customer")) {
-                String username, password, firstName, lastName, email, phoneNumber, companyName;
+            } else if (command.equalsIgnoreCase("Register As a Manager")) {
+                String username, password, firstName, lastName, email, phoneNumber, credit;
                 username = getUserNamer();
                 password = getPassword();
                 firstName = getFirstName();
                 lastName = getLastName();
                 email = getEmail();
                 phoneNumber = getPhoneNumber();
+                credit = getCredit();
+                Manager manager = new Manager(username, password, firstName, lastName, email, phoneNumber, Double.parseDouble(credit));
+                RegisterController.getInstance().createNewUserAccount(manager);
                 break;
-            } else if (userType.equalsIgnoreCase("Seller")) {
+            } else if (command.equalsIgnoreCase("Register As a Seller")) {
                 String username, password, firstName, lastName, email, phoneNumber, companyName;
                 username = getUserNamer();
                 password = getPassword();
@@ -68,9 +68,30 @@ public class RegisterMenu extends Menu {
                 RegisterController.getInstance().createNewUserAccount(seller);
 
                 break;
-            } else System.out.println("Invalid userType");
+            } else if (command.equalsIgnoreCase("Help")) {
+                help();
+            } else if (command.equalsIgnoreCase("back")) {
+                back();
+                break;
+            }else System.out.println("Invalid command");
         }
+        Menu menu = new LoginMenu(this).setScanner(this.scanner);
+        ClientController.getInstance().setCurrentMenu(menu);
+        menu.execute();
+    }
 
+    private String getCredit() {
+        String credit;
+        while (true) {
+            System.out.println("Enter beginning credit");
+            credit = scanner.nextLine().trim();
+            if (Pattern.matches("\\d+\\.?\\d+", credit)) {
+                break;
+            } else {
+                System.out.println("credit is Invalid");
+            }
+        }
+        return credit;
     }
 
     private String getCompanyName() {
