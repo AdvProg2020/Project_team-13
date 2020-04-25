@@ -1,5 +1,6 @@
 package View;
 
+import Controller.Client.ClientController;
 import Models.Product.Product;
 import View.UserMenu.UserMenu;
 
@@ -29,7 +30,9 @@ public class MainMenu extends Menu {
             } else if(command.equalsIgnoreCase("offs")) {
 
             }else if(command.equalsIgnoreCase("EnterUserMenu")) {
-                new UserMenu(this).setScanner(this.scanner).execute();
+                Menu menu=new UserMenu(this).setScanner(this.scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
             }else if (command.equalsIgnoreCase("help")) {
                 help();
             }else {

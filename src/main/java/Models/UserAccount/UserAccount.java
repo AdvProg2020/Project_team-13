@@ -9,11 +9,11 @@ public abstract class UserAccount {
 
     protected String username,password,firstName,lastName,email,phoneNumber,type;
     protected ArrayList<DiscountCode> allDiscountCodes;
-    protected int credit;
+    protected double credit;
     protected ArrayList<Log> historyOfTransaction;
 
     public UserAccount(String username, String password, String firstName, String lastName, String email,
-                       String phoneNumber, int credit) {
+                       String phoneNumber, double credit) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -55,7 +55,7 @@ public abstract class UserAccount {
         return allDiscountCodes;
     }
 
-    public int getCredit() {
+    public double getCredit() {
         return credit;
     }
 

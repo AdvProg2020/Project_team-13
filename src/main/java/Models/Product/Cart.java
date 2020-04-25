@@ -14,6 +14,15 @@ public class Cart {
     private double totalPrice = 0;
     private String receivingInformation;
 
+    public Cart(Customer customer) {
+        this.customer = customer;
+        this.countOfEachProduct = new HashMap<>();
+        this.discountCode =null;
+        this.allproduct =new ArrayList<>();
+        this.totalPrice = 0.0;
+        this.receivingInformation = null;
+    }
+
     public void addProduct(Product product) {
         countOfEachProduct.put(product.getProductId(), 1);
         allproduct.add(product);
