@@ -2,8 +2,6 @@ package Controller.Client;
 
 import Controller.Server.ServerController;
 import View.Menu;
-import View.UserMenu.UserMenu;
-
 
 public class ClientController {
     private static ClientController clientController;
@@ -20,7 +18,7 @@ public class ClientController {
     }
 
     public void setCurrentMenu(Menu menu) {
-        this.currentMenu=menu;
+        this.currentMenu = menu;
     }
 
     public Menu getCurrentMenu() {
@@ -31,7 +29,7 @@ public class ClientController {
         ServerController.getIncstance().getMessageFromClient(message);
     }
 
-    public void getMessageFromServer(String message){
+    public void getMessageFromServer(String message) {
         MessageController.getInstance().processMessage(message);
     }
 }

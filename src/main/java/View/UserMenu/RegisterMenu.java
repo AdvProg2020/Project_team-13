@@ -121,7 +121,7 @@ public class RegisterMenu extends Menu {
             if (Pattern.matches("09\\d+", phoneNumber) && phoneNumber.length() == 11) {
                 break;
             } else {
-                System.out.println("Please enter a valid phoneNumber address.");
+                System.out.println("Please enter a valid phoneNumber.");
             }
         }
         return phoneNumber;
@@ -216,6 +216,12 @@ public class RegisterMenu extends Menu {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void printError(String error) {
+        super.printError(error);
+        execute();
     }
 
     private boolean checkEmailIsvalid(String email) {
