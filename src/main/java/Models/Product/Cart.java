@@ -16,12 +16,12 @@ public class Cart {
         countOfEachProduct.put(product,1);
     }
     public void changeCountOfProduct(Product product,int count){
-        countOfEachProduct.replace(countOfEachProduct.get(product),count);
+        countOfEachProduct.replace(product,countOfEachProduct.get(product)+count);
     }
     public double getTotalPrice(){
 
     }
     public Product getProductByID(String productID) {
-       
+
     }
 }

@@ -12,4 +12,5 @@ public class Log {
     private String receiverUserName;
     private String otherSideUserName;
     private ArrayList<Product> allProducts;
+
 }
