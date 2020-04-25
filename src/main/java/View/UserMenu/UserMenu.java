@@ -33,12 +33,12 @@ public class UserMenu extends Menu {
                 System.out.println("Invalid Command");
             }
         }
+        back();
     }
 
     @Override
     public void showMessage(String message){
         System.out.println(message);
-        new RegisterMenu(this).setScanner(this.scanner).execute();
 
     }
 
