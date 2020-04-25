@@ -1,1 +1,1 @@
-[{"companyName":"ClayEntertaainMents","isAccepted":false,"username":"alii","password":"ssdcmsclkslck","firstName":"slkdcmlsdc","lastName":"kcsjkdcsd","email":"sfsdfsd.sdfsdf@gmial.com","phoneNumber":"09330410360","type":"@Seller","credit":0.0}]
+[{"companyName":"apple","isAccepted":false,"username":"pey13","password":"peyman1379","firstName":"peyman","lastName":"hme","email":"pey@gmail.com","phoneNumber":"09123334566","type":"@Seller","credit":0.0}]
