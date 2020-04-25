@@ -31,8 +31,6 @@ public class MessageController {
         }else if(message.startsWith("@Successful@")){
           message=message.substring(12, message.length());
           ClientController.getInstance().getCurrentMenu().showMessage(message);
-        }else if(message.startsWith("")){
-
         }
     }
 }
