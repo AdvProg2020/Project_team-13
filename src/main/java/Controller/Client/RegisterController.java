@@ -21,7 +21,7 @@ public class RegisterController {
       if(userAccount.getType().equalsIgnoreCase("@Seller")) {
           userAccount=(Seller) userAccount;
       }
-            String message="@Register" + new Gson().toJson(userAccount);
+            String message="@Register@" + new Gson().toJson(userAccount);
             ClientController.getInstance().sendMessageToServer(message);
     }
 
