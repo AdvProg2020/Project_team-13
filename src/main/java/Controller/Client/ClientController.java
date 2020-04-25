@@ -1,7 +1,9 @@
 package Controller.Client;
 
 import Controller.Server.ServerController;
-import View.Menu;
+import View.UserMenu.UserMenu;
+
+import java.awt.*;
 
 public class ClientController {
     private static ClientController clientController;

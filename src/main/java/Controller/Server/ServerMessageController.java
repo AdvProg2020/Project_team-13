@@ -10,7 +10,7 @@ public class ServerMessageController {
 
     }
 
-    public static ServerMessageController getIncstance() {
+    public static ServerMessageController getInstance() {
         if (serverMessageController == null) {
             serverMessageController = new ServerMessageController();
         }

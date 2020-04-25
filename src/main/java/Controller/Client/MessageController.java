@@ -25,7 +25,7 @@ public class MessageController {
 
         }else if(message.equals("@Successful@Register Successful")){
 
-        }else if(true){
+        }else if(){
 
         }
     }

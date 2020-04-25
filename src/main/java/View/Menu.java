@@ -8,7 +8,7 @@ import java.util.Scanner;
 public abstract class Menu {
     protected Menu parentMenu;
     protected Scanner scanner;
-    ClientController controllClient;
+    ClientController controlClient;
     ArrayList<Menu> subMenu;
 
     public Menu(Menu parentMenu) {
