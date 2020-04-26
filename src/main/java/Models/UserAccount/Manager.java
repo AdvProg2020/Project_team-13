@@ -2,7 +2,7 @@ package Models.UserAccount;
 
 public class Manager extends UserAccount {
 
-    public Manager(String username, String password, String firstName, String lastName, String email, String phoneNumber, int credit) {
+    public Manager(String username, String password, String firstName, String lastName, String email, String phoneNumber, double credit) {
         super(username, password, firstName, lastName, email, phoneNumber, credit);
         this.type="@Manager";
     }
