@@ -25,6 +25,10 @@ public abstract class Menu {
         parentMenu.execute();
     }
 
+    public Menu getParentMenu() {
+        return parentMenu;
+    }
+
     public void printError(String error) {
         System.out.println(error);
     }

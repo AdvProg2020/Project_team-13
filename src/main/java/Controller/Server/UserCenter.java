@@ -124,13 +124,13 @@ public class UserCenter {
             if (userAccount.getPassword().equals(password)) {
                 if (userAccount.getType().equals("@Customer")) {
                     String user = gson.toJson((Customer) userAccount);
-                    ServerController.getIncstance().sendMessageToClient("@Login@" + user);
+                    ServerController.getIncstance().sendMessageToClient("@Login as Customer@" + user);
                 } else if (userAccount.getType().equals("@Seller")) {
                     String user = gson.toJson((Seller) userAccount);
-                    ServerController.getIncstance().sendMessageToClient("@Login@" + user);
+                    ServerController.getIncstance().sendMessageToClient("@Login as Seller@" + user);
                 } else if (userAccount.getType().equals("@Manager")) {
                     String user = gson.toJson((Manager) userAccount);
-                    ServerController.getIncstance().sendMessageToClient("@Login@" + user);
+                    ServerController.getIncstance().sendMessageToClient("@Login as Manager@" + user);
                 }
             } else {
                 ServerController.getIncstance().sendMessageToClient("@Error@Password is incorrect");
