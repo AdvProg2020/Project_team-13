@@ -105,5 +105,4 @@ public abstract class UserAccount {
 
     public abstract String viewPersonalInfo();
 
-
 }
