@@ -9,6 +9,8 @@ public class UserMenu extends Menu {
         super(parentMenu);
     }
 
+    public UserMenu
+
     @Override
     public void help() {
         String userMenuOptions = "";
