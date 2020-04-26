@@ -1,11 +1,13 @@
 package Controller.Client;
 
 import Controller.Server.ServerController;
+import Models.UserAccount.UserAccount;
 import View.Menu;
 
 public class ClientController {
     private static ClientController clientController;
     private Menu currentMenu;
+    private UserAccount currentUser;
 
     private ClientController() {
     }
@@ -15,6 +17,14 @@ public class ClientController {
             clientController = new ClientController();
         }
         return clientController;
+    }
+
+    public UserAccount getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(UserAccount currentUser) {
+        this.currentUser = currentUser;
     }
 
     public void setCurrentMenu(Menu menu) {
