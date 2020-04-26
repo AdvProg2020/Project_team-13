@@ -22,6 +22,10 @@ public class ServerMessageController {
         if (message.startsWith("@Register@")) {
             message = message.substring(10, message.length());
             UserCenter.getIncstance().createNewUserAccount(message);
+        }else if (message.startsWith("@Login@")) {
+            message = message.substring(7, message.length());
+            String[] split=message.split("/");
+            UserCenter.getIncstance().login(split[0],split[1]);
         }
     }
 }
