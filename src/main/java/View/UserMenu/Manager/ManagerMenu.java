@@ -17,7 +17,7 @@ public class ManagerMenu extends Menu{
 
     @Override
     public void execute() {
-        ClientController.getInstance().getCurrentUser().viewPersonalInfo();
+        System.out.println(ClientController.getInstance().getCurrentUser().viewPersonalInfo());
         String command;
         while (!(command=scanner.nextLine().trim()).equalsIgnoreCase("Back")) {
             if(command.equalsIgnoreCase("help")){
