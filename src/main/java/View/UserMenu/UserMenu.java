@@ -29,7 +29,9 @@ public class UserMenu extends Menu {
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("Login")) {
-
+                Menu menu = new LoginMenu(this).setScanner(this.scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
             } else if (command.equalsIgnoreCase("help")) {
                 help();
             }else {

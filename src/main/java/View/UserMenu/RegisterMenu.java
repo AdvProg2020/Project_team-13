@@ -80,7 +80,7 @@ public class RegisterMenu extends Menu {
     @Override
     public void showMessage(String message) {
         System.out.println(message);
-        Menu menu = new LoginMenu(this).setScanner(this.scanner);
+        Menu menu = new LoginMenu(parentMenu).setScanner(this.scanner);
         ClientController.getInstance().setCurrentMenu(menu);
         menu.execute();
     }
