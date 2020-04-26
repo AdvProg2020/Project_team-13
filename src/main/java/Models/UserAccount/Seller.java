@@ -64,12 +64,12 @@ public class Seller extends UserAccount {
     @Override
     public String viewPersonalInfo() {
         String personalInfo = "";
-        personalInfo += this.username + "\\*\\";
-        personalInfo += this.firstName + "\\*\\";
-        personalInfo += this.lastName + "\\*\\";
-        personalInfo += this.email + "\\*\\";
-        personalInfo += this.phoneNumber + "\\*\\";
-        personalInfo += this.companyName + "\\*\\";
+        personalInfo += this.username + "\n";
+        personalInfo += this.firstName + "\n";
+        personalInfo += this.lastName + "\n";
+        personalInfo += this.email + "\n";
+        personalInfo += this.phoneNumber + "\n";
+        personalInfo += this.companyName + "\n";
         return personalInfo;
     }
 
