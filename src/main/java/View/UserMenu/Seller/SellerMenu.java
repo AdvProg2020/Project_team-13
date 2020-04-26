@@ -1,4 +1,20 @@
 package View.UserMenu.Seller;
 
-public class SellerMenu {
+import View.Menu;
+
+public class SellerMenu extends Menu {
+
+    public SellerMenu(Menu parentMenu) {
+        super(parentMenu);
+    }
+
+    @Override
+    public void help() {
+
+    }
+
+    @Override
+    public void execute() {
+
+    }
 }
