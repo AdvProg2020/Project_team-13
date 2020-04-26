@@ -38,14 +38,4 @@ public class UserMenu extends Menu {
         back();
     }
 
-    @Override
-    public void showMessage(String message){
-        System.out.println(message);
-        if() {
-            new RegisterMenu(this).setScanner(this.scanner).execute();
-        }else if(){
-            new LoginMenu(this).setcanner(this.scanner).execute();
-        }
-    }
-
 }
