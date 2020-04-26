@@ -18,7 +18,7 @@ public class UserMenu extends Menu {
         String userMenuOptions = "";
         userMenuOptions += "1.Register\n";
         userMenuOptions += "2.Login\n";
-        userMenuOptions += "3.Help";
+        userMenuOptions += "3.Help\n";
         userMenuOptions += "4.Back";
         System.out.println(userMenuOptions);
 
