@@ -40,6 +40,7 @@ public class UserMenu extends Menu {
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             }
+            return;
         }
         String command;
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
