@@ -48,7 +48,7 @@ public class MessageController {
             message=message.substring(17, message.length());
             Seller seller=gson.fromJson(message, Seller.class);
             ClientController.getInstance().setCurrentUser(seller);
-        }else if(){
+        }else if(true){
 
         }
     }
