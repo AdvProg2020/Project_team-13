@@ -31,6 +31,11 @@ public class UserCenter {
         }
         return false;
     }
+
+    public void setAllUserAccount(ArrayList<UserAccount> allUserAccount) {
+        this.allUserAccount = allUserAccount;
+    }
+
     public void createNewUserAccount(String json){
         Gson gson = new Gson();
         if (json.contains("@Customer")) {

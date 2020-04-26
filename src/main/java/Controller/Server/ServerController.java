@@ -8,6 +8,12 @@ public class ServerController {
 
     }
 
+    public void runServer(){
+        getAllUsersForStart();
+    }
+    public void getAllUsersForStart(){
+
+    }
     public static ServerController getIncstance() {
         if (serverController == null){
             serverController = new ServerController();
