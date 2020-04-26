@@ -18,7 +18,7 @@ public class Seller extends UserAccount {
         super(username, password, firstName, lastName, email, phoneNumber, credit);
         this.companyName = companyName;
         this.isAccepted = isAccepted;
-        this.type="@Seller";
+        this.type = "@Seller";
     }
 
     public String getCompanyName() {
@@ -69,7 +69,7 @@ public class Seller extends UserAccount {
         personalInfo += this.lastName + "\n";
         personalInfo += this.email + "\n";
         personalInfo += this.phoneNumber + "\n";
-        personalInfo += this.companyName + "\n";
+        personalInfo += this.companyName;
         return personalInfo;
     }
 

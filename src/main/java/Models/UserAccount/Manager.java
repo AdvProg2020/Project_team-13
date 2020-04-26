@@ -14,7 +14,7 @@ public class Manager extends UserAccount {
         personalInfo += this.firstName + "\n";
         personalInfo += this.lastName + "\n";
         personalInfo += this.email + "\n";
-        personalInfo += this.phoneNumber + "\n";
+        personalInfo += this.phoneNumber ;
         return personalInfo;
     }
 }
