@@ -12,16 +12,12 @@ public class Customer extends UserAccount{
 
     public Customer(String username, String password, String firstName, String lastName, String email, String phoneNumber, double credit) {
         super(username, password, firstName, lastName, email, phoneNumber, credit);
-        this.cart = new Cart(this);
+        this.cart = new Cart(username);
         this.type="@Customer";
     }
 
     public Cart getCart() {
         return cart;
-    }
-
-    public ArrayList<DiscountCode> getAllDiscountCodes() {
-        return allDiscountCodes;
     }
 
     public ArrayList<Request> getAllRequests() {
@@ -31,6 +27,6 @@ public class Customer extends UserAccount{
 
     @Override
     public String viewPersonalInfo() {
-        return null;
+        return "test";
     }
 }

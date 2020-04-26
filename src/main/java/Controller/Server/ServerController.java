@@ -12,7 +12,7 @@ public class ServerController {
         getAllUsersForStart();
     }
     public void getAllUsersForStart(){
-
+        DataBase.getIncstance().setAllUsersListFromDateBase();
     }
     public static ServerController getIncstance() {
         if (serverController == null){

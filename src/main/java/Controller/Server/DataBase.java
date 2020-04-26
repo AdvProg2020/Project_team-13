@@ -1,13 +1,14 @@
 package Controller.Server;
 
+import Models.UserAccount.Customer;
+import Models.UserAccount.Manager;
+import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class DataBase {
@@ -21,27 +22,97 @@ public class DataBase {
         }
         return dataBase;
     }
-    public void updateAllUsers(String json){
+    public void updateAllCustomers(String json){
         try{
-            FileWriter fileWriter=new FileWriter("allUsers.txt");
+            FileWriter fileWriter=new FileWriter("allCustomers.txt");
             fileWriter.write(json);
             fileWriter.close();
         }catch(Exception e){System.out.println(e);}
     }
-    public void setAllUsersListFromDateBase() throws IOException {
-        FileReader fileReader=new FileReader("allUsers.txt");
+    public void updateAllSellers(String json){
+        try{
+            FileWriter fileWriter=new FileWriter("allSellers.txt");
+            fileWriter.write(json);
+            fileWriter.close();
+        }catch(Exception e){System.out.println(e);}
+    }
+    public void updateAllManagers(String json){
+        try{
+            FileWriter fileWriter=new FileWriter("allManagers.txt");
+            fileWriter.write(json);
+            fileWriter.close();
+        }catch(Exception e){System.out.println(e);}
+    }
+    public void setAllUsersListFromDateBase() {
+        FileReader fileReader= null;
+        try {
+            fileReader = new FileReader("allCustomers.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         BufferedReader br = new BufferedReader(fileReader);
         try {
             String json;
             while ((json = br.readLine()) != null) {
                 Gson gson=new Gson();
-                ArrayList<UserAccount> allUsers=gson.fromJson(json,new TypeToken<ArrayList<UserAccount>>(){}.getType());
-                UserCenter.getIncstance().setAllUserAccount(allUsers);
+                Type userListType = new TypeToken< ArrayList<Customer> >(){}.getType();
+                ArrayList<Customer> allUsers=gson.fromJson(json,userListType);
+                UserCenter.getIncstance().setAllCustomer(allUsers);
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            br.close();
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            fileReader = new FileReader("allSellers.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        br = new BufferedReader(fileReader);
+        try {
+            String json;
+            while ((json = br.readLine()) != null) {
+                Gson gson=new Gson();
+                Type userListType = new TypeToken< ArrayList<Seller> >(){}.getType();
+                ArrayList<Seller> allUsers=gson.fromJson(json,userListType);
+                UserCenter.getIncstance().setAllSeller(allUsers);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            fileReader = new FileReader("allManagers.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        br = new BufferedReader(fileReader);
+        try {
+            String json;
+            while ((json = br.readLine()) != null) {
+                Gson gson=new Gson();
+                Type userListType = new TypeToken< ArrayList<Manager> >(){}.getType();
+                ArrayList<Manager> allUsers=gson.fromJson(json,userListType);
+                UserCenter.getIncstance().setAllManager(allUsers);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

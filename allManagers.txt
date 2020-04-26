@@ -1,0 +1,1 @@
+[{"username":"TheBigManager","password":"987654321","firstName":"big","lastName":"smoke","email":"big.smoke@gta.com","phoneNumber":"09000000000","type":"@Manager","credit":2000.0},{"username":"posdf","password":"sadfasfdasf","firstName":"asdfasfaf","lastName":"asdfasdfas","email":"asdf@asdf.com","phoneNumber":"09000000000","type":"@Manager","credit":23.0}]

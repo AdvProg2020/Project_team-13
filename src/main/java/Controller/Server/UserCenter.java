@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 public class UserCenter {
     private static UserCenter userCenter;
-    private ArrayList<UserAccount> allUserAccount=new ArrayList<>();
-    private boolean isThereAnyManager=false;
-    private boolean isThisUserManager=false;
+    private ArrayList<Customer> allCustomer=new ArrayList<>();
+    private ArrayList<Seller> allSeller=new ArrayList<>();
+    private ArrayList<Manager> allManager=new ArrayList<>();
     private UserCenter(){
 
     }
@@ -24,16 +24,34 @@ public class UserCenter {
         return userCenter;
     }
     public boolean isThereUserWithThisUsername(String username){
-        for (UserAccount userAccount : allUserAccount) {
-            if(userAccount.getUsername().equals(username)){
+        for (Customer customer : allCustomer) {
+            if(customer.getUsername().equals(username)){
+                return true;
+            }
+        }
+        for (Seller seller : allSeller) {
+            if(seller.getUsername().equals(username)){
+                return true;
+            }
+        }
+        for (Manager manager : allManager) {
+            if(manager.getUsername().equals(username)){
                 return true;
             }
         }
         return false;
     }
 
-    public void setAllUserAccount(ArrayList<UserAccount> allUserAccount) {
-        this.allUserAccount = allUserAccount;
+    public void setAllCustomer(ArrayList<Customer> allCustomer) {
+        this.allCustomer = allCustomer;
+    }
+
+    public void setAllSeller(ArrayList<Seller> allSeller) {
+        this.allSeller = allSeller;
+    }
+
+    public void setAllManager(ArrayList<Manager> allManager) {
+        this.allManager = allManager;
     }
 
     public void createNewUserAccount(String json){
@@ -41,9 +59,9 @@ public class UserCenter {
         if (json.contains("@Customer")) {
             Customer customer=gson.fromJson(json, Customer.class);
             if(!isThereUserWithThisUsername(customer.getUsername())){
-                allUserAccount.add(customer);
-                String arrayData = gson.toJson(allUserAccount);
-                DataBase.getIncstance().updateAllUsers(arrayData);
+                allCustomer.add(customer);
+                String arrayData = gson.toJson(allCustomer);
+                DataBase.getIncstance().updateAllCustomers(arrayData);
                 ServerController.getIncstance().sendMessageToClient("@Successful@Register Successful");
             }else {
                 ServerController.getIncstance().sendMessageToClient("@Error@There is a User With this username");
@@ -51,23 +69,22 @@ public class UserCenter {
         }else if (json.contains("@Seller")) {
             Seller seller=gson.fromJson(json, Seller.class);
             if(!isThereUserWithThisUsername(seller.getUsername())){
-                allUserAccount.add(seller);
-                String arrayData = gson.toJson(allUserAccount);
-                DataBase.getIncstance().updateAllUsers(arrayData);
+                allSeller.add(seller);
+                String arrayData = gson.toJson(allSeller);
+                DataBase.getIncstance().updateAllSellers(arrayData);
                 Request request= RequestCenter.getIncstance().makeRequest("AcceptSellerAccount",gson.toJson(seller));
                 RequestCenter.getIncstance().addRequest(request);
-                ServerController.getIncstance().sendMessageToClient("@Successful@Register Successful");
+                ServerController.getIncstance().sendMessageToClient("@Successful@Register was sended to Manager for review");
             }else {
                 ServerController.getIncstance().sendMessageToClient("@Error@There is a User With this username");
             }
         }else if (json.contains("@Manager")) {
-            if(!isThereAnyManager||isThisUserManager) {
+            if(allManager.size()==0) {
                 Manager manager = gson.fromJson(json, Manager.class);
                 if (!isThereUserWithThisUsername(manager.getUsername())) {
-                    isThereAnyManager=true;
-                    allUserAccount.add(manager);
-                    String arrayData = gson.toJson(allUserAccount);
-                    DataBase.getIncstance().updateAllUsers(arrayData);
+                    allManager.add(manager);
+                    String arrayData = gson.toJson(allManager);
+                    DataBase.getIncstance().updateAllManagers(arrayData);
                     ServerController.getIncstance().sendMessageToClient("@Successful@Register Successful");
                 } else {
                     ServerController.getIncstance().sendMessageToClient("@Error@There is a User With this username");

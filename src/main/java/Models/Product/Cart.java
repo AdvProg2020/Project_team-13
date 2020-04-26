@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Cart {
-    private Customer customer;
+    private String customerID;
     private HashMap<String, Integer> countOfEachProduct;
     private DiscountCode discountCode;
     private ArrayList<Product> allproduct;
     private double totalPrice = 0;
     private String receivingInformation;
 
-    public Cart(Customer customer) {
-        this.customer = customer;
+    public Cart(String customerID) {
+        this.customerID = customerID;
         this.countOfEachProduct = new HashMap<>();
         this.discountCode =null;
         this.allproduct =new ArrayList<>();
