@@ -1,5 +1,6 @@
 package View.UserMenu;
 
+import Controller.Client.ClientController;
 import Controller.Client.LoginController;
 import Models.UserAccount.Manager;
 import View.Menu;
@@ -48,12 +49,14 @@ public class LoginMenu extends Menu {
     @Override
     public void printError(String error) {
         super.printError(error);
+        System.out.println("Please Enter Login [userName] and passwrod again.");
         this.execute();
     }
 
     @Override
     public void showMessage(String message) {
         super.showMessage(message);
+        ClientController.getInstance().setCurrentMenu(parentMenu);
         parentMenu.execute();
     }
 }
