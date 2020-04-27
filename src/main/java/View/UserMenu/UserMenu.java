@@ -3,6 +3,9 @@ package View.UserMenu;
 import Controller.Client.ClientController;
 import View.MainMenu;
 import View.Menu;
+import View.UserMenu.Customer.CustomerMenu;
+import View.UserMenu.Manager.ManagerMenu;
+import View.UserMenu.Seller.SellerMenu;
 
 public class UserMenu extends Menu {
     public UserMenu(Menu parentMenu) {
@@ -23,6 +26,21 @@ public class UserMenu extends Menu {
 
     @Override
     public void execute() {
+        if(ClientController.getInstance().getCurrentUser()!=null) {
+            if(ClientController.getInstance().getCurrentUser().getType().equalsIgnoreCase("@Seller")) {
+                Menu menu=new SellerMenu(parentMenu).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
+            }else if(ClientController.getInstance().getCurrentUser().getType().equalsIgnoreCase("@Customer")) {
+                Menu menu=new CustomerMenu(parentMenu).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
+            }else if(ClientController.getInstance().getCurrentUser().getType().equalsIgnoreCase("@Manager")) {
+                Menu menu=new ManagerMenu(parentMenu).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
+            }
+        }
         String command;
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.equalsIgnoreCase("Register")) {
