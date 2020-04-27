@@ -27,6 +27,13 @@ public class Customer extends UserAccount{
 
     @Override
     public String viewPersonalInfo() {
-        return "test";
+        String personalInfo = "";
+        personalInfo += this.username + "\n";
+        personalInfo += this.firstName + "\n";
+        personalInfo += this.lastName + "\n";
+        personalInfo += this.email + "\n";
+        personalInfo += this.phoneNumber + "\n";
+        personalInfo += this.credit + "\n";
+        return personalInfo;
     }
 }
