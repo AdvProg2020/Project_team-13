@@ -29,7 +29,7 @@ public class LoginMenu extends Menu {
         while (!(command = scanner.nextLine().trim()).equalsIgnoreCase("back")) {
             if (Pattern.matches("Login (\\w+)",command)) {
                 String userName, password;
-                Pattern pattern=Pattern.compile("Login \\w+");
+                Pattern pattern=Pattern.compile("Login (\\w+)");
                 Matcher matcher=pattern.matcher(command);
                 matcher.find();
                 userName=matcher.group(1);
