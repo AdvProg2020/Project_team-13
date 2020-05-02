@@ -27,5 +27,9 @@ public class ProductController {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("AddProduct",product0));
     }
 
+    public void editProduct(String productId, String userName, String field, String newValue){
+
+    }
+
 
 }
