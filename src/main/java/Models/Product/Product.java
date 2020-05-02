@@ -26,7 +26,8 @@ public class Product {
     private ArrayList<Customer> allBuyers;
     private Offer offer;
 
-    public Product(String productId,  String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, ArrayList<String> featuresOfCategoryThatHas) {
+    public Product(String productCompany, String productId,  String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, ArrayList<String> featuresOfCategoryThatHas) {
+        this.productCompany=productCompany;
         this.productId = productId;
         this.productStatus = ProductStatus.inCreatingProgress;
         this.productName = productName;
@@ -36,6 +37,10 @@ public class Product {
         this.description = description;
         this.numberOfAvailableProducts = numberOfAvailableProducts;
         this.featuresOfCategoryThatHas = featuresOfCategoryThatHas;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public void addScore(Score score) {

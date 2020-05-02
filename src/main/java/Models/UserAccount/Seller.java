@@ -21,6 +21,17 @@ public class Seller extends UserAccount {
         this.type = "@Seller";
     }
 
+    public void addProduct(Product product) {
+        for (Product products : allProducts) {
+            if(products.getProductId().equals(product.getProductId())) {
+                return;
+            }
+        }
+        allProducts.add(product);
+    }
+
+
+
     public String getCompanyName() {
         return companyName;
     }

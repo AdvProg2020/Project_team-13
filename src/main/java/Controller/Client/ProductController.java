@@ -4,6 +4,7 @@ import Models.Product.Product;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ProductController {
@@ -20,7 +21,8 @@ public class ProductController {
     }
 
     public void addProduct(ArrayList<String>fields,ArrayList<String> featuresOfCategory,String category) {
-        Product product=new Product(null,fields.get(1),(Seller) ClientController.getInstance().getCurrentUser(),Double.parseDouble(fields.get(3)),category,fields.get(2),Integer.parseInt(fields.get(5))
+        Product product=new Product(fields.get(0),null,fields.get(1),(Seller) ClientController.getInstance().getCurrentUser()
+                ,Double.parseDouble(fields.get(3)),category,fields.get(2),Integer.parseInt(fields.get(4))
                 ,featuresOfCategory);
         Gson gson=new Gson();
         String product0=gson.toJson(product);

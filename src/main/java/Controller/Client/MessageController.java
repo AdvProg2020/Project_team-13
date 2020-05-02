@@ -56,6 +56,8 @@ public class MessageController {
             Seller seller=gson.fromJson(message, Seller.class);
             ClientController.getInstance().setCurrentUser(seller);
             ClientController.getInstance().getCurrentMenu().showMessage("login Successful");
+        }else if(message.startsWith("@productCreating@")) {
+            ClientController.getInstance().getCurrentMenu().showMessage(message.substring(17,message.length()));
         }
     }
 }
