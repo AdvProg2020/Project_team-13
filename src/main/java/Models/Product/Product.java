@@ -18,17 +18,17 @@ public class Product {
     private Seller seller;
     private ArrayList<Score> allScores;
     private double productCost, costAfterOff;
-    private Category productsCategory;
+    private String productsCategory;
     private String description;
     private ArrayList<Comment> commentList;
     private int numberOfAvailableProducts;
-    private HashMap<String, ArrayList<String>> featuresOfCategoryThatHas;
+    private ArrayList<String> featuresOfCategoryThatHas;
     private ArrayList<Customer> allBuyers;
     private Offer offer;
 
-    public Product(String productId, ProductStatus productStatus, String productName, Seller seller, double productCost, Category productsCategory, String description, int numberOfAvailableProducts, HashMap<String, ArrayList<String>> featuresOfCategoryThatHas) {
+    public Product(String productId,  String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, ArrayList<String> featuresOfCategoryThatHas) {
         this.productId = productId;
-        this.productStatus = productStatus;
+        this.productStatus = ProductStatus.inCreatingProgress;
         this.productName = productName;
         this.seller = seller;
         this.productCost = productCost;
@@ -67,7 +67,7 @@ public class Product {
         projectInformation += this.productName + "\\*\\";
         projectInformation += this.description + "\\*\\";
         projectInformation += this.productCost + "\\*\\";
-        projectInformation += this.productsCategory.getName() + "\\*\\";
+        projectInformation += this.productsCategory + "\\*\\";
         projectInformation += this.seller.getUsername() + "\\*\\";
         projectInformation += this.getCostAfterOff() + "\\*\\";
         projectInformation += this.getAverageScore() + "\\*\\";
@@ -103,7 +103,6 @@ public class Product {
         return productCompany;
     }
 
-
     public Seller getSeller() {
         return seller;
     }
@@ -112,7 +111,7 @@ public class Product {
         return productCost;
     }
 
-    public Category getProductsCategory() {
+    public String getProductsCategory() {
         return productsCategory;
     }
 
@@ -124,7 +123,7 @@ public class Product {
         return numberOfAvailableProducts;
     }
 
-    public HashMap<String, ArrayList<String>> getFeaturesOfCategoryThatHas() {
+    public ArrayList<String> getFeaturesOfCategoryThatHas() {
         return featuresOfCategoryThatHas;
     }
 
@@ -140,7 +139,7 @@ public class Product {
         this.productCost = productCost;
     }
 
-    public void setProductsCategory(Category productsCategory) {
+    public void setProductsCategory(String productsCategory) {
         this.productsCategory = productsCategory;
     }
 
@@ -152,23 +151,15 @@ public class Product {
         this.numberOfAvailableProducts = numberOfAvailableProducts;
     }
 
-    public void addFeaturesOfCategoryThatHas(String feature, String featursType) {
-        if (!this.featuresOfCategoryThatHas.containsKey(feature)) {
-            ArrayList<String> featuresTypes = new ArrayList<>();
-            featuresTypes.add(featursType);
-            this.featuresOfCategoryThatHas.put(feature, featuresTypes);
-        } else {
-            if (!this.featuresOfCategoryThatHas.get(feature).contains(featursType)) {
-                this.featuresOfCategoryThatHas.get(feature).add(featursType);
-            }
+    public void addFeaturesOfCategoryThatHas(String feature) {
+        if(!this.featuresOfCategoryThatHas.contains(feature)) {
+            this.featuresOfCategoryThatHas.add(feature);
         }
     }
 
-    public void deleteFeaturesOfCategoryThatHas(String feature, String featursType) {
-        if (this.featuresOfCategoryThatHas.containsKey(feature)) {
-            if (this.featuresOfCategoryThatHas.get(feature).contains(featursType)) {
-                this.featuresOfCategoryThatHas.get(feature).remove(featursType);
-            }
+    public void deleteFeaturesOfCategoryThatHas(String feature) {
+        if (!this.featuresOfCategoryThatHas.contains(feature)) {
+            this.featuresOfCategoryThatHas.add(feature);
         }
     }
 

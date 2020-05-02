@@ -13,38 +13,69 @@ import java.util.ArrayList;
 
 public class DataBase {
     private static DataBase dataBase;
-    private DataBase(){
+    private String lastProductId;
+
+    private DataBase() {
 
     }
+
     public static DataBase getIncstance() {
-        if (dataBase == null){
+        if (dataBase == null) {
             dataBase = new DataBase();
         }
         return dataBase;
     }
-    public void updateAllCustomers(String json){
-        try{
-            FileWriter fileWriter=new FileWriter("allCustomers.txt");
+
+    public void updateAllCustomers(String json) {
+        try {
+            FileWriter fileWriter = new FileWriter("allCustomers.txt");
             fileWriter.write(json);
             fileWriter.close();
-        }catch(Exception e){System.out.println(e);}
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
-    public void updateAllSellers(String json){
-        try{
-            FileWriter fileWriter=new FileWriter("allSellers.txt");
+
+    public void updateAllProducts(String json) {
+        try {
+            FileWriter fileWriter = new FileWriter("allProducts.txt");
             fileWriter.write(json);
             fileWriter.close();
-        }catch(Exception e){System.out.println(e);}
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        try {
+            FileWriter fileWriter = new FileWriter("lastProductId.txt");
+            fileWriter.write(lastProductId);
+            fileWriter.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
     }
-    public void updateAllManagers(String json){
-        try{
-            FileWriter fileWriter=new FileWriter("allManagers.txt");
+
+    public void updateAllSellers(String json) {
+        try {
+            FileWriter fileWriter = new FileWriter("allSellers.txt");
             fileWriter.write(json);
             fileWriter.close();
-        }catch(Exception e){System.out.println(e);}
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
+
+    public void updateAllManagers(String json) {
+        try {
+            FileWriter fileWriter = new FileWriter("allManagers.txt");
+            fileWriter.write(json);
+            fileWriter.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
     public void setAllUsersListFromDateBase() {
-        FileReader fileReader= null;
+        FileReader fileReader = null;
         try {
             fileReader = new FileReader("allCustomers.txt");
         } catch (FileNotFoundException e) {
@@ -54,9 +85,10 @@ public class DataBase {
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                Gson gson=new Gson();
-                Type userListType = new TypeToken< ArrayList<Customer> >(){}.getType();
-                ArrayList<Customer> allUsers=gson.fromJson(json,userListType);
+                Gson gson = new Gson();
+                Type userListType = new TypeToken<ArrayList<Customer>>() {
+                }.getType();
+                ArrayList<Customer> allUsers = gson.fromJson(json, userListType);
                 UserCenter.getIncstance().setAllCustomer(allUsers);
             }
         } catch (IOException e) {
@@ -77,9 +109,10 @@ public class DataBase {
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                Gson gson=new Gson();
-                Type userListType = new TypeToken< ArrayList<Seller> >(){}.getType();
-                ArrayList<Seller> allUsers=gson.fromJson(json,userListType);
+                Gson gson = new Gson();
+                Type userListType = new TypeToken<ArrayList<Seller>>() {
+                }.getType();
+                ArrayList<Seller> allUsers = gson.fromJson(json, userListType);
                 UserCenter.getIncstance().setAllSeller(allUsers);
             }
         } catch (IOException e) {
@@ -100,9 +133,10 @@ public class DataBase {
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                Gson gson=new Gson();
-                Type userListType = new TypeToken< ArrayList<Manager> >(){}.getType();
-                ArrayList<Manager> allUsers=gson.fromJson(json,userListType);
+                Gson gson = new Gson();
+                Type userListType = new TypeToken<ArrayList<Manager>>() {
+                }.getType();
+                ArrayList<Manager> allUsers = gson.fromJson(json, userListType);
                 UserCenter.getIncstance().setAllManager(allUsers);
             }
         } catch (IOException e) {
