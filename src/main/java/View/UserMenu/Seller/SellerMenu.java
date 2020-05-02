@@ -18,26 +18,28 @@ public class SellerMenu extends Menu {
     public void execute() {
         String command;
         System.out.println(ClientController.getInstance().getCurrentUser().viewPersonalInfo());
-//        if (!ClientController.getInstance().getSeller().isAccepted()) {
-//            System.out.println("Your registration application has not been approved by the administrator.");
-//            while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
-//                if (command.equals("view personal info")) {
-//                    System.out.println("You don't have access!");
-//                } else if (command.equals("add product")) {
-//                    System.out.println("You don't have access!");
-//                } else if (command.equals("help")) {
-//                    System.out.println("you can just get back!!");
-//                } else {
-//                    System.out.println("Invalid command");
-//                }
-//            }
-//            back();
-//        }
+        if (!ClientController.getInstance().getSeller().isAccepted()) {
+            System.out.println("Your registration application has not been approved by the administrator.");
             while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
                 if (command.equals("view personal info")) {
-                    System.out.println("Big Like");
+                    System.out.println("You don't have access!");
                 } else if (command.equals("add product")) {
-                    addProduct();
+                    System.out.println("You don't have access!");
+                } else if (command.equals("help")) {
+                    System.out.println("you can just get back!!");
+                } else {
+                    System.out.println("Invalid command");
+                }
+            }
+            back();
+        } else {
+            while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
+                if (command.equals("view personal info")) {
+                    System.out.println(ClientController.getInstance().getCurrentUser().viewPersonalInfo());
+                } else if (command.equals("manage products")) {
+                    Menu menu = new ManageProductMenu(this).setScanner(scanner);
+                    ClientController.getInstance().setCurrentMenu(menu);
+                    menu.execute();
                 } else if (command.equals("help")) {
                     help();
                 } else {
@@ -45,6 +47,7 @@ public class SellerMenu extends Menu {
                 }
             }
             back();
+        }
 
     }
 

@@ -96,31 +96,37 @@ public class Seller extends UserAccount {
     }
 
     public String viewAllProducts() {
+        if(getAllProducts()==null){
+            return "No Product Exits";
+        }
         String products = "";
         for (Product product : this.allProducts) {
-            products += product.getProductId() + "\\*\\";
-            products += product.getProductName() + "\\*\\";
-            products += product.getProductCost() + "\\*\\";
+            products += product.getProductId() + " ";
+            products += product.getProductName() + " ";
+            products += product.getProductCost() + " ";
             products += '\n';
         }
         return products;
     }
 
     public String viewProduct(String productID) {
+        if(getProductByID(productID)==null){
+            return "The Product Does Not Exist";
+        }
         String productInfo = "";
         Product product = getProductByID(productID);
-        productInfo += product.getProductId() + "\\*\\";
-        productInfo += product.getProductName() + "\\*\\";
-        productInfo += product.getProductCompany() + "\\*\\";
-        productInfo += product.getProductCost() + "\\*\\";
-        productInfo += product.getProductStatus() + "\\*\\";
-        productInfo += product.getProductsCategory() + "\\*\\";
-        productInfo += product.getNumberOfAvailableProducts() + "\\*\\";
-        productInfo += product.getDescription() + "\\*\\";
-        productInfo += product.getAverageScore() + "\\*\\";
-        productInfo += product.getCostAfterOff() + "\\*\\";
-        productInfo += product.getComments() + "\\*\\";
-        productInfo += product.getFeaturesOfCategoryThatHas() + "\\*\\";
+        productInfo += product.getProductId() + "\n";
+        productInfo += product.getProductName() + "\n";
+        productInfo += product.getProductCompany() + "\n";
+        productInfo += product.getProductCost() + "\n";
+        productInfo += product.getProductStatus() + "\n";
+        productInfo += product.getProductsCategory() + "\n";
+        productInfo += product.getNumberOfAvailableProducts() + "\n";
+        productInfo += product.getDescription() + "\n";
+        productInfo += product.getAverageScore() + "\n";
+        productInfo += product.getCostAfterOff() + "\n";
+        productInfo += product.getComments() + "\n";
+        productInfo += product.getFeaturesOfCategoryThatHas() + "\n";
         return productInfo;
 
     }
@@ -132,4 +138,6 @@ public class Seller extends UserAccount {
         }
         return null;
     }
+
+//    public String view
 }
