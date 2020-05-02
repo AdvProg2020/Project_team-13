@@ -14,11 +14,13 @@ public class SellerMenu extends Menu {
         System.out.println(ClientController.getInstance().getCurrentUser().viewPersonalInfo());
         while(!(command=scanner.nextLine()).equalsIgnoreCase("back")){
             if(command.equals("view personal info")){
-                System.out.println("Big Like");
-            }else if(command.equals("salam")){
-                System.out.println("small Like");
+                System.out.println(ClientController.getInstance().getCurrentUser().viewPersonalInfo());
+            }else if(command.equals("manage products")){
+                Menu menu=new ManageProductMenu(this).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
             }else if(command.equals("help")){
-              help();
+                help();
             }else{
                 System.out.println("Invalid command");
             }
