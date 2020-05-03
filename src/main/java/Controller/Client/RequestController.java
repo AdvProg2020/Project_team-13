@@ -52,7 +52,6 @@ public class RequestController {
         }
         ClientController.getInstance().getCurrentMenu().printError("there is no request with this id");
     }
-
     public void acceptRequest(String requestId) {
         for (Request request : allRequests) {
             if (request.getRequestId().equals(requestId)) {
