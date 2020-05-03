@@ -40,6 +40,8 @@ public class SellerMenu extends Menu {
                     Menu menu = new ManageProductMenu(this).setScanner(scanner);
                     ClientController.getInstance().setCurrentMenu(menu);
                     menu.execute();
+                } else if (command.equals("add product")) {
+                    addProduct();
                 } else if (command.equals("help")) {
                     help();
                 } else {

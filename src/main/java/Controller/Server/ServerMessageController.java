@@ -41,21 +41,7 @@ public class ServerMessageController {
             message = message.substring(12, message.length());
             Gson gson = new Gson();
             Product product = gson.fromJson(message, Product.class);
-            boolean productCreated = false;
-            for (Category category : CategoryCenter.getIncstance().getAllCategories()) {
-                if (category.getName().equals(product.getProductsCategory())) {
-                    product.setProductId(ProductCenter.getInstance().getProductIdForCreateInProduct());
-                    product.getSeller().addProduct(product);
-                    productCreated = true;
-                    RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("AddProduct", message));
-                    ServerController.getIncstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("productCreating", "ProductCreating Request has been sent."));
-                    break;
-
-                }
-            }
-            if (!productCreated) {
-                ServerController.getIncstance().sendMessageToClient(MessageController.getInstance().makeMessage("Error", "There is no category with this name"));
-            }
+            ProductCenter.getInstance().createProductRequest(product,message);
         }
     }
 }
