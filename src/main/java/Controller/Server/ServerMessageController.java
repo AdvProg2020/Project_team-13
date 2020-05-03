@@ -22,10 +22,15 @@ public class ServerMessageController {
         if (message.startsWith("@Register@")) {
             message = message.substring(10, message.length());
             UserCenter.getIncstance().createNewUserAccount(message);
-        }else if (message.startsWith("@Login@")) {
+        } else if (message.startsWith("@Login@")) {
             message = message.substring(7, message.length());
-            String[] split=message.split("/");
-            UserCenter.getIncstance().login(split[0],split[1]);
+            String[] split = message.split("/");
+            UserCenter.getIncstance().login(split[0], split[1]);
+        } else if (message.equals("getAllRequests")) {
+            ServerController.getIncstance().sendMessageToClient("@AllRequests@" + new Gson().toJson(RequestCenter.getIncstance().getAllRequests()));
+        } else if (message.startsWith("@acceptRequest@")) {
+            message = message.substring(15, message.length());
+            RequestCenter.getIncstance().acceptRequest(message);
         }
     }
 }

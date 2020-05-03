@@ -139,4 +139,16 @@ public class UserCenter {
             ServerController.getIncstance().sendMessageToClient("@Error@There is no User With this username");
         }
     }
+
+    public boolean canAcceptSellerRegister(String username) {
+        for (Seller seller : allSeller) {
+            if (seller.getUsername().equals(username)) {
+                seller.setAccepted(true);
+                DataBase.getIncstance().updateAllSellers(new Gson().toJson(allSeller));
+                return true;
+            }
+        }
+        ServerController.getIncstance().sendMessageToClient("@Error@there is no seller with this username");
+        return false;
+    }
 }

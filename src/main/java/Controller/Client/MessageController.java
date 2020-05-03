@@ -56,6 +56,9 @@ public class MessageController {
             Seller seller=gson.fromJson(message, Seller.class);
             ClientController.getInstance().setCurrentUser(seller);
             ClientController.getInstance().getCurrentMenu().showMessage("login Successful");
+        }else  if(message.startsWith("@AllRequests@")){
+            message=message.substring(13, message.length());
+            RequestController.getInstance().printAllRequests(message);
         }
     }
 }

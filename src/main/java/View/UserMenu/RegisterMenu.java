@@ -73,7 +73,7 @@ public class RegisterMenu extends Menu {
             } else if (command.equalsIgnoreCase("back")) {
                 back();
                 break;
-            }else System.out.println("Invalid command");
+            } else System.out.println("Invalid command");
         }
     }
 
@@ -205,7 +205,7 @@ public class RegisterMenu extends Menu {
     }
 
     private boolean checkPasswordIsvalid(String word) {
-       if (word.length() > 8 && word.length() < 18) {
+        if (word.length() > 8 && word.length() < 18) {
             return true;
         }
         return false;

@@ -28,16 +28,16 @@ public class LoginMenu extends Menu {
     public void execute() {
         String command;
         while (!(command = scanner.nextLine().trim()).equalsIgnoreCase("back")) {
-            if (Pattern.matches("Login (\\w+)",command)) {
+            if (Pattern.matches("Login (\\w+)", command)) {
                 String userName, password;
-                Pattern pattern=Pattern.compile("Login (\\w+)");
-                Matcher matcher=pattern.matcher(command);
+                Pattern pattern = Pattern.compile("Login (\\w+)");
+                Matcher matcher = pattern.matcher(command);
                 matcher.find();
-                userName=matcher.group(1);
+                userName = matcher.group(1);
                 System.out.println("Enter passWord");
                 password = scanner.nextLine().trim();
                 LoginController.getInstance().login(userName, password);
-            } else if(command.equalsIgnoreCase("help")) {
+            } else if (command.equalsIgnoreCase("help")) {
                 help();
             } else {
                 System.out.println("command is invalid");
