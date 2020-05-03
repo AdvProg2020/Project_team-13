@@ -58,6 +58,8 @@ public class MessageController {
             ClientController.getInstance().getCurrentMenu().showMessage("login Successful");
         }else if(message.startsWith("@productCreating@")) {
             ClientController.getInstance().getCurrentMenu().showMessage(message.substring(17,message.length()));
+        }else if(message.startsWith("@removedSuccessful@")){
+            ClientController.getInstance().getCurrentMenu().showMessage(message.substring(19, message.length()));
         }
     }
 }

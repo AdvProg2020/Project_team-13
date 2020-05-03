@@ -4,6 +4,7 @@ import Controller.Client.MessageController;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.Request;
+import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -60,7 +61,17 @@ public class ProductCenter {
         }
     }
 
-
-
-
+    public void deleteProduct(String productId, String sellerObject){
+        Gson gson=new Gson();
+        Seller seller=gson.fromJson(sellerObject, Seller.class);
+        if(seller.productExists(productId)){
+          seller.getAllProducts().remove(seller.getProductByID(productId));
+          products.remove(seller.getProductByID(productId));
+          String updatedProducts=gson.toJson(products);
+          DataBase.getIncstance().updateAllProducts(updatedProducts);
+          ServerController.getIncstance().sendMessageToClient(MessageController.getInstance().makeMessage("@removedSuccessful@", "The Product removed Successfully"));
+        }else{
+            ServerController.getIncstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@Error@","There is no Product with this Id"));
+        }
+    }
 }

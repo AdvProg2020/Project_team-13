@@ -42,6 +42,10 @@ public class ServerMessageController {
             Gson gson = new Gson();
             Product product = gson.fromJson(message, Product.class);
             ProductCenter.getInstance().createProductRequest(product,message);
+        }else if(message.startsWith("@deleteProduct@")){
+            message=message.substring(15, message.length());
+            String[] split=message.split("/");
+            ProductCenter.getInstance().deleteProduct(split[0], split[1]);
         }
     }
 }

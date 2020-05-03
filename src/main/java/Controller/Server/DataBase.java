@@ -53,7 +53,6 @@ public class DataBase {
         }
 
     }
-
     public void updateAllSellers(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allSellers.txt");
@@ -90,8 +89,8 @@ public class DataBase {
         } catch (IOException e) {
 
         }
-
     }
+
 
     public void replaceProductId(String productId) {
         try {

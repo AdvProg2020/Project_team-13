@@ -1,8 +1,10 @@
 package View.UserMenu.Seller;
 
 import Controller.Client.ClientController;
+import Controller.Client.ProductController;
 import Models.UserAccount.Seller;
 import View.Menu;
+import com.google.gson.Gson;
 
 public class ManageProductMenu extends Menu {
     public ManageProductMenu(Menu parentMenu) {
@@ -33,6 +35,10 @@ public class ManageProductMenu extends Menu {
                menu.execute();
            }else if(command.equals("help")){
                help();
+           }else if(command.matches("remove @p\\w+")){
+               Gson gson=new Gson();
+               String sellerObject=gson.toJson((Seller)ClientController.getInstance().getCurrentUser());
+               ProductController.getInstance().removeProduct(getTheProductIdByCommand(command, 1), sellerObject);
            }else{
                System.out.println("invalid command");
            }

@@ -138,6 +138,7 @@ public class Seller extends UserAccount {
         }
         return null;
     }
-
-//    public String view
+    public boolean productExists(String productId){
+        return getProductByID(productId) != null;
+    }
 }
