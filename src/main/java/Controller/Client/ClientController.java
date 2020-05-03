@@ -12,6 +12,7 @@ public class ClientController {
     private ClientController() {
     }
 
+
     public static ClientController getInstance() {
         if (clientController == null) {
             clientController = new ClientController();

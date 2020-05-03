@@ -1,7 +1,12 @@
 package View.UserMenu.Seller;
 
 import Controller.Client.ClientController;
+import Controller.Client.ProductController;
+import Models.Product.Product;
 import View.Menu;
+
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class SellerMenu extends Menu {
     public SellerMenu(Menu parentMenu) {
@@ -9,16 +14,18 @@ public class SellerMenu extends Menu {
     }
 
     @Override
-    public void execute(){
+    public void execute() {
         String command;
         System.out.println(ClientController.getInstance().getCurrentUser().viewPersonalInfo());
         while(!(command=scanner.nextLine()).equalsIgnoreCase("back")){
             if(command.equals("view personal info")){
-                System.out.println("Big Like");
-            }else if(command.equals("salam")){
-                System.out.println("small Like");
+                System.out.println(ClientController.getInstance().getCurrentUser().viewPersonalInfo());
+            }else if(command.equals("manage products")){
+                Menu menu=new ManageProductMenu(this).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
             }else if(command.equals("help")){
-              help();
+                help();
             }else{
                 System.out.println("Invalid command");
             }
@@ -26,19 +33,49 @@ public class SellerMenu extends Menu {
         back();
     }
 
+    private void addProduct() {
+        ArrayList<String> fieldsOfProduct = new ArrayList<>();
+        System.out.println("Enter Company name");
+        fieldsOfProduct.add(scanner.nextLine().trim());
+        System.out.println("Enter Products Name");
+        fieldsOfProduct.add(scanner.nextLine().trim());
+        System.out.println("Enter Products  describtion");
+        String s = "", discribtion = "";
+        while ((s = scanner.nextLine().trim()).equalsIgnoreCase("finish")) {
+            discribtion += s;
+            discribtion += "\\n";
+        }
+        fieldsOfProduct.add(discribtion);
+        System.out.println("Enter Products Cost");
+        fieldsOfProduct.add(scanner.nextLine().trim());
+        System.out.println("Enter Available number of product");
+        fieldsOfProduct.add(scanner.nextLine().trim());
+        System.out.println("Enter Products Category");
+        String category=scanner.nextLine().trim();
+        ArrayList<String> categoryFeatures=new ArrayList<>();
+        while ((s = scanner.nextLine().trim()).equalsIgnoreCase("finish")) {
+            if(Pattern.matches("\\w+/.+",s)) {
+                categoryFeatures.add(s);
+            } else {
+                System.out.println("Enter In Correct Form");
+            }
+        }
+        ProductController.getInstance().addProduct(fieldsOfProduct,categoryFeatures,category);
+    }
+
     @Override
-    public void help(){
-        String sellerMenuOptions="";
-        sellerMenuOptions+="view personal info\n";
-        sellerMenuOptions+="view company information\n";
-        sellerMenuOptions+="view Sales history\n";
-        sellerMenuOptions+="view Sales History\n";
-        sellerMenuOptions+="view Sales History\n";
-        sellerMenuOptions+="view Sales History\n";
-        sellerMenuOptions+="view Sales History\n";
-        sellerMenuOptions+="view Sales History\n";
-        sellerMenuOptions+="view Sales History\n";
-        sellerMenuOptions+="view Sales History\n";
+    public void help() {
+        String sellerMenuOptions = "";
+        sellerMenuOptions += "view personal info\n";
+        sellerMenuOptions += "add product\n";
+        sellerMenuOptions += "view Sales history\n";
+        sellerMenuOptions += "view Sales History\n";
+        sellerMenuOptions += "view Sales History\n";
+        sellerMenuOptions += "view Sales History\n";
+        sellerMenuOptions += "view Sales History\n";
+        sellerMenuOptions += "view Sales History\n";
+        sellerMenuOptions += "view Sales History\n";
+        sellerMenuOptions += "view Sales History\n";
         System.out.println(sellerMenuOptions);
     }
 
