@@ -119,14 +119,7 @@ public class SellerMenu extends Menu {
         String sellerMenuOptions = "";
         sellerMenuOptions += "view personal info\n";
         sellerMenuOptions += "add product\n";
-        sellerMenuOptions += "view Sales history\n";
-        sellerMenuOptions += "view Sales History\n";
-        sellerMenuOptions += "view Sales History\n";
-        sellerMenuOptions += "view Sales History\n";
-        sellerMenuOptions += "view Sales History\n";
-        sellerMenuOptions += "view Sales History\n";
-        sellerMenuOptions += "view Sales History\n";
-        sellerMenuOptions += "view Sales History\n";
+        sellerMenuOptions += "LogOut";
         System.out.println(sellerMenuOptions);
     }
 

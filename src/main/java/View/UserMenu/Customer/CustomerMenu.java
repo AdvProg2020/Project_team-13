@@ -14,10 +14,11 @@ public class CustomerMenu extends Menu {
     @Override
     public void help() {
         String userMenuOptions = "";
-        userMenuOptions += "1.Register\n";
-        userMenuOptions += "2.Login\n";
-        userMenuOptions += "3.Help";
-        userMenuOptions += "4.Back";
+        userMenuOptions += "Register\n";
+        userMenuOptions += "Login\n";
+        userMenuOptions += "Help\n";
+        userMenuOptions += "Back\n";
+        userMenuOptions += "LogOut\n";
         System.out.println(userMenuOptions);
 
     }
