@@ -27,7 +27,11 @@ public class SellerMenu extends Menu {
                     System.out.println("You don't have access!");
                 } else if (command.equals("help")) {
                     System.out.println("you can just get back!!");
-                } else {
+                } else if (command.equalsIgnoreCase("logout")) {
+                    ClientController.getInstance().setCurrentUser(null);
+                    System.out.println("You Logged out!!");
+                    parentMenu.execute();
+                }else {
                     System.out.println("Invalid command");
                 }
             }
@@ -44,6 +48,10 @@ public class SellerMenu extends Menu {
                     addProduct();
                 } else if (command.equals("help")) {
                     help();
+                }  else if (command.equalsIgnoreCase("logout")) {
+                    ClientController.getInstance().setCurrentUser(null);
+                    System.out.println("You Logged out!!");
+                    parentMenu.execute();
                 } else {
                     System.out.println("Invalid command");
                 }

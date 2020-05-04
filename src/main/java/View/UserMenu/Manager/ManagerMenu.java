@@ -31,6 +31,10 @@ public class ManagerMenu extends Menu {
                 menu.execute();
             } else if (command.equalsIgnoreCase("help")) {
                 help();
+            } else if (command.equalsIgnoreCase("logout")) {
+                ClientController.getInstance().setCurrentUser(null);
+                System.out.println("You Logged out!!");
+                parentMenu.execute();
             } else {
                 System.out.println("Invalid Command");
             }
