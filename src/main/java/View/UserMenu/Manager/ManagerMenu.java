@@ -15,7 +15,8 @@ public class ManagerMenu extends Menu {
     @Override
     public void help() {
         String managerMenuOptions = "";
-        managerMenuOptions += "1.Manage Requests";
+        managerMenuOptions += "1.Manage Requests\n";
+        managerMenuOptions += "LogOut";
         System.out.println(managerMenuOptions);
     }
 
@@ -33,7 +34,6 @@ public class ManagerMenu extends Menu {
                 help();
             } else if (command.equalsIgnoreCase("logout")) {
                 ClientController.getInstance().setCurrentUser(null);
-                System.out.println("You Logged out!!");
                 parentMenu.execute();
             } else {
                 System.out.println("Invalid Command");
