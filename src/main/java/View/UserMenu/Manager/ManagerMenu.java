@@ -15,7 +15,7 @@ public class ManagerMenu extends Menu {
     @Override
     public void help() {
         String managerMenuOptions = "";
-        managerMenuOptions += "1.manage requests";
+        managerMenuOptions += "1.Manage Requests";
         System.out.println(managerMenuOptions);
     }
 
