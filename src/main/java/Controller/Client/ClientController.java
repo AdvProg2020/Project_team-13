@@ -1,8 +1,11 @@
 package Controller.Client;
 
 import Controller.Server.ServerController;
+import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import View.Menu;
+
+import java.io.IOException;
 
 public class ClientController {
     private static ClientController clientController;
@@ -42,5 +45,12 @@ public class ClientController {
 
     public void getMessageFromServer(String message) {
         MessageController.getInstance().processMessage(message);
+    }
+
+    public Seller getSeller(){
+        if(currentUser.getType().equals("@Seller")) {
+            return (Seller) currentUser;
+        }
+        return null;
     }
 }

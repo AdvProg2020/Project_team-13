@@ -45,7 +45,7 @@ public class DataBase {
             System.out.println(e);
         }
         try {
-            FileWriter fileWriter = new FileWriter("lastProductId.txt");
+            FileWriter fileWriter = new FileWriter("lastProductId.txt.txt");
             fileWriter.write(lastProductId);
             fileWriter.close();
         } catch (Exception e) {
@@ -53,7 +53,6 @@ public class DataBase {
         }
 
     }
-
     public void updateAllSellers(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allSellers.txt");
@@ -71,6 +70,35 @@ public class DataBase {
             fileWriter.close();
         } catch (Exception e) {
             System.out.println(e);
+        }
+    }
+
+    public void setLastProductIdFromDataBase() {
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader("lastProductId.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader br = new BufferedReader(fileReader);
+        try {
+            String lastProductId = br.readLine().trim();
+            ProductCenter.getInstance().setLastProductId(lastProductId);
+            br.close();
+            fileReader.close();
+        } catch (IOException e) {
+
+        }
+    }
+
+
+    public void replaceProductId(String productId) {
+        try {
+            FileWriter fileWriter = new FileWriter("lastProductId.txt.txt");
+            fileWriter.write(productId);
+            fileWriter.close();
+        } catch (IOException e) {
+
         }
     }
 

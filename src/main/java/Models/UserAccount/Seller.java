@@ -21,6 +21,17 @@ public class Seller extends UserAccount {
         this.type = "@Seller";
     }
 
+    public void addProduct(Product product) {
+        for (Product products : allProducts) {
+            if(products.getProductId().equals(product.getProductId())) {
+                return;
+            }
+        }
+        allProducts.add(product);
+    }
+
+
+
     public String getCompanyName() {
         return companyName;
     }
@@ -85,8 +96,8 @@ public class Seller extends UserAccount {
     }
 
     public String viewAllProducts() {
-        if(allProducts==null){
-            return "The List is Empty";
+        if(getAllProducts()==null){
+            return "No Product Exits";
         }
         String products = "";
         for (Product product : this.allProducts) {
@@ -99,6 +110,9 @@ public class Seller extends UserAccount {
     }
 
     public String viewProduct(String productID) {
+        if(getProductByID(productID)==null){
+            return "The Product Does Not Exist";
+        }
         String productInfo = "";
         Product product = getProductByID(productID);
         productInfo += product.getProductId() + "\n";
@@ -123,5 +137,8 @@ public class Seller extends UserAccount {
                 return product;
         }
         return null;
+    }
+    public boolean productExists(String productId){
+        return getProductByID(productId) != null;
     }
 }
