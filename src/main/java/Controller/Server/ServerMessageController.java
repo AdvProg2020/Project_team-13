@@ -42,8 +42,6 @@ public class ServerMessageController {
         } else if (message.startsWith("@acceptRequest@")) {
             message = message.substring(15, message.length());
             RequestCenter.getIncstance().acceptRequest(message);
-            String[] split = message.split("/");
-            UserCenter.getIncstance().login(split[0], split[1]);
         } else if (message.startsWith("@AddProduct@")) {
             message = message.substring(12, message.length());
             Gson gson = new Gson();
