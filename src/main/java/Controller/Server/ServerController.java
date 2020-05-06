@@ -5,7 +5,7 @@ import Controller.Client.ClientController;
 import java.io.IOException;
 
 public class ServerController {
-    public static ServerController serverController;
+    private static ServerController serverController;
 
     private ServerController() {
 
@@ -17,6 +17,8 @@ public class ServerController {
 
     public void getAllUsersForStart() {
         DataBase.getIncstance().setAllUsersListFromDateBase();
+        DataBase.getIncstance().setAllRequestsListFromDateBase();
+        DataBase.getIncstance().setLastRequestId();
     }
 
     public static ServerController getIncstance() {

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class RequestCenter {
     private static RequestCenter requestCenter;
     private ArrayList<Request> allRequests = new ArrayList<>();
-    private String lastRequestID = "@r100000";
+    private String lastRequestID ="";
 
     private RequestCenter() {
 
@@ -26,10 +26,13 @@ public class RequestCenter {
 
     public void addRequest(Request request) {
         allRequests.add(request);
+        String arrayData =new Gson().toJson(allRequests);
+        DataBase.getIncstance().updateAllRequests(arrayData);
     }
 
     public String makeRequestID() {
         lastRequestID = "@r" + (Integer.parseInt(lastRequestID.substring(2, 8)) + 1);
+        DataBase.getIncstance().replaceRequestId(lastRequestID);
         return lastRequestID;
     }
 
@@ -52,6 +55,8 @@ public class RequestCenter {
     public void acceptSellerRegisterRequest(Request request) {
         if (UserCenter.getIncstance().canAcceptSellerRegister(new Gson().fromJson(request.getDetails(), Seller.class).getUsername())) {
             allRequests.remove(request);
+            String arrayData = new Gson().toJson(allRequests);
+            DataBase.getIncstance().updateAllRequests(arrayData);
             ServerController.getIncstance().sendMessageToClient("@Successful@" + "request accepted successfully");
         }
     }
@@ -63,5 +68,13 @@ public class RequestCenter {
             }
         }
         return null;
+    }
+
+    public void setAllRequests(ArrayList<Request> allRequests) {
+        this.allRequests = allRequests;
+    }
+
+    public void setLastRequestID(String lastRequestID) {
+        this.lastRequestID = lastRequestID;
     }
 }

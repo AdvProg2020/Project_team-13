@@ -1,0 +1,1 @@
+[{"type":"sellerRegister","status":"onReview","requestId":"@r100001","details":"{\"companyName\":\"dotal\",\"isAccepted\":false,\"username\":\"mahmood\",\"password\":\"138413881392\",\"firstName\":\"mahmood\",\"lastName\":\"ahmadi\",\"email\":\"mamooti@yahoo.com\",\"phoneNumber\":\"09369258741\",\"type\":\"@Seller\",\"credit\":0.0}"}]

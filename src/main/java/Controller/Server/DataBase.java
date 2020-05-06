@@ -1,5 +1,6 @@
 package Controller.Server;
 
+import Models.Request;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
@@ -166,6 +167,74 @@ public class DataBase {
                 }.getType();
                 ArrayList<Manager> allUsers = gson.fromJson(json, userListType);
                 UserCenter.getIncstance().setAllManager(allUsers);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public void updateAllRequests(String json) {
+        try {
+            FileWriter fileWriter = new FileWriter("allRequests.txt");
+            fileWriter.write(json);
+            fileWriter.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    public void setAllRequestsListFromDateBase() {
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader("allRequests.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader br = new BufferedReader(fileReader);
+        try {
+            String json;
+            while ((json = br.readLine()) != null) {
+                Gson gson = new Gson();
+                Type requestListType = new TypeToken<ArrayList<Request>>() {
+                }.getType();
+                ArrayList<Request> allRequests = gson.fromJson(json, requestListType);
+                RequestCenter.getIncstance().setAllRequests(allRequests);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public void replaceRequestId(String lastRequestId) {
+        try {
+            FileWriter fileWriter = new FileWriter("lastRequestId.txt");
+            fileWriter.write(lastRequestId);
+            fileWriter.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    public void setLastRequestId() {
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader("lastRequestID.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader br = new BufferedReader(fileReader);
+        try {
+            String lastRequestId;
+            while ((lastRequestId = br.readLine()) != null) {
+                RequestCenter.getIncstance().setLastRequestID(lastRequestId);
             }
         } catch (IOException e) {
             e.printStackTrace();

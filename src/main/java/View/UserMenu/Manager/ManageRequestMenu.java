@@ -13,7 +13,7 @@ public class ManageRequestMenu extends Menu {
     @Override
     public void help() {
         String managerMenuOptions = "";
-        managerMenuOptions += "1.details [requestId]";
+        managerMenuOptions += "1.details [requestId]\n";
         managerMenuOptions += "2.accept [requestId]";
         System.out.println(managerMenuOptions);
     }
