@@ -246,4 +246,68 @@ public class DataBase {
             }
         }
     }
+    public void getAllUsersListFromDateBase(){
+        FileReader fileReader = null;
+        BufferedReader br ;
+        try {
+            fileReader = new FileReader("allCustomers.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        br= new BufferedReader(fileReader);
+        try {
+            String json;
+            while ((json = br.readLine()) != null) {
+                ServerController.getIncstance().sendMessageToClient("@allCustomers@"+json);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            fileReader = new FileReader("allSellers.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        br= new BufferedReader(fileReader);
+        try {
+            String json;
+            while ((json = br.readLine()) != null) {
+                ServerController.getIncstance().sendMessageToClient("@allSellers@"+json);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            fileReader = new FileReader("allManagers.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        br= new BufferedReader(fileReader);
+        try {
+            String json;
+            while ((json = br.readLine()) != null) {
+                ServerController.getIncstance().sendMessageToClient("@allManagers@"+json);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

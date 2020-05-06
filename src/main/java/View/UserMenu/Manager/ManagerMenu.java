@@ -1,6 +1,7 @@
 package View.UserMenu.Manager;
 
 import Controller.Client.ClientController;
+import Controller.Client.ManagerController;
 import Controller.Client.RequestController;
 import View.Menu;
 import View.UserMenu.LoginMenu;
@@ -16,7 +17,8 @@ public class ManagerMenu extends Menu {
     public void help() {
         String managerMenuOptions = "";
         managerMenuOptions += "1.Manage Requests\n";
-        managerMenuOptions += "LogOut";
+        managerMenuOptions += "2.Manage Users\n";
+        managerMenuOptions += "3.LogOut";
         System.out.println(managerMenuOptions);
     }
 
@@ -28,6 +30,11 @@ public class ManagerMenu extends Menu {
             if (command.equalsIgnoreCase("manage requests")) {
                 Menu menu = new ManageRequestMenu(this).setScanner(this.scanner);
                 RequestController.getInstance().getAllRequestsFromServer();
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
+            } else if (command.equalsIgnoreCase("manage users")) {
+                Menu menu = new ManageUsersMenu(this).setScanner(this.scanner);
+                ManagerController.getInstance().getAllUserFromServer();
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("help")) {

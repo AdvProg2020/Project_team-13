@@ -63,6 +63,15 @@ public class MessageController {
         }else  if(message.startsWith("@AllRequests@")){
             message=message.substring(13, message.length());
             RequestController.getInstance().printAllRequests(message);
+        }else  if(message.startsWith("@allCustomers@")){
+            message=message.substring(14, message.length());
+            ManagerController.getInstance().setAllCustomers(message);
+        }else  if(message.startsWith("@allSellers@")){
+            message=message.substring(12, message.length());
+            ManagerController.getInstance().setAllSellers(message);
+        }else  if(message.startsWith("@allManagers@")){
+            message=message.substring(13, message.length());
+            ManagerController.getInstance().setAllManagers(message);
         }
     }
 }

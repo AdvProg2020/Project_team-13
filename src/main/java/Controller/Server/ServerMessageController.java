@@ -51,6 +51,8 @@ public class ServerMessageController {
             message=message.substring(15, message.length());
             String[] split=message.split("/");
             ProductCenter.getInstance().deleteProduct(split[0], split[1]);
+        }else if(message.startsWith("@getAllUsers@")){
+            DataBase.getIncstance().getAllUsersListFromDateBase();
         }
     }
 }
