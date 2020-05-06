@@ -53,6 +53,12 @@ public class ServerMessageController {
             ProductCenter.getInstance().deleteProduct(split[0], split[1]);
         }else if(message.startsWith("@getAllUsers@")){
             DataBase.getIncstance().getAllUsersListFromDateBase();
+        }else if(message.startsWith("@deleteCustomer@")){
+            UserCenter.getIncstance().removeCustomer(message.substring(16, message.length()));
+        }else if(message.startsWith("@deleteSeller@")){
+            UserCenter.getIncstance().removeSeller(message.substring(14, message.length()));
+        }else if(message.startsWith("@deleteManager@")){
+            UserCenter.getIncstance().removeManager(message.substring(15, message.length()));
         }
     }
 }

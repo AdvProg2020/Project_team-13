@@ -11,6 +11,7 @@ public class ManageUsersMenu extends Menu {
     public void help() {
         String managerMenuOptions = "";
         managerMenuOptions += "1.view [username]\n";
+        managerMenuOptions += "2.delete user [username]\n";
         System.out.println(managerMenuOptions);
     }
 
@@ -20,6 +21,8 @@ public class ManageUsersMenu extends Menu {
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.matches("view \\S+")) {
                     ManagerController.getInstance().viewUser(command.split("\\s")[1]);
+            }else if (command.matches("delete user \\S+")) {
+                ManagerController.getInstance().deleteUser(command.split("\\s")[2]);
             } else if (command.equalsIgnoreCase("help")) {
                 help();
             } else {

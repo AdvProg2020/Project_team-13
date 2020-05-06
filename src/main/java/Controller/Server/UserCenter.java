@@ -151,4 +151,37 @@ public class UserCenter {
         ServerController.getIncstance().sendMessageToClient("@Error@there is no seller with this username");
         return false;
     }
+    public void removeCustomer(String username){
+        for (Customer customer : allCustomer) {
+            if(customer.getUsername().equals(username)){
+                allCustomer.remove(customer);
+                DataBase.getIncstance().updateAllCustomers(new Gson().toJson(allCustomer));
+                ServerController.getIncstance().sendMessageToClient("@Successful@delete user successfully");
+                return;
+            }
+        }
+        ServerController.getIncstance().sendMessageToClient("@Error@there is no user with this username");
+    }
+    public void removeSeller(String username){
+        for (Seller seller : allSeller) {
+            if(seller.getUsername().equals(username)){
+                allSeller.remove(seller);
+                DataBase.getIncstance().updateAllSellers(new Gson().toJson(allSeller));
+                ServerController.getIncstance().sendMessageToClient("@Successful@delete user successfully");
+                return;
+            }
+        }
+        ServerController.getIncstance().sendMessageToClient("@Error@there is no user with this username");
+    }
+    public void removeManager(String username){
+        for (Manager manager : allManager) {
+            if(manager.getUsername().equals(username)){
+                allManager.remove(manager);
+                DataBase.getIncstance().updateAllManagers(new Gson().toJson(allManager));
+                ServerController.getIncstance().sendMessageToClient("@Successful@delete user successfully");
+                return;
+            }
+        }
+        ServerController.getIncstance().sendMessageToClient("@Error@there is no user with this username");
+    }
 }

@@ -102,4 +102,32 @@ public class ManagerController {
         }
         ClientController.getInstance().getCurrentMenu().printError("there is no user with this username");
     }
+    public void deleteUser(String username) {
+        if(ClientController.getInstance().getCurrentUser().getUsername().equals(username)){
+            ClientController.getInstance().getCurrentMenu().printError("you cannot delete yourself");
+            return;
+        }
+        for (Customer customer : allCustomers) {
+            if (customer.getUsername().equals(username)) {
+                ClientController.getInstance().sendMessageToServer("@deleteCustomer@"+username);
+                allCustomers.remove(customer);
+                return;
+            }
+        }
+        for (Seller seller : allSellers) {
+            if (seller.getUsername().equals(username)) {
+                ClientController.getInstance().sendMessageToServer("@deleteSeller@"+username);
+                allSellers.remove(seller);
+                return;
+            }
+        }
+        for (Manager manager : allManagers) {
+            if (manager.getUsername().equals(username)) {
+                ClientController.getInstance().sendMessageToServer("@deleteManager@"+username);
+                allManagers.remove(manager);
+                return;
+            }
+        }
+        ClientController.getInstance().getCurrentMenu().printError("there is no user with this username");
+    }
 }
