@@ -35,7 +35,7 @@ public class SellerMenu extends Menu {
                     System.out.println("Invalid command");
                 }
             }
-            back();
+            back();//jdsajdaskldjsakldjasldkasjdlkasdjalskdjaslkdjasdkasjdlkasjklsdjsalkdnjkhsdfdhfjk
         } else {
             while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
                 if (command.equals("view personal info")) {
