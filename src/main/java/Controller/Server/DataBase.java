@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class DataBase {
     private static DataBase dataBase;
@@ -308,6 +309,34 @@ public class DataBase {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+    public void getAllProductsFromDataBase(){
+        FileReader fileReader=null;
+        Scanner scanner=null;
+        try{
+            fileReader=new FileReader("allProducts.txt");
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+        scanner=new Scanner(fileReader);
+        try{
+            String json=null;
+            while(scanner.hasNextLine()){
+                json=scanner.nextLine();
+            }
+            if(json!=null) {
+                ServerController.getIncstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@getAllProductsForManager@", json));
+            }else{
+                ServerController.getIncstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@Error@", "There is no Product"));
+            }
+        } finally{
+            try {
+                fileReader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            scanner.close();
         }
     }
 }

@@ -50,7 +50,7 @@ public class ServerMessageController {
         }else if(message.startsWith("@deleteProduct@")){
             message=message.substring(15, message.length());
             String[] split=message.split("/");
-            ProductCenter.getInstance().deleteProduct(split[0], split[1]);
+            ProductCenter.getInstance().deleteProductForSeller(split[0], split[1]);
         }else if(message.startsWith("@getAllUsers@")){
             DataBase.getIncstance().getAllUsersListFromDateBase();
         }else if(message.startsWith("@deleteCustomer@")){
@@ -61,6 +61,11 @@ public class ServerMessageController {
             UserCenter.getIncstance().removeManager(message.substring(15, message.length()));
         }else if(message.startsWith("@createManagerProfile@")){
             UserCenter.getIncstance().createManagerProfile(message.substring(22, message.length()));
+        }else if(message.startsWith("@getAllProductsForManager@")){
+            DataBase.getIncstance().getAllProductsFromDataBase();
+        }else if(message.startsWith("@removeProductForManager@")){
+            message=message.substring(25, message.length());
+            ProductCenter.getInstance().deleteProductForManager(message);
         }
     }
 }

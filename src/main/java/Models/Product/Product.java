@@ -69,13 +69,13 @@ public class Product {
 
     public String viewProduct() {
         String projectInformation = "";
-        projectInformation += this.productName + "\\*\\";
-        projectInformation += this.description + "\\*\\";
-        projectInformation += this.productCost + "\\*\\";
-        projectInformation += this.productsCategory + "\\*\\";
-        projectInformation += this.seller.getUsername() + "\\*\\";
-        projectInformation += this.getCostAfterOff() + "\\*\\";
-        projectInformation += this.getAverageScore() + "\\*\\";
+        projectInformation += this.productName + "\n";
+        projectInformation += this.description + "\n";
+        projectInformation += this.productCost + "\n";
+        projectInformation += this.productsCategory + "\n";
+        projectInformation += this.seller.getUsername() + "\n";
+        projectInformation += this.getCostAfterOff() + "\n";
+        projectInformation += this.getAverageScore() + "\n\n";
 
         return projectInformation;
 

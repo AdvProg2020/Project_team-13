@@ -28,7 +28,7 @@ public class ManageProductMenu extends Menu {
            if(command.matches("view @p\\w+")){
               System.out.println(seller.viewProduct(getTheProductIdByCommand(command,1)));
            }else if(command.matches("view buyers @p\\w+")){
-               System.out.println();
+               //This is for score!!!
            }else if(command.matches("edit @p\\w+")){
                Menu menu=new EditProductInfoMenu(this).setScanner(scanner);
                ClientController.getInstance().setCurrentMenu(menu);
@@ -58,6 +58,4 @@ public class ManageProductMenu extends Menu {
     public void printError(String error) {
        super.printError(error);
     }
-
-
 }

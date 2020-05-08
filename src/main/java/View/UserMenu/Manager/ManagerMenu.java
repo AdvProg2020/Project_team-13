@@ -50,7 +50,11 @@ public class ManagerMenu extends Menu {
             } else if (command.equalsIgnoreCase("logout")) {
                 ClientController.getInstance().setCurrentUser(null);
                 parentMenu.execute();
-            } else {
+            }else if(command.equalsIgnoreCase("manage all products")){
+                Menu menu= new ManageProductsMenu(this).setScanner(this.scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
+            }else {
                 System.out.println("Invalid Command");
             }
         }

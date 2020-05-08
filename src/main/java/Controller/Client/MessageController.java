@@ -31,7 +31,6 @@ public class MessageController {
     }
 
     public void processMessage(String message) {
-
         if(message.startsWith("@Error@")){
            message=message.substring(7, message.length());
            ClientController.getInstance().getCurrentMenu().printError(message);
@@ -72,6 +71,9 @@ public class MessageController {
         }else  if(message.startsWith("@allManagers@")){
             message=message.substring(13, message.length());
             ManagerController.getInstance().setAllManagers(message);
+        }else if(message.startsWith("@getAllProductsForManager@")){
+            message=message.substring(26, message.length());
+            ProductController.getInstance().printAllProducts(message);
         }
     }
 }

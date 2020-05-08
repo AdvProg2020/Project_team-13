@@ -1,10 +1,13 @@
 package Controller.Client;
 
 import Models.Product.Product;
+import Models.Request;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class ProductController {
@@ -36,5 +39,20 @@ public class ProductController {
 
     public void removeProduct(String productId, String seller){
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("deleteProduct", productId + "/" + seller));
+    }
+
+    public void printAllProducts(String json){
+        Type productListType = new TypeToken<ArrayList<Product>>() {
+        }.getType();
+        allProducts = new Gson().fromJson(json, productListType);
+        for (Product product : allProducts) {
+            ClientController.getInstance().getCurrentMenu().showMessage(product.viewProduct());
+        }
+    }
+    public void getAllProductsFromServer(){
+        ClientController.getInstance().sendMessageToServer("@getAllProductsForManager@");
+    }
+    public void removeProductForManager(String productId){
+        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("@removeProductForManager@", productId));
     }
 }
