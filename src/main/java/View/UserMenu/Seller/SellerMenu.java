@@ -52,6 +52,10 @@ public class SellerMenu extends Menu {
                     ClientController.getInstance().setCurrentUser(null);
                     System.out.println("You Logged out!!");
                     parentMenu.execute();
+                }else if(command.equals("view offs")){
+                    Menu menu=new ViewOffsMenu(this).setScanner(scanner);
+                    ClientController.getInstance().setCurrentMenu(menu);
+                    menu.execute();
                 } else {
                     System.out.println("Invalid command");
                 }
@@ -132,7 +136,6 @@ public class SellerMenu extends Menu {
     @Override
     public void printError(String error) {
         System.out.println(error);
-
     }
 
 }
