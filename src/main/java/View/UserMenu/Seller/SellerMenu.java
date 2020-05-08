@@ -35,7 +35,7 @@ public class SellerMenu extends Menu {
                     System.out.println("Invalid command");
                 }
             }
-            back();//jdsajdaskldjsakldjasldkasjdlkasdjalskdjaslkdjasdkasjdlkasjklsdjsalkdnjkhsdfdhfjk
+            back();
         } else {
             while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
                 if (command.equals("view personal info")) {
@@ -66,7 +66,7 @@ public class SellerMenu extends Menu {
         fieldsOfProduct.add(getName("Company Name"));
         fieldsOfProduct.add(getName("Product Name"));
         System.out.println("Enter Products  description");
-        String s = "", description = "";
+        String s ="", description = "";
         while (!(s = scanner.nextLine().trim()).equalsIgnoreCase("finish")) {
             description += s;
             description += "\\n";
