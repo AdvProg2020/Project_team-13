@@ -77,8 +77,10 @@ public class ProductCenter {
     }
     public void deleteProductForManager(String productId){
         if(products.contains(getProductById(productId))){
+            Gson gson=new Gson();
             products.remove(getProductById(productId));
             products.trimToSize();
+            DataBase.getIncstance().updateAllProducts(gson.toJson(products));
             ServerController.getIncstance().sendMessageToClient(MessageController.getInstance().makeMessage("@removedSuccessful@", "The Product removed Successfully"));
         }else{
             ServerController.getIncstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@Error@","There is no Product with this Id"));
