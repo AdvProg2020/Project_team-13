@@ -184,4 +184,15 @@ public class UserCenter {
         }
         ServerController.getIncstance().sendMessageToClient("@Error@there is no user with this username");
     }
+    public void createManagerProfile(String json){
+        Manager manager = new Gson().fromJson(json, Manager.class);
+        if (!isThereUserWithThisUsername(manager.getUsername())) {
+            allManager.add(manager);
+            String arrayData = new Gson().toJson(allManager);
+            DataBase.getIncstance().updateAllManagers(arrayData);
+            ServerController.getIncstance().sendMessageToClient("@Successful@Register Successful");
+        } else {
+            ServerController.getIncstance().sendMessageToClient("@Error@There is a User With this username");
+        }
+    }
 }

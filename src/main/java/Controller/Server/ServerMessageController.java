@@ -59,6 +59,8 @@ public class ServerMessageController {
             UserCenter.getIncstance().removeSeller(message.substring(14, message.length()));
         }else if(message.startsWith("@deleteManager@")){
             UserCenter.getIncstance().removeManager(message.substring(15, message.length()));
+        }else if(message.startsWith("@createManagerProfile@")){
+            UserCenter.getIncstance().createManagerProfile(message.substring(22, message.length()));
         }
     }
 }

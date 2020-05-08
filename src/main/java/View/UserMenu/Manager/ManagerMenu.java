@@ -3,9 +3,12 @@ package View.UserMenu.Manager;
 import Controller.Client.ClientController;
 import Controller.Client.ManagerController;
 import Controller.Client.RequestController;
+import Models.UserAccount.Manager;
 import View.Menu;
 import View.UserMenu.LoginMenu;
 import View.UserMenu.RegisterMenu;
+
+import java.util.regex.Pattern;
 
 public class ManagerMenu extends Menu {
 
@@ -18,7 +21,8 @@ public class ManagerMenu extends Menu {
         String managerMenuOptions = "";
         managerMenuOptions += "1.Manage Requests\n";
         managerMenuOptions += "2.Manage Users\n";
-        managerMenuOptions += "3.LogOut";
+        managerMenuOptions += "3.Create Manager Profile\n";
+        managerMenuOptions += "4.LogOut";
         System.out.println(managerMenuOptions);
     }
 
@@ -35,6 +39,10 @@ public class ManagerMenu extends Menu {
             } else if (command.equalsIgnoreCase("manage users")) {
                 Menu menu = new ManageUsersMenu(this).setScanner(this.scanner);
                 ManagerController.getInstance().getAllUserFromServer();
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
+            }else if (command.equalsIgnoreCase("create manager profile")) {
+                Menu menu = new CreateManagerMenu(this).setScanner(this.scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("help")) {

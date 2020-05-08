@@ -130,4 +130,7 @@ public class ManagerController {
         }
         ClientController.getInstance().getCurrentMenu().printError("there is no user with this username");
     }
+    public void createManagerProfile(Manager manager){
+        ClientController.getInstance().sendMessageToServer("@createManagerProfile@"+new Gson().toJson(manager));
+    }
 }
