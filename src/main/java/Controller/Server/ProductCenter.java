@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ProductCenter {
 
     private String lastProductId;
-    private ArrayList<Product> products;
+    private ArrayList<Product> allProducts;
     private static ProductCenter productCenter;
 
     private ProductCenter() {
@@ -64,12 +64,20 @@ public class ProductCenter {
         Seller seller=gson.fromJson(sellerObject, Seller.class);
         if(seller.productExists(productId)){
           seller.getAllProducts().remove(seller.getProductByID(productId));
-          products.remove(seller.getProductByID(productId));
-          String updatedProducts=gson.toJson(products);
+            allProducts.remove(seller.getProductByID(productId));
+          String updatedProducts=gson.toJson(allProducts);
           DataBase.getInstance().updateAllProducts(updatedProducts);
           ServerController.getIncstance().sendMessageToClient(MessageController.getInstance().makeMessage("@removedSuccessful@", "The Product removed Successfully"));
         }else{
             ServerController.getIncstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@Error@","There is no Product with this Id"));
         }
+    }
+
+    public void update(){
+        DataBase.getInstance().setAllProductsFormDataBase();
+    }
+
+    public void setAllProducts(ArrayList<Product> allProducts) {
+        this.allProducts=allProducts;
     }
 }

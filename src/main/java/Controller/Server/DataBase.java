@@ -1,6 +1,7 @@
 package Controller.Server;
 
 import Models.Product.Category;
+import Models.Product.Product;
 import Models.Request;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
@@ -37,24 +38,6 @@ public class DataBase {
         } catch (Exception e) {
             System.out.println(e);
         }
-    }
-
-    public void updateAllProducts(String json) {
-        try {
-            FileWriter fileWriter = new FileWriter("allProducts.txt");
-            fileWriter.write(json);
-            fileWriter.close();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        try {
-            FileWriter fileWriter = new FileWriter("lastProductId.txt.txt");
-            fileWriter.write(lastProductId);
-            fileWriter.close();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
     }
 
     public void updateAllSellers(String json) {
@@ -118,6 +101,38 @@ public class DataBase {
     }
 
     public void updateAllCategories(String json) {
+        try {
+            FileWriter fileWriter = new FileWriter("allProducts.txt");
+            fileWriter.write(json);
+            fileWriter.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void setAllProductsFormDataBase() {
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader("allProducts.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader br = new BufferedReader(fileReader);
+        try {
+            String allProductsInGsonForm = br.readLine().trim();
+            Gson gson=new Gson();
+            ArrayList<Product> allProducts=new ArrayList<>();
+            Type productListType = new TypeToken<ArrayList<Product>>() {
+            }.getType();
+            allProducts=gson.fromJson(allProductsInGsonForm ,productListType);
+            ProductCenter.getInstance().setAllProducts(allProducts);
+            br.close();
+            fileReader.close();
+        } catch (IOException e) {
+        }
+    }
+
+    public void updateAllProducts(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allCategories.txt");
             fileWriter.write(json);

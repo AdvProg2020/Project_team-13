@@ -35,7 +35,7 @@ public class ManageCategoryMenu extends Menu {
             if (Pattern.matches("add (\\w+ )*\\w+", command)) {
                 addCategory(command.substring(4));
             } else if (Pattern.matches("remove (\\w+ )*\\w+", command)) {
-
+                removeCategory(command.substring(7));
             } else if (Pattern.matches("edit (\\w+ )*\\w+", command)) {
 
             } else if (command.equalsIgnoreCase("help")) {
@@ -47,7 +47,7 @@ public class ManageCategoryMenu extends Menu {
 
     private void addCategory(String name) {
         HashMap<String, ArrayList<String>> featuresOfCategory = new HashMap();
-        String categoryName = getName("Category Name",name);
+        String categoryName = getName("categories name",name);
         String s;
         System.out.println("You need to define features for you'r category.");
         System.out.println("Please enter  a feature Name.");
@@ -75,6 +75,11 @@ public class ManageCategoryMenu extends Menu {
             }
         }
         CategoryController.getInstance().addNewCategory(new Category(categoryName, featuresOfCategory));
+    }
+
+    private void removeCategory(String name) {
+        String categoryName = getName("categories name",name);
+
     }
 
     private String getName(String nameKind,String firstName) {

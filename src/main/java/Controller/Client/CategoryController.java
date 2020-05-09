@@ -52,7 +52,7 @@ public class CategoryController {
         Gson gson = new Gson();
         if (!message.isEmpty() && message != null) {
             ArrayList<Category> allCategories = gson.fromJson(message, categoryListType);
-            this.allCategories=allCategories;
+            this.allCategories = allCategories;
         }
     }
 
@@ -60,5 +60,9 @@ public class CategoryController {
         allCategories.add(category);
         Gson gson = new Gson();
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("updateAllCategories", gson.toJson(allCategories)));
+    }
+
+    public void removeCategory(String name) {
+        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("removeCategory",name));
     }
 }

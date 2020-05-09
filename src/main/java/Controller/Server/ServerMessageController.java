@@ -74,6 +74,9 @@ public class ServerMessageController {
             message=message.substring(21);
             DataBase.getInstance().updateAllCategories(message);
             ServerController.getIncstance().sendMessageToClient(MessageController.getInstance().makeMessage("category added","category added"));
+        } else if(message.startsWith("@removeCategory@")) {
+            message=message.substring(16);
+            CategoryCenter.getIncstance().removeCategory(message);
         }
     }
 }
