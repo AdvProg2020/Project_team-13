@@ -50,12 +50,12 @@ public class ProductCenter {
                 productCreated = true;
                 Gson gson = new Gson();
                 RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("AddProduct", gson.toJson(product)));
-                ServerController.getIncstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("productCreating", "ProductCreating Request has been sent."));
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("productCreating", "ProductCreating Request has been sent."));
                 break;
             }
         }
         if (!productCreated) {
-            ServerController.getIncstance().sendMessageToClient(MessageController.getInstance().makeMessage("Error", "There is no category with this name"));
+            ServerController.getInstance().sendMessageToClient(MessageController.getInstance().makeMessage("Error", "There is no category with this name"));
         }
     }
 
@@ -67,9 +67,9 @@ public class ProductCenter {
             allProducts.remove(seller.getProductByID(productId));
           String updatedProducts=gson.toJson(allProducts);
           DataBase.getInstance().updateAllProducts(updatedProducts);
-          ServerController.getIncstance().sendMessageToClient(MessageController.getInstance().makeMessage("@removedSuccessful@", "The Product removed Successfully"));
+          ServerController.getInstance().sendMessageToClient(MessageController.getInstance().makeMessage("@removedSuccessful@", "The Product removed Successfully"));
         }else{
-            ServerController.getIncstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@Error@","There is no Product with this Id"));
+            ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@Error@","There is no Product with this Id"));
         }
     }
 

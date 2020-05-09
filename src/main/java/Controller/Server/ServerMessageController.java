@@ -1,12 +1,10 @@
 package Controller.Server;
 
-import Controller.Client.CategoryController;
 import Controller.Client.MessageController;
 import Models.Product.Category;
 import Models.Product.Product;
 import com.google.gson.Gson;
 
-import java.rmi.ServerError;
 import java.util.ArrayList;
 
 public class ServerMessageController {
@@ -37,7 +35,7 @@ public class ServerMessageController {
             String[] split = message.split("/");
             UserCenter.getIncstance().login(split[0], split[1]);
         } else if (message.equals("getAllRequests")) {
-            ServerController.getIncstance().sendMessageToClient("@AllRequests@" + new Gson().toJson(RequestCenter.getIncstance().getAllRequests()));
+            ServerController.getInstance().sendMessageToClient("@AllRequests@" + new Gson().toJson(RequestCenter.getIncstance().getAllRequests()));
         } else if (message.startsWith("@acceptRequest@")) {
             message = message.substring(15, message.length());
             RequestCenter.getIncstance().acceptRequest(message);
@@ -69,11 +67,11 @@ public class ServerMessageController {
             CategoryCenter.getIncstance().updateAllCategories();
             ArrayList<Category> allCategories = CategoryCenter.getIncstance().getAllCategories();
             Gson gson=new Gson();
-            ServerController.getIncstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("setAllCategories",gson.toJson(allCategories)));
+            ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("setAllCategories",gson.toJson(allCategories)));
         } else if(message.startsWith("@updateAllCategories@")) {
             message=message.substring(21);
             DataBase.getInstance().updateAllCategories(message);
-            ServerController.getIncstance().sendMessageToClient(MessageController.getInstance().makeMessage("category added","category added"));
+            ServerController.getInstance().sendMessageToClient(MessageController.getInstance().makeMessage("category added","category added"));
         } else if(message.startsWith("@removeCategory@")) {
             message=message.substring(16);
             CategoryCenter.getIncstance().removeCategory(message);

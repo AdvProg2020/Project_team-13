@@ -5,8 +5,6 @@ import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import View.Menu;
 
-import java.io.IOException;
-
 public class ClientController {
     private static ClientController clientController;
     private Menu currentMenu;
@@ -40,7 +38,7 @@ public class ClientController {
     }
 
     public void sendMessageToServer(String message) {
-        ServerController.getIncstance().getMessageFromClient(message);
+        ServerController.getInstance().getMessageFromClient(message);
     }
 
     public void getMessageFromServer(String message) {

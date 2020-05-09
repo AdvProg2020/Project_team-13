@@ -57,7 +57,7 @@ public class RequestCenter {
             allRequests.remove(request);
             String arrayData = new Gson().toJson(allRequests);
             DataBase.getInstance().updateAllRequests(arrayData);
-            ServerController.getIncstance().sendMessageToClient("@Successful@" + "request accepted successfully");
+            ServerController.getInstance().sendMessageToClient("@Successful@" + "request accepted successfully");
         }
     }
 

@@ -6,7 +6,6 @@ import Models.Request;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
-import Models.UserAccount.UserAccount;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -312,7 +311,7 @@ public class DataBase {
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                ServerController.getIncstance().sendMessageToClient("@allCustomers@" + json);
+                ServerController.getInstance().sendMessageToClient("@allCustomers@" + json);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -332,7 +331,7 @@ public class DataBase {
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                ServerController.getIncstance().sendMessageToClient("@allSellers@" + json);
+                ServerController.getInstance().sendMessageToClient("@allSellers@" + json);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -352,7 +351,7 @@ public class DataBase {
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                ServerController.getIncstance().sendMessageToClient("@allManagers@" + json);
+                ServerController.getInstance().sendMessageToClient("@allManagers@" + json);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -380,9 +379,9 @@ public class DataBase {
                 json = scanner.nextLine();
             }
             if (json != null) {
-                ServerController.getIncstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@getAllProductsForManager@", json));
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@getAllProductsForManager@", json));
             } else {
-                ServerController.getIncstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@Error@", "There is no Product"));
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@Error@", "There is no Product"));
             }
         } finally {
             try {

@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-      ServerController.getIncstance().runServer();
+      ServerController.getInstance().runServer();
       new MainMenu(null).setScanner(new Scanner(System.in)).execute();
     }
 }

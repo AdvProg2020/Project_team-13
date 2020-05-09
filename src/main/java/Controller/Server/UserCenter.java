@@ -84,9 +84,9 @@ public class UserCenter {
                 allCustomer.add(customer);
                 String arrayData = gson.toJson(allCustomer);
                 DataBase.getInstance().updateAllCustomers(arrayData);
-                ServerController.getIncstance().sendMessageToClient("@Successful@Register Successful");
+                ServerController.getInstance().sendMessageToClient("@Successful@Register Successful");
             } else {
-                ServerController.getIncstance().sendMessageToClient("@Error@There is a User With this username");
+                ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username");
             }
         } else if (json.contains("@Seller")) {
             Seller seller = gson.fromJson(json, Seller.class);
@@ -96,9 +96,9 @@ public class UserCenter {
                 DataBase.getInstance().updateAllSellers(arrayData);
                 Request request = RequestCenter.getIncstance().makeRequest("AcceptSellerAccount", gson.toJson(seller));
                 RequestCenter.getIncstance().addRequest(request);
-                ServerController.getIncstance().sendMessageToClient("@Successful@Register was sended to Manager for review");
+                ServerController.getInstance().sendMessageToClient("@Successful@Register was sended to Manager for review");
             } else {
-                ServerController.getIncstance().sendMessageToClient("@Error@There is a User With this username");
+                ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username");
             }
         } else if (json.contains("@Manager")) {
             if (allManager.size() == 0) {
@@ -107,12 +107,12 @@ public class UserCenter {
                     allManager.add(manager);
                     String arrayData = gson.toJson(allManager);
                     DataBase.getInstance().updateAllManagers(arrayData);
-                    ServerController.getIncstance().sendMessageToClient("@Successful@Register Successful");
+                    ServerController.getInstance().sendMessageToClient("@Successful@Register Successful");
                 } else {
-                    ServerController.getIncstance().sendMessageToClient("@Error@There is a User With this username");
+                    ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username");
                 }
             } else {
-                ServerController.getIncstance().sendMessageToClient("@Error@You can not Register as Manager");
+                ServerController.getInstance().sendMessageToClient("@Error@You can not Register as Manager");
             }
         }
     }
@@ -124,19 +124,19 @@ public class UserCenter {
             if (userAccount.getPassword().equals(password)) {
                 if (userAccount.getType().equals("@Customer")) {
                     String user = gson.toJson((Customer) userAccount);
-                    ServerController.getIncstance().sendMessageToClient("@Login as Customer@" + user);
+                    ServerController.getInstance().sendMessageToClient("@Login as Customer@" + user);
                 } else if (userAccount.getType().equals("@Seller")) {
                     String user = gson.toJson((Seller) userAccount);
-                    ServerController.getIncstance().sendMessageToClient("@Login as Seller@" + user);
+                    ServerController.getInstance().sendMessageToClient("@Login as Seller@" + user);
                 } else if (userAccount.getType().equals("@Manager")) {
                     String user = gson.toJson((Manager) userAccount);
-                    ServerController.getIncstance().sendMessageToClient("@Login as Manager@" + user);
+                    ServerController.getInstance().sendMessageToClient("@Login as Manager@" + user);
                 }
             } else {
-                ServerController.getIncstance().sendMessageToClient("@Error@Password is incorrect");
+                ServerController.getInstance().sendMessageToClient("@Error@Password is incorrect");
             }
         } else {
-            ServerController.getIncstance().sendMessageToClient("@Error@There is no User With this username");
+            ServerController.getInstance().sendMessageToClient("@Error@There is no User With this username");
         }
     }
 
@@ -148,7 +148,7 @@ public class UserCenter {
                 return true;
             }
         }
-        ServerController.getIncstance().sendMessageToClient("@Error@there is no seller with this username");
+        ServerController.getInstance().sendMessageToClient("@Error@there is no seller with this username");
         return false;
     }
     public void removeCustomer(String username){
@@ -156,33 +156,33 @@ public class UserCenter {
             if(customer.getUsername().equals(username)){
                 allCustomer.remove(customer);
                 DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
-                ServerController.getIncstance().sendMessageToClient("@Successful@delete user successfully");
+                ServerController.getInstance().sendMessageToClient("@Successful@delete user successfully");
                 return;
             }
         }
-        ServerController.getIncstance().sendMessageToClient("@Error@there is no user with this username");
+        ServerController.getInstance().sendMessageToClient("@Error@there is no user with this username");
     }
     public void removeSeller(String username){
         for (Seller seller : allSeller) {
             if(seller.getUsername().equals(username)){
                 allSeller.remove(seller);
                 DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
-                ServerController.getIncstance().sendMessageToClient("@Successful@delete user successfully");
+                ServerController.getInstance().sendMessageToClient("@Successful@delete user successfully");
                 return;
             }
         }
-        ServerController.getIncstance().sendMessageToClient("@Error@there is no user with this username");
+        ServerController.getInstance().sendMessageToClient("@Error@there is no user with this username");
     }
     public void removeManager(String username){
         for (Manager manager : allManager) {
             if(manager.getUsername().equals(username)){
                 allManager.remove(manager);
                 DataBase.getInstance().updateAllManagers(new Gson().toJson(allManager));
-                ServerController.getIncstance().sendMessageToClient("@Successful@delete user successfully");
+                ServerController.getInstance().sendMessageToClient("@Successful@delete user successfully");
                 return;
             }
         }
-        ServerController.getIncstance().sendMessageToClient("@Error@there is no user with this username");
+        ServerController.getInstance().sendMessageToClient("@Error@there is no user with this username");
     }
     public void createManagerProfile(String json){
         Manager manager = new Gson().fromJson(json, Manager.class);
@@ -190,9 +190,9 @@ public class UserCenter {
             allManager.add(manager);
             String arrayData = new Gson().toJson(allManager);
             DataBase.getInstance().updateAllManagers(arrayData);
-            ServerController.getIncstance().sendMessageToClient("@Successful@Register Successful");
+            ServerController.getInstance().sendMessageToClient("@Successful@Register Successful");
         } else {
-            ServerController.getIncstance().sendMessageToClient("@Error@There is a User With this username");
+            ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username");
         }
     }
 }

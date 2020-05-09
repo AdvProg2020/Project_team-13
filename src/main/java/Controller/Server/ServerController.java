@@ -19,7 +19,7 @@ public class ServerController {
         DataBase.getInstance().setLastRequestId();
     }
 
-    public static ServerController getIncstance() {
+    public static ServerController getInstance() {
         if (serverController == null) {
             serverController = new ServerController();
         }
