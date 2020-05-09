@@ -1,5 +1,6 @@
 package Controller.Server;
 
+import Models.Product.Category;
 import Models.Request;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
@@ -21,7 +22,7 @@ public class DataBase {
 
     }
 
-    public static DataBase getIncstance() {
+    public static DataBase getInstance() {
         if (dataBase == null) {
             dataBase = new DataBase();
         }
@@ -55,6 +56,7 @@ public class DataBase {
         }
 
     }
+
     public void updateAllSellers(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allSellers.txt");
@@ -93,6 +95,38 @@ public class DataBase {
         }
     }
 
+    public void setAllCategoriesFormDataBase() {
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader("allCategories.txt");
+            System.out.println("2");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader br = new BufferedReader(fileReader);
+        try {
+            String allCategoriesInGsonForm = br.readLine().trim();
+            Gson gson=new Gson();
+            ArrayList<Category> allCategories=new ArrayList<>();
+            Type categoryListType = new TypeToken<ArrayList<Category>>() {
+            }.getType();
+            allCategories=gson.fromJson(allCategoriesInGsonForm,categoryListType);
+            CategoryCenter.getIncstance().setAllCategories(allCategories,true);
+            br.close();
+            fileReader.close();
+        } catch (IOException e) {
+        }
+    }
+
+    public void updateAllCategories(String json) {
+        try {
+            FileWriter fileWriter = new FileWriter("allCategories.txt");
+            fileWriter.write(json);
+            fileWriter.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
     public void replaceProductId(String productId) {
         try {
@@ -179,6 +213,7 @@ public class DataBase {
             }
         }
     }
+
     public void updateAllRequests(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allRequests.txt");
@@ -188,6 +223,7 @@ public class DataBase {
             System.out.println(e);
         }
     }
+
     public void setAllRequestsListFromDateBase() {
         FileReader fileReader = null;
         try {
@@ -215,6 +251,7 @@ public class DataBase {
             }
         }
     }
+
     public void replaceRequestId(String lastRequestId) {
         try {
             FileWriter fileWriter = new FileWriter("lastRequestId.txt");
@@ -224,6 +261,7 @@ public class DataBase {
             System.out.println(e);
         }
     }
+
     public void setLastRequestId() {
         FileReader fileReader = null;
         try {
@@ -247,19 +285,20 @@ public class DataBase {
             }
         }
     }
-    public void getAllUsersListFromDateBase(){
+
+    public void getAllUsersListFromDateBase() {
         FileReader fileReader = null;
-        BufferedReader br ;
+        BufferedReader br;
         try {
             fileReader = new FileReader("allCustomers.txt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        br= new BufferedReader(fileReader);
+        br = new BufferedReader(fileReader);
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                ServerController.getIncstance().sendMessageToClient("@allCustomers@"+json);
+                ServerController.getIncstance().sendMessageToClient("@allCustomers@" + json);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -275,11 +314,11 @@ public class DataBase {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        br= new BufferedReader(fileReader);
+        br = new BufferedReader(fileReader);
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                ServerController.getIncstance().sendMessageToClient("@allSellers@"+json);
+                ServerController.getIncstance().sendMessageToClient("@allSellers@" + json);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -295,11 +334,11 @@ public class DataBase {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        br= new BufferedReader(fileReader);
+        br = new BufferedReader(fileReader);
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                ServerController.getIncstance().sendMessageToClient("@allManagers@"+json);
+                ServerController.getIncstance().sendMessageToClient("@allManagers@" + json);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -311,26 +350,27 @@ public class DataBase {
             }
         }
     }
-    public void getAllProductsFromDataBase(){
-        FileReader fileReader=null;
-        Scanner scanner=null;
-        try{
-            fileReader=new FileReader("allProducts.txt");
-        }catch (FileNotFoundException e){
+
+    public void getAllProductsFromDataBase() {
+        FileReader fileReader = null;
+        Scanner scanner = null;
+        try {
+            fileReader = new FileReader("allProducts.txt");
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        scanner=new Scanner(fileReader);
-        try{
-            String json=null;
-            while(scanner.hasNextLine()){
-                json=scanner.nextLine();
+        scanner = new Scanner(fileReader);
+        try {
+            String json = null;
+            while (scanner.hasNextLine()) {
+                json = scanner.nextLine();
             }
-            if(json!=null) {
+            if (json != null) {
                 ServerController.getIncstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@getAllProductsForManager@", json));
-            }else{
+            } else {
                 ServerController.getIncstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@Error@", "There is no Product"));
             }
-        } finally{
+        } finally {
             try {
                 fileReader.close();
             } catch (IOException e) {

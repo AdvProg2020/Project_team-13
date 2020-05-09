@@ -2,8 +2,6 @@ package Controller.Server;
 
 import Controller.Client.ClientController;
 
-import java.io.IOException;
-
 public class ServerController {
     private static ServerController serverController;
 
@@ -16,9 +14,9 @@ public class ServerController {
     }
 
     public void getAllUsersForStart() {
-        DataBase.getIncstance().setAllUsersListFromDateBase();
-        DataBase.getIncstance().setAllRequestsListFromDateBase();
-        DataBase.getIncstance().setLastRequestId();
+        DataBase.getInstance().setAllUsersListFromDateBase();
+        DataBase.getInstance().setAllRequestsListFromDateBase();
+        DataBase.getInstance().setLastRequestId();
     }
 
     public static ServerController getIncstance() {

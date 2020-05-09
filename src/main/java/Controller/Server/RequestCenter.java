@@ -27,12 +27,12 @@ public class RequestCenter {
     public void addRequest(Request request) {
         allRequests.add(request);
         String arrayData =new Gson().toJson(allRequests);
-        DataBase.getIncstance().updateAllRequests(arrayData);
+        DataBase.getInstance().updateAllRequests(arrayData);
     }
 
     public String makeRequestID() {
         lastRequestID = "@r" + (Integer.parseInt(lastRequestID.substring(2, 8)) + 1);
-        DataBase.getIncstance().replaceRequestId(lastRequestID);
+        DataBase.getInstance().replaceRequestId(lastRequestID);
         return lastRequestID;
     }
 
@@ -56,7 +56,7 @@ public class RequestCenter {
         if (UserCenter.getIncstance().canAcceptSellerRegister(new Gson().fromJson(request.getDetails(), Seller.class).getUsername())) {
             allRequests.remove(request);
             String arrayData = new Gson().toJson(allRequests);
-            DataBase.getIncstance().updateAllRequests(arrayData);
+            DataBase.getInstance().updateAllRequests(arrayData);
             ServerController.getIncstance().sendMessageToClient("@Successful@" + "request accepted successfully");
         }
     }

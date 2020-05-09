@@ -1,51 +1,35 @@
 package Models.Product;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Category {
     private String name;
-    private ArrayList<String> featureName;
+    private HashMap<String ,ArrayList<String>> features;
     private ArrayList<Product> allProducts;
 
-    public Category(String name, ArrayList<String> featureName) {
+    public Category(String name, HashMap<String, ArrayList<String>> features) {
         this.name = name;
-        this.featureName = featureName;
+        this.features = features;
     }
-
 
     public void addProduct(Product product) {
         allProducts.add(product);
     }
 
-    public ArrayList<String> getFeatureName() {
-        return featureName;
+    public HashMap<String, ArrayList<String>> getFeatures() {
+        return features;
     }
 
-    public void addFeature(String featureName) {
-        this.featureName.add(featureName);
-    }
-
-    public void removeFeature(String featureName) {
-        this.featureName.remove(featureName);
-    }
-
-    public boolean isThisFeatureExists(String featureName) {
-        return this.featureName.contains(featureName);
-    }
-
-    public void editFeatureName(String featureName) {
-
+    public void setFeatures(HashMap<String, ArrayList<String>> features) {
+        this.features = features;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setFeatureName(ArrayList<String> featureName) {
-        this.featureName = featureName;
-    }
-
-    public void addAllProducts(Product product) {
+    public void addProducts(Product product) {
         this.allProducts.add(product);
     }
 

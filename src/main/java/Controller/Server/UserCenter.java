@@ -83,7 +83,7 @@ public class UserCenter {
             if (!isThereUserWithThisUsername(customer.getUsername())) {
                 allCustomer.add(customer);
                 String arrayData = gson.toJson(allCustomer);
-                DataBase.getIncstance().updateAllCustomers(arrayData);
+                DataBase.getInstance().updateAllCustomers(arrayData);
                 ServerController.getIncstance().sendMessageToClient("@Successful@Register Successful");
             } else {
                 ServerController.getIncstance().sendMessageToClient("@Error@There is a User With this username");
@@ -93,7 +93,7 @@ public class UserCenter {
             if (!isThereUserWithThisUsername(seller.getUsername())) {
                 allSeller.add(seller);
                 String arrayData = gson.toJson(allSeller);
-                DataBase.getIncstance().updateAllSellers(arrayData);
+                DataBase.getInstance().updateAllSellers(arrayData);
                 Request request = RequestCenter.getIncstance().makeRequest("AcceptSellerAccount", gson.toJson(seller));
                 RequestCenter.getIncstance().addRequest(request);
                 ServerController.getIncstance().sendMessageToClient("@Successful@Register was sended to Manager for review");
@@ -106,7 +106,7 @@ public class UserCenter {
                 if (!isThereUserWithThisUsername(manager.getUsername())) {
                     allManager.add(manager);
                     String arrayData = gson.toJson(allManager);
-                    DataBase.getIncstance().updateAllManagers(arrayData);
+                    DataBase.getInstance().updateAllManagers(arrayData);
                     ServerController.getIncstance().sendMessageToClient("@Successful@Register Successful");
                 } else {
                     ServerController.getIncstance().sendMessageToClient("@Error@There is a User With this username");
@@ -144,7 +144,7 @@ public class UserCenter {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(username)) {
                 seller.setAccepted(true);
-                DataBase.getIncstance().updateAllSellers(new Gson().toJson(allSeller));
+                DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
                 return true;
             }
         }
@@ -155,7 +155,7 @@ public class UserCenter {
         for (Customer customer : allCustomer) {
             if(customer.getUsername().equals(username)){
                 allCustomer.remove(customer);
-                DataBase.getIncstance().updateAllCustomers(new Gson().toJson(allCustomer));
+                DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
                 ServerController.getIncstance().sendMessageToClient("@Successful@delete user successfully");
                 return;
             }
@@ -166,7 +166,7 @@ public class UserCenter {
         for (Seller seller : allSeller) {
             if(seller.getUsername().equals(username)){
                 allSeller.remove(seller);
-                DataBase.getIncstance().updateAllSellers(new Gson().toJson(allSeller));
+                DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
                 ServerController.getIncstance().sendMessageToClient("@Successful@delete user successfully");
                 return;
             }
@@ -177,7 +177,7 @@ public class UserCenter {
         for (Manager manager : allManager) {
             if(manager.getUsername().equals(username)){
                 allManager.remove(manager);
-                DataBase.getIncstance().updateAllManagers(new Gson().toJson(allManager));
+                DataBase.getInstance().updateAllManagers(new Gson().toJson(allManager));
                 ServerController.getIncstance().sendMessageToClient("@Successful@delete user successfully");
                 return;
             }
@@ -189,7 +189,7 @@ public class UserCenter {
         if (!isThereUserWithThisUsername(manager.getUsername())) {
             allManager.add(manager);
             String arrayData = new Gson().toJson(allManager);
-            DataBase.getIncstance().updateAllManagers(arrayData);
+            DataBase.getInstance().updateAllManagers(arrayData);
             ServerController.getIncstance().sendMessageToClient("@Successful@Register Successful");
         } else {
             ServerController.getIncstance().sendMessageToClient("@Error@There is a User With this username");

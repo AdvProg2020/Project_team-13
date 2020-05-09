@@ -5,6 +5,7 @@ import Controller.Client.ProductController;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import View.Menu;
+import View.UserMenu.Manager.AddCategoryMenu;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -31,7 +32,7 @@ public class SellerMenu extends Menu {
                     ClientController.getInstance().setCurrentUser(null);
                     System.out.println("You Logged out!!");
                     parentMenu.execute();
-                }else {
+                } else {
                     System.out.println("Invalid command");
                 }
             }
@@ -48,11 +49,11 @@ public class SellerMenu extends Menu {
                     addProduct();
                 } else if (command.equals("help")) {
                     help();
-                }  else if (command.equalsIgnoreCase("logout")) {
+                } else if (command.equalsIgnoreCase("logout")) {
                     ClientController.getInstance().setCurrentUser(null);
                     System.out.println("You Logged out!!");
                     parentMenu.execute();
-                } else {
+                }else{
                     System.out.println("Invalid command");
                 }
             }
@@ -66,7 +67,7 @@ public class SellerMenu extends Menu {
         fieldsOfProduct.add(getName("Company Name"));
         fieldsOfProduct.add(getName("Product Name"));
         System.out.println("Enter Products  description");
-        String s ="", description = "";
+        String s = "", description = "";
         while (!(s = scanner.nextLine().trim()).equalsIgnoreCase("finish")) {
             description += s;
             description += "\\n";
@@ -119,7 +120,7 @@ public class SellerMenu extends Menu {
         String sellerMenuOptions = "";
         sellerMenuOptions += "view personal info\n";
         sellerMenuOptions += "add product\n";
-        sellerMenuOptions += "LogOut";
+        sellerMenuOptions += "LogOut\n";
         System.out.println(sellerMenuOptions);
     }
 

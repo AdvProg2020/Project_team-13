@@ -22,7 +22,10 @@ public class ManagerMenu extends Menu {
         managerMenuOptions += "1.Manage Requests\n";
         managerMenuOptions += "2.Manage Users\n";
         managerMenuOptions += "3.Create Manager Profile\n";
-        managerMenuOptions += "4.LogOut";
+        managerMenuOptions += "4.Add Category\n";
+        managerMenuOptions += "5.LogOut\n";
+        managerMenuOptions += "6.Help\n";
+        managerMenuOptions += "7.Back";
         System.out.println(managerMenuOptions);
     }
 
@@ -41,7 +44,7 @@ public class ManagerMenu extends Menu {
                 ManagerController.getInstance().getAllUserFromServer();
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
-            }else if (command.equalsIgnoreCase("create manager profile")) {
+            } else if (command.equalsIgnoreCase("create manager profile")) {
                 Menu menu = new CreateManagerMenu(this).setScanner(this.scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
@@ -50,11 +53,11 @@ public class ManagerMenu extends Menu {
             } else if (command.equalsIgnoreCase("logout")) {
                 ClientController.getInstance().setCurrentUser(null);
                 parentMenu.execute();
-            }else if(command.equalsIgnoreCase("manage all products")){
-                Menu menu= new ManageProductsMenu(this).setScanner(this.scanner);
+            } else if (command.equalsIgnoreCase("Add category")) {
+                Menu menu = new AddCategoryMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
-            }else {
+            } else {
                 System.out.println("Invalid Command");
             }
         }

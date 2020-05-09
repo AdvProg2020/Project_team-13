@@ -3,11 +3,9 @@ package Controller.Server;
 import Controller.Client.MessageController;
 import Models.Product.Category;
 import Models.Product.Product;
-import Models.Request;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class ProductCenter {
@@ -28,7 +26,7 @@ public class ProductCenter {
     }
 
     public String getLastProductId() {
-        DataBase.getIncstance().setLastProductIdFromDataBase();
+        DataBase.getInstance().setLastProductIdFromDataBase();
         return lastProductId;
     }
 
@@ -37,9 +35,9 @@ public class ProductCenter {
     }
 
     public String getProductIdForCreateInProduct() {
-        DataBase.getIncstance().setLastProductIdFromDataBase();
+        DataBase.getInstance().setLastProductIdFromDataBase();
         this.lastProductId = "@p" + (Integer.parseInt(lastProductId.substring(2, lastProductId.length())) + 1);
-        DataBase.getIncstance().replaceProductId(lastProductId);
+        DataBase.getInstance().replaceProductId(lastProductId);
         return this.lastProductId;
     }
 
@@ -61,38 +59,17 @@ public class ProductCenter {
         }
     }
 
-    public void deleteProductForSeller(String productId, String sellerObject){
+    public void deleteProduct(String productId, String sellerObject){
         Gson gson=new Gson();
         Seller seller=gson.fromJson(sellerObject, Seller.class);
         if(seller.productExists(productId)){
           seller.getAllProducts().remove(seller.getProductByID(productId));
           products.remove(seller.getProductByID(productId));
-          // delete the product from category must added
           String updatedProducts=gson.toJson(products);
-          DataBase.getIncstance().updateAllProducts(updatedProducts);
+          DataBase.getInstance().updateAllProducts(updatedProducts);
           ServerController.getIncstance().sendMessageToClient(MessageController.getInstance().makeMessage("@removedSuccessful@", "The Product removed Successfully"));
         }else{
             ServerController.getIncstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@Error@","There is no Product with this Id"));
         }
-    }
-    public void deleteProductForManager(String productId){
-        if(products.contains(getProductById(productId))){
-            Gson gson=new Gson();
-            products.remove(getProductById(productId));
-            products.trimToSize();
-            DataBase.getIncstance().updateAllProducts(gson.toJson(products));
-            ServerController.getIncstance().sendMessageToClient(MessageController.getInstance().makeMessage("@removedSuccessful@", "The Product removed Successfully"));
-        }else{
-            ServerController.getIncstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@Error@","There is no Product with this Id"));
-        }
-    }
-
-    private Product getProductById(String productId){
-        for (Product product : products) {
-            if(product.getProductId().equals(productId)){
-                return product;
-            }
-        }
-        return null;
     }
 }

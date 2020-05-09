@@ -1,5 +1,6 @@
 package Controller.Client;
 
+import Models.Product.Category;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
@@ -9,6 +10,10 @@ import View.UserMenu.Manager.ManagerMenu;
 import View.UserMenu.Seller.SellerMenu;
 import View.UserMenu.UserMenu;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class MessageController {
 
@@ -31,49 +36,56 @@ public class MessageController {
     }
 
     public void processMessage(String message) {
-        if(message.startsWith("@Error@")){
-           message=message.substring(7, message.length());
-           ClientController.getInstance().getCurrentMenu().printError(message);
-        }else if(message.startsWith("@Successful@")){
-           message=message.substring(12, message.length());
-           ClientController.getInstance().getCurrentMenu().showMessage(message);
-        }else if(message.startsWith("@Login as Customer@")){
-            Gson gson=new Gson();
-            message=message.substring(19, message.length());
-            Customer customer=gson.fromJson(message, Customer.class);
+        if (message.startsWith("@Error@")) {
+            message = message.substring(7, message.length());
+            ClientController.getInstance().getCurrentMenu().printError(message);
+        } else if (message.startsWith("@Successful@")) {
+            message = message.substring(12, message.length());
+            ClientController.getInstance().getCurrentMenu().showMessage(message);
+        } else if (message.startsWith("@Login as Customer@")) {
+            Gson gson = new Gson();
+            message = message.substring(19, message.length());
+            Customer customer = gson.fromJson(message, Customer.class);
             ClientController.getInstance().setCurrentUser(customer);
             ClientController.getInstance().getCurrentMenu().showMessage("login Successful");
-        }else if(message.startsWith("@Login as Manager@")){
-            Gson gson=new Gson();
-            message=message.substring(18, message.length());
-            Manager manager=gson.fromJson(message, Manager.class);
+        } else if (message.startsWith("@Login as Manager@")) {
+            Gson gson = new Gson();
+            message = message.substring(18, message.length());
+            Manager manager = gson.fromJson(message, Manager.class);
             ClientController.getInstance().setCurrentUser(manager);
             ClientController.getInstance().getCurrentMenu().showMessage("login Successful");
-        }else if(message.startsWith("@Login as Seller@")){
-            Gson gson=new Gson();
-            message=message.substring(17, message.length());
-            Seller seller=gson.fromJson(message, Seller.class);
+        } else if (message.startsWith("@Login as Seller@")) {
+            Gson gson = new Gson();
+            message = message.substring(17, message.length());
+            Seller seller = gson.fromJson(message, Seller.class);
             ClientController.getInstance().setCurrentUser(seller);
             ClientController.getInstance().getCurrentMenu().showMessage("login Successful");
-        }else if(message.startsWith("@productCreating@")) {
-            ClientController.getInstance().getCurrentMenu().showMessage(message.substring(17,message.length()));
-        }else if(message.startsWith("@removedSuccessful@")){
+        } else if (message.startsWith("@productCreating@")) {
+            ClientController.getInstance().getCurrentMenu().showMessage(message.substring(17, message.length()));
+        } else if (message.startsWith("@removedSuccessful@")) {
             ClientController.getInstance().getCurrentMenu().showMessage(message.substring(19, message.length()));
-        }else  if(message.startsWith("@AllRequests@")){
-            message=message.substring(13, message.length());
+        } else if (message.startsWith("@AllRequests@")) {
+            message = message.substring(13, message.length());
             RequestController.getInstance().printAllRequests(message);
-        }else  if(message.startsWith("@allCustomers@")){
-            message=message.substring(14, message.length());
+        } else if (message.startsWith("@allCustomers@")) {
+            message = message.substring(14, message.length());
             ManagerController.getInstance().setAllCustomers(message);
-        }else  if(message.startsWith("@allSellers@")){
-            message=message.substring(12, message.length());
+        } else if (message.startsWith("@allSellers@")) {
+            message = message.substring(12, message.length());
             ManagerController.getInstance().setAllSellers(message);
-        }else  if(message.startsWith("@allManagers@")){
-            message=message.substring(13, message.length());
+        } else if (message.startsWith("@allManagers@")) {
+            message = message.substring(13, message.length());
             ManagerController.getInstance().setAllManagers(message);
-        }else if(message.startsWith("@getAllProductsForManager@")){
-            message=message.substring(26, message.length());
+        } else if (message.startsWith("@getAllProductsForManager@")) {
+            message = message.substring(26, message.length());
             ProductController.getInstance().printAllProducts(message);
+        } else if (message.startsWith("@setAllCategories@")) {
+            message=message.substring(18);
+            CategoryController.getInstance().setAllCategories(message);
+        } else if (message.startsWith("@category added@")) {
+            ClientController.getInstance().getCurrentMenu().showMessage("Category created.");
         }
     }
+
+
 }
