@@ -51,7 +51,6 @@ public class CategoryController {
         }.getType();
         Gson gson = new Gson();
         if (!message.isEmpty() && message != null) {
-            System.out.println(message);
             ArrayList<Category> allCategories = gson.fromJson(message, categoryListType);
             this.allCategories=allCategories;
         }

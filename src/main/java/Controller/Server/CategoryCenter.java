@@ -23,7 +23,6 @@ public class CategoryCenter {
         DataBase.getInstance().setAllCategoriesFormDataBase();
     }
     public ArrayList<Category> getAllCategories() {
-        System.out.println(allCategories.size());
         return allCategories;
     }
 

@@ -99,7 +99,6 @@ public class DataBase {
         FileReader fileReader = null;
         try {
             fileReader = new FileReader("allCategories.txt");
-            System.out.println("2");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

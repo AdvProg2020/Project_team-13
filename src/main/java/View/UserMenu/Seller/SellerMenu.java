@@ -2,10 +2,7 @@ package View.UserMenu.Seller;
 
 import Controller.Client.ClientController;
 import Controller.Client.ProductController;
-import Models.Product.Product;
-import Models.UserAccount.Seller;
 import View.Menu;
-import View.UserMenu.Manager.AddCategoryMenu;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -53,7 +50,7 @@ public class SellerMenu extends Menu {
                     ClientController.getInstance().setCurrentUser(null);
                     System.out.println("You Logged out!!");
                     parentMenu.execute();
-                }else{
+                } else {
                     System.out.println("Invalid command");
                 }
             }

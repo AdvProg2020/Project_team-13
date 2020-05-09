@@ -53,8 +53,8 @@ public class ManagerMenu extends Menu {
             } else if (command.equalsIgnoreCase("logout")) {
                 ClientController.getInstance().setCurrentUser(null);
                 parentMenu.execute();
-            } else if (command.equalsIgnoreCase("Add category")) {
-                Menu menu = new AddCategoryMenu(this).setScanner(scanner);
+            } else if (command.equalsIgnoreCase("manage categories")) {
+                Menu menu = new ManageCategoryMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else {
