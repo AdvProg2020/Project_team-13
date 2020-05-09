@@ -22,12 +22,12 @@ public class Product {
     private String description;
     private ArrayList<Comment> commentList;
     private int numberOfAvailableProducts;
-    private ArrayList<String> featuresOfCategoryThatHas;
+    private HashMap<String, String> featuresOfCategoryThatHas;
     private ArrayList<Customer> allBuyers;
     private Offer offer;
 
-    public Product(String productCompany, String productId,  String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, ArrayList<String> featuresOfCategoryThatHas) {
-        this.productCompany=productCompany;
+    public Product(String productCompany, String productId, String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, HashMap<String, String> featuresOfCategoryThatHas) {
+        this.productCompany = productCompany;
         this.productId = productId;
         this.productStatus = ProductStatus.inCreatingProgress;
         this.productName = productName;
@@ -128,7 +128,7 @@ public class Product {
         return numberOfAvailableProducts;
     }
 
-    public ArrayList<String> getFeaturesOfCategoryThatHas() {
+    public HashMap<String, String> getFeaturesOfCategoryThatHas() {
         return featuresOfCategoryThatHas;
     }
 
@@ -156,15 +156,15 @@ public class Product {
         this.numberOfAvailableProducts = numberOfAvailableProducts;
     }
 
-    public void addFeaturesOfCategoryThatHas(String feature) {
-        if(!this.featuresOfCategoryThatHas.contains(feature)) {
-            this.featuresOfCategoryThatHas.add(feature);
+    public void addFeaturesOfCategoryThatHas(String feature,String featureDetail) {
+        if (!this.featuresOfCategoryThatHas.containsKey(feature)) {
+            this.featuresOfCategoryThatHas.put(feature,featureDetail);
         }
     }
 
     public void deleteFeaturesOfCategoryThatHas(String feature) {
-        if (!this.featuresOfCategoryThatHas.contains(feature)) {
-            this.featuresOfCategoryThatHas.add(feature);
+        if (!this.featuresOfCategoryThatHas.containsKey(feature)) {
+            this.featuresOfCategoryThatHas.remove(feature);
         }
     }
 

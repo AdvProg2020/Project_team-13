@@ -47,7 +47,7 @@ public class ManageCategoryMenu extends Menu {
 
     private void addCategory(String name) {
         HashMap<String, ArrayList<String>> featuresOfCategory = new HashMap();
-        String categoryName = getName("categories name",name);
+        String categoryName = getName("categories name", name);
         String s;
         System.out.println("You need to define features for you'r category.");
         System.out.println("Please enter  a feature Name.");
@@ -78,17 +78,34 @@ public class ManageCategoryMenu extends Menu {
     }
 
     private void removeCategory(String name) {
-        String categoryName = getName("categories name",name);
-
+        String categoryName = getNameForRemove("categories name", name);
+        CategoryController.getInstance().removeCategory(categoryName);
     }
 
-    private String getName(String nameKind,String firstName) {
-        String name=firstName;
+    private String getName(String nameKind, String firstName) {
+        String name = firstName;
         CategoryController.getInstance().updateAllCategories();
         while (true) {
             if (Pattern.matches("(\\w+ )*\\w+", name) && !CategoryController.getInstance().isThereCategoryWithThisName(name)) {
                 break;
             } else if (CategoryController.getInstance().isThereCategoryWithThisName(name)) {
+                System.out.println("Category with this name already exists.");
+            } else {
+                System.out.println(nameKind + " is Invalid");
+            }
+            System.out.println("Enter " + nameKind);
+            name = scanner.nextLine().trim();
+        }
+        return name;
+    }
+
+    private String getNameForRemove(String nameKind, String firstName) {
+        String name = firstName;
+        CategoryController.getInstance().updateAllCategories();
+        while (true) {
+            if (Pattern.matches("(\\w+ )*\\w+", name) && CategoryController.getInstance().isThereCategoryWithThisName(name)) {
+                break;
+            } else if (!CategoryController.getInstance().isThereCategoryWithThisName(name)) {
                 System.out.println("Category with this name already exists.");
             } else {
                 System.out.println(nameKind + " is Invalid");

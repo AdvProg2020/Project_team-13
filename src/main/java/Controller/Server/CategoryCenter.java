@@ -1,6 +1,7 @@
 package Controller.Server;
 
 import Models.Product.Category;
+import Models.Product.Product;
 import Models.Request;
 import com.google.gson.Gson;
 
@@ -41,6 +42,27 @@ public class CategoryCenter {
     }
 
     public void removeCategory(String name) {
+        updateAllCategories();
+        for (Category category : allCategories) {
+            if (category.getName().equals(name)) {
+                ProductCenter.getInstance().updateAllProducts();
+                if (category.getAllProducts() != null && !category.getAllProducts().isEmpty()) {
+                    for (Product product : category.getAllProducts()) {
+                        ProductCenter.getInstance().removeProduct(product);
+                    }
+                }
+            }
+        }
 
+        for (Category category : allCategories) {
+            if (category.getName().equals(name)) {
+                allCategories.remove(category);
+                Gson gson = new Gson();
+                DataBase.getInstance().updateAllProducts(gson.toJson(allCategories));
+                break;
+            }
+        }
+
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("productRemoved", "productRemovesSuccessfully"));
     }
 }

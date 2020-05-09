@@ -101,7 +101,7 @@ public class DataBase {
 
     public void updateAllCategories(String json) {
         try {
-            FileWriter fileWriter = new FileWriter("allProducts.txt");
+            FileWriter fileWriter = new FileWriter("allCategories.txt");
             fileWriter.write(json);
             fileWriter.close();
         } catch (Exception e) {

@@ -80,10 +80,12 @@ public class MessageController {
             message = message.substring(26, message.length());
             ProductController.getInstance().printAllProducts(message);
         } else if (message.startsWith("@setAllCategories@")) {
-            message=message.substring(18);
+            message = message.substring(18);
             CategoryController.getInstance().setAllCategories(message);
         } else if (message.startsWith("@category added@")) {
             ClientController.getInstance().getCurrentMenu().showMessage("Category created.");
+        } else if (message.startsWith("@productRemoved@")) {
+            ClientController.getInstance().getCurrentMenu().showMessage("Category removed successfully.");
         }
     }
 
