@@ -30,7 +30,19 @@ public class Seller extends UserAccount {
         allProducts.add(product);
     }
 
-
+    public boolean productExistsInOtherOffer(String productId){
+        if(!hasAnyOffer()){
+            return false;
+        }
+        for (Offer offer : allOffer) {
+            for (Product product : offer.getProducts()) {
+                if(product.getProductId().equals(productId)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public String getCompanyName() {
         return companyName;
@@ -96,9 +108,6 @@ public class Seller extends UserAccount {
     }
 
     public String viewAllProducts() {
-        if(getAllProducts()==null){
-            return "No Product Exits";
-        }
         String products = "";
         for (Product product : this.allProducts) {
             products += product.getProductId() + " ";
@@ -132,6 +141,9 @@ public class Seller extends UserAccount {
     }
 
     public Product getProductByID(String productID) {
+        if(!hasAnyProduct()){
+            return null;
+        }
         for (Product product : allProducts) {
             if (product.getProductId().equals(productID))
                 return product;
@@ -140,5 +152,28 @@ public class Seller extends UserAccount {
     }
     public boolean productExists(String productId){
         return getProductByID(productId) != null;
+    }
+
+    public Offer getOfferById(String offerId){
+        if(!hasAnyOffer()){
+            return null;
+        }
+        for (Offer offer : allOffer) {
+            if(offer.getOfferId().equals(offerId)){
+                return offer;
+            }
+        }
+        return  null;
+    }
+
+    public boolean offerExists(String offerId){
+        return getOfferById(offerId)!=null;
+    }
+
+    public boolean hasAnyProduct(){
+        return allProducts!=null;
+    }
+    public boolean hasAnyOffer(){
+        return allOffer!=null;
     }
 }

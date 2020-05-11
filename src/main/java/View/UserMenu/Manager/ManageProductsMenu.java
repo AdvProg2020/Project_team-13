@@ -22,9 +22,9 @@ public class ManageProductsMenu extends Menu {
     @Override
     public void help() {
        String ManageProductMenuHelp="";
-       ManageProductMenuHelp+="1. remove [productId]";
-       ManageProductMenuHelp+="2. help";
-       ManageProductMenuHelp+="3. back";
+       ManageProductMenuHelp+="1. remove [productId]\n";
+       ManageProductMenuHelp+="2. help\n";
+       ManageProductMenuHelp+="3. back\n";
        System.out.println(ManageProductMenuHelp);
     }
 
