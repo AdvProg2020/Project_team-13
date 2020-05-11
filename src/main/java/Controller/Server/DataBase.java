@@ -1,5 +1,6 @@
 package Controller.Server;
 
+import Models.DiscountCode;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.Request;
@@ -236,6 +237,15 @@ public class DataBase {
             System.out.println(e);
         }
     }
+    public void updateAllDiscountCode(String json) {
+        try {
+            FileWriter fileWriter = new FileWriter("allDiscountCodes.txt");
+            fileWriter.write(json);
+            fileWriter.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
     public void setAllRequestsListFromDateBase() {
         FileReader fileReader = null;
@@ -264,6 +274,33 @@ public class DataBase {
             }
         }
     }
+    public void setAllDiscountCodesListFromDateBase() {
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader("allDiscountCodes.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader br = new BufferedReader(fileReader);
+        try {
+            String json;
+            while ((json = br.readLine()) != null) {
+                Gson gson = new Gson();
+                Type discountCodeListType = new TypeToken<ArrayList<DiscountCode>>() {
+                }.getType();
+                ArrayList<DiscountCode> allDiscountCodes = gson.fromJson(json, discountCodeListType);
+                DiscountCodeCenter.getIncstance().setAllDiscountCodes(allDiscountCodes);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public void replaceRequestId(String lastRequestId) {
         try {
@@ -274,7 +311,15 @@ public class DataBase {
             System.out.println(e);
         }
     }
-
+    public void replaceDiscountCodeId(String lastDiscountCodeId) {
+        try {
+            FileWriter fileWriter = new FileWriter("lastDiscountCodeId.txt");
+            fileWriter.write(lastDiscountCodeId);
+            fileWriter.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
     public void setLastRequestId() {
         FileReader fileReader = null;
         try {
@@ -298,7 +343,29 @@ public class DataBase {
             }
         }
     }
-
+    public void setLastDiscountCodeId() {
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader("lastDiscountCodeID.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader br = new BufferedReader(fileReader);
+        try {
+            String lastDiscountCode;
+            while ((lastDiscountCode = br.readLine()) != null) {
+                DiscountCodeCenter.getIncstance().setLastDiscountCodeID(lastDiscountCode);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     public void getAllUsersListFromDateBase() {
         FileReader fileReader = null;
         BufferedReader br;

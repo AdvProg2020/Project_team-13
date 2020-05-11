@@ -195,4 +195,17 @@ public class UserCenter {
             ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username");
         }
     }
+
+    public ArrayList<Customer> getAllCustomer() {
+        return allCustomer;
+    }
+
+    public Customer findCustomerWithUsername(String username){
+        for (Customer customer : allCustomer) {
+            if(customer.getUsername().equals(username)){
+                return customer;
+            }
+        }
+        return null;
+    }
 }

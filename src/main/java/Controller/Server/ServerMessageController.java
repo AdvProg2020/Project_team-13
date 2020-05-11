@@ -75,6 +75,9 @@ public class ServerMessageController {
         } else if(message.startsWith("@removeCategory@")) {
             message=message.substring(16);
             CategoryCenter.getIncstance().removeCategory(message);
+        }else if(message.startsWith("@createDiscountCode@")) {
+            message=message.substring(20);
+            DiscountCodeCenter.getIncstance().createDiscountCode(message);
         }
     }
 }

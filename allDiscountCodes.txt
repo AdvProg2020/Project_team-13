@@ -1,0 +1,1 @@
+[{"discountCodeID":"aaaaaad","startTime":"Jul 5, 2020, 7:00:00 PM","endTime":"Jul 31, 2020, 3:00:00 AM","allUserAccountsThatHaveDiscount":["5ali","nima22"],"discountPercent":90,"maxDiscountAmount":10000.0,"maxUsingTime":{"5ali":2,"nima22":6},"remainingTimesForEachCustomer":{"5ali":2,"nima22":6}}]
