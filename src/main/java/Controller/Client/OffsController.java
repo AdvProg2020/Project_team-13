@@ -1,10 +1,13 @@
 package Controller.Client;
 
 import Models.Offer;
+import Models.OfferStatus;
+import Models.Product.Product;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class OffsController {
     private static OffsController offsController;
@@ -42,8 +45,11 @@ public class OffsController {
     public void editOff(){
 
     }
-    public void addOff(){
-
+    public void addOff(double amount, double maxDiscountAmount, ArrayList<Product> allProducts, Date startDate, Date endDate){
+        Gson gson=new Gson();
+        Offer offer=new Offer(amount, (Seller)ClientController.getInstance().getCurrentUser(), allProducts, maxDiscountAmount, startDate, endDate);
+        String offerJson=gson.toJson(offer);
+        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("AddOffer",offerJson));
     }
     /*public String viewAllProducts(){
 

@@ -13,6 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.Scanner;
 
 public class DataBase {
@@ -128,7 +129,7 @@ public class DataBase {
             ProductCenter.getInstance().setAllProducts(allProducts);
             br.close();
             fileReader.close();
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
     }
 
@@ -446,9 +447,9 @@ public class DataBase {
                 json = scanner.nextLine();
             }
             if (json != null) {
-                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@getAllProductsForManager@", json));
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("getAllProductsForManager", json));
             } else {
-                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@Error@", "There is no Product"));
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Error", "There is no Product"));
             }
         } finally {
             try {
@@ -457,6 +458,44 @@ public class DataBase {
                 e.printStackTrace();
             }
             scanner.close();
+        }
+    }
+
+    public void setLastOfferIdFromDataBase(){
+        FileReader fileReader=null;
+        Scanner scanner;
+        try {
+            fileReader = new FileReader("lastOfferID.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        scanner=new Scanner(fileReader);
+        try {
+            String lastOfferId;
+            while (scanner.hasNextLine()) {
+                lastOfferId=scanner.nextLine();
+                OffCenter.getInstance().setLastOffId(lastOfferId);
+            }
+        } finally {
+            try {
+                fileReader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            scanner.close();
+        }
+
+    }
+
+    public void replaceOfferId(String lastOfferId){
+        try {
+            FileWriter fileWriter = new FileWriter("lastOfferId.txt");
+            Formatter formatter=new Formatter(fileWriter);
+            formatter.format("%s",lastOfferId);
+            fileWriter.close();
+            formatter.close();
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 }

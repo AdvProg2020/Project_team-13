@@ -16,14 +16,13 @@ public class Offer {
     private Date endTime;
     private OfferStatus offerStatus;
 
-    public Offer(double amount, Seller seller, ArrayList<Product> products, double maxDiscountAmount, Date startTime, Date endTime, OfferStatus offerStatus) {
+    public Offer(double amount, Seller seller, ArrayList<Product> products, double maxDiscountAmount, Date startTime, Date endTime) {
         this.amount = amount;
         this.seller = seller;
         this.products = products;
         this.maxDiscountAmount = maxDiscountAmount;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.offerStatus = offerStatus;
     }
 
     public String getOfferId() {

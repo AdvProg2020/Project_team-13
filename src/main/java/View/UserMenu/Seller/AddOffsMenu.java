@@ -65,8 +65,7 @@ public class AddOffsMenu extends Menu {
             back();
             return;
         }
-        OffsController.getInstance().addOff();//need to be complete
-        System.out.println("The Offer Registered for Manager's Confirmation.");
+        OffsController.getInstance().addOff(amount, maxDiscountAmount, allProducts, startDate, endDate);
         back();
     }
 

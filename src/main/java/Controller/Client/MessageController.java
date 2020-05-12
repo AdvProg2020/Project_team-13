@@ -86,6 +86,9 @@ public class MessageController {
             ClientController.getInstance().getCurrentMenu().showMessage("Category created.");
         } else if (message.startsWith("@productRemoved@")) {
             ClientController.getInstance().getCurrentMenu().showMessage("Category removed successfully.");
+        }else if(message.startsWith("@AddOffer@")){
+            message=message.substring(10);
+            ClientController.getInstance().getCurrentMenu().showMessage(message);
         }
     }
 
