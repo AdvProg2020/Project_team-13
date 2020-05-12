@@ -67,6 +67,9 @@ public class MessageController {
         } else if (message.startsWith("@AllRequests@")) {
             message = message.substring(13, message.length());
             RequestController.getInstance().printAllRequests(message);
+        }else if (message.startsWith("@AllDiscountCodes@")) {
+            message = message.substring(18, message.length());
+            DiscountController.getInstance().printAllDiscountCodes(message);
         } else if (message.startsWith("@allCustomers@")) {
             message = message.substring(14, message.length());
             ManagerController.getInstance().setAllCustomers(message);

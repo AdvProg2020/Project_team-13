@@ -16,6 +16,7 @@ public class ServerController {
     public void getAllUsersForStart() {
         DataBase.getInstance().setAllUsersListFromDateBase();
         DataBase.getInstance().setAllRequestsListFromDateBase();
+        DataBase.getInstance().setAllDiscountCodesListFromDateBase();
         DataBase.getInstance().setLastRequestId();
         DataBase.getInstance().setLastDiscountCodeId();
     }

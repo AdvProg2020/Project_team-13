@@ -43,6 +43,10 @@ public class DiscountCode {
         this.endTime = endTime;
     }
 
+    public String getDiscountCodeID() {
+        return discountCodeID;
+    }
+
     public ArrayList<String> getAllUserAccountsThatHaveDiscount() {
         return allUserAccountsThatHaveDiscount;
     }
@@ -51,6 +55,18 @@ public class DiscountCode {
         this.allUserAccountsThatHaveDiscount = allUserAccountsThatHaveDiscount;
     }
 
+    public String view(){
+        String data="";
+        data+=discountCodeID+"\n";
+        data+=discountPercent+"%\n";
+        data+=maxDiscountAmount+"\n";
+        data+=startTime+"\n";
+        data+=endTime+"\n";
+        for (String userame : allUserAccountsThatHaveDiscount) {
+            data+=userame+ " "+remainingTimesForEachCustomer.get(userame)+"/"+maxUsingTime.get(userame)+"\n";
+        }
+        return data;
+    }
     public int getDiscountPercent() {
         return discountPercent;
     }

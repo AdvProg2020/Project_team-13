@@ -1,6 +1,7 @@
 package Controller.Server;
 
 import Controller.Client.MessageController;
+import Models.DiscountCode;
 import Models.Product.Category;
 import Models.Product.Product;
 import com.google.gson.Gson;
@@ -78,6 +79,8 @@ public class ServerMessageController {
         }else if(message.startsWith("@createDiscountCode@")) {
             message=message.substring(20);
             DiscountCodeCenter.getIncstance().createDiscountCode(message);
+        }else if (message.equals("@getAllDiscountCodes@")) {
+            ServerController.getInstance().sendMessageToClient("@AllDiscountCodes@" + new Gson().toJson(DiscountCodeCenter.getIncstance().getAllDiscountCodes()));
         }
     }
 }

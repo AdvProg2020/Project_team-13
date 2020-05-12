@@ -42,6 +42,10 @@ public class DiscountCodeCenter {
         this.lastDiscountCodeID = lastDiscountCodeID;
     }
 
+    public ArrayList<DiscountCode> getAllDiscountCodes() {
+        return allDiscountCodes;
+    }
+
     private String makeCode() {
         for (int i = 6; i >= 0; i--) {
             char character = lastDiscountCodeID.charAt(i);

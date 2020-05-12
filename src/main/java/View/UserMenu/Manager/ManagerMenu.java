@@ -1,6 +1,7 @@
 package View.UserMenu.Manager;
 
 import Controller.Client.ClientController;
+import Controller.Client.DiscountController;
 import Controller.Client.ManagerController;
 import Controller.Client.RequestController;
 import Models.UserAccount.Manager;
@@ -61,6 +62,11 @@ public class ManagerMenu extends Menu {
             }else if (command.equalsIgnoreCase("create discount code")) {
                 Menu menu = new CreateDiscountCodeMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
+            }else if (command.equalsIgnoreCase("view discount codes")) {
+                Menu menu = new ViewDiscountMenu(this).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                DiscountController.getInstance().getAllDiscountCodesFromServer();
                 menu.execute();
             } else {
                 System.out.println("Invalid Command");
