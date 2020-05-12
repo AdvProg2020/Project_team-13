@@ -5,6 +5,8 @@ import Models.Offer;
 import Models.DiscountCode;
 import Models.Product.Category;
 import Models.Product.Product;
+import Models.UserAccount.Customer;
+import Models.UserAccount.Manager;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -45,7 +47,7 @@ public class ServerMessageController {
             message = message.substring(12, message.length());
             Gson gson = new Gson();
             Product product = gson.fromJson(message, Product.class);
-            ProductCenter.getInstance().createProductRequest(product, message);
+            ProductCenter.getInstance().createProductRequest(product);
         } else if (message.startsWith("@deleteProduct@")) {
             message = message.substring(15, message.length());
             String[] split = message.split("/");
@@ -88,8 +90,15 @@ public class ServerMessageController {
         }else if(message.startsWith("@AddOffer@")){
             message=message.substring(10);
             OffCenter.getInstance().createOfferRequest(message);
-        }else if(message.startsWith("@editOffer@")){
-
+        }else if(message.startsWith("@removeDiscountCode@")){
+            message=message.substring(20);
+            DiscountCodeCenter.getIncstance().removeDiscountCode(message);
+        }else if(message.startsWith("@editManager@")){
+            message=message.substring(13);
+            UserCenter.getIncstance().editManager(new Gson().fromJson(message, Manager.class));
+        }else if(message.startsWith("@editCustomer@")){
+            message=message.substring(14);
+            UserCenter.getIncstance().editCustomer(new Gson().fromJson(message, Customer.class));
         }
     }
 }

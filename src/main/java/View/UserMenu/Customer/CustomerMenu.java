@@ -1,6 +1,7 @@
 package View.UserMenu.Customer;
 
 import Controller.Client.ClientController;
+import Models.UserAccount.Customer;
 import View.Menu;
 import View.UserMenu.LoginMenu;
 import View.UserMenu.RegisterMenu;
@@ -14,8 +15,7 @@ public class CustomerMenu extends Menu {
     @Override
     public void help() {
         String userMenuOptions = "";
-        userMenuOptions += "Register\n";
-        userMenuOptions += "Login\n";
+        userMenuOptions += "1.View Discount Codes\n";
         userMenuOptions += "Help\n";
         userMenuOptions += "Back\n";
         userMenuOptions += "LogOut\n";
@@ -28,12 +28,10 @@ public class CustomerMenu extends Menu {
         String command;
         System.out.println(ClientController.getInstance().getCurrentUser().viewPersonalInfo());
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
-            if (command.equalsIgnoreCase("Register")) {
-                Menu menu = new RegisterMenu(this).setScanner(this.scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
-                menu.execute();
-            } else if (command.equalsIgnoreCase("Login")) {
-                Menu menu = new LoginMenu(this).setScanner(this.scanner);
+            if (command.equalsIgnoreCase("view discount codes")) {
+                ((Customer)ClientController.getInstance().getCurrentUser()).printAllDiscountCodes();
+            }else if (command.equalsIgnoreCase("view personal info")) {
+                Menu menu = new ViewAndEditInformationForCustomer(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("help")) {

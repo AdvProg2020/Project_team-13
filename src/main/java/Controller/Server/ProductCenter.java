@@ -41,11 +41,23 @@ public class ProductCenter {
         return this.lastProductId;
     }
 
-    public void createProductRequest(Product product, String message) {
-        product.setProductId(ProductCenter.getInstance().getProductIdForCreateInProduct());
+    public void createProductRequest(Product product) {
         Gson gson = new Gson();
         RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("AddProduct", gson.toJson(product)));
         ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("productCreating", "ProductCreating Request has been sent."));
+    }
+
+    public void createProduct(Product product) {
+        product.setProductId(ProductCenter.getInstance().getProductIdForCreateInProduct());
+        if (allProducts != null && allProducts.isEmpty()) {
+            allProducts.add(product);
+        } else {
+            allProducts = new ArrayList<>();
+            allProducts.add(product);
+        }
+        UserCenter.getIncstance().addProductToSeller(product);
+        System.out.println("sdfsdf]sdfsd>>>>>>>>>> sdfsdfsdf           "+ allProducts.size());
+        DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));
     }
 
     public void deleteProduct(String productId, String sellerObject) {

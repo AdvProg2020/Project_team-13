@@ -89,15 +89,15 @@ public class DataBase {
         BufferedReader br = new BufferedReader(fileReader);
         try {
             String allCategoriesInGsonForm = br.readLine().trim();
-            Gson gson=new Gson();
-            ArrayList<Category> allCategories=new ArrayList<>();
+            Gson gson = new Gson();
+            ArrayList<Category> allCategories = new ArrayList<>();
             Type categoryListType = new TypeToken<ArrayList<Category>>() {
             }.getType();
-            allCategories=gson.fromJson(allCategoriesInGsonForm,categoryListType);
-            CategoryCenter.getIncstance().setAllCategories(allCategories,true);
+            allCategories = gson.fromJson(allCategoriesInGsonForm, categoryListType);
+            CategoryCenter.getIncstance().setAllCategories(allCategories, true);
             br.close();
             fileReader.close();
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
         }
     }
 
@@ -121,21 +121,21 @@ public class DataBase {
         BufferedReader br = new BufferedReader(fileReader);
         try {
             String allProductsInGsonForm = br.readLine().trim();
-            Gson gson=new Gson();
-            ArrayList<Product> allProducts=new ArrayList<>();
+            Gson gson = new Gson();
+            ArrayList<Product> allProducts = new ArrayList<>();
             Type productListType = new TypeToken<ArrayList<Product>>() {
             }.getType();
-            allProducts=gson.fromJson(allProductsInGsonForm ,productListType);
+            allProducts = gson.fromJson(allProductsInGsonForm, productListType);
             ProductCenter.getInstance().setAllProducts(allProducts);
             br.close();
             fileReader.close();
-        } catch (IOException ignored) {
+        } catch (IOException | NullPointerException ignored) {
         }
     }
 
     public void updateAllProducts(String json) {
         try {
-            FileWriter fileWriter = new FileWriter("allCategories.txt");
+            FileWriter fileWriter = new FileWriter("allProducts.txt");
             fileWriter.write(json);
             fileWriter.close();
         } catch (Exception e) {
@@ -238,6 +238,7 @@ public class DataBase {
             System.out.println(e);
         }
     }
+
     public void updateAllDiscountCode(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allDiscountCodes.txt");
@@ -275,6 +276,7 @@ public class DataBase {
             }
         }
     }
+
     public void setAllDiscountCodesListFromDateBase() {
         FileReader fileReader = null;
         try {
@@ -312,6 +314,7 @@ public class DataBase {
             System.out.println(e);
         }
     }
+
     public void replaceDiscountCodeId(String lastDiscountCodeId) {
         try {
             FileWriter fileWriter = new FileWriter("lastDiscountCodeId.txt");
@@ -321,6 +324,7 @@ public class DataBase {
             System.out.println(e);
         }
     }
+
     public void setLastRequestId() {
         FileReader fileReader = null;
         try {
@@ -344,6 +348,7 @@ public class DataBase {
             }
         }
     }
+
     public void setLastDiscountCodeId() {
         FileReader fileReader = null;
         try {
@@ -367,6 +372,7 @@ public class DataBase {
             }
         }
     }
+
     public void getAllUsersListFromDateBase() {
         FileReader fileReader = null;
         BufferedReader br;
@@ -461,19 +467,19 @@ public class DataBase {
         }
     }
 
-    public void setLastOfferIdFromDataBase(){
-        FileReader fileReader=null;
+    public void setLastOfferIdFromDataBase() {
+        FileReader fileReader = null;
         Scanner scanner;
         try {
             fileReader = new FileReader("lastOfferID.txt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        scanner=new Scanner(fileReader);
+        scanner = new Scanner(fileReader);
         try {
             String lastOfferId;
             while (scanner.hasNextLine()) {
-                lastOfferId=scanner.nextLine();
+                lastOfferId = scanner.nextLine();
                 OffCenter.getInstance().setLastOffId(lastOfferId);
             }
         } finally {
@@ -487,11 +493,11 @@ public class DataBase {
 
     }
 
-    public void replaceOfferId(String lastOfferId){
+    public void replaceOfferId(String lastOfferId) {
         try {
             FileWriter fileWriter = new FileWriter("lastOfferId.txt");
-            Formatter formatter=new Formatter(fileWriter);
-            formatter.format("%s",lastOfferId);
+            Formatter formatter = new Formatter(fileWriter);
+            formatter.format("%s", lastOfferId);
             fileWriter.close();
             formatter.close();
         } catch (Exception e) {

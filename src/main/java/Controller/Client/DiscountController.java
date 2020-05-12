@@ -34,6 +34,15 @@ public class DiscountController {
         }
         return null;
     }
+    public void deleteDiscountCode(String code){
+        DiscountCode discountCode=findDiscountCodeWithThisId(code);
+        if(discountCode!=null) {
+            ClientController.getInstance().sendMessageToServer("@removeDiscountCode@" + code);
+            allDiscountCodes.remove(discountCode);
+        }else{
+            ClientController.getInstance().getCurrentMenu().printError("there is no discount code with this code");
+        }
+    }
     public void editDiscountCode(DiscountCode discountCode){
         ClientController.getInstance().sendMessageToServer("@editDiscountCode@"+new Gson().toJson(discountCode));
     }
