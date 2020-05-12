@@ -13,6 +13,7 @@ public class Customer extends UserAccount{
     public Customer(String username, String password, String firstName, String lastName, String email, String phoneNumber, double credit) {
         super(username, password, firstName, lastName, email, phoneNumber, credit);
         this.cart = new Cart(username);
+        this.allDiscountCodes=new ArrayList<>();
         this.type="@Customer";
     }
 
@@ -35,5 +36,9 @@ public class Customer extends UserAccount{
         personalInfo += this.phoneNumber + "\n";
         personalInfo += this.credit ;
         return personalInfo;
+    }
+    public void addDiscountCode(DiscountCode discountCode){
+        System.out.println(discountCode.getMaxDiscountAmount());
+        allDiscountCodes.add(discountCode);
     }
 }

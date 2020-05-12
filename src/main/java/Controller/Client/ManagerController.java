@@ -34,7 +34,7 @@ public class ManagerController {
         }.getType();
         ArrayList<Seller> sellers = new Gson().fromJson(json, userListType);
         this.allSellers = sellers;
-        printAllSellers();
+
     }
 
     public void setAllCustomers(String json) {
@@ -42,7 +42,7 @@ public class ManagerController {
         }.getType();
         ArrayList<Customer> customers = new Gson().fromJson(json, userListType);
         this.allCustomers = customers;
-        printAllCustomers();
+
     }
 
     public void setAllManagers(String json) {
@@ -50,7 +50,7 @@ public class ManagerController {
         }.getType();
         ArrayList<Manager> managers = new Gson().fromJson(json, userListType);
         this.allManagers = managers;
-        printAllManagers();
+
     }
 
     public void printAllSellers() {
@@ -129,6 +129,14 @@ public class ManagerController {
             }
         }
         ClientController.getInstance().getCurrentMenu().printError("there is no user with this username");
+    }
+    public boolean isThereCustomerWithThisUsername(String username){
+        for (Customer customer : allCustomers) {
+            if(customer.getUsername().equals(username)){
+                return true;
+            }
+        }
+        return false;
     }
     public void createManagerProfile(Manager manager){
         ClientController.getInstance().sendMessageToServer("@createManagerProfile@"+new Gson().toJson(manager));

@@ -17,6 +17,9 @@ public class ManageUsersMenu extends Menu {
 
     @Override
     public void execute() {
+        ManagerController.getInstance().printAllCustomers();
+        ManagerController.getInstance().printAllSellers();
+        ManagerController.getInstance().printAllManagers();
         String command;
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.matches("view \\S+")) {
