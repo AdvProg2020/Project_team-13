@@ -67,6 +67,7 @@ public class SellerMenu extends Menu {
         sellerMenuOptions += "view personal info\n";
         sellerMenuOptions += "add product\n";
         sellerMenuOptions += "LogOut\n";
+        sellerMenuOptions += "manage products";
         System.out.println(sellerMenuOptions);
     }
 

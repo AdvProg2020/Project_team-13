@@ -19,6 +19,7 @@ public class ServerController {
         DataBase.getInstance().setAllDiscountCodesListFromDateBase();
         DataBase.getInstance().setLastRequestId();
         DataBase.getInstance().setLastDiscountCodeId();
+        DataBase.getInstance().setAllProductsFormDataBase();
     }
 
     public static ServerController getInstance() {
