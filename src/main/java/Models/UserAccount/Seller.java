@@ -31,7 +31,7 @@ public class Seller extends UserAccount {
     }
 
     public boolean productExistsInOtherOffer(String productId){
-        if(!hasAnyOffer()){
+        if(hasAnyOffer()){
             return false;
         }
         for (Offer offer : allOffer) {
@@ -141,7 +141,7 @@ public class Seller extends UserAccount {
     }
 
     public Product getProductByID(String productID) {
-        if(!hasAnyProduct()){
+        if(hasAnyProduct()){
             return null;
         }
         for (Product product : allProducts) {
@@ -155,7 +155,7 @@ public class Seller extends UserAccount {
     }
 
     public Offer getOfferById(String offerId){
-        if(!hasAnyOffer()){
+        if(hasAnyOffer()){
             return null;
         }
         for (Offer offer : allOffer) {
@@ -171,9 +171,9 @@ public class Seller extends UserAccount {
     }
 
     public boolean hasAnyProduct(){
-        return allProducts!=null;
+        return allProducts == null;
     }
     public boolean hasAnyOffer(){
-        return allOffer!=null;
+        return allOffer == null;
     }
 }

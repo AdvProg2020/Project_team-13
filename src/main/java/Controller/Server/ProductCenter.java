@@ -46,7 +46,6 @@ public class ProductCenter {
         Gson gson = new Gson();
         RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("AddProduct", gson.toJson(product)));
         ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("productCreating", "ProductCreating Request has been sent."));
-
     }
 
     public void deleteProduct(String productId, String sellerObject) {
