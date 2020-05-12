@@ -143,7 +143,7 @@ public class UserCenter {
 
     public void addProductToSeller(Product product) {
         for (Seller seller : allSeller) {
-            if (seller.getUsername().equals(product.getSeller().getUsername())) {
+            if (seller.getUsername().equals(product.getSeller())) {
                 seller.addProduct(product);
                 break;
             }
