@@ -30,6 +30,8 @@ public class SellerMenu extends Menu {
                 Menu menu = new ManageProductMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
+            }else if (command.equals("show categories")&& isAccepted) {
+                CategoryController.getInstance().showAllCategories();
             } else if (command.equals("help")) {
                 help();
             } else if (command.equalsIgnoreCase("logout")) {
@@ -37,7 +39,10 @@ public class SellerMenu extends Menu {
                 System.out.println("You Logged out!!");
                 parentMenu.execute();
             } else {
-                System.out.println("Invalid command");
+                if(isAccepted) {
+                    System.out.println("Invalid command");
+                }else
+                    System.out.println("you should wait for accept your register from a manager");
             }
         }
         back();
@@ -48,10 +53,10 @@ public class SellerMenu extends Menu {
     @Override
     public void help() {
         String sellerMenuOptions = "";
-        sellerMenuOptions += "view personal info\n";
-        sellerMenuOptions += "add product\n";
-        sellerMenuOptions += "LogOut\n";
-        sellerMenuOptions += "manage products";
+        sellerMenuOptions += "1.View Personal Info\n";
+        sellerMenuOptions += "2.Show Categories\n";
+        sellerMenuOptions += "3.manage products";
+        sellerMenuOptions += "4.LogOut\n";
         System.out.println(sellerMenuOptions);
     }
 
