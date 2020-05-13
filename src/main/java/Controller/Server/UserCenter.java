@@ -200,10 +200,33 @@ public class UserCenter {
         return allCustomer;
     }
 
+    public void editManager(Manager manager){
+        int index=allManager.indexOf(findManagerWithUsername(manager.getUsername()));
+        allManager.remove(findManagerWithUsername(manager.getUsername()));
+        allManager.add(index,manager);
+        DataBase.getInstance().updateAllManagers(new Gson().toJson(allManager));
+        ServerController.getInstance().sendMessageToClient("@Successful@user successfully edited");
+    }
     public Customer findCustomerWithUsername(String username){
         for (Customer customer : allCustomer) {
             if(customer.getUsername().equals(username)){
                 return customer;
+            }
+        }
+        return null;
+    }
+    public Seller findSellerWithUsername(String username){
+        for (Seller seller : allSeller) {
+            if(seller.getUsername().equals(username)){
+                return seller;
+            }
+        }
+        return null;
+    }
+    public Manager findManagerWithUsername(String username){
+        for (Manager manager : allManager) {
+            if(manager.getUsername().equals(username)){
+                return manager;
             }
         }
         return null;

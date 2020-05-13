@@ -43,6 +43,10 @@ public abstract class UserAccount {
         return lastName;
     }
 
+    public void setCredit(double credit) {
+        this.credit = credit;
+    }
+
     public String getEmail() {
         return email;
     }

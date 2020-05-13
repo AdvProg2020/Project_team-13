@@ -26,9 +26,10 @@ public class ManagerMenu extends Menu {
         managerMenuOptions += "4.Add Category\n";
         managerMenuOptions += "5.Create Discount Code\n";
         managerMenuOptions += "6.View Discount Codes\n";
-        managerMenuOptions += "7.LogOut\n";
-        managerMenuOptions += "8.Help\n";
-        managerMenuOptions += "9.Back";
+        managerMenuOptions += "7.View Personal Info\n";
+        managerMenuOptions += "8.LogOut\n";
+        managerMenuOptions += "9.Help\n";
+        managerMenuOptions += "10.Back";
         System.out.println(managerMenuOptions);
     }
 
@@ -66,6 +67,10 @@ public class ManagerMenu extends Menu {
                 menu.execute();
             }else if (command.equalsIgnoreCase("view discount codes")) {
                 Menu menu = new ViewDiscountMenu(this).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
+            }else if (command.equalsIgnoreCase("view personal info")) {
+                Menu menu = new ViewAndEditInformationForManager(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else {
