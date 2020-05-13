@@ -23,7 +23,9 @@ public class SellerMenu extends Menu {
         boolean isAccepted = ClientController.getInstance().getSeller().isAccepted();
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.equals("view personal info") && isAccepted) {
-                System.out.println(ClientController.getInstance().getCurrentUser().viewPersonalInfo());
+                Menu menu = new ViewAndEditInformationForSeller(this).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
             } else if (command.equals("manage products")&& isAccepted) {
                 Menu menu = new ManageProductMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);

@@ -229,19 +229,25 @@ public class UserCenter {
         DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
         ServerController.getInstance().sendMessageToClient("@Successful@user successfully edited");
     }
-    public Customer findCustomerWithUsername(String username){
-    public Customer findCustomerWithUsername(String username) {
-        for (Customer customer : allCustomer) {
-            if (customer.getUsername().equals(username)) {
-                return customer;
-            }
-        }
-        return null;
+    public void editSeller(Seller seller){
+        int index=allSeller.indexOf(findSellerWithUsername(seller.getUsername()));
+        allSeller.remove(findCustomerWithUsername(seller.getUsername()));
+        allSeller.add(index,seller);
+        DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+        ServerController.getInstance().sendMessageToClient("@Successful@user successfully edited");
     }
     public Seller findSellerWithUsername(String username){
         for (Seller seller : allSeller) {
             if(seller.getUsername().equals(username)){
                 return seller;
+            }
+        }
+        return null;
+    }
+    public Customer findCustomerWithUsername(String username){
+        for (Customer customer : allCustomer) {
+            if(customer.getUsername().equals(username)){
+                return customer;
             }
         }
         return null;
