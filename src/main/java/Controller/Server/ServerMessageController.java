@@ -1,6 +1,7 @@
 package Controller.Server;
 
 import Controller.Client.MessageController;
+import Models.Offer;
 import Models.DiscountCode;
 import Models.Product.Category;
 import Models.Product.Product;
@@ -84,6 +85,9 @@ public class ServerMessageController {
         }else if (message.startsWith("@editDiscountCode@")) {
             message=message.substring(18);
             DiscountCodeCenter.getIncstance().editDiscountCode(new Gson().fromJson(message,DiscountCode.class));
+        }else if(message.startsWith("@AddOffer@")){
+            message=message.substring(10);
+            OffCenter.getInstance().createOfferRequest(message);
         }
     }
 }

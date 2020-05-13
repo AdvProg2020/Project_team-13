@@ -57,9 +57,9 @@ public class ProductCenter {
             allProducts.remove(seller.getProductByID(productId));
             String updatedProducts = gson.toJson(allProducts);
             DataBase.getInstance().updateAllProducts(updatedProducts);
-            ServerController.getInstance().sendMessageToClient(MessageController.getInstance().makeMessage("@removedSuccessful@", "The Product removed Successfully"));
+            ServerController.getInstance().sendMessageToClient(MessageController.getInstance().makeMessage("removedSuccessful", "The Product removed Successfully"));
         } else {
-            ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("@Error@", "There is no Product with this Id"));
+            ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Error", "There is no Product with this Id"));
         }
     }
 

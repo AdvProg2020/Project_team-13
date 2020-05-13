@@ -176,4 +176,24 @@ public class Product {
         this.offer = offer;
         costAfterOff = ((100 - offer.getAmount()) / 100) * productCost;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId='" + productId + '\'' +
+                ", productStatus=" + productStatus +
+                ", productName='" + productName + '\'' +
+                ", productCompany='" + productCompany + '\'' +
+                ", seller=" + seller +
+                ", allScores=" + allScores +
+                ", productCost=" + productCost +
+                ", costAfterOff=" + costAfterOff +
+                ", productsCategory='" + productsCategory + '\'' +
+                ", description='" + description + '\'' +
+                ", commentList=" + commentList +
+                ", numberOfAvailableProducts=" + numberOfAvailableProducts +
+                ", featuresOfCategoryThatHas=" + featuresOfCategoryThatHas +
+                ", allBuyers=" + allBuyers +
+                '}';
+    }
 }

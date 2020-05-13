@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Offer {
-
+    private String offerId;
     private double amount;
     private Seller seller;
     private ArrayList<Product> products;
@@ -16,14 +16,21 @@ public class Offer {
     private Date endTime;
     private OfferStatus offerStatus;
 
-    public Offer(double amount, Seller seller, ArrayList<Product> products, double maxDiscountAmount, Date startTime, Date endTime, OfferStatus offerStatus) {
+    public Offer(double amount, Seller seller, ArrayList<Product> products, double maxDiscountAmount, Date startTime, Date endTime) {
         this.amount = amount;
         this.seller = seller;
         this.products = products;
         this.maxDiscountAmount = maxDiscountAmount;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.offerStatus = offerStatus;
+    }
+
+    public String getOfferId() {
+        return offerId;
+    }
+
+    public void setOfferId(String offerId) {
+        this.offerId = offerId;
     }
 
     public Seller getSeller() {
@@ -76,5 +83,26 @@ public class Offer {
 
     public double getAmount() {
         return amount;
+    }
+
+    public String toStringForSummery() {
+        return "offerId : " + offerId + '\n' +
+                "amount : " + amount + '\n'+
+                "startTime : " + startTime + '\n'+
+                "endTime : " + endTime + '\n'+
+                "offerStatus : " + offerStatus + '\n'
+                ;
+    }
+
+    @Override
+    public String toString() {
+        return "offerId :" + offerId + '\n' +
+                "amount : " + amount + '\n'+
+                "products :" + products +'\n'+
+                "maxDiscountAmount : " + maxDiscountAmount +'\n'+
+                "startTime : " + startTime +'\n'+
+                "endTime : "  + endTime +'\n'+
+                "offerStatus : " + offerStatus +'\n'
+                ;
     }
 }

@@ -24,6 +24,10 @@ public class EditOffsMenu extends Menu {
 
     @Override
     public void execute() {
+        ViewOffsMenu viewOffsMenu=(ViewOffsMenu)parentMenu;
+        String command=viewOffsMenu.getTheIdForEdit();
+
+
 
     }
 }
