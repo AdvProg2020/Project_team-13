@@ -74,4 +74,12 @@ public class CategoryController {
         }
         return null;
     }
+    public void showAllCategories(){
+        updateAllCategories();
+        String showCategories="";
+        for (Category category : allCategories) {
+            showCategories+=category.getName()+"\n";
+        }
+        ClientController.getInstance().getCurrentMenu().showMessage(showCategories);
+    }
 }

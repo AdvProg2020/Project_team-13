@@ -1,1 +1,1 @@
-[{"name":"dfsdf","features":{"sdfkjsdf":["sdjkfsd","sdfsdf"]}}]
+[{"name":"dfsdf","features":{"sdfkjsdf":["sdjkfsd","sdfsdf"]}},{"name":"phone","features":{"memory":["64 GB","128 GB","256 GB","32 GB"],"Color":["black","white","blue","red","gold","silver"],"Camera":["25 MP","20 MP","15 MP","10 MP","8 MP"],"battery":["2000 mAh","3000 mAh","4000 mAh"]}}]

@@ -23,7 +23,7 @@ public class ManagerMenu extends Menu {
         managerMenuOptions += "1.Manage Requests\n";
         managerMenuOptions += "2.Manage Users\n";
         managerMenuOptions += "3.Create Manager Profile\n";
-        managerMenuOptions += "4.Manage Category\n";
+        managerMenuOptions += "4.Manage Categories\n";
         managerMenuOptions += "5.Create Discount Code\n";
         managerMenuOptions += "6.View Discount Codes\n";
         managerMenuOptions += "7.View Personal Info\n";
