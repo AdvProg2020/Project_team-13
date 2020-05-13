@@ -23,6 +23,26 @@ public class CategoryController {
         return categoryController;
     }
 
+    public void printAllCategories() {
+        updateAllCategories();
+        if (allCategories != null) {
+            String allCategories = "";
+            int categoryCount = 1;
+            for (Category category : this.allCategories) {
+                if (category.getAllProducts() != null) {
+                    allCategories += (categoryCount) + "." + category.getName() + "\t" + "Number of products in this category: " + category.getAllProducts().size() + " \n";
+                } else {
+                    allCategories += (categoryCount) + "." + category.getName() + "\t" + "Number of products in this category: " + "0" + " \n";
+                }
+                categoryCount++;
+            }
+            allCategories = allCategories.substring(0, allCategories.length() - 1);
+            ClientController.getInstance().getCurrentMenu().showMessage(allCategories);
+        } else {
+            ClientController.getInstance().getCurrentMenu().showMessage("there is no caegory");
+        }
+    }
+
     public void updateAllCategories() {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("getAllCategories", "getAllCategories"));
     }
@@ -74,4 +94,6 @@ public class CategoryController {
         }
         return null;
     }
+
+
 }

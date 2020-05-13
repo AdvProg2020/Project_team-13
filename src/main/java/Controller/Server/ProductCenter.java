@@ -49,7 +49,7 @@ public class ProductCenter {
 
     public void createProduct(Product product) {
         product.setProductId(getProductIdForCreateInProduct());
-        if (allProducts != null ) {
+        if (allProducts != null) {
             allProducts.add(product);
         } else {
             allProducts = new ArrayList<>();
@@ -97,4 +97,5 @@ public class ProductCenter {
     public void setAllProducts(ArrayList<Product> allProducts) {
         this.allProducts = allProducts;
     }
+
 }

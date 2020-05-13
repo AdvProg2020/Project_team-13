@@ -3,6 +3,7 @@ package View.UserMenu.Manager;
 import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
 import Controller.Client.RequestController;
+import Controller.Server.CategoryCenter;
 import Models.Product.Category;
 import View.Menu;
 
@@ -30,6 +31,7 @@ public class ManageCategoryMenu extends Menu {
 
     @Override
     public void execute() {
+        CategoryController.getInstance().printAllCategories();
         String command;
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (Pattern.matches("add (\\w+ )*\\w+", command)) {
