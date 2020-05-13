@@ -31,9 +31,20 @@ public class Seller extends UserAccount {
                 }
             }
             allProducts.add(product);
-        }else {
-            allProducts=new ArrayList<>();
+        } else {
+            allProducts = new ArrayList<>();
             allProducts.add(product);
+        }
+    }
+
+    public void removeProduct(String productId) {
+        if (allProducts != null && !allProducts.isEmpty()) {
+            for (Product product : allProducts) {
+                if(product.getProductId().equals(productId)) {
+                    allProducts.remove(product);
+                    break;
+                }
+            }
         }
     }
 

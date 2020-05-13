@@ -58,11 +58,20 @@ public class CategoryCenter {
             if (category.getName().equals(name)) {
                 allCategories.remove(category);
                 Gson gson = new Gson();
-                DataBase.getInstance().updateAllProducts(gson.toJson(allCategories));
+                DataBase.getInstance().updateAllCategories(gson.toJson(allCategories));
                 break;
             }
         }
 
         ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("productRemoved", "productRemovesSuccessfully"));
+    }
+
+    public void addProductToCategory(Product product) {
+        for (Category category : allCategories) {
+            if(category.getName().equals(product.getProductsCategory())) {
+                category.addProduct(product);
+                DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
+            }
+        }
     }
 }

@@ -175,6 +175,15 @@ public class UserCenter {
         ServerController.getInstance().sendMessageToClient("@Error@there is no user with this username");
     }
 
+    public void removeProductFromSellerProductList(Product product) {
+        for (Seller seller : allSeller) {
+            if(seller.getUsername().equals(product.getSeller())) {
+                seller.removeProduct(product.getProductId());
+            }
+        }
+        DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+    }
+
     public void removeSeller(String username) {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(username)) {

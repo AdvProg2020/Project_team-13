@@ -97,10 +97,11 @@ public class ManageProductMenu extends Menu {
             String modesStringForm = "";
             int i = 1;
             for (String featureMode : featureModes) {
-                modesStringForm += 1;
+                modesStringForm += i;
                 modesStringForm += ".";
                 modesStringForm += featureMode;
                 modesStringForm += "\n";
+                i++;
             }
             modesStringForm=modesStringForm.substring(0,modesStringForm.length()-1);
             String modesNumber;

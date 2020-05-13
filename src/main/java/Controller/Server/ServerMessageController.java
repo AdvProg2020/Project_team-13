@@ -68,28 +68,28 @@ public class ServerMessageController {
         } else if (message.startsWith("@getAllCategories@")) {
             CategoryCenter.getIncstance().updateAllCategories();
             ArrayList<Category> allCategories = CategoryCenter.getIncstance().getAllCategories();
-            Gson gson=new Gson();
-            ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("setAllCategories",gson.toJson(allCategories)));
-        } else if(message.startsWith("@updateAllCategories@")) {
-            message=message.substring(21);
+            Gson gson = new Gson();
+            ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("setAllCategories", gson.toJson(allCategories)));
+        } else if (message.startsWith("@updateAllCategories@")) {
+            message = message.substring(21);
             DataBase.getInstance().updateAllCategories(message);
-            ServerController.getInstance().sendMessageToClient(MessageController.getInstance().makeMessage("category added","category added"));
-        } else if(message.startsWith("@removeCategory@")) {
-            message=message.substring(16);
+            ServerController.getInstance().sendMessageToClient(MessageController.getInstance().makeMessage("category added", "category added"));
+        } else if (message.startsWith("@removeCategory@")) {
+            message = message.substring(16);
             CategoryCenter.getIncstance().removeCategory(message);
-        }else if(message.startsWith("@createDiscountCode@")) {
-            message=message.substring(20);
+        } else if (message.startsWith("@createDiscountCode@")) {
+            message = message.substring(20);
             DiscountCodeCenter.getIncstance().createDiscountCode(message);
-        }else if (message.equals("@getAllDiscountCodes@")) {
+        } else if (message.equals("@getAllDiscountCodes@")) {
             ServerController.getInstance().sendMessageToClient("@AllDiscountCodes@" + new Gson().toJson(DiscountCodeCenter.getIncstance().getAllDiscountCodes()));
-        }else if (message.startsWith("@editDiscountCode@")) {
-            message=message.substring(18);
-            DiscountCodeCenter.getIncstance().editDiscountCode(new Gson().fromJson(message,DiscountCode.class));
-        }else if(message.startsWith("@AddOffer@")){
-            message=message.substring(10);
+        } else if (message.startsWith("@editDiscountCode@")) {
+            message = message.substring(18);
+            DiscountCodeCenter.getIncstance().editDiscountCode(new Gson().fromJson(message, DiscountCode.class));
+        } else if (message.startsWith("@AddOffer@")) {
+            message = message.substring(10);
             OffCenter.getInstance().createOfferRequest(message);
-        }else if(message.startsWith("@removeDiscountCode@")){
-            message=message.substring(20);
+        } else if (message.startsWith("@removeDiscountCode@")) {
+            message = message.substring(20);
             DiscountCodeCenter.getIncstance().removeDiscountCode(message);
         }
     }

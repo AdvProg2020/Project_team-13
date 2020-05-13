@@ -63,12 +63,12 @@ public class CategoryController {
     }
 
     public void removeCategory(String name) {
-        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("removeCategory",name));
+        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("removeCategory", name));
     }
 
     public Category getCategoryWithName(String name) {
         for (Category category : allCategories) {
-            if(category.getName().equals(name)) {
+            if (category.getName().equals(name)) {
                 return category;
             }
         }

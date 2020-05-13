@@ -10,16 +10,17 @@ public class ServerController {
     }
 
     public void runServer() {
-        getAllUsersForStart();
+        getAllInformationForStart();
     }
 
-    public void getAllUsersForStart() {
+    public void getAllInformationForStart() {
         DataBase.getInstance().setAllUsersListFromDateBase();
         DataBase.getInstance().setAllRequestsListFromDateBase();
         DataBase.getInstance().setAllDiscountCodesListFromDateBase();
         DataBase.getInstance().setLastRequestId();
         DataBase.getInstance().setLastDiscountCodeId();
         DataBase.getInstance().setAllProductsFormDataBase();
+        DataBase.getInstance().setAllCategoriesFormDataBase();
     }
 
     public static ServerController getInstance() {

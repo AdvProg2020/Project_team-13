@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Category {
     private String name;
-    private HashMap<String ,ArrayList<String>> features;
+    private HashMap<String, ArrayList<String>> features;
     private ArrayList<Product> allProducts;
 
     public Category(String name, HashMap<String, ArrayList<String>> features) {
@@ -14,7 +14,12 @@ public class Category {
     }
 
     public void addProduct(Product product) {
-        allProducts.add(product);
+        if (allProducts != null) {
+            allProducts.add(product);
+        } else {
+            allProducts = new ArrayList<>();
+            allProducts.add(product);
+        }
     }
 
     public HashMap<String, ArrayList<String>> getFeatures() {
