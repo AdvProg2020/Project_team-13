@@ -105,7 +105,7 @@ public class CreateDiscountCodeMenu extends Menu {
                 Matcher matcher = pattern.matcher(startTime);
                 matcher.find();
                 calendar.set(Calendar.DATE, Integer.parseInt(matcher.group(1)));
-                calendar.set(Calendar.MONTH, Integer.parseInt(matcher.group(2)));
+                calendar.set(Calendar.MONTH, Integer.parseInt(matcher.group(2))-1);
                 calendar.set(Calendar.YEAR, Integer.parseInt(matcher.group(3)));
                 if (calendar.getTime().after(Calendar.getInstance().getTime())) {
                     break;
@@ -149,7 +149,7 @@ public class CreateDiscountCodeMenu extends Menu {
                 Matcher matcher = pattern.matcher(endTime);
                 matcher.find();
                 calendar.set(Calendar.DATE, Integer.parseInt(matcher.group(1)));
-                calendar.set(Calendar.MONTH, Integer.parseInt(matcher.group(2)));
+                calendar.set(Calendar.MONTH, Integer.parseInt(matcher.group(2))-1);
                 calendar.set(Calendar.YEAR, Integer.parseInt(matcher.group(3)));
                 if (calendar.getTime().after(startTime)) {
                     break;

@@ -51,7 +51,7 @@ public abstract class UserAccount {
         return phoneNumber;
     }
 
-    public ArrayList<DiscountCode> getAllOfferCodes() {
+    public ArrayList<DiscountCode> getAllDiscountCodes() {
         return allDiscountCodes;
     }
 

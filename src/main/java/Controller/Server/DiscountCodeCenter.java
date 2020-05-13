@@ -2,6 +2,7 @@ package Controller.Server;
 
 import Models.DiscountCode;
 import Models.Request;
+import Models.UserAccount.Customer;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -46,6 +47,40 @@ public class DiscountCodeCenter {
         return allDiscountCodes;
     }
 
+    public void editDiscountCode(DiscountCode discountCode){
+        DiscountCode oldDiscountCode=findDiscountCodeWithThisId(discountCode.getDiscountCodeID());
+        int index=allDiscountCodes.indexOf(oldDiscountCode);
+        allDiscountCodes.remove(oldDiscountCode);
+        allDiscountCodes.add(index,discountCode);
+        boolean customeradded=false;
+        DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(allDiscountCodes));
+        for (String username : discountCode.getAllUserAccountsThatHaveDiscount()) {
+            Customer customer=UserCenter.getIncstance().findCustomerWithUsername(username);
+            int flag=0;
+            for (DiscountCode code : customer.getAllDiscountCodes()) {
+                if(code.getDiscountCodeID().equals(discountCode.getDiscountCodeID())){
+                    flag=1;
+                    break;
+                }
+            }
+            if(flag==0){
+                customeradded=true;
+                customer.addDiscountCode(discountCode);
+            }
+        }
+        if(customeradded){
+            DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
+        }
+        ServerController.getInstance().sendMessageToClient("@Successful@discount code successfully edited");
+    }
+    public DiscountCode findDiscountCodeWithThisId(String codeId){
+        for (DiscountCode discountCode : allDiscountCodes) {
+            if(discountCode.getDiscountCodeID().equals(codeId)){
+                return discountCode;
+            }
+        }
+        return null;
+    }
     private String makeCode() {
         for (int i = 6; i >= 0; i--) {
             char character = lastDiscountCodeID.charAt(i);

@@ -1,6 +1,7 @@
 package Controller.Client;
 
 import Controller.Server.ServerController;
+import Models.DiscountCode;
 import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import View.Menu;
@@ -9,6 +10,15 @@ public class ClientController {
     private static ClientController clientController;
     private Menu currentMenu;
     private UserAccount currentUser;
+    private DiscountCode currentDiscountCode;
+
+    public DiscountCode getCurrentDiscountCode() {
+        return currentDiscountCode;
+    }
+
+    public void setCurrentDiscountCode(DiscountCode currentDiscountCode) {
+        this.currentDiscountCode = currentDiscountCode;
+    }
 
     private ClientController() {
     }

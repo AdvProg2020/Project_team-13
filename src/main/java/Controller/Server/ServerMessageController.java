@@ -81,6 +81,9 @@ public class ServerMessageController {
             DiscountCodeCenter.getIncstance().createDiscountCode(message);
         }else if (message.equals("@getAllDiscountCodes@")) {
             ServerController.getInstance().sendMessageToClient("@AllDiscountCodes@" + new Gson().toJson(DiscountCodeCenter.getIncstance().getAllDiscountCodes()));
+        }else if (message.startsWith("@editDiscountCode@")) {
+            message=message.substring(18);
+            DiscountCodeCenter.getIncstance().editDiscountCode(new Gson().fromJson(message,DiscountCode.class));
         }
     }
 }

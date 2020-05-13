@@ -34,6 +34,9 @@ public class DiscountController {
         }
         return null;
     }
+    public void editDiscountCode(DiscountCode discountCode){
+        ClientController.getInstance().sendMessageToServer("@editDiscountCode@"+new Gson().toJson(discountCode));
+    }
     public void viewDiscountCode(String code){
         DiscountCode discountCode=findDiscountCodeWithThisId(code);
         if(discountCode!=null){
