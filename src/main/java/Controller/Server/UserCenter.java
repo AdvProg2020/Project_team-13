@@ -207,6 +207,13 @@ public class UserCenter {
         DataBase.getInstance().updateAllManagers(new Gson().toJson(allManager));
         ServerController.getInstance().sendMessageToClient("@Successful@user successfully edited");
     }
+    public void editCustomer(Customer customer){
+        int index=allCustomer.indexOf(findCustomerWithUsername(customer.getUsername()));
+        allCustomer.remove(findCustomerWithUsername(customer.getUsername()));
+        allCustomer.add(index,customer);
+        DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
+        ServerController.getInstance().sendMessageToClient("@Successful@user successfully edited");
+    }
     public Customer findCustomerWithUsername(String username){
         for (Customer customer : allCustomer) {
             if(customer.getUsername().equals(username)){

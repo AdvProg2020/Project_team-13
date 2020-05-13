@@ -5,6 +5,7 @@ import Models.Offer;
 import Models.DiscountCode;
 import Models.Product.Category;
 import Models.Product.Product;
+import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import com.google.gson.Gson;
 
@@ -95,6 +96,9 @@ public class ServerMessageController {
         }else if(message.startsWith("@editManager@")){
             message=message.substring(13);
             UserCenter.getIncstance().editManager(new Gson().fromJson(message, Manager.class));
+        }else if(message.startsWith("@editCustomer@")){
+            message=message.substring(14);
+            UserCenter.getIncstance().editCustomer(new Gson().fromJson(message, Customer.class));
         }
     }
 }
