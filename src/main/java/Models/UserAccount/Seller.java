@@ -19,24 +19,31 @@ public class Seller extends UserAccount {
         this.companyName = companyName;
         this.isAccepted = isAccepted;
         this.type = "@Seller";
+        allProducts = new ArrayList<>();
     }
 
     public void addProduct(Product product) {
-        for (Product products : allProducts) {
-            if(products.getProductId().equals(product.getProductId())) {
-                return;
+
+        if (allProducts != null && !allProducts.isEmpty()) {
+            for (Product products : allProducts) {
+                if (products.getProductId().equals(product.getProductId())) {
+                    return;
+                }
             }
+            allProducts.add(product);
+        }else {
+            allProducts=new ArrayList<>();
+            allProducts.add(product);
         }
-        allProducts.add(product);
     }
 
-    public boolean productExistsInOtherOffer(String productId){
-        if(!hasAnyOffer()){
+    public boolean productExistsInOtherOffer(String productId) {
+        if (!hasAnyOffer()) {
             return false;
         }
         for (Offer offer : allOffer) {
             for (Product product : offer.getProducts()) {
-                if(product.getProductId().equals(productId)){
+                if (product.getProductId().equals(productId)) {
                     return true;
                 }
             }
@@ -109,17 +116,19 @@ public class Seller extends UserAccount {
 
     public String viewAllProducts() {
         String products = "";
-        for (Product product : this.allProducts) {
-            products += product.getProductId() + " ";
-            products += product.getProductName() + " ";
-            products += product.getProductCost() + " ";
-            products += '\n';
+        if (allProducts != null && !allProducts.isEmpty()) {
+            for (Product product : this.allProducts) {
+                products += product.getProductId() + " ";
+                products += product.getProductName() + " ";
+                products += product.getProductCost() + " ";
+                products += '\n';
+            }
         }
         return products;
     }
 
     public String viewProduct(String productID) {
-        if(getProductByID(productID)==null){
+        if (getProductByID(productID) == null) {
             return "The Product Does Not Exist";
         }
         String productInfo = "";
@@ -141,7 +150,7 @@ public class Seller extends UserAccount {
     }
 
     public Product getProductByID(String productID) {
-        if(!hasAnyProduct()){
+        if (!hasAnyProduct()) {
             return null;
         }
         for (Product product : allProducts) {
@@ -150,30 +159,32 @@ public class Seller extends UserAccount {
         }
         return null;
     }
-    public boolean productExists(String productId){
+
+    public boolean productExists(String productId) {
         return getProductByID(productId) != null;
     }
 
-    public Offer getOfferById(String offerId){
-        if(!hasAnyOffer()){
+    public Offer getOfferById(String offerId) {
+        if (!hasAnyOffer()) {
             return null;
         }
         for (Offer offer : allOffer) {
-            if(offer.getOfferId().equals(offerId)){
+            if (offer.getOfferId().equals(offerId)) {
                 return offer;
             }
         }
-        return  null;
+        return null;
     }
 
-    public boolean offerExists(String offerId){
-        return getOfferById(offerId)!=null;
+    public boolean offerExists(String offerId) {
+        return getOfferById(offerId) != null;
     }
 
-    public boolean hasAnyProduct(){
-        return allProducts!=null;
+    public boolean hasAnyProduct() {
+        return allProducts != null;
     }
-    public boolean hasAnyOffer(){
-        return allOffer!=null;
+
+    public boolean hasAnyOffer() {
+        return allOffer != null;
     }
 }

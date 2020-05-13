@@ -1,5 +1,6 @@
 package Controller.Server;
 
+import Models.Product.Product;
 import Models.Request;
 import Models.RequestStatus;
 import Models.RequestType;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 public class RequestCenter {
     private static RequestCenter requestCenter;
     private ArrayList<Request> allRequests = new ArrayList<>();
-    private String lastRequestID ="";
+    private String lastRequestID = "";
 
     private RequestCenter() {
 
@@ -26,7 +27,7 @@ public class RequestCenter {
 
     public void addRequest(Request request) {
         allRequests.add(request);
-        String arrayData =new Gson().toJson(allRequests);
+        String arrayData = new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);
     }
 
@@ -37,8 +38,14 @@ public class RequestCenter {
     }
 
     public Request makeRequest(String type, String details) {
-        Request request = new Request(RequestType.sellerRegister, RequestStatus.onReview, makeRequestID(), details);
-        return request;
+        if (type.equals("AcceptSellerAccount")) {
+            Request request = new Request(RequestType.sellerRegister, RequestStatus.onReview, makeRequestID(), details);
+            return request;
+        } else if (type.equals("AddProduct")) {
+            Request request = new Request(RequestType.addProduct, RequestStatus.onReview, makeRequestID(), details);
+            return request;
+        }
+        return null;
     }
 
     public ArrayList<Request> getAllRequests() {
@@ -49,7 +56,17 @@ public class RequestCenter {
         Request request = findRequestWithID(requestID);
         if (request.getType() == RequestType.sellerRegister) {
             acceptSellerRegisterRequest(request);
+        } else if (request.getType() == RequestType.addProduct) {
+            acceptAddProductRequest(request);
         }
+    }
+
+    public void acceptAddProductRequest(Request request) {
+        allRequests.remove(request);
+        ProductCenter.getInstance().createProduct(new Gson().fromJson(request.getDetails(), Product.class));
+        String arrayData = new Gson().toJson(allRequests);
+        DataBase.getInstance().updateAllRequests(arrayData);
+        ServerController.getInstance().sendMessageToClient("@Successful@" + "request accepted successfully");
     }
 
     public void acceptSellerRegisterRequest(Request request) {

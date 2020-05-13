@@ -15,7 +15,7 @@ public class Product {
     private ProductStatus productStatus;
     private String productName;
     private String productCompany;
-    private Seller seller;
+    private String sellerUsername;
     private ArrayList<Score> allScores;
     private double productCost, costAfterOff;
     private String productsCategory;
@@ -31,7 +31,7 @@ public class Product {
         this.productId = productId;
         this.productStatus = ProductStatus.inCreatingProgress;
         this.productName = productName;
-        this.seller = seller;
+        this.sellerUsername = seller.getUsername();
         this.productCost = productCost;
         this.productsCategory = productsCategory;
         this.description = description;
@@ -73,7 +73,7 @@ public class Product {
         projectInformation += this.description + "\n";
         projectInformation += this.productCost + "\n";
         projectInformation += this.productsCategory + "\n";
-        projectInformation += this.seller.getUsername() + "\n";
+        projectInformation += this.sellerUsername + "\n";
         projectInformation += this.getCostAfterOff() + "\n";
         projectInformation += this.getAverageScore() + "\n\n";
 
@@ -108,8 +108,8 @@ public class Product {
         return productCompany;
     }
 
-    public Seller getSeller() {
-        return seller;
+    public String getSeller() {
+        return sellerUsername;
     }
 
     public double getProductCost() {
@@ -184,7 +184,7 @@ public class Product {
                 ", productStatus=" + productStatus +
                 ", productName='" + productName + '\'' +
                 ", productCompany='" + productCompany + '\'' +
-                ", seller=" + seller +
+                ", seller=" + sellerUsername +
                 ", allScores=" + allScores +
                 ", productCost=" + productCost +
                 ", costAfterOff=" + costAfterOff +

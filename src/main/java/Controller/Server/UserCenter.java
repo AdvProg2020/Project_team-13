@@ -1,5 +1,6 @@
 package Controller.Server;
 
+import Models.Product.Product;
 import Models.Request;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
@@ -140,6 +141,16 @@ public class UserCenter {
         }
     }
 
+    public void addProductToSeller(Product product) {
+        for (Seller seller : allSeller) {
+            if (seller.getUsername().equals(product.getSeller())) {
+                seller.addProduct(product);
+                break;
+            }
+        }
+        DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+    }
+
     public boolean canAcceptSellerRegister(String username) {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(username)) {
@@ -151,9 +162,10 @@ public class UserCenter {
         ServerController.getInstance().sendMessageToClient("@Error@there is no seller with this username");
         return false;
     }
-    public void removeCustomer(String username){
+
+    public void removeCustomer(String username) {
         for (Customer customer : allCustomer) {
-            if(customer.getUsername().equals(username)){
+            if (customer.getUsername().equals(username)) {
                 allCustomer.remove(customer);
                 DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
                 ServerController.getInstance().sendMessageToClient("@Successful@delete user successfully");
@@ -162,9 +174,10 @@ public class UserCenter {
         }
         ServerController.getInstance().sendMessageToClient("@Error@there is no user with this username");
     }
-    public void removeSeller(String username){
+
+    public void removeSeller(String username) {
         for (Seller seller : allSeller) {
-            if(seller.getUsername().equals(username)){
+            if (seller.getUsername().equals(username)) {
                 allSeller.remove(seller);
                 DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
                 ServerController.getInstance().sendMessageToClient("@Successful@delete user successfully");
@@ -173,9 +186,10 @@ public class UserCenter {
         }
         ServerController.getInstance().sendMessageToClient("@Error@there is no user with this username");
     }
-    public void removeManager(String username){
+
+    public void removeManager(String username) {
         for (Manager manager : allManager) {
-            if(manager.getUsername().equals(username)){
+            if (manager.getUsername().equals(username)) {
                 allManager.remove(manager);
                 DataBase.getInstance().updateAllManagers(new Gson().toJson(allManager));
                 ServerController.getInstance().sendMessageToClient("@Successful@delete user successfully");
@@ -184,7 +198,8 @@ public class UserCenter {
         }
         ServerController.getInstance().sendMessageToClient("@Error@there is no user with this username");
     }
-    public void createManagerProfile(String json){
+
+    public void createManagerProfile(String json) {
         Manager manager = new Gson().fromJson(json, Manager.class);
         if (!isThereUserWithThisUsername(manager.getUsername())) {
             allManager.add(manager);
@@ -215,8 +230,9 @@ public class UserCenter {
         ServerController.getInstance().sendMessageToClient("@Successful@user successfully edited");
     }
     public Customer findCustomerWithUsername(String username){
+    public Customer findCustomerWithUsername(String username) {
         for (Customer customer : allCustomer) {
-            if(customer.getUsername().equals(username)){
+            if (customer.getUsername().equals(username)) {
                 return customer;
             }
         }
