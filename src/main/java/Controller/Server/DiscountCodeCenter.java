@@ -28,8 +28,8 @@ public class DiscountCodeCenter {
         this.allDiscountCodes = allDiscountCodes;
     }
 
-    public void createDiscountCode(String json){
-        DiscountCode discountCode=new Gson().fromJson(json,DiscountCode.class);
+    public void createDiscountCode(String json) {
+        DiscountCode discountCode = new Gson().fromJson(json, DiscountCode.class);
         discountCode.setDiscountCodeID(makeCode());
         allDiscountCodes.add(discountCode);
         for (String username : discountCode.getAllUserAccountsThatHaveDiscount()) {
@@ -37,7 +37,7 @@ public class DiscountCodeCenter {
         }
         DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
         DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(allDiscountCodes));
-        ServerController.getInstance().sendMessageToClient("@Successful@discount code with code:"+lastDiscountCodeID+" successfully created");
+        ServerController.getInstance().sendMessageToClient("@Successful@discount code with code:" + lastDiscountCodeID + " successfully created");
     }
 
     public void setLastDiscountCodeID(String lastDiscountCodeID) {
@@ -48,37 +48,38 @@ public class DiscountCodeCenter {
         return allDiscountCodes;
     }
 
-    public void editDiscountCode(DiscountCode discountCode){
-        DiscountCode oldDiscountCode=findDiscountCodeWithThisId(discountCode.getDiscountCodeID());
-        int index=allDiscountCodes.indexOf(oldDiscountCode);
+    public void editDiscountCode(DiscountCode discountCode) {
+        DiscountCode oldDiscountCode = findDiscountCodeWithThisId(discountCode.getDiscountCodeID());
+        int index = allDiscountCodes.indexOf(oldDiscountCode);
         allDiscountCodes.remove(oldDiscountCode);
-        allDiscountCodes.add(index,discountCode);
-        boolean customeradded=false;
+        allDiscountCodes.add(index, discountCode);
+        boolean customeradded = false;
         DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(allDiscountCodes));
         for (String username : discountCode.getAllUserAccountsThatHaveDiscount()) {
-            Customer customer=UserCenter.getIncstance().findCustomerWithUsername(username);
-            int flag=0;
+            Customer customer = UserCenter.getIncstance().findCustomerWithUsername(username);
+            int flag = 0;
             for (DiscountCode code : customer.getAllDiscountCodes()) {
-                if(code.getDiscountCodeID().equals(discountCode.getDiscountCodeID())){
-                    flag=1;
+                if (code.getDiscountCodeID().equals(discountCode.getDiscountCodeID())) {
+                    flag = 1;
                     break;
                 }
             }
-            if(flag==0){
-                customeradded=true;
+            if (flag == 0) {
+                customeradded = true;
                 customer.addDiscountCode(discountCode);
             }
         }
-        if(customeradded){
+        if (customeradded) {
             DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
         }
         ServerController.getInstance().sendMessageToClient("@Successful@discount code successfully edited");
     }
-    public void removeDiscountCode(String code){
-        DiscountCode discountCode=findDiscountCodeWithThisId(code);
+
+    public void removeDiscountCode(String code) {
+        DiscountCode discountCode = findDiscountCodeWithThisId(code);
         for (String username : discountCode.getAllUserAccountsThatHaveDiscount()) {
-            Customer customer=UserCenter.getIncstance().findCustomerWithUsername(username);
-            if(customer!=null) {
+            Customer customer = UserCenter.getIncstance().findCustomerWithUsername(username);
+            if (customer != null) {
                 customer.removeDiscountCode(code);
             }
         }
@@ -87,14 +88,16 @@ public class DiscountCodeCenter {
         DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
         ServerController.getInstance().sendMessageToClient("@Successful@discount code successfully removed");
     }
-    public DiscountCode findDiscountCodeWithThisId(String codeId){
+
+    public DiscountCode findDiscountCodeWithThisId(String codeId) {
         for (DiscountCode discountCode : allDiscountCodes) {
-            if(discountCode.getDiscountCodeID().equals(codeId)){
+            if (discountCode.getDiscountCodeID().equals(codeId)) {
                 return discountCode;
             }
         }
         return null;
     }
+
     private String makeCode() {
         for (int i = 6; i >= 0; i--) {
             char character = lastDiscountCodeID.charAt(i);

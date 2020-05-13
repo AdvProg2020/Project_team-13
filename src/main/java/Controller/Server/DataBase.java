@@ -126,6 +126,7 @@ public class DataBase {
             Type productListType = new TypeToken<ArrayList<Product>>() {
             }.getType();
             allProducts = gson.fromJson(allProductsInGsonForm, productListType);
+            System.out.println(allProducts.size());
             ProductCenter.getInstance().setAllProducts(allProducts);
             br.close();
             fileReader.close();
@@ -145,11 +146,10 @@ public class DataBase {
 
     public void replaceProductId(String productId) {
         try {
-            FileWriter fileWriter = new FileWriter("lastProductId.txt.txt");
+            FileWriter fileWriter = new FileWriter("lastProductId.txt");
             fileWriter.write(productId);
             fileWriter.close();
         } catch (IOException e) {
-
         }
     }
 

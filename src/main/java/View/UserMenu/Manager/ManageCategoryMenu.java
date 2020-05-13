@@ -78,7 +78,7 @@ public class ManageCategoryMenu extends Menu {
     }
 
     private void removeCategory(String name) {
-        String categoryName = getNameForRemove("categories name", name);
+        String categoryName = getNameForRemove("category name", name);
         CategoryController.getInstance().removeCategory(categoryName);
     }
 

@@ -36,7 +36,7 @@ public class ProductCenter {
 
     public String getProductIdForCreateInProduct() {
         DataBase.getInstance().setLastProductIdFromDataBase();
-        this.lastProductId = "@p" + (Integer.parseInt(lastProductId.substring(2, lastProductId.length())) + 1);
+        this.lastProductId = "@p" + (Integer.parseInt(lastProductId.substring(2)) + 1);
         DataBase.getInstance().replaceProductId(lastProductId);
         return this.lastProductId;
     }
@@ -48,15 +48,15 @@ public class ProductCenter {
     }
 
     public void createProduct(Product product) {
-        product.setProductId(ProductCenter.getInstance().getProductIdForCreateInProduct());
-        if (allProducts != null && allProducts.isEmpty()) {
+        product.setProductId(getProductIdForCreateInProduct());
+        if (allProducts != null ) {
             allProducts.add(product);
         } else {
             allProducts = new ArrayList<>();
             allProducts.add(product);
         }
         UserCenter.getIncstance().addProductToSeller(product);
-        System.out.println("sdfsdf]sdfsd>>>>>>>>>> sdfsdfsdf           "+ allProducts.size());
+        CategoryCenter.getIncstance().addProductToCategory(product);
         DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));
     }
 
@@ -78,10 +78,12 @@ public class ProductCenter {
         for (Product product1 : allProducts) {
             if (product1.getProductId().equals(product.getProductId())) {
                 allProducts.remove(product1);
+                UserCenter.getIncstance().removeProductFromSellerProductList(product);
+                DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));
                 break;
             }
-
         }
+        DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));
     }
 
     public void update() {
