@@ -5,6 +5,7 @@ import Models.Request;
 import Models.UserAccount.Customer;
 import com.google.gson.Gson;
 
+import java.net.UnknownServiceException;
 import java.util.ArrayList;
 
 public class DiscountCodeCenter {
@@ -72,6 +73,19 @@ public class DiscountCodeCenter {
             DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
         }
         ServerController.getInstance().sendMessageToClient("@Successful@discount code successfully edited");
+    }
+    public void removeDiscountCode(String code){
+        DiscountCode discountCode=findDiscountCodeWithThisId(code);
+        for (String username : discountCode.getAllUserAccountsThatHaveDiscount()) {
+            Customer customer=UserCenter.getIncstance().findCustomerWithUsername(username);
+            if(customer!=null) {
+                customer.removeDiscountCode(code);
+            }
+        }
+        allDiscountCodes.remove(discountCode);
+        DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(allDiscountCodes));
+        DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
+        ServerController.getInstance().sendMessageToClient("@Successful@discount code successfully removed");
     }
     public DiscountCode findDiscountCodeWithThisId(String codeId){
         for (DiscountCode discountCode : allDiscountCodes) {

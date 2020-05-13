@@ -88,6 +88,9 @@ public class ServerMessageController {
         }else if(message.startsWith("@AddOffer@")){
             message=message.substring(10);
             OffCenter.getInstance().createOfferRequest(message);
+        }else if(message.startsWith("@removeDiscountCode@")){
+            message=message.substring(20);
+            DiscountCodeCenter.getIncstance().removeDiscountCode(message);
         }
     }
 }

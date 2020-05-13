@@ -25,6 +25,8 @@ public class ViewDiscountMenu extends Menu {
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.startsWith("view discount code")) {
                 DiscountController.getInstance().viewDiscountCode(command.split("\\s")[3]);
+            }else if (command.matches("remove discount code \\S+")) {
+                DiscountController.getInstance().deleteDiscountCode(command.split("\\s")[3]);
             } else if (command.matches("edit discount code \\S+")) {
                 ClientController.getInstance().setCurrentDiscountCode(DiscountController.getInstance().findDiscountCodeWithThisId(command.split("\\s")[3]));
                 if(ClientController.getInstance().getCurrentDiscountCode()!=null) {
