@@ -196,4 +196,16 @@ public class Product {
                 ", allBuyers=" + allBuyers +
                 '}';
     }
+    public String productInfoFor(){
+        return "Product{" +
+                "productId='" + productId + '\'' +
+                ", productStatus=" + productStatus +
+                ", productName='" + productName + '\'' +
+                ", productCompany='" + productCompany + '\'' +
+                ", productCost=" + productCost +
+                ", costAfterOff=" + costAfterOff +
+                ", productsCategory='" + productsCategory + '\'' +
+                ", description='" + description + '\'' +
+                ", numberOfAvailableProducts=" + numberOfAvailableProducts;
+    }
 }

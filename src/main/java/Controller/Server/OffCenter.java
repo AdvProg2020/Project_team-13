@@ -50,8 +50,10 @@ public class OffCenter {
 
     }
 
-    public void editOff() {
-
+    public void createEditOfferRequest(Offer offer) {
+       offer.setOfferStatus(OfferStatus.onReviewForEdit);
+       RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("editOffer", new Gson().toJson(offer)));
+       ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("editOffer","The Offer's Edition Is Saved For Manager's Confirmation "));
     }
 
 }

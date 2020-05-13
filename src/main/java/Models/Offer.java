@@ -105,4 +105,13 @@ public class Offer {
                 "offerStatus : " + offerStatus +'\n'
                 ;
     }
+
+    public Product getProductByIdInOfferList(String id){
+        for (Product product : products) {
+            if(product.getProductId().equals(id)){
+                return product;
+            }
+        }
+        return null;
+    }
 }

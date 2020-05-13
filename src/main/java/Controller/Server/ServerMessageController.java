@@ -103,6 +103,9 @@ public class ServerMessageController {
         }else if(message.startsWith("@editSeller@")){
             message=message.substring(12);
             UserCenter.getIncstance().editSeller(new Gson().fromJson(message, Seller.class));
+        }else if(message.startsWith("@editOffer@")){
+            message=message.substring(11);
+            OffCenter.getInstance().createEditOfferRequest(new Gson().fromJson(message, Offer.class));
         }
     }
 }
