@@ -42,8 +42,8 @@ public class OffsController {
             System.out.println("There is no Offer With This Id");
         }
     }
-    public void editOff(){
-
+    public void editOff(Offer offer){
+      ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("editOff", new Gson().toJson(offer)));
     }
     public void addOff(double amount, double maxDiscountAmount, ArrayList<Product> allProducts, Date startDate, Date endDate){
         Gson gson=new Gson();
