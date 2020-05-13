@@ -30,6 +30,10 @@ public class CustomerMenu extends Menu {
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.equalsIgnoreCase("view discount codes")) {
                 ((Customer)ClientController.getInstance().getCurrentUser()).printAllDiscountCodes();
+            }else if (command.equalsIgnoreCase("view personal info")) {
+                Menu menu = new ViewAndEditInformationForCustomer(this).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
             } else if (command.equalsIgnoreCase("help")) {
                 help();
             } else if (command.equalsIgnoreCase("logout")) {

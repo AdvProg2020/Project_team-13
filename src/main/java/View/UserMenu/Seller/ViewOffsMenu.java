@@ -38,9 +38,9 @@ public class ViewOffsMenu extends Menu {
        String command;
        OffsController.getInstance().printAllOffs((Seller)ClientController.getInstance().getCurrentUser());
        while(!(command=scanner.nextLine().trim()).equalsIgnoreCase("back")){
-           if(command.matches("view @o\\w+")){
+           if(command.matches("view @o\\d+")){
                OffsController.getInstance().printOffById((Seller)ClientController.getInstance().getCurrentUser(), getTheOffId(command));
-           }else if(command.matches("edit @o\\w+")){
+           }else if(command.matches("edit @o\\d+")){
                commandForEdit=command;
                Menu menu=new EditOffsMenu(this).setScanner(scanner);
                ClientController.getInstance().setCurrentMenu(menu);
