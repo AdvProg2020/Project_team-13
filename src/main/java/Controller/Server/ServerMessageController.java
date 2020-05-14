@@ -67,7 +67,7 @@ public class ServerMessageController {
             DataBase.getInstance().getAllProductsFromDataBase();
         } else if (message.startsWith("@removeProductForManager@")) {
             message = message.substring(25, message.length());
-            //ProductCenter.getInstance().deleteProductForManager(message);
+            ProductCenter.getInstance().deleteProduct(message);
         } else if (message.startsWith("@getAllCategories@")) {
             CategoryCenter.getIncstance().updateAllCategories();
             ArrayList<Category> allCategories = CategoryCenter.getIncstance().getAllCategories();
@@ -94,15 +94,24 @@ public class ServerMessageController {
         } else if (message.startsWith("@removeDiscountCode@")) {
             message = message.substring(20);
             DiscountCodeCenter.getIncstance().removeDiscountCode(message);
-        }else if(message.startsWith("@editManager@")){
-            message=message.substring(13);
+        } else if (message.startsWith("@editManager@")) {
+            message = message.substring(13);
             UserCenter.getIncstance().editManager(new Gson().fromJson(message, Manager.class));
-        }else if(message.startsWith("@editCustomer@")){
-            message=message.substring(14);
+        } else if (message.startsWith("@editCustomer@")) {
+            message = message.substring(14);
             UserCenter.getIncstance().editCustomer(new Gson().fromJson(message, Customer.class));
-        }else if(message.startsWith("@editSeller@")){
-            message=message.substring(12);
+        } else if (message.startsWith("@editSeller@")) {
+            message = message.substring(12);
             UserCenter.getIncstance().editSeller(new Gson().fromJson(message, Seller.class));
+        } else if (message.startsWith("@editCategory@")) {
+            message = message.substring(14);
+            if (message.startsWith("add")) {
+                message=message.substring(3);
+                CategoryCenter.getIncstance().editCategory(new Gson().fromJson(message, Category.class));
+            } else if(message.startsWith("del")) {
+                message=message.substring(3);
+                CategoryCenter.getIncstance().deleteCategoryFeature(new Gson().fromJson(message, Category.class));
+            }
         }
     }
 }

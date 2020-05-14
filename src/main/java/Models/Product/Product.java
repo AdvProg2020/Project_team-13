@@ -52,12 +52,15 @@ public class Product {
     }
 
     public double getAverageScore() {
-        double averageScore = 0;
-        for (Score score : allScores) {
-            averageScore += score.getRate();
+        if (allScores != null) {
+            double averageScore = 0;
+            for (Score score : allScores) {
+                averageScore += score.getRate();
+            }
+            averageScore /= allScores.size();
+            return averageScore;
         }
-        averageScore /= allScores.size();
-        return averageScore;
+        return 0.0;
     }
 
     public double getCostAfterOff() {
@@ -72,6 +75,7 @@ public class Product {
         projectInformation += this.productName + "\n";
         projectInformation += this.description + "\n";
         projectInformation += this.productCost + "\n";
+        projectInformation += this.productId + "\n";
         projectInformation += this.productsCategory + "\n";
         projectInformation += this.sellerUsername + "\n";
         projectInformation += this.getCostAfterOff() + "\n";
@@ -156,9 +160,9 @@ public class Product {
         this.numberOfAvailableProducts = numberOfAvailableProducts;
     }
 
-    public void addFeaturesOfCategoryThatHas(String feature,String featureDetail) {
+    public void addFeaturesOfCategoryThatHas(String feature, String featureDetail) {
         if (!this.featuresOfCategoryThatHas.containsKey(feature)) {
-            this.featuresOfCategoryThatHas.put(feature,featureDetail);
+            this.featuresOfCategoryThatHas.put(feature, featureDetail);
         }
     }
 

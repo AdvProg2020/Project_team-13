@@ -43,6 +43,10 @@ public class CategoryController {
         }
     }
 
+    public void editCategoryFeatures(Category category, String kindOfEdit) {
+        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("editCategory", kindOfEdit + new Gson().toJson(category)));
+    }
+
     public void updateAllCategories() {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("getAllCategories", "getAllCategories"));
     }

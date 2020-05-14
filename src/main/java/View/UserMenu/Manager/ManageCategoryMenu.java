@@ -3,7 +3,6 @@ package View.UserMenu.Manager;
 import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
 import Controller.Client.RequestController;
-import Controller.Server.CategoryCenter;
 import Models.Product.Category;
 import View.Menu;
 
@@ -39,7 +38,7 @@ public class ManageCategoryMenu extends Menu {
             } else if (Pattern.matches("remove (\\w+ )*\\w+", command)) {
                 removeCategory(command.substring(7));
             } else if (Pattern.matches("edit (\\w+ )*\\w+", command)) {
-
+                editCategory(command.substring(5));
             } else if (command.equalsIgnoreCase("help")) {
                 help();
             }
@@ -47,12 +46,80 @@ public class ManageCategoryMenu extends Menu {
         back();
     }
 
+    private void editCategory(String name) {
+        String categoryName = getNameForOperation("category name", name);
+        Category category = CategoryController.getInstance().getCategoryWithName(categoryName);
+        String command = "";
+        HashMap<String, ArrayList<String>> featuresOfCategory = category.getFeatures();
+        while (!(command = scanner.nextLine().trim()).equalsIgnoreCase("back")) {
+            String s;
+            if (command.equalsIgnoreCase("add feature")) {
+                System.out.println("Please enter a feature Name.");
+                while (!(s = scanner.nextLine().trim()).equalsIgnoreCase("/done")) {
+                    if (Pattern.matches("(\\w+ )*\\w+", s) && !featuresOfCategory.containsKey(s)) {
+                        String featureName = s;
+                        ArrayList<String> featureModes = new ArrayList<>();
+                        System.out.println("Please Enter different modes of feature");
+                        while (!(s = scanner.nextLine().trim()).equalsIgnoreCase("/done")) {
+                            if (Pattern.matches("(\\w+ )*\\w+", s) && !featureModes.contains(s)) {
+                                featureModes.add(s);
+                                System.out.println("Enter another one or type /done to finish adding modes.");
+                            } else if (featureModes.contains(s)) {
+                                System.out.println("you already entered that mode.");
+                            } else {
+                                System.out.println("Enter In correct Form");
+                            }
+                        }
+                        category.getFeatures().put(featureName, featureModes);
+                        break;
+                    } else if (featuresOfCategory.containsKey(s)) {
+                        System.out.println("The feature exists.");
+                    } else {
+                        System.out.println("Enter In Correct Form.you can just use alphabetical characters.");
+                    }
+                }
+                CategoryController.getInstance().editCategoryFeatures(category,"add");
+                System.out.println("Category edited");
+            } else if (command.equalsIgnoreCase("remove feature") && category.getFeatures() != null) {
+                String allFeatures = "";
+                ArrayList<String> listOfFeatures=new ArrayList<>();
+                int i = 1;
+                for (String feature : category.getFeatures().keySet()) {
+                    listOfFeatures.add(feature);
+                    allFeatures += i + "." + feature + "\n";
+                    i++;
+                }
+                allFeatures = allFeatures.substring(0, allFeatures.length() - 1);
+                System.out.println(allFeatures);
+                System.out.println("pick one feature to remove");
+                while (true) {
+                    s = scanner.nextLine().trim();
+                    if (Pattern.matches("\\d+", s) && Integer.parseInt(s) <=category.getFeatures().keySet().size()&&Integer.parseInt(s)>0) {
+                        category.getFeatures().remove(listOfFeatures.get(Integer.parseInt(s)-1));
+                        break;
+                    } else {
+                        System.out.println("Enter a number in range!!");
+                    }
+                }
+                CategoryController.getInstance().editCategoryFeatures(category,"del");
+                System.out.println("Feature deleted.");
+
+            } else if (command.equalsIgnoreCase("edit feature modes")) {
+
+            } else if(command.equalsIgnoreCase("help")) {
+                String help="1.add feature\n";
+                help+="2.remove feature\n" + "3.edit feature modes\n" + "4.help\n" + "5.back";
+                System.out.println(help);
+            }
+        }
+    }
+
     private void addCategory(String name) {
         HashMap<String, ArrayList<String>> featuresOfCategory = new HashMap();
         String categoryName = getName("categories name", name);
         String s;
         System.out.println("You need to define features for you'r category.");
-        System.out.println("Please enter  a feature Name.");
+        System.out.println("Please enter a feature Name.");
         while (!(s = scanner.nextLine().trim()).equalsIgnoreCase("/done")) {
             if (Pattern.matches("(\\w+ )*\\w+", s) && !featuresOfCategory.containsKey(s)) {
                 String featureName = s;
@@ -80,7 +147,7 @@ public class ManageCategoryMenu extends Menu {
     }
 
     private void removeCategory(String name) {
-        String categoryName = getNameForRemove("category name", name);
+        String categoryName = getNameForOperation("category name", name);
         CategoryController.getInstance().removeCategory(categoryName);
     }
 
@@ -101,14 +168,14 @@ public class ManageCategoryMenu extends Menu {
         return name;
     }
 
-    private String getNameForRemove(String nameKind, String firstName) {
+    private String getNameForOperation(String nameKind, String firstName) {
         String name = firstName;
         CategoryController.getInstance().updateAllCategories();
         while (true) {
             if (Pattern.matches("(\\w+ )*\\w+", name) && CategoryController.getInstance().isThereCategoryWithThisName(name)) {
                 break;
             } else if (!CategoryController.getInstance().isThereCategoryWithThisName(name)) {
-                System.out.println("Category with this name already exists.");
+                System.out.println("There is no category with this name");
             } else {
                 System.out.println(nameKind + " is Invalid");
             }

@@ -7,6 +7,7 @@ import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ProductCenter {
 
@@ -47,6 +48,17 @@ public class ProductCenter {
         ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("productCreating", "ProductCreating Request has been sent."));
     }
 
+    public Product getProductWithId(String productId) {
+        if (allProducts != null) {
+            for (Product product : allProducts) {
+                if (product.getProductId().equals(productId)) {
+                    return product;
+                }
+            }
+        }
+        return null;
+    }
+
     public void createProduct(Product product) {
         product.setProductId(getProductIdForCreateInProduct());
         if (allProducts != null) {
@@ -60,18 +72,16 @@ public class ProductCenter {
         DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));
     }
 
-    public void deleteProduct(String productId, String sellerObject) {
-        Gson gson = new Gson();
-        Seller seller = gson.fromJson(sellerObject, Seller.class);
-        if (seller.productExists(productId)) {
-            seller.getAllProducts().remove(seller.getProductByID(productId));
-            allProducts.remove(seller.getProductByID(productId));
-            String updatedProducts = gson.toJson(allProducts);
-            DataBase.getInstance().updateAllProducts(updatedProducts);
-            ServerController.getInstance().sendMessageToClient(MessageController.getInstance().makeMessage("removedSuccessful", "The Product removed Successfully"));
-        } else {
-            ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Error", "There is no Product with this Id"));
+    public void deleteProduct(String productId) {
+        for (Product product1 : allProducts) {
+            if(product1.getProductId().equals(productId)) {
+                allProducts.remove(product1);
+                UserCenter.getIncstance().removeProductFromSellerProductList(product1);
+                CategoryCenter.getIncstance().removeProductFromCategory(product1);
+                break;
+            }
         }
+        DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));
     }
 
     public void removeProduct(Product product) {
@@ -79,7 +89,6 @@ public class ProductCenter {
             if (product1.getProductId().equals(product.getProductId())) {
                 allProducts.remove(product1);
                 UserCenter.getIncstance().removeProductFromSellerProductList(product);
-                DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));
                 break;
             }
         }
@@ -92,6 +101,10 @@ public class ProductCenter {
 
     public void updateAllProducts() {
         DataBase.getInstance().setAllProductsFormDataBase();
+    }
+
+    public void setAllProducts() {
+        DataBase.getInstance().updateAllProducts(new Gson().toJson(this.allProducts));
     }
 
     public void setAllProducts(ArrayList<Product> allProducts) {

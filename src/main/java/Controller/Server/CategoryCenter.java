@@ -1,11 +1,16 @@
 package Controller.Server;
 
+import Controller.Client.CategoryController;
+import Controller.Client.ClientController;
+import Controller.Client.MessageController;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.Request;
 import com.google.gson.Gson;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class CategoryCenter {
     private static CategoryCenter categoryCenter;
@@ -68,10 +73,74 @@ public class CategoryCenter {
 
     public void addProductToCategory(Product product) {
         for (Category category : allCategories) {
-            if(category.getName().equals(product.getProductsCategory())) {
+            if (category.getName().equals(product.getProductsCategory())) {
                 category.addProduct(product);
                 DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
             }
         }
     }
+
+    public void editCategory(Category category) {
+        for (int i = 0; i < allCategories.size(); i++) {
+            if (allCategories.get(i).getName().equalsIgnoreCase(category.getName())) {
+                allCategories.set(i, category);
+            }
+            ArrayList<String> features = new ArrayList<>();
+            for (String feature : category.getFeatures().keySet()) {
+                features.add(feature);
+            }
+
+            for (Product product : category.getAllProducts()) {
+                product.getFeaturesOfCategoryThatHas().put(features.get(features.size() - 1), "");
+                ProductCenter.getInstance().getProductWithId(product.getProductId()).getFeaturesOfCategoryThatHas().put(features.get(features.size() - 1), "");
+            }
+        }
+        DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
+    }
+
+    public void removeProductFromCategory(Product product) {
+        for (Category category : allCategories) {
+            if (category.getName().equals(product.getProductsCategory())) {
+                for (Product product1 : category.getAllProducts()) {
+                    if (product1.getProductId().equals(product.getProductId())) {
+                        System.out.println("111222");
+                        category.getAllProducts().remove(product1);
+                        break;
+
+                    }
+                }
+            }
+            break;
+        }
+        DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
+
+
+    }
+
+
+    public void deleteCategoryFeature(Category category) {
+        for (int i = 0; i < allCategories.size(); i++) {
+            if (allCategories.get(i).getName().equalsIgnoreCase(category.getName())) {
+                allCategories.set(i, category);
+            }
+        }
+        if (category.getAllProducts() != null && !category.getAllProducts().isEmpty()) {
+            ArrayList<String> features = new ArrayList<>();
+            for (String feature : category.getFeatures().keySet()) {
+                features.add(feature);
+            }
+            for (String feature : category.getAllProducts().get(0).getFeaturesOfCategoryThatHas().keySet()) {
+                if (!features.contains(feature)) {
+                    for (Product product : category.getAllProducts()) {
+                        product.deleteFeaturesOfCategoryThatHas(feature);
+                        ProductCenter.getInstance().getProductWithId(product.getProductId()).deleteFeaturesOfCategoryThatHas(feature);
+                    }
+                    ProductCenter.getInstance().setAllProducts();
+                    break;
+                }
+            }
+        }
+        DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
+    }
+
 }
