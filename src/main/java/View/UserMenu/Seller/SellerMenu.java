@@ -31,7 +31,7 @@ public class SellerMenu extends Menu {
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             }else if (command.equals("show categories")&& isAccepted) {
-                CategoryController.getInstance().showAllCategories();
+                CategoryController.getInstance().printAllCategories();
             } else if (command.equals("help")) {
                 help();
             } else if (command.equalsIgnoreCase("logout")) {

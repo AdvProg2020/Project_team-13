@@ -126,7 +126,6 @@ public class DataBase {
             Type productListType = new TypeToken<ArrayList<Product>>() {
             }.getType();
             allProducts = gson.fromJson(allProductsInGsonForm, productListType);
-            System.out.println(allProducts.size());
             ProductCenter.getInstance().setAllProducts(allProducts);
             br.close();
             fileReader.close();

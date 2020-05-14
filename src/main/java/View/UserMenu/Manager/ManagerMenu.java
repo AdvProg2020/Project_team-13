@@ -78,7 +78,7 @@ public class ManagerMenu extends Menu {
                 Menu menu = new ManageProductsMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
-            }else {
+            } else {
                 System.out.println("Invalid Command");
             }
         }
