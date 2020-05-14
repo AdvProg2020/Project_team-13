@@ -1,14 +1,11 @@
 package View.UserMenu.Manager;
 
 import Controller.Client.CategoryController;
-import Controller.Client.ClientController;
-import Controller.Client.RequestController;
 import Models.Product.Category;
 import View.Menu;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.SplittableRandom;
 import java.util.regex.Pattern;
 
 public class ManageCategoryMenu extends Menu {

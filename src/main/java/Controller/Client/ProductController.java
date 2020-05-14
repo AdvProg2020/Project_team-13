@@ -60,4 +60,6 @@ public class ProductController {
     public void removeProductForManager(String productId) {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("removeProductForManager", productId));
     }
+
+
 }
