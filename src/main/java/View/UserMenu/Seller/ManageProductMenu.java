@@ -33,17 +33,17 @@ public class ManageProductMenu extends Menu {
         System.out.println(seller.viewAllProducts());
         String command;
         while (!(command = scanner.nextLine()).trim().equalsIgnoreCase("back")) {
-            if (command.matches("view \\w+")) {
+            if (command.matches("view @p\\d+")) {
                 System.out.println(seller.viewProduct(getTheProductIdByCommand(command, 1)));
-            } else if (command.matches("view buyers \\w+")) {
+            } else if (command.matches("view buyers @p\\d+")) {
                 //This is for score!!!
-            } else if (command.matches("edit \\w+")) {
+            } else if (command.matches("edit @p\\d+")) {
                 Menu menu = new EditProductInfoMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equals("help")) {
                 help();
-            } else if (command.matches("remove \\w+")) {
+            } else if (command.matches("remove @p\\d+")) {
                 Gson gson = new Gson();
                 String sellerObject = gson.toJson((Seller) ClientController.getInstance().getCurrentUser());
                 ProductController.getInstance().removeProduct(getTheProductIdByCommand(command, 1), sellerObject);

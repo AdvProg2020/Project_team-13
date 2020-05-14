@@ -44,8 +44,15 @@ public class RequestCenter {
         } else if (type.equals("AddProduct")) {
             Request request = new Request(RequestType.addProduct, RequestStatus.onReview, makeRequestID(), details);
             return request;
+        } else if(type.equals("AddOffer")){
+            Request request= new Request(RequestType.addOff, RequestStatus.onReview, makeRequestID(), details);
+            return request;
+        } else if(type.equals("EditOffer")){
+            Request request=new Request(RequestType.editOff,RequestStatus.onReview,makeRequestID(),details);
+            return request;
+        }else{
+            return null;
         }
-        return null;
     }
 
     public ArrayList<Request> getAllRequests() {
@@ -93,5 +100,12 @@ public class RequestCenter {
 
     public void setLastRequestID(String lastRequestID) {
         this.lastRequestID = lastRequestID;
+    }
+
+    public void acceptEditOfferRequest(String RequestId){
+
+    }
+    public void acceptAddOfferRequest(String RequestId){
+
     }
 }

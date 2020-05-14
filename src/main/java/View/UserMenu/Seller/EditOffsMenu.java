@@ -2,6 +2,7 @@ package View.UserMenu.Seller;
 
 import Controller.Client.ClientController;
 import Controller.Client.OffsController;
+import Controller.Client.ProductController;
 import Models.Offer;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
@@ -13,6 +14,7 @@ import java.util.Date;
 public class EditOffsMenu extends Menu {
     private Offer offer;
     private boolean back;
+    private ArrayList<Product> allProducts;
     public EditOffsMenu(Menu parentMenu) {
         super(parentMenu);
     }
@@ -86,12 +88,12 @@ public class EditOffsMenu extends Menu {
                 offer.setEndTime(endDate);
                 OffsController.getInstance().editOff(offer);
             }else if(command.equalsIgnoreCase("Edit Products")){
-                ArrayList<Product> allproducts=getEditedProducts(offer);
-                if(isBack()){
+               editProduct();
+               if(isBack()){
                     continue;
                 }
-                offer.setProducts(allproducts);
-//                OffsController.getInstance().editOff();
+               offer.setProducts(allProducts);
+               OffsController.getInstance().editOff(offer);
             }else if(command.equalsIgnoreCase("help")){
                 help();
             }else {
@@ -216,26 +218,66 @@ public class EditOffsMenu extends Menu {
         setBack(true);
         return  null;
     }
-    private ArrayList<Product> getEditedProducts(Offer offer){
+
+    private void removeProduct(){
+      String command;
+      OffsController.getInstance().viewAllProducts(offer);
+      do{
+          System.out.println("remove [product id]");
+          command=scanner.nextLine().trim();
+          if(command.matches("remove @p\\d+")){
+              if(offer.getProducts().contains(offer.getProductByIdInOfferList(command.substring(7)))){
+                  offer.getProducts().remove(offer.getProductByIdInOfferList(command.substring(7)));
+                  offer.getProducts().trimToSize();
+              }else{
+                  System.out.println("The Product Isn't In The List");
+              }
+          }else{
+              System.out.println("Enter The Correct Command");
+          }
+      }while (!(command.equalsIgnoreCase("back")));
+    }
+
+    private void addProductFromList(){
         Seller seller=(Seller)ClientController.getInstance().getCurrentUser();
         String command;
-        ArrayList<Product> allProducts=new ArrayList<>();
+        System.out.println(seller.viewAllProducts());
         do{
-            System.out.println("1. Add Product [product Id]\n2. Remove Product [product id]");
+            System.out.println("add [product id]");
             command=scanner.nextLine().trim();
-            if(command.equals("Add Product")){
-//                if(){
-//                    System.out.println("The Product Does Not Exist In The List.");
-//                }else{
-//
-//                }
-            }else if(command.equals("Remove Product")){
-
+            if(command.matches("add @p\\d+")){
+                if(!seller.productExists(command.substring(4))){
+                    System.out.println("The Product Isn't in Your List.");
+                }else if(seller.productExistsInOtherOffer(command.substring(4))){
+                    System.out.println("The Product Already Exists In Other Offer.");
+                }else{
+                    allProducts.add(seller.getProductByID(command.substring(4)));
+                }
             }else{
-                System.out.println("Enter The Write Command");
+                System.out.println("Enter The Correct Command");
+            }
+        }while(!(command.equalsIgnoreCase("back")));
+    }
+
+    private void editProduct(){
+        String command;
+        allProducts=new ArrayList<>();
+        do{
+            System.out.println("1. Add Product\n2. Remove Product\n3. finish");
+            command=scanner.nextLine().trim();
+            if(command.equals("finish")){
+                if(!allProducts.isEmpty()){
+                   return;
+                }
+                System.out.println("You Should Choose To Add Or Edit Product OtherWise Press Back.");
+            }else if(command.equals("Add Product")){
+                addProductFromList();
+            }else if(command.equals("Remove Product")){
+                removeProduct();
+            }else{
+                System.out.println("Enter The Correct Command");
             }
         }while (!(command.equalsIgnoreCase("back")));
         setBack(true);
-        return null;
     }
 }
