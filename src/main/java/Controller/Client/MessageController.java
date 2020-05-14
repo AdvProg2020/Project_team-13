@@ -77,11 +77,11 @@ public class MessageController {
             message = message.substring(12, message.length());
             ManagerController.getInstance().setAllSellers(message);
         } else if (message.startsWith("@allManagers@")) {
-            message = message.substring(13, message.length());
+            message = message.substring(13);
             ManagerController.getInstance().setAllManagers(message);
         } else if (message.startsWith("@getAllProductsForManager@")) {
-            message = message.substring(26, message.length());
-            ProductController.getInstance().printAllProducts(message);
+            message = message.substring(26);
+            ProductController.getInstance().updateAllProducts(message);
         } else if (message.startsWith("@setAllCategories@")) {
             message = message.substring(18);
             CategoryController.getInstance().setAllCategories(message);

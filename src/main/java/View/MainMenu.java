@@ -2,6 +2,7 @@ package View;
 
 import Controller.Client.ClientController;
 import Models.Product.Product;
+import View.ProductsAndOffsMenus.ProductsMenu;
 import View.UserMenu.UserMenu;
 
 public class MainMenu extends Menu {
@@ -26,7 +27,9 @@ public class MainMenu extends Menu {
         while (true) {
             String command=scanner.nextLine().trim();
             if (command.equalsIgnoreCase("products")) {
-
+                Menu menu=new ProductsMenu(this).setScanner(this.scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
             } else if(command.equalsIgnoreCase("offs")) {
 
             }else if(command.equalsIgnoreCase("EnterUserMenu")) {
