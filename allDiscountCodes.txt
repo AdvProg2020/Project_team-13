@@ -1,1 +1,1 @@
-[]
+[{"discountCodeID":"aaaaaag","startTime":"Nov 11, 2021, 10:10:10 PM","endTime":"Nov 11, 2022, 10:10:10 PM","allUserAccountsThatHaveDiscount":["2001korosh"],"discountPercent":234,"maxDiscountAmount":234.0,"maxUsingTime":{"2001korosh":12},"remainingTimesForEachCustomer":{"2001korosh":12}}]

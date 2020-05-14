@@ -111,6 +111,9 @@ public class ServerMessageController {
             } else if(message.startsWith("del")) {
                 message=message.substring(3);
                 CategoryCenter.getIncstance().deleteCategoryFeature(new Gson().fromJson(message, Category.class));
+            } else if(message.startsWith("adM")) {
+                    message=message.substring(3);
+                CategoryCenter.getIncstance().replaceCategory(new Gson().fromJson(message, Category.class));
             }
         }
     }

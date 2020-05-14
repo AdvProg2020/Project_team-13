@@ -57,14 +57,54 @@ public class ManageCategoryMenu extends Menu {
                 category = addFeatureToCategory(category);
             } else if (command.equalsIgnoreCase("remove feature") && category.getFeatures() != null) {
                 category = removeFeature(category);
-            } else if (command.equalsIgnoreCase("edit feature modes")) {
-
+            } else if (command.equalsIgnoreCase("add mode to feature")) {
+                addModeToFeatureOfCategory(category);
             } else if (command.equalsIgnoreCase("help")) {
                 String help = "1.add feature\n";
-                help += "2.remove feature\n" + "3.edit feature modes\n" + "4.help\n" + "5.back";
+                help += "2.remove feature\n" + "3.add mode to feature\n" + "4.help\n" + "5.back";
                 System.out.println(help);
             }
         }
+    }
+
+    private Category addModeToFeatureOfCategory(Category category) {
+        String s;
+        String allFeatures = "";
+        ArrayList<String> listOfFeatures = new ArrayList<>();
+        int i = 1;
+        for (String feature : category.getFeatures().keySet()) {
+            listOfFeatures.add(feature);
+            allFeatures += i + "." + feature + "\n";
+            i++;
+        }
+        allFeatures = allFeatures.substring(0, allFeatures.length() - 1);
+        System.out.println(allFeatures);
+        System.out.println("pick one feature");
+        while (true) {
+            s = scanner.nextLine().trim();
+            String input;
+            if (Pattern.matches("\\d+", s) && Integer.parseInt(s) <= category.getFeatures().keySet().size() && Integer.parseInt(s) > 0) {
+                System.out.println("Enter a mode to add to feature");
+                ArrayList<String> featureModes = category.getFeatures().get(listOfFeatures.get(Integer.parseInt(s) - 1));
+                while (!(input = scanner.nextLine().trim()).equalsIgnoreCase("/done")) {
+                    if (Pattern.matches("(\\w+ )*\\w+", input) && !featureModes.contains(input)) {
+                        featureModes.add(input);
+                        System.out.println("Enter another one or type /done to finish adding modes.");
+                    } else if (featureModes.contains(input)) {
+                        System.out.println("you already entered that mode or type /done to finish adding modes..");
+                    } else {
+                        System.out.println("Enter In correct Form or type /done to finish adding modes.");
+                    }
+                }
+                category.getFeatures().replace(listOfFeatures.get(Integer.parseInt(s) - 1), featureModes);
+                break;
+            } else {
+                System.out.println("Enter a number in range!!");
+            }
+        }
+        CategoryController.getInstance().editCategoryFeatures(category, "adM");
+        System.out.println("Feature edited.");
+        return category;
     }
 
     private Category removeFeature(Category category) {

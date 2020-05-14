@@ -114,6 +114,16 @@ public class CategoryCenter {
         DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
     }
 
+    public void replaceCategory(Category category) {
+        for (int i = 0; i < allCategories.size(); i++) {
+            if (allCategories.get(i).getName().equals(category.getName())) {
+                    allCategories.set(i,category);
+                    break;
+            }
+        }
+        DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
+    }
+
 
     public void deleteCategoryFeature(Category category) {
         for (int i = 0; i < allCategories.size(); i++) {
