@@ -113,4 +113,11 @@ public class ProductCenter {
         this.allProducts = allProducts;
     }
 
+    public void createEditProductRequest(Product product){
+        //
+    }
+
+    public void editProduct(Product product){
+        //
+    }
 }

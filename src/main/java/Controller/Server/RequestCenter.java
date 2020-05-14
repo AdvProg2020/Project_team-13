@@ -1,5 +1,6 @@
 package Controller.Server;
 
+import Models.Offer;
 import Models.Product.Product;
 import Models.Request;
 import Models.RequestStatus;
@@ -38,20 +39,17 @@ public class RequestCenter {
     }
 
     public Request makeRequest(String type, String details) {
-        if (type.equals("AcceptSellerAccount")) {
-            Request request = new Request(RequestType.sellerRegister, RequestStatus.onReview, makeRequestID(), details);
-            return request;
-        } else if (type.equals("AddProduct")) {
-            Request request = new Request(RequestType.addProduct, RequestStatus.onReview, makeRequestID(), details);
-            return request;
-        } else if(type.equals("AddOffer")){
-            Request request= new Request(RequestType.addOff, RequestStatus.onReview, makeRequestID(), details);
-            return request;
-        } else if(type.equals("EditOffer")){
-            Request request=new Request(RequestType.editOff,RequestStatus.onReview,makeRequestID(),details);
-            return request;
-        }else{
-            return null;
+        switch (type) {
+            case "AcceptSellerAccount":
+                return new Request(RequestType.sellerRegister, RequestStatus.onReview, makeRequestID(), details);
+            case "AddProduct":
+                return new Request(RequestType.addProduct, RequestStatus.onReview, makeRequestID(), details);
+            case "AddOffer":
+                return new Request(RequestType.addOff, RequestStatus.onReview, makeRequestID(), details);
+            case "EditOffer":
+                return new Request(RequestType.editOff, RequestStatus.onReview, makeRequestID(), details);
+            default:
+                return null;
         }
     }
 
@@ -65,6 +63,12 @@ public class RequestCenter {
             acceptSellerRegisterRequest(request);
         } else if (request.getType() == RequestType.addProduct) {
             acceptAddProductRequest(request);
+        } else if(request.getType().equals(RequestType.EditProduct)){
+            acceptEditOfferRequest(request);
+        } else if(request.getType().equals(RequestType.addOff)){
+            acceptAddOfferRequest(request);
+        } else if (request.getType().equals(RequestType.EditProduct)){
+            acceptEdiProductRequest(request);
         }
     }
 
@@ -102,10 +106,21 @@ public class RequestCenter {
         this.lastRequestID = lastRequestID;
     }
 
-    public void acceptEditOfferRequest(String RequestId){
-
+    public void acceptEditOfferRequest(Request request){
+        allRequests.remove(request);
+        OffCenter.getInstance().editOffer(new Gson().fromJson(request.getDetails(), Offer.class));
+        String arrayData=new Gson().toJson(allRequests);
+        DataBase.getInstance().updateAllRequests(arrayData);
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "Request accept successfully"));
     }
-    public void acceptAddOfferRequest(String RequestId){
+    public void acceptAddOfferRequest(Request request){
+        allRequests.remove(request);
+        OffCenter.getInstance().createNewOff(new Gson().fromJson(request.getDetails(), Offer.class));
+        String arrayData=new Gson().toJson(allRequests);
+        DataBase.getInstance().updateAllRequests(arrayData);
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "Request accept successfully"));
+    }
+    public void acceptEdiProductRequest(Request request){
 
     }
 }
