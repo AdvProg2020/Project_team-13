@@ -54,64 +54,76 @@ public class ManageCategoryMenu extends Menu {
         while (!(command = scanner.nextLine().trim()).equalsIgnoreCase("back")) {
             String s;
             if (command.equalsIgnoreCase("add feature")) {
-                System.out.println("Please enter a feature Name.");
-                while (!(s = scanner.nextLine().trim()).equalsIgnoreCase("/done")) {
-                    if (Pattern.matches("(\\w+ )*\\w+", s) && !featuresOfCategory.containsKey(s)) {
-                        String featureName = s;
-                        ArrayList<String> featureModes = new ArrayList<>();
-                        System.out.println("Please Enter different modes of feature");
-                        while (!(s = scanner.nextLine().trim()).equalsIgnoreCase("/done")) {
-                            if (Pattern.matches("(\\w+ )*\\w+", s) && !featureModes.contains(s)) {
-                                featureModes.add(s);
-                                System.out.println("Enter another one or type /done to finish adding modes.");
-                            } else if (featureModes.contains(s)) {
-                                System.out.println("you already entered that mode.");
-                            } else {
-                                System.out.println("Enter In correct Form");
-                            }
-                        }
-                        category.getFeatures().put(featureName, featureModes);
-                        break;
-                    } else if (featuresOfCategory.containsKey(s)) {
-                        System.out.println("The feature exists.");
-                    } else {
-                        System.out.println("Enter In Correct Form.you can just use alphabetical characters.");
-                    }
-                }
-                CategoryController.getInstance().editCategoryFeatures(category,"add");
-                System.out.println("Category edited");
+                category = addFeatureToCategory(category);
             } else if (command.equalsIgnoreCase("remove feature") && category.getFeatures() != null) {
-                String allFeatures = "";
-                ArrayList<String> listOfFeatures=new ArrayList<>();
-                int i = 1;
-                for (String feature : category.getFeatures().keySet()) {
-                    listOfFeatures.add(feature);
-                    allFeatures += i + "." + feature + "\n";
-                    i++;
-                }
-                allFeatures = allFeatures.substring(0, allFeatures.length() - 1);
-                System.out.println(allFeatures);
-                System.out.println("pick one feature to remove");
-                while (true) {
-                    s = scanner.nextLine().trim();
-                    if (Pattern.matches("\\d+", s) && Integer.parseInt(s) <=category.getFeatures().keySet().size()&&Integer.parseInt(s)>0) {
-                        category.getFeatures().remove(listOfFeatures.get(Integer.parseInt(s)-1));
-                        break;
-                    } else {
-                        System.out.println("Enter a number in range!!");
-                    }
-                }
-                CategoryController.getInstance().editCategoryFeatures(category,"del");
-                System.out.println("Feature deleted.");
-
+                category = removeFeature(category);
             } else if (command.equalsIgnoreCase("edit feature modes")) {
 
-            } else if(command.equalsIgnoreCase("help")) {
-                String help="1.add feature\n";
-                help+="2.remove feature\n" + "3.edit feature modes\n" + "4.help\n" + "5.back";
+            } else if (command.equalsIgnoreCase("help")) {
+                String help = "1.add feature\n";
+                help += "2.remove feature\n" + "3.edit feature modes\n" + "4.help\n" + "5.back";
                 System.out.println(help);
             }
         }
+    }
+
+    private Category removeFeature(Category category) {
+        String s;
+        String allFeatures = "";
+        ArrayList<String> listOfFeatures = new ArrayList<>();
+        int i = 1;
+        for (String feature : category.getFeatures().keySet()) {
+            listOfFeatures.add(feature);
+            allFeatures += i + "." + feature + "\n";
+            i++;
+        }
+        allFeatures = allFeatures.substring(0, allFeatures.length() - 1);
+        System.out.println(allFeatures);
+        System.out.println("pick one feature to remove");
+        while (true) {
+            s = scanner.nextLine().trim();
+            if (Pattern.matches("\\d+", s) && Integer.parseInt(s) <= category.getFeatures().keySet().size() && Integer.parseInt(s) > 0) {
+                category.getFeatures().remove(listOfFeatures.get(Integer.parseInt(s) - 1));
+                break;
+            } else {
+                System.out.println("Enter a number in range!!");
+            }
+        }
+        CategoryController.getInstance().editCategoryFeatures(category, "del");
+        System.out.println("Feature deleted.");
+        return category;
+    }
+
+    private Category addFeatureToCategory(Category category) {
+        HashMap<String, ArrayList<String>> featuresOfCategory = category.getFeatures();
+        String s;
+        System.out.println("Please enter a feature Name.");
+        while (!(s = scanner.nextLine().trim()).equalsIgnoreCase("/done")) {
+            if (Pattern.matches("(\\w+ )*\\w+", s) && !featuresOfCategory.containsKey(s)) {
+                String featureName = s;
+                ArrayList<String> featureModes = new ArrayList<>();
+                System.out.println("Please Enter different modes of feature");
+                while (!(s = scanner.nextLine().trim()).equalsIgnoreCase("/done")) {
+                    if (Pattern.matches("(\\w+ )*\\w+", s) && !featureModes.contains(s)) {
+                        featureModes.add(s);
+                        System.out.println("Enter another one or type /done to finish adding modes.");
+                    } else if (featureModes.contains(s)) {
+                        System.out.println("you already entered that mode.");
+                    } else {
+                        System.out.println("Enter In correct Form");
+                    }
+                }
+                category.getFeatures().put(featureName, featureModes);
+                break;
+            } else if (featuresOfCategory.containsKey(s)) {
+                System.out.println("The feature exists.");
+            } else {
+                System.out.println("Enter In Correct Form.you can just use alphabetical characters.");
+            }
+        }
+        CategoryController.getInstance().editCategoryFeatures(category, "add");
+        System.out.println("Category edited");
+        return category;
     }
 
     private void addCategory(String name) {
