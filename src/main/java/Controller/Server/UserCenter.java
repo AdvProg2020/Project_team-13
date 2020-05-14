@@ -1,5 +1,6 @@
 package Controller.Server;
 
+import Models.Offer;
 import Models.Product.Product;
 import Models.Request;
 import Models.UserAccount.Customer;
@@ -145,6 +146,16 @@ public class UserCenter {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(product.getSeller())) {
                 seller.addProduct(product);
+                break;
+            }
+        }
+        DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+    }
+
+    public void addOfferToSeller(Offer offer){
+        for (Seller seller : allSeller) {
+            if(seller.equals(offer.getSeller())){
+                seller.addOffer(offer);
                 break;
             }
         }

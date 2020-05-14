@@ -503,4 +503,13 @@ public class DataBase {
             System.out.println(e);
         }
     }
+    public void updateAllOffers(String json){
+        try {
+            FileWriter fileWriter=new FileWriter("allOffers.txt");
+            fileWriter.write(json);
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
