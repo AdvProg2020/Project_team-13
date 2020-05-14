@@ -103,7 +103,6 @@ public class CategoryCenter {
             if (category.getName().equals(product.getProductsCategory())) {
                 for (Product product1 : category.getAllProducts()) {
                     if (product1.getProductId().equals(product.getProductId())) {
-                        System.out.println("111222");
                         category.getAllProducts().remove(product1);
                         break;
 
@@ -113,8 +112,6 @@ public class CategoryCenter {
             break;
         }
         DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
-
-
     }
 
 

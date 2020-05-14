@@ -176,7 +176,6 @@ public class UserCenter {
     }
 
     public void removeProductFromSellerProductList(Product product) {
-        System.out.println(product==null);
         for (Seller seller : allSeller) {
             if(seller.getUsername().equals(product.getSeller())) {
                 seller.removeProduct(product.getProductId());
