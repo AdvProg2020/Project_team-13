@@ -4,6 +4,4 @@ public enum RequestStatus {
     Accepted,
     onReview,
     Decliend;
-
-
 }
