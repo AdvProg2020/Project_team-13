@@ -98,8 +98,8 @@ public class Offer {
     public String toString() {
         return "offerId :" + offerId + '\n' +
                 "amount : " + amount + '\n'+
-                "products :" + products +'\n'+
-                "maxDiscountAmount : " + maxDiscountAmount +'\n'+
+                "products :" + products +'%'+'\n'+
+                "maxDiscountAmount : " + maxDiscountAmount +'%'+'\n'+
                 "startTime : " + startTime +'\n'+
                 "endTime : "  + endTime +'\n'+
                 "offerStatus : " + offerStatus +'\n'

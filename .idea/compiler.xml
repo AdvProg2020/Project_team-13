@@ -10,6 +10,7 @@
         <module name="پروژه" />
         <module name="13" />
         <module name="Project_Team_13" />
+        <module name="Project" />
       </profile>
     </annotationProcessing>
   </component>

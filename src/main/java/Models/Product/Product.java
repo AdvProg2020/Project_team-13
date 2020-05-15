@@ -166,6 +166,10 @@ public class Product {
         }
     }
 
+    public void setCostAfterOff(double costAfterOff) {
+        this.costAfterOff = costAfterOff;
+    }
+
     public void deleteFeaturesOfCategoryThatHas(String feature) {
         if (!this.featuresOfCategoryThatHas.containsKey(feature)) {
             this.featuresOfCategoryThatHas.remove(feature);
@@ -201,8 +205,7 @@ public class Product {
                 '}';
     }
     public String productInfoFor(){
-        return "Product{" +
-                "productId='" + productId + '\'' +
+        return  "productId='" + productId + '\'' +
                 ", productStatus=" + productStatus +
                 ", productName='" + productName + '\'' +
                 ", productCompany='" + productCompany + '\'' +

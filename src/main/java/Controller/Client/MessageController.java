@@ -92,6 +92,9 @@ public class MessageController {
         }else if(message.startsWith("@AddOffer@")){
             message=message.substring(10);
             ClientController.getInstance().getCurrentMenu().showMessage(message);
+        }else if(message.startsWith("@editOffer@")){
+            message=message.substring(11);
+            ClientController.getInstance().getCurrentMenu().showMessage(message);
         }
     }
 

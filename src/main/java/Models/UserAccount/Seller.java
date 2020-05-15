@@ -48,6 +48,9 @@ public class Seller extends UserAccount {
             allOffer = new ArrayList<>();
         }
         allOffer.add(offer);
+        for (Product product : offer.getProducts()) {
+            product.setCostAfterOff(product.getProductCost()*(1-(offer.getAmount()/100)));
+        }
     }
 
     public void removeProduct(String productId) {

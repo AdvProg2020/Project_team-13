@@ -90,7 +90,7 @@ public class ServerMessageController {
             DiscountCodeCenter.getIncstance().editDiscountCode(new Gson().fromJson(message, DiscountCode.class));
         } else if (message.startsWith("@AddOffer@")) {
             message = message.substring(10);
-            OffCenter.getInstance().createOfferRequest(message);
+            OffCenter.getInstance().createOfferRequest(new Gson().fromJson(message, Offer.class));
         } else if (message.startsWith("@removeDiscountCode@")) {
             message = message.substring(20);
             DiscountCodeCenter.getIncstance().removeDiscountCode(message);
@@ -117,10 +117,10 @@ public class ServerMessageController {
             }
         }else if(message.startsWith("@editOffer@")){
             message=message.substring(11);
-            OffCenter.getInstance().createEditOfferRequest(new Gson().fromJson(message, Offer.class));//
+            OffCenter.getInstance().createEditOfferRequest(new Gson().fromJson(message, Offer.class));
         }else if(message.startsWith("@editProduct@")){
             message=message.substring(13);
-            ProductCenter.getInstance().createEditProductRequest(new Gson().fromJson(message, Product.class));//
+            ProductCenter.getInstance().createEditProductRequest(new Gson().fromJson(message, Product.class));
         }
     }
 }

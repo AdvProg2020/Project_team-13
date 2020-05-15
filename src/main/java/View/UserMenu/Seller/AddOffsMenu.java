@@ -2,6 +2,7 @@ package View.UserMenu.Seller;
 
 import Controller.Client.ClientController;
 import Controller.Client.OffsController;
+import Controller.Client.ProductController;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import View.Menu;
@@ -29,7 +30,7 @@ public class AddOffsMenu extends Menu {
     @Override
     public void execute() {
         Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
-        if (seller.hasAnyProduct()) {
+        if (!seller.hasAnyProduct()) {
             System.out.println("There Is No Product For Offer!!!");
             back();
             return;
@@ -65,15 +66,16 @@ public class AddOffsMenu extends Menu {
 
     private double getTheAmount() {
         String command;
-        while (!(command = scanner.nextLine().trim()).equalsIgnoreCase("back")) {
+        do {
             System.out.println("Enter The Off Amount: ");
-            if (command.matches("\\d+(\\.\\d+)?")) {
-                return Double.parseDouble(command);
+            command=scanner.nextLine().trim();
+            if (command.matches("\\d{1,2}(\\.\\d+)?%")) {
+                return Double.parseDouble(command.substring(0,command.length()-1));
             } else {
                 System.out.println("invalid command");
             }
-        }
-        back = true;
+        }while(!(command.equalsIgnoreCase("back")));
+        setBack(true);
         return 0;
     }
 
@@ -87,8 +89,8 @@ public class AddOffsMenu extends Menu {
         do {
             System.out.println("Enter The Max Discount Amount: ");
             command=scanner.nextLine().trim();
-            if (command.matches("\\d+(\\.\\d+)?")) {
-                return Double.parseDouble(command);
+            if (command.matches("\\d{1,2}(\\.\\d+)?%")) {
+                return Double.parseDouble(command.substring(0, command.length()-1));
             } else {
                 System.out.println("invalid command");
             }
@@ -98,30 +100,35 @@ public class AddOffsMenu extends Menu {
     }
 
     private ArrayList<Product> getAllProducts(Seller seller) {
-        String command;
-        ArrayList<Product> products = new ArrayList<>();
+        String command,productDetails;
+        ArrayList<Product> products = new ArrayList<>(seller.getAllProducts());
+        ArrayList<Product> selectedProducts=new ArrayList<>();
         while (true) {
-            System.out.println("Enter The Products That Listed Here:\n" + seller.viewAllProducts());
+            System.out.println("Enter The Product From The List Below:\n\n"+(productDetails=ProductController.getInstance().getTheProductDetails(products)));
             command = scanner.nextLine().trim();
             if (command.equalsIgnoreCase("back")) {
-                back = true;
+                setBack(true);
                 return null;
             } else if (command.equalsIgnoreCase("finish")) {
-                if (products.isEmpty()) {
-                    System.out.println("You Must Choose A Product");
+                if (selectedProducts.isEmpty()) {
+                    System.out.println("You Must Choose A Product\n\n");
                 } else {
-                    return products;
+                    return selectedProducts;
                 }
-            } else if (command.matches("@p\\w+")) {
-                if (!seller.productExists(command)) {
-                    System.out.println("There Is No Product With This Id In That List. ");
-                } else if (seller.productExistsInOtherOffer(command)) {
-                    System.out.println("The Product Already Exists in Other Offer. ");
+            } else if (command.matches("add @p\\d+")) {
+                if (!products.contains(seller.getProductByID(command.substring(4)))) {
+                    System.out.println("There Is No Product With This Id In That List.\n\n");
+                } else if (seller.productExistsInOtherOffer(command.substring(4))) {
+                    System.out.println("The Product Already Exists in Other Offer.\n\n");
                 } else {
-                    products.add(seller.getProductByID(command));
+                    selectedProducts.add(seller.getProductByID(command.substring(4)));
+                    products.remove(seller.getProductByID(command.substring(4)));
+                    System.out.println("Product selected\n\n");
                 }
+            } else if(command.equalsIgnoreCase("View selected products")){
+                System.out.println(productDetails=ProductController.getInstance().getTheProductDetails(selectedProducts));
             } else {
-                System.out.println("invalid command");
+                System.out.println("invalid command\n\n");
             }
         }
     }

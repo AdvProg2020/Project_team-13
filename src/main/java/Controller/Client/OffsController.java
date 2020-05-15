@@ -53,7 +53,7 @@ public class OffsController {
     }
     public void viewAllProducts(Offer offer){
         for (Product product : offer.getProducts()) {
-            System.out.println(product.viewProduct());
+            System.out.println(product.productInfoFor());
         }
     }
 }

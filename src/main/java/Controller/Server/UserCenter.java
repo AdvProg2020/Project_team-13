@@ -154,7 +154,7 @@ public class UserCenter {
 
     public void addOfferToSeller(Offer offer){
         for (Seller seller : allSeller) {
-            if(seller.equals(offer.getSeller())){
+            if(seller.getUsername().equals(offer.getSeller().getUsername())){
                 seller.addOffer(offer);
                 break;
             }

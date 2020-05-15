@@ -61,5 +61,13 @@ public class ProductController {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("removeProductForManager", productId));
     }
 
+    public String getTheProductDetails(ArrayList<Product> products){
+        String allProducts="";
+        for (Product product : products) {
+            allProducts+=product.productInfoFor()+"\n\n";
+        }
+        return allProducts;
+    }
+
 
 }
