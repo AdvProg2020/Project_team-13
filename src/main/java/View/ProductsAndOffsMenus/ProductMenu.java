@@ -12,6 +12,7 @@ public class ProductMenu extends Menu {
     public void help() {
         String userMenuOptions = "";
         userMenuOptions += "1.Digest\n";
+        userMenuOptions += "2.Attributes\n";
         userMenuOptions += "7.Help\n";
         userMenuOptions += "4.Back\n";
         userMenuOptions += "5.LogOut\n";
@@ -28,6 +29,8 @@ public class ProductMenu extends Menu {
                 Menu menu = new Digest(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
+            }else if (command.equalsIgnoreCase("attributes")) {
+                product.showAttributes();
             } else if (command.equalsIgnoreCase("help")) {
                 help();
             } else if (command.equalsIgnoreCase("logout")) {

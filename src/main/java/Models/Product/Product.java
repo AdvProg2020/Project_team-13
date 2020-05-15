@@ -223,4 +223,19 @@ public class Product {
         digest+=getAverageScore()+"\n";
         ClientController.getInstance().getCurrentMenu().showMessage(digest);
     }
+    public void showAttributes(){
+        String attributes="";
+        attributes+=getProductId()+"\n";
+        attributes+=getProductName()+"\n";
+        attributes+=getProductsCategory()+"\n";
+        for (String feature : featuresOfCategoryThatHas.keySet()) {
+            attributes+=feature+": "+featuresOfCategoryThatHas.get(feature)+"\n";
+        }
+        attributes+=getSeller()+"\n";
+        attributes+=getProductCompany()+"\n";
+        attributes+=getProductCost()+"\n";
+        attributes+=getCostAfterOff()+"\n";
+        attributes+=getDescription();
+        ClientController.getInstance().getCurrentMenu().showMessage(attributes);
+    }
 }
