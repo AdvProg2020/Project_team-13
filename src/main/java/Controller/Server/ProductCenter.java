@@ -3,6 +3,7 @@ package Controller.Server;
 import Controller.Client.MessageController;
 import Models.Product.Category;
 import Models.Product.Product;
+import Models.Product.ProductStatus;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 
@@ -61,6 +62,7 @@ public class ProductCenter {
 
     public void createProduct(Product product) {
         product.setProductId(getProductIdForCreateInProduct());
+        product.setProductStatus(ProductStatus.accepted);
         if (allProducts != null) {
             allProducts.add(product);
         } else {
@@ -111,4 +113,11 @@ public class ProductCenter {
         this.allProducts = allProducts;
     }
 
+    public void createEditProductRequest(Product product){
+        //
+    }
+
+    public void editProduct(Product product){
+        //
+    }
 }

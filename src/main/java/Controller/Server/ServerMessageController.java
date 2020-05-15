@@ -45,7 +45,7 @@ public class ServerMessageController {
             message = message.substring(15, message.length());
             RequestCenter.getIncstance().acceptRequest(message);
         } else if (message.startsWith("@AddProduct@")) {
-            message = message.substring(12, message.length());
+            message = message.substring(12);
             Gson gson = new Gson();
             Product product = gson.fromJson(message, Product.class);
             ProductCenter.getInstance().createProductRequest(product);
@@ -115,6 +115,12 @@ public class ServerMessageController {
                     message=message.substring(3);
                 CategoryCenter.getIncstance().replaceCategory(new Gson().fromJson(message, Category.class));
             }
+        }else if(message.startsWith("@editOffer@")){
+            message=message.substring(11);
+            OffCenter.getInstance().createEditOfferRequest(new Gson().fromJson(message, Offer.class));//
+        }else if(message.startsWith("@editProduct@")){
+            message=message.substring(13);
+            ProductCenter.getInstance().createEditProductRequest(new Gson().fromJson(message, Product.class));//
         }
     }
 }

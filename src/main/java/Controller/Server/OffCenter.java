@@ -56,4 +56,20 @@ public class OffCenter {
        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("editOffer","The Offer's Edition Is Saved For Manager's Confirmation "));
     }
 
+    public void createNewOff(Offer offer){
+        offer.setOfferId(getOfferIdForCreateInOffer());
+        offer.setOfferStatus(OfferStatus.accepted);
+        if (allOffers == null) {
+            allOffers = new ArrayList<>();
+        }
+        allOffers.add(offer);
+        UserCenter.getIncstance().addOfferToSeller(offer);
+        DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
+    }
+
+    public void editOffer(Offer offer){
+        offer.setOfferStatus(OfferStatus.accepted);
+        //must be handled
+    }
+
 }

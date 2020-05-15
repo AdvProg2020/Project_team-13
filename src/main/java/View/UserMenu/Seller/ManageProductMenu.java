@@ -103,7 +103,7 @@ public class ManageProductMenu extends Menu {
                 modesStringForm += "\n";
                 i++;
             }
-            modesStringForm=modesStringForm.substring(0,modesStringForm.length()-1);
+            modesStringForm = modesStringForm.substring(0, modesStringForm.length() - 1);
             String modesNumber;
             System.out.println(modesStringForm);
             modesNumber = getNumber("number");

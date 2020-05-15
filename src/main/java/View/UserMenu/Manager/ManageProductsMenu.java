@@ -31,7 +31,7 @@ public class ManageProductsMenu extends Menu {
     @Override
     public void execute() {
       String command;
-      ProductController.getInstance().getAllProductsFromServer();
+      ProductController.getInstance().printAllProducts();
       while(!(command=scanner.nextLine().trim()).equalsIgnoreCase("back")){
           if(command.matches("remove @p\\w+")){
              ProductController.getInstance().removeProductForManager(getTheProductId(command));

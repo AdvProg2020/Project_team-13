@@ -23,7 +23,7 @@ public class OffsController {
         return offsController;
     }
     public void  printAllOffs(Seller seller){
-        if(!seller.getAllOffer().isEmpty()) {
+        if(seller.getAllOffer()!=null&&!seller.getAllOffer().isEmpty()) {
             String str="";
             for (Offer offer : seller.getAllOffer()) {
                 str+=offer.toStringForSummery();
