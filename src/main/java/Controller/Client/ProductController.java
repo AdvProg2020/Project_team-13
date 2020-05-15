@@ -9,11 +9,12 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ProductController {
-    private ArrayList<Product> allProducts;
+    private ArrayList<Product> allProducts,allProductsAfterFilter;
     private static ProductController productController;
 
     private ProductController() {
@@ -44,13 +45,40 @@ public class ProductController {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("deleteProduct", productId + "/" + seller));
     }
 
-    public void printAllProducts(String json) {
-        Type productListType = new TypeToken<ArrayList<Product>>() {
-        }.getType();
-        allProducts = new Gson().fromJson(json, productListType);
+    public void printAllProducts() {
+        getAllProductsFromServer();
         for (Product product : allProducts) {
             ClientController.getInstance().getCurrentMenu().showMessage(product.viewProduct());
         }
+    }
+
+    public void showProductsAfterFilterAndSort() {
+        filterProducts();
+        ArrayList<Product> allProducts=sortProducts();
+        String productsInViewFormat="";
+        for (Product product : allProducts) {
+            productsInViewFormat+=product.getProductId() + "\t" + product.getProductName() + "\t" + product.getProductCost()+ "\t" + product.getProductStatus().toString() + "\n" ;
+        }
+        if(allProducts!=null&&!allProducts.isEmpty()) {
+            ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0,productsInViewFormat.length()-1));
+        }
+
+    }
+
+    public void filterProducts() {
+        allProductsAfterFilter=allProducts;
+
+    }
+
+    public ArrayList<Product> sortProducts() {
+        ArrayList<Product> allProductsAfterSort=allProductsAfterFilter;
+        return allProductsAfterSort;
+    }
+
+    public void updateAllProducts(String json) {
+        Type productListType = new TypeToken<ArrayList<Product>>() {
+        }.getType();
+        allProducts = new Gson().fromJson(json, productListType);
     }
 
     public void getAllProductsFromServer() {
@@ -61,13 +89,10 @@ public class ProductController {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("removeProductForManager", productId));
     }
 
-    public String getTheProductDetails(ArrayList<Product> products){
-        String allProducts="";
-        for (Product product : products) {
-            allProducts+=product.productInfoFor()+"\n\n";
+    public void makeProductsViewForm() {
+//        String productsInviewForm
+        for (Product product : allProducts) {
+
         }
-        return allProducts;
     }
-
-
 }
