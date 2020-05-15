@@ -1,5 +1,6 @@
 package Models.Product;
 
+import Controller.Client.ClientController;
 import Models.DiscountCode;
 import Models.UserAccount.Customer;
 
@@ -24,12 +25,26 @@ public class Cart {
     }
 
     public void addProduct(Product product) {
-        countOfEachProduct.put(product.getProductId(), 1);
-        allproduct.add(product);
+        if(findProductWithID(product.getProductId())==null) {
+            countOfEachProduct.put(product.getProductId(), 1);
+            allproduct.add(product);
+            ClientController.getInstance().getCurrentMenu().showMessage("product successfully added to cart");
+        }else{
+            ClientController.getInstance().getCurrentMenu().printError("This product has already been added to the cart");
+        }
     }
 
     public void changeCountOfProduct(String productID, int count) {
-        countOfEachProduct.replace(productID, countOfEachProduct.get(productID) + count);
+        if(countOfEachProduct.get(productID) + count>0) {
+            countOfEachProduct.replace(productID, countOfEachProduct.get(productID) + count);
+            ClientController.getInstance().getCurrentMenu().showMessage("The new number of this product is "+countOfEachProduct.get(productID));
+        }else if(countOfEachProduct.get(productID) + count==0) {
+            countOfEachProduct.remove(productID);
+            allproduct.remove(findProductWithID(productID));
+            ClientController.getInstance().getCurrentMenu().showMessage("this product removed from your cart");
+        }else if(countOfEachProduct.get(productID) + count<0) {
+            ClientController.getInstance().getCurrentMenu().printError("You only have "+countOfEachProduct.get(productID)+" of this products in your cart");
+        }
     }
 
     public double getTotalPrice() {
@@ -44,6 +59,21 @@ public class Cart {
     public Product getProductByID(String productID) {
         for (Product product : allproduct) {
             if (product.getProductId().equals(productID)) {
+                return product;
+            }
+        }
+        return null;
+    }
+    public void showProducts(){
+        String show="";
+        for (Product product : allproduct) {
+            show += product.getProductId()+" "+ product.getProductName()+" "+countOfEachProduct.get(product)+" "+product.getProductCost()+"\n";
+        }
+        ClientController.getInstance().getCurrentMenu().showMessage(show);
+    }
+    public Product findProductWithID(String productID){
+        for (Product product : allproduct) {
+            if(product.getProductId().equals(productID)){
                 return product;
             }
         }

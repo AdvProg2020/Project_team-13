@@ -16,9 +16,10 @@ public class CustomerMenu extends Menu {
     public void help() {
         String userMenuOptions = "";
         userMenuOptions += "1.View Discount Codes\n";
-        userMenuOptions += "Help\n";
-        userMenuOptions += "Back\n";
-        userMenuOptions += "LogOut\n";
+        userMenuOptions += "2.View Cart\n";
+        userMenuOptions += "3.Help\n";
+        userMenuOptions += "4.Back\n";
+        userMenuOptions += "5.LogOut\n";
         System.out.println(userMenuOptions);
 
     }
@@ -32,6 +33,10 @@ public class CustomerMenu extends Menu {
                 ((Customer)ClientController.getInstance().getCurrentUser()).printAllDiscountCodes();
             }else if (command.equalsIgnoreCase("view personal info")) {
                 Menu menu = new ViewAndEditInformationForCustomer(this).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
+            }else if (command.equalsIgnoreCase("view Cart")) {
+                Menu menu = new CartMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("help")) {

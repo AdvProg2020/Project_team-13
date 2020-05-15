@@ -1,5 +1,6 @@
 package Models.Product;
 
+import Controller.Client.ClientController;
 import Models.Comment;
 import Models.Offer;
 import Models.Score;
@@ -211,5 +212,15 @@ public class Product {
                 ", productsCategory='" + productsCategory + '\'' +
                 ", description='" + description + '\'' +
                 ", numberOfAvailableProducts=" + numberOfAvailableProducts;
+    }
+    public void showDigest(){
+        String digest="";
+        digest+=description+"\n";
+        digest+=productCost+"\n";
+        digest+=offer.getAmount()+"%\n";
+        digest+=productsCategory+"%\n";
+        digest+=sellerUsername+"\n";
+        digest+=getAverageScore()+"\n";
+        ClientController.getInstance().getCurrentMenu().showMessage(digest);
     }
 }
