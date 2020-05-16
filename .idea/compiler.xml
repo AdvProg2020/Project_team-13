@@ -8,9 +8,10 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Project_team" />
         <module name="پروژه" />
+        <module name="Project" />
         <module name="13" />
         <module name="Project_Team_13" />
-        <module name="Project" />
+        <module name="Project_team-13" />
       </profile>
     </annotationProcessing>
   </component>

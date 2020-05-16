@@ -528,8 +528,11 @@ public class DataBase {
            fileReader=new FileReader("allOffers.txt");
        }catch (FileNotFoundException e){
            e.printStackTrace();
-       }
+       }try{
        scanner=new Scanner(fileReader);
+       }catch (NullPointerException nullPointer){
+           nullPointer.getCause();
+        }
        try{
            String json;
            while(scanner.hasNextLine()){
@@ -540,13 +543,18 @@ public class DataBase {
                ArrayList<Offer> allOffers=gson.fromJson(read, allOffersList);
                OffCenter.getInstance().setAllOffers(allOffers);
            }
+       } catch(NullPointerException e){
+           e.getCause();
        } finally {
            try {
                fileReader.close();
-           } catch (IOException e) {
+           } catch (IOException|NullPointerException e) {
                e.printStackTrace();
+           }try {
+               scanner.close();
+           }catch (NullPointerException e){
+               e.getCause();
            }
-           scanner.close();
        }
     }
 }

@@ -50,7 +50,7 @@ public class OffsController {
     }
     public void addOff(double amount, double maxDiscountAmount, ArrayList<Product> allProducts, Date startDate, Date endDate){
         Gson gson=new Gson();
-        Offer offer=new Offer(amount, (Seller)ClientController.getInstance().getCurrentUser(), allProducts, maxDiscountAmount, startDate, endDate);
+        Offer offer=new Offer(amount, ClientController.getInstance().getCurrentUser().getUsername(), allProducts, maxDiscountAmount, startDate, endDate);
         String offerJson=gson.toJson(offer);
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("AddOffer",offerJson));
     }

@@ -9,14 +9,14 @@ import java.util.Date;
 public class Offer {
     private String offerId;
     private double amount;
-    private Seller seller;
+    private String seller;
     private ArrayList<Product> products;
     private double maxDiscountAmount;
     private Date startTime;
     private Date endTime;
     private OfferStatus offerStatus;
 
-    public Offer(double amount, Seller seller, ArrayList<Product> products, double maxDiscountAmount, Date startTime, Date endTime) {
+    public Offer(double amount, String seller, ArrayList<Product> products, double maxDiscountAmount, Date startTime, Date endTime) {
         this.amount = amount;
         this.seller = seller;
         this.products = products;
@@ -33,7 +33,7 @@ public class Offer {
         this.offerId = offerId;
     }
 
-    public Seller getSeller() {
+    public String getSeller() {
         return seller;
     }
 
