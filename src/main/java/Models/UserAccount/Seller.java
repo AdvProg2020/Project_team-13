@@ -159,7 +159,7 @@ public class Seller extends UserAccount {
             history += sellLog.getDate() + " ";
             history += sellLog.getReduceCostForOffs() + " ";
             history += sellLog.getAllProducts().toString() + " ";
-            history += '\n';
+            history += "\n";
         }
         return history;
     }
@@ -171,7 +171,7 @@ public class Seller extends UserAccount {
                 products += product.getProductId() + " ";
                 products += product.getProductName() + " ";
                 products += product.getProductCost() + " ";
-                products += '\n';
+                products += "\n";
             }
         }
         return products;

@@ -11,16 +11,14 @@ public class Offer {
     private double amount;
     private String seller;
     private ArrayList<Product> products;
-    private double maxDiscountAmount;
     private Date startTime;
     private Date endTime;
     private OfferStatus offerStatus;
 
-    public Offer(double amount, String seller, ArrayList<Product> products, double maxDiscountAmount, Date startTime, Date endTime) {
+    public Offer(double amount, String seller, ArrayList<Product> products, Date startTime, Date endTime) {
         this.amount = amount;
         this.seller = seller;
         this.products = products;
-        this.maxDiscountAmount = maxDiscountAmount;
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -47,14 +45,6 @@ public class Offer {
 
     public void setProducts(ArrayList<Product> products) {
         this.products = products;
-    }
-
-    public double getMaxDiscountAmount() {
-        return maxDiscountAmount;
-    }
-
-    public void setMaxDiscountAmount(double maxDiscountAmount) {
-        this.maxDiscountAmount = maxDiscountAmount;
     }
 
     public Date getStartTime() {
@@ -86,23 +76,22 @@ public class Offer {
     }
 
     public String toStringForSummery() {
-        return "offerId : " + offerId + '\n' +
-                "amount : " + amount +'%'+ '\n'+
-                "startTime : " + startTime + '\n'+
-                "endTime : " + endTime + '\n'+
-                "offerStatus : " + offerStatus + '\n'
+        return "offerId : " + offerId + "\n" +
+                "amount : " + amount +'%'+ "\n"+
+                "startTime : " + startTime + "\n"+
+                "endTime : " + endTime + "\n"+
+                "offerStatus : " + offerStatus + "\n"
                 ;
     }
 
     @Override
     public String toString() {
-        return "offerId :" + offerId + '\n' +
-                "amount : " + amount + '%'+'\n'+
-                "products :" + products +'\n'+
-                "maxDiscountAmount : " + maxDiscountAmount +'%'+'\n'+
-                "startTime : " + startTime +'\n'+
-                "endTime : "  + endTime +'\n'+
-                "offerStatus : " + offerStatus +'\n'
+        return "offerId :" + offerId + "\n" +
+                "amount : " + amount + '%'+"\n"+
+                "products :" + products +"\n"+
+                "startTime : " + startTime +"\n"+
+                "endTime : "  + endTime +"\n"+
+                "offerStatus : " + offerStatus +"\n"
                 ;
     }
 
