@@ -15,19 +15,20 @@ import java.util.regex.Pattern;
 public class ProductsMenu extends Menu {
     public ProductsMenu(Menu parentMenu) {
         super(parentMenu);
+        ProductController.getInstance().getAllProductsFromServer();
+        ProductController.getInstance().setAllFiltersNull();
     }
 
     @Override
     public void help() {
         String productsMenuHelp="1.view categories\n";
-        productsMenuHelp+="2.filtering\n3.sorting4.show products\n5.show product [productId]\n6.help\n7.back";
+        productsMenuHelp+="2.filtering\n3.sorting\n4.show products\n5.show product [productId]\n6.help\n7.back";
         System.out.println(productsMenuHelp);
 
     }
 
     @Override
     public void execute() {
-        ProductController.getInstance().getAllProductsFromServer();
         String command;
         while (!(command = scanner.nextLine().trim()).equalsIgnoreCase("back")) {
             if (command.equalsIgnoreCase("view Categories")) {
