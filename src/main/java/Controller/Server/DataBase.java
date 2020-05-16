@@ -151,7 +151,14 @@ public class DataBase {
         } catch (IOException e) {
         }
     }
-
+    public void replaceLogId(String logId) {
+        try {
+            FileWriter fileWriter = new FileWriter("lastLogId.txt");
+            fileWriter.write(logId);
+            fileWriter.close();
+        } catch (IOException e) {
+        }
+    }
     public void setAllUsersListFromDateBase() {
         FileReader fileReader = null;
         try {
@@ -347,7 +354,29 @@ public class DataBase {
             }
         }
     }
-
+    public void setLastLogId() {
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader("lastLogID.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader br = new BufferedReader(fileReader);
+        try {
+            String lastLogId;
+            while ((lastLogId = br.readLine()) != null) {
+                CartCenter.getInstance().setLastLogId(lastLogId);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     public void setLastDiscountCodeId() {
         FileReader fileReader = null;
         try {

@@ -1,9 +1,12 @@
 package View.UserMenu.Customer;
 
+import Controller.Client.CartController;
 import Controller.Client.ClientController;
+import Models.Product.Cart;
 import Models.UserAccount.Customer;
 import View.Menu;
 import View.ProductsAndOffsMenus.ProductMenu;
+import View.UserMenu.UserMenu;
 
 public class CartMenu extends Menu {
     public CartMenu(Menu parentMenu) {
@@ -15,8 +18,8 @@ public class CartMenu extends Menu {
         String userMenuOptions = "";
         userMenuOptions += "1.Show Products\n";
         userMenuOptions += "2.View Product [productID]\n";
-        userMenuOptions += "3.Increase Product [productID]\n";
-        userMenuOptions += "4.Decrease Product [productID]\n";
+        userMenuOptions += "3.Increase [productID]\n";
+        userMenuOptions += "4.Decrease [productID]\n";
         userMenuOptions += "5.Show Total Price\n";
         userMenuOptions += "6.Purchase\n";
         userMenuOptions += "7.Help\n";
@@ -28,14 +31,18 @@ public class CartMenu extends Menu {
 
     @Override
     public void execute() {
-        Customer customer = (Customer) ClientController.getInstance().getCurrentUser();
+        Cart cart= CartController.getInstance().getCurrentCart();
+        if(cart==null){
+            CartController.getInstance().setCurrentCart(new Cart());
+        }
+
         String command;
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.equalsIgnoreCase("Show Products")) {
-                customer.getCart().showProducts();
+                cart.showProducts();
             } else if (command.matches("view product \\S+")) {
                 if (command.matches("view product @p\\d+")) {
-                    ClientController.getInstance().setCurrentProduct(customer.getCart().findProductWithID(command.split("\\s")[2]));
+                    ClientController.getInstance().setCurrentProduct(cart.findProductWithID(command.split("\\s")[2]));
                     if(ClientController.getInstance().getCurrentProduct()!=null) {
                         Menu menu = new ProductMenu(this).setScanner(scanner);
                         ClientController.getInstance().setCurrentMenu(menu);
@@ -50,7 +57,7 @@ public class CartMenu extends Menu {
                 if (command.matches("increase @p\\d+")) {
                     System.out.println("How many do you want to increase it?");
                     int count=scanner.nextInt();
-                    customer.getCart().changeCountOfProduct(command.split("\\s")[1],count);
+                    cart.changeCountOfProduct(command.split("\\s")[1],count);
                 }else{
                     printError("this ID isn't a productID");
                 }
@@ -58,12 +65,27 @@ public class CartMenu extends Menu {
                 if (command.matches("decrease @p\\d+")) {
                     System.out.println("How many do you want to decrease it?");
                     int count=scanner.nextInt();
-                    customer.getCart().changeCountOfProduct(command.split("\\s")[1],-count);
+                    cart.changeCountOfProduct(command.split("\\s")[1],-count);
                 }else{
                     printError("this ID isn't a productID");
                 }
             }else if (command.equalsIgnoreCase("show total price")) {
-                System.out.println(((Customer) ClientController.getInstance().getCurrentUser()).getCart().getTotalPrice());
+                System.out.println(cart.getTotalPrice());
+            }else if (command.equalsIgnoreCase("purchase")) {
+                if(cart.getTotalPrice()>0) {
+                    if (ClientController.getInstance().getCurrentUser() != null) {
+                        Menu menu = new CustomerInfoForPurchaseMenu(this).setScanner(scanner);
+                        ClientController.getInstance().setCurrentMenu(menu);
+                        menu.execute();
+                    } else {
+                        printError("you should Login or Register before purchase");
+                        Menu menu = new UserMenu(this).setScanner(scanner);
+                        ClientController.getInstance().setCurrentMenu(menu);
+                        menu.execute();
+                    }
+                }else{
+                    printError("you haven't any product in your cart");
+                }
             } else if (command.equalsIgnoreCase("help")) {
                 help();
             } else if (command.equalsIgnoreCase("logout")) {

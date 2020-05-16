@@ -1,5 +1,6 @@
 package View.ProductsAndOffsMenus;
 
+import Controller.Client.CartController;
 import Controller.Client.ClientController;
 import Models.Product.Product;
 import Models.UserAccount.Customer;
@@ -27,7 +28,7 @@ public class Digest extends Menu {
         String command;
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.equalsIgnoreCase("Add to cart")) {
-                ((Customer)ClientController.getInstance().getCurrentUser()).getCart().addProduct(product);
+                CartController.getInstance().getCurrentCart().addProduct(product);
             } else if (command.equalsIgnoreCase("help")) {
                 help();
             } else if (command.equalsIgnoreCase("logout")) {

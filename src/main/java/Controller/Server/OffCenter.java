@@ -2,13 +2,14 @@ package Controller.Server;
 
 import Models.Offer;
 import Models.OfferStatus;
+import Models.Product.Product;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 public class OffCenter {
-    private ArrayList<Offer> allOffers;
+    private ArrayList<Offer> allOffers=new ArrayList<>();
     private static OffCenter offCenter;
     private String lastOffId;
 
@@ -51,12 +52,36 @@ public class OffCenter {
     }
 
     public void createEditOfferRequest(Offer offer) {
-       offer.setOfferStatus(OfferStatus.onReviewForEdit);
-       RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("editOffer", new Gson().toJson(offer)));
-       ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("editOffer","The Offer's Edition Is Saved For Manager's Confirmation "));
+        offer.setOfferStatus(OfferStatus.onReviewForEdit);
+        RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("editOffer", new Gson().toJson(offer)));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("editOffer", "The Offer's Edition Is Saved For Manager's Confirmation "));
     }
 
-    public void createNewOff(Offer offer){
+    public Product findProductWithID(String productID) {
+        for (Offer offer : allOffers) {
+            for (Product product : offer.getProducts()) {
+                if (product.getProductId().equals(productID)) {
+                    return product;
+                }
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Offer> getAllOffers() {
+        return allOffers;
+    }
+
+    public void removeProduct(String productID) {
+        for (Offer offer : allOffers) {
+            for (Product product : offer.getProducts()) {
+                if (product.getProductId().equals(productID)) {
+                    offer.getProducts().remove(product);
+                }
+            }
+        }
+    }
+    public void createNewOff(Offer offer) {
         offer.setOfferId(getOfferIdForCreateInOffer());
         offer.setOfferStatus(OfferStatus.accepted);
         if (allOffers == null) {
@@ -67,7 +92,7 @@ public class OffCenter {
         DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
     }
 
-    public void editOffer(Offer offer){
+    public void editOffer(Offer offer) {
         offer.setOfferStatus(OfferStatus.accepted);
         //must be handled
     }

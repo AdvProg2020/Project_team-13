@@ -4,6 +4,7 @@ import Models.Log;
 import Models.Offer;
 import Models.Product.Product;
 import Models.Request;
+import Models.SellLog;
 
 import java.util.ArrayList;
 
@@ -37,6 +38,13 @@ public class Seller extends UserAccount {
         }
     }
 
+    public void reduceProductCount(String productID,int count){
+        for (Product product : allProducts) {
+            if(product.getProductId().equals(productID)){
+                product.setNumberOfAvailableProducts(product.getNumberOfAvailableProducts()-count);
+            }
+        }
+    }
     public void addOffer(Offer offer){
         if (allOffer != null && !allOffer.isEmpty()) {
             for (Offer offers : allOffer) {
@@ -132,7 +140,7 @@ public class Seller extends UserAccount {
         for (Log sellLog : this.historyOfTransaction) {
             history += sellLog.getId() + "\\*\\";
             history += sellLog.getReceiverUserName() + "\\*\\";
-            history += sellLog.getPrice() + "\\*\\";
+            history += ((SellLog)sellLog).getPrice() + "\\*\\";
             history += '\n';
         }
         return history;

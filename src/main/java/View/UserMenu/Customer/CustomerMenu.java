@@ -1,5 +1,6 @@
 package View.UserMenu.Customer;
 
+import Controller.Client.CartController;
 import Controller.Client.ClientController;
 import Models.UserAccount.Customer;
 import View.Menu;
@@ -43,6 +44,7 @@ public class CustomerMenu extends Menu {
                 help();
             } else if (command.equalsIgnoreCase("logout")) {
                 ClientController.getInstance().setCurrentUser(null);
+                CartController.getInstance().setCurrentCart(null);
                 System.out.println("You Logged out!!");
                 parentMenu.execute();
             } else {

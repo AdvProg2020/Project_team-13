@@ -30,11 +30,11 @@ public abstract class Menu {
     }
 
     public void printError(String error) {
-        System.out.println(error);
+        System.out.println("\u001B[31m"+error+"\u001B[0m");
     }
 
     public void showMessage(String message) {
-        System.out.println(message);
+        System.out.println("\u001B[34m"+message+"\u001B[0m");
     }
 
     public abstract void help();

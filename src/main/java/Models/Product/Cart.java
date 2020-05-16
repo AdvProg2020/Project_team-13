@@ -15,13 +15,16 @@ public class Cart {
     private double totalPrice = 0;
     private String receivingInformation;
 
-    public Cart(String customerID) {
-        this.customerID = customerID;
+    public Cart() {
         this.countOfEachProduct = new HashMap<>();
         this.discountCode =null;
         this.allproduct =new ArrayList<>();
         this.totalPrice = 0.0;
         this.receivingInformation = null;
+    }
+
+    public void setCustomerID(String customerID) {
+        this.customerID = customerID;
     }
 
     public void addProduct(Product product) {
@@ -32,6 +35,26 @@ public class Cart {
         }else{
             ClientController.getInstance().getCurrentMenu().printError("This product has already been added to the cart");
         }
+    }
+
+    public String getCustomerID() {
+        return customerID;
+    }
+
+    public HashMap<String, Integer> getCountOfEachProduct() {
+        return countOfEachProduct;
+    }
+
+    public DiscountCode getDiscountCode() {
+        return discountCode;
+    }
+
+    public ArrayList<Product> getAllproduct() {
+        return allproduct;
+    }
+
+    public String getReceivingInformation() {
+        return receivingInformation;
     }
 
     public void changeCountOfProduct(String productID, int count) {
@@ -51,7 +74,7 @@ public class Cart {
         totalPrice = 0;
         for (String productID : countOfEachProduct.keySet()) {
             Product product = getProductByID(productID);
-            totalPrice += countOfEachProduct.get(productID) * product.getProductCost();
+            totalPrice += countOfEachProduct.get(productID) * product.getCostAfterOff();
         }
         return totalPrice;
     }
@@ -67,13 +90,18 @@ public class Cart {
     public void showProducts(){
         String show="";
         for (Product product : allproduct) {
-            show += product.getProductId()+" "+ product.getProductName()+" "+countOfEachProduct.get(product)+" "+product.getProductCost()+"\n";
+            show += product.getProductId()+" "+ product.getProductName()+" "+countOfEachProduct.get(product.getProductId())+" "+product.getProductCost()+"\n";
         }
         ClientController.getInstance().getCurrentMenu().showMessage(show);
     }
-    public Product findProductWithID(String productID){
+
+    public void setReceivingInformation(String receivingInformation) {
+        this.receivingInformation = receivingInformation;
+    }
+
+    public Product findProductWithID(String productID) {
         for (Product product : allproduct) {
-            if(product.getProductId().equals(productID)){
+            if (product.getProductId().equals(productID)) {
                 return product;
             }
         }
