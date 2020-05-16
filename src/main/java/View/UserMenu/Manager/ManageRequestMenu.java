@@ -14,7 +14,10 @@ public class ManageRequestMenu extends Menu {
     public void help() {
         String managerMenuOptions = "";
         managerMenuOptions += "1.details [requestId]\n";
-        managerMenuOptions += "2.accept [requestId]";
+        managerMenuOptions += "2.accept [requestId]\n";
+        managerMenuOptions += "3.decline [requestId]\n";
+        managerMenuOptions += "4.help\n";
+        managerMenuOptions += "5.back\n";
         System.out.println(managerMenuOptions);
     }
 

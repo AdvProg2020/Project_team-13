@@ -79,4 +79,19 @@ public class OffsController {
             System.out.println("\n\n");
         }
     }
+
+    public Product getTheProductById(String productId){
+        for (Offer off : allOffs) {
+            for (Product product : off.getProducts()) {
+                if (product.getProductId().equals(productId)) {
+                    return product;
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean isThereAnyProductWithThisId(String productId){
+        return getTheProductById(productId)!=null;
+    }
 }
