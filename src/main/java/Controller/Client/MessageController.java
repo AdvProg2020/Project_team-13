@@ -1,5 +1,6 @@
 package Controller.Client;
 
+import Models.Product.Cart;
 import Models.Product.Category;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
@@ -47,6 +48,7 @@ public class MessageController {
             message = message.substring(19, message.length());
             Customer customer = gson.fromJson(message, Customer.class);
             ClientController.getInstance().setCurrentUser(customer);
+            CartController.getInstance().setCurrentCart(new Cart());
             ClientController.getInstance().getCurrentMenu().showMessage("login Successful");
         } else if (message.startsWith("@Login as Manager@")) {
             Gson gson = new Gson();
@@ -89,9 +91,6 @@ public class MessageController {
             ClientController.getInstance().getCurrentMenu().showMessage("Category created.");
         } else if (message.startsWith("@productRemoved@")) {
             ClientController.getInstance().getCurrentMenu().showMessage("Category removed successfully.");
-        }else if(message.startsWith("@AddOffer@")){
-            message=message.substring(10);
-            ClientController.getInstance().getCurrentMenu().showMessage(message);
         }
     }
 

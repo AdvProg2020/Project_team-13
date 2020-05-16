@@ -19,8 +19,10 @@ public abstract class UserAccount {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.historyOfTransaction=new ArrayList<>();
         this.phoneNumber = phoneNumber;
         this.credit = credit;
+
     }
 
     public String getType() {
@@ -43,14 +45,22 @@ public abstract class UserAccount {
         return lastName;
     }
 
+
     public void setCredit(double credit) {
         this.credit = credit;
+    }
+
+    public void setHistoryOfTransaction(ArrayList<Log> historyOfTransaction) {
+        this.historyOfTransaction = historyOfTransaction;
     }
 
     public String getEmail() {
         return email;
     }
-
+    public void addLog(Log log){
+        System.out.println(historyOfTransaction);
+        historyOfTransaction.add(log);
+    }
     public String getPhoneNumber() {
         return phoneNumber;
     }

@@ -63,11 +63,11 @@ public class RequestCenter {
             acceptSellerRegisterRequest(request);
         } else if (request.getType() == RequestType.addProduct) {
             acceptAddProductRequest(request);
-        } else if (request.getType().equals(RequestType.EditProduct)) {
+        } else if(request.getType().equals(RequestType.editOff)){
             acceptEditOfferRequest(request);
-        } else if (request.getType().equals(RequestType.addOff)) {
+        } else if(request.getType().equals(RequestType.addOff)){
             acceptAddOfferRequest(request);
-        } else if (request.getType().equals(RequestType.EditProduct)) {
+        } else if (request.getType().equals(RequestType.EditProduct)){
             acceptEdiProductRequest(request);
         }
     }
@@ -106,23 +106,21 @@ public class RequestCenter {
         this.lastRequestID = lastRequestID;
     }
 
-    public void acceptEditOfferRequest(Request request) {
+    public void acceptEditOfferRequest(Request request){
         allRequests.remove(request);
         OffCenter.getInstance().editOffer(new Gson().fromJson(request.getDetails(), Offer.class));
-        String arrayData = new Gson().toJson(allRequests);
+        String arrayData=new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);
         ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "Request accept successfully"));
     }
-
-    public void acceptAddOfferRequest(Request request) {
+    public void acceptAddOfferRequest(Request request){
         allRequests.remove(request);
         OffCenter.getInstance().createNewOff(new Gson().fromJson(request.getDetails(), Offer.class));
-        String arrayData = new Gson().toJson(allRequests);
+        String arrayData=new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);
         ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "Request accept successfully"));
     }
-
-    public void acceptEdiProductRequest(Request request) {
+    public void acceptEdiProductRequest(Request request){
 
     }
 }

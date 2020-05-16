@@ -10,6 +10,8 @@ import Models.UserAccount.UserAccount;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class UserCenter {
     private static UserCenter userCenter;
@@ -20,7 +22,13 @@ public class UserCenter {
     private UserCenter() {
 
     }
+public void decreaseProductCount(String productID,String username){
+    for (Seller seller : allSeller) {
+        if(seller.getUsername().equals(username)){
 
+        }
+    }
+}
     public static UserCenter getIncstance() {
         if (userCenter == null) {
             userCenter = new UserCenter();
@@ -45,6 +53,10 @@ public class UserCenter {
             }
         }
         return false;
+    }
+
+    public ArrayList<Seller> getAllSeller() {
+        return allSeller;
     }
 
     public UserAccount getUserWithUsername(String username) {
@@ -98,7 +110,7 @@ public class UserCenter {
                 DataBase.getInstance().updateAllSellers(arrayData);
                 Request request = RequestCenter.getIncstance().makeRequest("AcceptSellerAccount", gson.toJson(seller));
                 RequestCenter.getIncstance().addRequest(request);
-                ServerController.getInstance().sendMessageToClient("@Successful@Register was sended to Manager for review");
+                ServerController.getInstance().sendMessageToClient("@Successful@Register was sent to Manager for review");
             } else {
                 ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username");
             }
@@ -154,8 +166,18 @@ public class UserCenter {
 
     public void addOfferToSeller(Offer offer){
         for (Seller seller : allSeller) {
-            if(seller.equals(offer.getSeller())){
+            if(seller.getUsername().equals(offer.getSeller())){
                 seller.addOffer(offer);
+                break;
+            }
+        }
+        DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+    }
+
+    public void editOfferForSeller(Offer oldOffer, Offer newOffer){
+        for (Seller seller : allSeller) {
+            if(seller.getUsername().equals(oldOffer.getSeller())){
+                seller.editOffer(newOffer);
                 break;
             }
         }

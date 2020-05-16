@@ -89,6 +89,19 @@ public class DiscountCodeCenter {
         ServerController.getInstance().sendMessageToClient("@Successful@discount code successfully removed");
     }
 
+    public void usedDiscountCode(String code,String username) {
+        DiscountCode discountCode = findDiscountCodeWithThisId(code);
+        if(discountCode.getRemainingTimesForEachCustomer().get(username)>1){
+            discountCode.usedOneTime(username);
+            UserCenter.getIncstance().findCustomerWithUsername(username).useDiscountCode(code);
+        }else{
+            removeDiscountCode(code);
+        }
+        allDiscountCodes.remove(discountCode);
+        DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(allDiscountCodes));
+        DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
+        ServerController.getInstance().sendMessageToClient("@Successful@discount code successfully removed");
+    }
     public DiscountCode findDiscountCodeWithThisId(String codeId) {
         for (DiscountCode discountCode : allDiscountCodes) {
             if (discountCode.getDiscountCodeID().equals(codeId)) {

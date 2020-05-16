@@ -4,6 +4,7 @@ import Models.Log;
 import Models.Offer;
 import Models.Product.Product;
 import Models.Request;
+import Models.SellLog;
 
 import java.util.ArrayList;
 
@@ -37,6 +38,13 @@ public class Seller extends UserAccount {
         }
     }
 
+    public void reduceProductCount(String productID,int count){
+        for (Product product : allProducts) {
+            if(product.getProductId().equals(productID)){
+                product.setNumberOfAvailableProducts(product.getNumberOfAvailableProducts()-count);
+            }
+        }
+    }
     public void addOffer(Offer offer){
         if (allOffer != null && !allOffer.isEmpty()) {
             for (Offer offers : allOffer) {
@@ -48,6 +56,9 @@ public class Seller extends UserAccount {
             allOffer = new ArrayList<>();
         }
         allOffer.add(offer);
+        for (Product product : offer.getProducts()) {
+            product.setOffer(offer);
+        }
     }
 
     public void removeProduct(String productId) {
@@ -58,6 +69,18 @@ public class Seller extends UserAccount {
                     break;
                 }
             }
+        }
+    }
+
+    public void editOffer(Offer newOffer){
+        for (Offer offer : allOffer) {
+            if(offer.getOfferId().equals(newOffer.getOfferId())){
+                allOffer.set(allOffer.indexOf(offer), newOffer);
+                break;
+            }
+        }
+        for (Product product : newOffer.getProducts()) {
+             product.setOffer(newOffer);
         }
     }
 
@@ -130,9 +153,12 @@ public class Seller extends UserAccount {
     public String viewSalesHistory() {
         String history = "";
         for (Log sellLog : this.historyOfTransaction) {
-            history += sellLog.getId() + "\\*\\";
-            history += sellLog.getReceiverUserName() + "\\*\\";
-            history += sellLog.getPrice() + "\\*\\";
+            history += sellLog.getId() + " ";
+            history += sellLog.getReceiverUserName() + " ";
+           // history += ((SellLog)sellLog).getPrice() + " ";
+            history += sellLog.getDate() + " ";
+            history += sellLog.getReduceCostForOffs() + " ";
+            history += sellLog.getAllProducts().toString() + " ";
             history += '\n';
         }
         return history;

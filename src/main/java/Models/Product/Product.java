@@ -1,5 +1,6 @@
 package Models.Product;
 
+import Controller.Client.ClientController;
 import Models.Comment;
 import Models.Offer;
 import Models.Score;
@@ -33,6 +34,7 @@ public class Product {
         this.productName = productName;
         this.sellerUsername = seller.getUsername();
         this.productCost = productCost;
+        this.costAfterOff=productCost;
         this.productsCategory = productsCategory;
         this.description = description;
         this.numberOfAvailableProducts = numberOfAvailableProducts;
@@ -63,11 +65,15 @@ public class Product {
         return 0.0;
     }
 
+    public Offer getOffer() {
+        return offer;
+    }
+
     public double getCostAfterOff() {
         if (offer != null) {
             costAfterOff = this.productCost * ((double) 100 - offer.getAmount()) / (double) 100;
         }
-        return this.productCost;
+        return this.costAfterOff;
     }
 
     public String viewProduct() {
@@ -200,7 +206,8 @@ public class Product {
                 ", allBuyers=" + allBuyers +
                 '}';
     }
-    public String productInfoFor(){
+
+    public String productInfoFor() {
         return "Product{" +
                 "productId='" + productId + '\'' +
                 ", productStatus=" + productStatus +
@@ -211,5 +218,33 @@ public class Product {
                 ", productsCategory='" + productsCategory + '\'' +
                 ", description='" + description + '\'' +
                 ", numberOfAvailableProducts=" + numberOfAvailableProducts;
+    }
+
+    public void showDigest() {
+        String digest = "";
+        digest += description + "\n";
+        digest += productCost + "\n";
+        if (offer != null)
+            digest += offer.getAmount() + "%\n";
+        digest += productsCategory + "%\n";
+        digest += sellerUsername + "\n";
+        digest += getAverageScore() + "\n";
+        ClientController.getInstance().getCurrentMenu().showMessage(digest);
+    }
+
+    public void showAttributes() {
+        String attributes = "";
+        attributes += getProductId() + "\n";
+        attributes += getProductName() + "\n";
+        attributes += getProductsCategory() + "\n";
+        for (String feature : featuresOfCategoryThatHas.keySet()) {
+            attributes += feature + ": " + featuresOfCategoryThatHas.get(feature) + "\n";
+        }
+        attributes += getSeller() + "\n";
+        attributes += getProductCompany() + "\n";
+        attributes += getProductCost() + "\n";
+        attributes += getCostAfterOff() + "\n";
+        attributes += getDescription();
+        ClientController.getInstance().getCurrentMenu().showMessage(attributes);
     }
 }

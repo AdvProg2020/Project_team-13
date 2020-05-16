@@ -131,10 +131,10 @@ public class ProductController {
         ArrayList<Product> allProducts = allProductsAfterFilter;
         String productsInViewFormat = "";
         for (Product product : allProducts) {
-            productsInViewFormat += product.getProductId() + "\t" + product.getProductName() + "\t" + product.getProductCost() + "\t" + product.getProductStatus().toString() + "\n";
+            productsInViewFormat+=product.getProductId() + "\t" + product.getProductName() + "\t" + product.getProductCost()+ "\t" + product.getProductStatus().toString() + "\n" ;
         }
-        if (allProducts != null && !allProducts.isEmpty()) {
-            ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
+        if(allProducts!=null&&!allProducts.isEmpty()) {
+            ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0,productsInViewFormat.length()-1));
         }
 
     }
@@ -387,12 +387,26 @@ public class ProductController {
         return null;
     }
 
+    public String getTheProductDetails(ArrayList<Product> allProducts){
+        String allDetails="";
+        for (Product product : allProducts) {
+            allDetails+=product.productInfoFor()+"\n\n";
+        }
+        return allDetails;
+    }
+
     public void makeProductsViewForm() {
-//        String productsInViewForm
+//        String productsInviewForm
         for (Product product : allProducts) {
 
         }
     }
-
-
+    public Product findProductAfterFilter(String productID){
+        for (Product product : allProductsAfterFilter) {
+            if(product.getProductId().equals(productID)){
+                return product;
+            }
+        }
+        return null;
+    }
 }

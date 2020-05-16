@@ -1,5 +1,6 @@
 package View.UserMenu.Customer;
 
+import Controller.Client.CartController;
 import Controller.Client.ClientController;
 import Models.UserAccount.Customer;
 import View.Menu;
@@ -16,9 +17,10 @@ public class CustomerMenu extends Menu {
     public void help() {
         String userMenuOptions = "";
         userMenuOptions += "1.View Discount Codes\n";
-        userMenuOptions += "Help\n";
-        userMenuOptions += "Back\n";
-        userMenuOptions += "LogOut\n";
+        userMenuOptions += "2.View Cart\n";
+        userMenuOptions += "3.Help\n";
+        userMenuOptions += "4.Back\n";
+        userMenuOptions += "5.LogOut\n";
         System.out.println(userMenuOptions);
 
     }
@@ -34,10 +36,15 @@ public class CustomerMenu extends Menu {
                 Menu menu = new ViewAndEditInformationForCustomer(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
+            }else if (command.equalsIgnoreCase("view Cart")) {
+                Menu menu = new CartMenu(this).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
             } else if (command.equalsIgnoreCase("help")) {
                 help();
             } else if (command.equalsIgnoreCase("logout")) {
                 ClientController.getInstance().setCurrentUser(null);
+                CartController.getInstance().setCurrentCart(null);
                 System.out.println("You Logged out!!");
                 parentMenu.execute();
             } else {

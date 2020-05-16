@@ -70,7 +70,10 @@ public class DiscountCode {
     public int getDiscountPercent() {
         return discountPercent;
     }
+    public void usedOneTime(String username){
+        remainingTimesForEachCustomer.replace(username,remainingTimesForEachCustomer.get(username)-1);
 
+    }
     public void setDiscountPercent(int discountPercent) {
         this.discountPercent = discountPercent;
     }

@@ -3,6 +3,7 @@ package Controller.Server;
 import Controller.Client.MessageController;
 import Models.Offer;
 import Models.DiscountCode;
+import Models.Product.Cart;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.UserAccount.Customer;
@@ -90,7 +91,7 @@ public class ServerMessageController {
             DiscountCodeCenter.getIncstance().editDiscountCode(new Gson().fromJson(message, DiscountCode.class));
         } else if (message.startsWith("@AddOffer@")) {
             message = message.substring(10);
-            OffCenter.getInstance().createOfferRequest(message);
+            OffCenter.getInstance().createOfferRequest(new Gson().fromJson(message, Offer.class));
         } else if (message.startsWith("@removeDiscountCode@")) {
             message = message.substring(20);
             DiscountCodeCenter.getIncstance().removeDiscountCode(message);
@@ -121,6 +122,9 @@ public class ServerMessageController {
         }else if(message.startsWith("@editProduct@")){
             message=message.substring(13);
             ProductCenter.getInstance().createEditProductRequest(new Gson().fromJson(message, Product.class));//
+        }else if(message.startsWith("@pay@")){
+            message=message.substring(5);
+            CartCenter.getInstance().pay(new Gson().fromJson(message, Cart.class));//
         }
     }
 }

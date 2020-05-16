@@ -35,7 +35,30 @@ public class ProductCenter {
     public void setLastProductId(String lastProductId) {
         this.lastProductId = lastProductId;
     }
+    public void decreaseProductCount(String productId,int count){
+        Product product=findProductWithID(productId);
+        if(product.getNumberOfAvailableProducts()-count>1) {
+            product.setNumberOfAvailableProducts(product.getNumberOfAvailableProducts() - count);
+            UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).reduceProductCount(productId,count);
+            if(OffCenter.getInstance().findProductWithID(productId)!=null) {
+                OffCenter.getInstance().findProductWithID(productId).setNumberOfAvailableProducts(OffCenter.getInstance().findProductWithID(productId).getNumberOfAvailableProducts() - count);
+            }
+        }else{
+            allProducts.remove(product);
+            UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).removeProduct(productId);
+            OffCenter.getInstance().removeProduct(productId);
 
+        }
+
+    }
+    public Product findProductWithID(String productId){
+        for (Product product : allProducts) {
+            if(product.getProductId().equals(productId)){
+                return product;
+            }
+        }
+        return null;
+    }
     public String getProductIdForCreateInProduct() {
         DataBase.getInstance().setLastProductIdFromDataBase();
         this.lastProductId = "@p" + (Integer.parseInt(lastProductId.substring(2)) + 1);
@@ -58,6 +81,10 @@ public class ProductCenter {
             }
         }
         return null;
+    }
+
+    public ArrayList<Product> getAllProducts() {
+        return allProducts;
     }
 
     public void createProduct(Product product) {
@@ -115,6 +142,7 @@ public class ProductCenter {
 
     public void createEditProductRequest(Product product){
         //
+
     }
 
     public void editProduct(Product product){

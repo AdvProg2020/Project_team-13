@@ -62,6 +62,6 @@ public class ViewOffsMenu extends Menu {
     }
 
     public String getTheIdForEdit(){
-        return commandForEdit;
+        return getTheOffId(commandForEdit);
     }
 }

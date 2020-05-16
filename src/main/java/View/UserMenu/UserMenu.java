@@ -16,10 +16,10 @@ public class UserMenu extends Menu {
     @Override
     public void help() {
         String userMenuOptions = "";
-        userMenuOptions += "1.Register\n";
-        userMenuOptions += "2.Login\n";
-        userMenuOptions += "3.Help\n";
-        userMenuOptions += "4.Back";
+        userMenuOptions += "1. Register\n";
+        userMenuOptions += "2. Login\n";
+        userMenuOptions += "3. Help\n";
+        userMenuOptions += "4. Back\n";
         System.out.println(userMenuOptions);
 
     }

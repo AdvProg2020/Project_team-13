@@ -1,6 +1,7 @@
 package Controller.Server;
 
 import Models.DiscountCode;
+import Models.Offer;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.Request;
@@ -151,7 +152,14 @@ public class DataBase {
         } catch (IOException e) {
         }
     }
-
+    public void replaceLogId(String logId) {
+        try {
+            FileWriter fileWriter = new FileWriter("lastLogId.txt");
+            fileWriter.write(logId);
+            fileWriter.close();
+        } catch (IOException e) {
+        }
+    }
     public void setAllUsersListFromDateBase() {
         FileReader fileReader = null;
         try {
@@ -227,7 +235,6 @@ public class DataBase {
             }
         }
     }
-
     public void updateAllRequests(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allRequests.txt");
@@ -347,7 +354,29 @@ public class DataBase {
             }
         }
     }
-
+    public void setLastLogId() {
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader("lastLogID.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader br = new BufferedReader(fileReader);
+        try {
+            String lastLogId;
+            while ((lastLogId = br.readLine()) != null) {
+                CartCenter.getInstance().setLastLogId(lastLogId);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     public void setLastDiscountCodeId() {
         FileReader fileReader = null;
         try {
@@ -439,7 +468,7 @@ public class DataBase {
 
     public void getAllProductsFromDataBase() {
         FileReader fileReader = null;
-        Scanner scanner = null;
+        Scanner scanner;
         try {
             fileReader = new FileReader("allProducts.txt");
         } catch (FileNotFoundException e) {
@@ -468,26 +497,36 @@ public class DataBase {
 
     public void setLastOfferIdFromDataBase() {
         FileReader fileReader = null;
-        Scanner scanner;
+        Scanner scanner = null;
         try {
-            fileReader = new FileReader("lastOfferID.txt");
+            fileReader = new FileReader("lastOfferId.txt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        }try {
+            scanner = new Scanner(fileReader);
+        }catch (NullPointerException e){
+            e.getCause();
         }
-        scanner = new Scanner(fileReader);
         try {
             String lastOfferId;
             while (scanner.hasNextLine()) {
                 lastOfferId = scanner.nextLine();
                 OffCenter.getInstance().setLastOffId(lastOfferId);
             }
-        } finally {
+        } catch (NullPointerException nullPointer){
+            nullPointer.getCause();
+        }finally {
             try {
-                fileReader.close();
+                fileReader.close();///
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (NullPointerException error){
+                error.getCause();
+            }try {
+                scanner.close();
+            }catch (NullPointerException error2){
+                error2.getCause();
             }
-            scanner.close();
         }
 
     }
@@ -495,10 +534,8 @@ public class DataBase {
     public void replaceOfferId(String lastOfferId) {
         try {
             FileWriter fileWriter = new FileWriter("lastOfferId.txt");
-            Formatter formatter = new Formatter(fileWriter);
-            formatter.format("%s", lastOfferId);
+            fileWriter.write(lastOfferId);
             fileWriter.close();
-            formatter.close();
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -511,5 +548,42 @@ public class DataBase {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setAllOffersFromDatabase(){
+       FileReader fileReader=null;
+       Scanner scanner=null;
+       try{
+           fileReader=new FileReader("allOffers.txt");
+       }catch (FileNotFoundException e){
+           e.printStackTrace();
+       }try{
+       scanner=new Scanner(fileReader);
+       }catch (NullPointerException nullPointer){
+           nullPointer.getCause();
+        }
+       try{
+           String json;
+           while(scanner.hasNextLine()){
+               String read=scanner.nextLine();
+               Gson gson=new Gson();
+               Type allOffersList=new TypeToken<ArrayList<Offer>>(){
+               }.getType();
+               ArrayList<Offer> allOffers=gson.fromJson(read, allOffersList);
+               OffCenter.getInstance().setAllOffers(allOffers);
+           }
+       } catch(NullPointerException e){
+           e.getCause();
+       } finally {
+           try {
+               fileReader.close();
+           } catch (IOException|NullPointerException e) {
+               e.printStackTrace();
+           }try {
+               scanner.close();
+           }catch (NullPointerException e){
+               e.getCause();
+           }
+       }
     }
 }
