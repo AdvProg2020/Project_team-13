@@ -87,7 +87,7 @@ public class Offer {
 
     public String toStringForSummery() {
         return "offerId : " + offerId + '\n' +
-                "amount : " + amount + '\n'+
+                "amount : " + amount +'%'+ '\n'+
                 "startTime : " + startTime + '\n'+
                 "endTime : " + endTime + '\n'+
                 "offerStatus : " + offerStatus + '\n'
@@ -97,8 +97,8 @@ public class Offer {
     @Override
     public String toString() {
         return "offerId :" + offerId + '\n' +
-                "amount : " + amount + '\n'+
-                "products :" + products +'%'+'\n'+
+                "amount : " + amount + '%'+'\n'+
+                "products :" + products +'\n'+
                 "maxDiscountAmount : " + maxDiscountAmount +'%'+'\n'+
                 "startTime : " + startTime +'\n'+
                 "endTime : "  + endTime +'\n'+

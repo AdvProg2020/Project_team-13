@@ -1,6 +1,7 @@
 package Controller.Server;
 
 import Models.DiscountCode;
+import Models.Offer;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.Request;
@@ -518,5 +519,34 @@ public class DataBase {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setAllOffersFromDatabase(){
+       FileReader fileReader=null;
+       Scanner scanner=null;
+       try{
+           fileReader=new FileReader("allOffers.txt");
+       }catch (FileNotFoundException e){
+           e.printStackTrace();
+       }
+       scanner=new Scanner(fileReader);
+       try{
+           String json;
+           while(scanner.hasNextLine()){
+               String read=scanner.nextLine();
+               Gson gson=new Gson();
+               Type allOffersList=new TypeToken<ArrayList<Offer>>(){
+               }.getType();
+               ArrayList<Offer> allOffers=gson.fromJson(read, allOffersList);
+               OffCenter.getInstance().setAllOffers(allOffers);
+           }
+       } finally {
+           try {
+               fileReader.close();
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+           scanner.close();
+       }
     }
 }

@@ -25,6 +25,8 @@ public class Product {
     private HashMap<String, String> featuresOfCategoryThatHas;
     private ArrayList<Customer> allBuyers;
     private Offer offer;
+    private boolean existInOfferRegistered;
+
 
     public Product(String productCompany, String productId, String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, HashMap<String, String> featuresOfCategoryThatHas) {
         this.productCompany = productCompany;
@@ -37,6 +39,14 @@ public class Product {
         this.description = description;
         this.numberOfAvailableProducts = numberOfAvailableProducts;
         this.featuresOfCategoryThatHas = featuresOfCategoryThatHas;
+    }
+
+    public boolean isExistInOfferRegistered() {
+        return existInOfferRegistered;
+    }
+
+    public void setExistInOfferRegistered(boolean existInOfferRegistered) {
+        this.existInOfferRegistered = existInOfferRegistered;
     }
 
     public void setProductId(String productId) {

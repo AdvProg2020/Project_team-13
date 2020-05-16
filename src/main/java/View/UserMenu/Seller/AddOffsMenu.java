@@ -9,6 +9,7 @@ import View.Menu;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 public class AddOffsMenu extends Menu {
     private boolean back;
@@ -71,7 +72,7 @@ public class AddOffsMenu extends Menu {
             command=scanner.nextLine().trim();
             if (command.matches("\\d{1,2}(\\.\\d+)?%")) {
                 return Double.parseDouble(command.substring(0,command.length()-1));
-            } else {
+            } else if(!command.equalsIgnoreCase("back")){
                 System.out.println("invalid command");
             }
         }while(!(command.equalsIgnoreCase("back")));
@@ -91,7 +92,7 @@ public class AddOffsMenu extends Menu {
             command=scanner.nextLine().trim();
             if (command.matches("\\d{1,2}(\\.\\d+)?%")) {
                 return Double.parseDouble(command.substring(0, command.length()-1));
-            } else {
+            } else if(!command.equalsIgnoreCase("back")){
                 System.out.println("invalid command");
             }
         }while(!(command.equalsIgnoreCase("back")));
@@ -100,11 +101,11 @@ public class AddOffsMenu extends Menu {
     }
 
     private ArrayList<Product> getAllProducts(Seller seller) {
-        String command,productDetails;
+        String command;
         ArrayList<Product> products = new ArrayList<>(seller.getAllProducts());
         ArrayList<Product> selectedProducts=new ArrayList<>();
         while (true) {
-            System.out.println("Enter The Product From The List Below:\n\n"+(productDetails=ProductController.getInstance().getTheProductDetails(products)));
+            System.out.println("Enter The Product From The List Below:\n\n"+(ProductController.getInstance().getTheProductDetails(products)));
             command = scanner.nextLine().trim();
             if (command.equalsIgnoreCase("back")) {
                 setBack(true);
@@ -118,17 +119,18 @@ public class AddOffsMenu extends Menu {
             } else if (command.matches("add @p\\d+")) {
                 if (!products.contains(seller.getProductByID(command.substring(4)))) {
                     System.out.println("There Is No Product With This Id In That List.\n\n");
-                } else if (seller.productExistsInOtherOffer(command.substring(4))) {
+                } else if (OffsController.getInstance().productExitsInOtherOffer(seller, command.substring(4))) {
                     System.out.println("The Product Already Exists in Other Offer.\n\n");
                 } else {
                     selectedProducts.add(seller.getProductByID(command.substring(4)));
                     products.remove(seller.getProductByID(command.substring(4)));
+                    OffsController.getInstance().setTheProductExistInOtherOffer(seller, command.substring(4), true);
                     System.out.println("Product selected\n\n");
                 }
             } else if(command.equalsIgnoreCase("View selected products")){
-                System.out.println(productDetails=ProductController.getInstance().getTheProductDetails(selectedProducts));
-            } else {
-                System.out.println("invalid command\n\n");
+                System.out.println(ProductController.getInstance().getTheProductDetails(selectedProducts));
+            } else if(!command.equalsIgnoreCase("back")){
+                System.out.println("invalid command");
             }
         }
     }
@@ -147,7 +149,7 @@ public class AddOffsMenu extends Menu {
                 }else{
                     return startDate;
                 }
-            }else {
+            } else if(!command.equalsIgnoreCase("back")){
                 System.out.println("invalid command");
             }
         }while (!(command.equalsIgnoreCase("back")));
@@ -169,7 +171,7 @@ public class AddOffsMenu extends Menu {
                }else{
                    return endDate;
                }
-            }else {
+            } else if(!command.equalsIgnoreCase("back")){
                 System.out.println("invalid command");
             }
         }while (!(command.equalsIgnoreCase("back")));

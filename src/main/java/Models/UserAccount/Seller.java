@@ -49,7 +49,7 @@ public class Seller extends UserAccount {
         }
         allOffer.add(offer);
         for (Product product : offer.getProducts()) {
-            product.setCostAfterOff(product.getProductCost()*(1-(offer.getAmount()/100)));
+            product.setOffer(offer);
         }
     }
 
@@ -61,6 +61,18 @@ public class Seller extends UserAccount {
                     break;
                 }
             }
+        }
+    }
+
+    public void editOffer(Offer newOffer){
+        for (Offer offer : allOffer) {
+            if(offer.getOfferId().equals(newOffer.getOfferId())){
+                allOffer.set(allOffer.indexOf(offer), newOffer);
+                break;
+            }
+        }
+        for (Product product : newOffer.getProducts()) {
+             product.setOffer(newOffer);
         }
     }
 

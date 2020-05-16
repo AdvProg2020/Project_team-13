@@ -30,7 +30,7 @@ public class OffCenter {
         Gson gson = new Gson();
         offer.setOfferStatus(OfferStatus.onReviewForCreate);
         RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("AddOffer", gson.toJson(offer)));
-        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("AddOffer", "The Offer Registered For Manager's Confirmation"));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "The Offer Registered For Manager's Confirmation"));
     }
 
     public String getOfferIdForCreateInOffer() {
@@ -50,8 +50,8 @@ public class OffCenter {
 
     public void createEditOfferRequest(Offer offer) {
        offer.setOfferStatus(OfferStatus.onReviewForEdit);
-       RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("editOffer", new Gson().toJson(offer)));
-       ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("editOffer","The Offer's Edition Is Saved For Manager's Confirmation "));
+       RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("EditOffer", new Gson().toJson(offer)));
+       ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful","The Offer's Edition Is Saved For Manager's Confirmation "));
     }
 
     public void createNewOff(Offer offer){
@@ -65,9 +65,24 @@ public class OffCenter {
         DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
     }
 
-    public void editOffer(Offer offer){
-        offer.setOfferStatus(OfferStatus.accepted);
-
+    public void editOffer(Offer newOffer){
+        Offer oldOffer=findOfferWithThisId(newOffer.getOfferId());
+        newOffer.setOfferStatus(OfferStatus.accepted);
+        allOffers.set(allOffers.indexOf(oldOffer), newOffer);
+        UserCenter.getIncstance().editOfferForSeller(oldOffer, newOffer);
+        DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
     }
 
+    public Offer findOfferWithThisId(String offerId){
+        for (Offer allOffer : allOffers) {
+            if(allOffer.getOfferId().equals(offerId)){
+                return allOffer;
+            }
+        }
+        return null;
+    }
+
+    public void setAllOffers(ArrayList<Offer> allOffers) {
+        this.allOffers = allOffers;
+    }
 }
