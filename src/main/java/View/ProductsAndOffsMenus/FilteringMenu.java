@@ -20,7 +20,7 @@ public class FilteringMenu extends Menu {
 
     @Override
     public void help() {
-        String filteringMenuHelp = "1.Filter\n2.DisableFilter\n3.Current filters" +
+        String filteringMenuHelp = "1.Filter\n2.Disable filters\n3.Current filters" +
                 "\n4.Show available filters\n5.Help\n6.Back";
         System.out.println(filteringMenuHelp);
     }
@@ -31,7 +31,7 @@ public class FilteringMenu extends Menu {
         while (!(command = scanner.nextLine().trim()).equalsIgnoreCase("back")) {
             if (command.equalsIgnoreCase("filter")) {
                 filter();
-            } else if (Pattern.matches("disable filter", command)) {
+            } else if (command.equalsIgnoreCase("disable filters")) {
                 disableFilters();
             } else if (command.equalsIgnoreCase("current filters")) {
                 showCurrentFilters();
@@ -63,12 +63,12 @@ public class FilteringMenu extends Menu {
 
     private void disableFilters() {
         System.out.println("now you have this filters to filter.");
-        String allFilters = "1.Disable price filter\n2.Disable brand filters\n3.disable seller filters\n4.disable product status filters\n5.disable naem filters\n6.";
-        System.out.println(allFilters + "now you need to enter a number 1-5 to filter products.");
+        String allFilters = "1.Disable price filter\n2.Disable brand filters\n3.disable seller filters\n4.disable product status filters\n5.disable name filters\n6.disable Category features filters";
+        System.out.println(allFilters + "\nnow you need to enter a number 1-5 to filter products.");
         int a = 0;
         while (true) {
             a = Integer.parseInt(getNumber("Number"));
-            if (a > 0 && a < 6) {
+            if (a > 0 && a < 7) {
                 if (a == 1) {
                     ProductController.getInstance().disablePriceFilter();
                     System.out.println("filters disabled");
@@ -87,7 +87,7 @@ public class FilteringMenu extends Menu {
             } else if (a == 99) {
                 break;
             } else {
-                System.out.println("Number must be in range 1-5");
+                System.out.println("Number must be in range 1-6");
             }
         }
     }
@@ -100,7 +100,7 @@ public class FilteringMenu extends Menu {
         }
         System.out.println("now you have this filters to filter.");
         String allFilters = "1.Filter by price range\n2.Filter by brand\n3.Filter by seller\n4.Filter by product status\n5.filter by name\n6.filter by category features";
-        System.out.println(allFilters + "now you need to enter a number 1-5 to filter products.");
+        System.out.println(allFilters + "\nnow you need to enter a number 1-5 to filter products.");
         int a = 0;
         while (true) {
             a = Integer.parseInt(getNumber("Number"));
@@ -147,9 +147,8 @@ public class FilteringMenu extends Menu {
             ArrayList<String> featureModesToFilter = new ArrayList<>();
             modesStringForm = modesStringForm.substring(0, modesStringForm.length() - 1);
             System.out.println(modesStringForm);
-            String modesNumber;
             System.out.println("Pick modes of this feature to filter and when you done enter 9999.");
-            while (true) {
+            while (featureModesToFilter.size() != featureModes.size()) {
                 String modeNumber = getNumber("mode number");
                 if (Integer.parseInt(modeNumber) == 9999 || featureModesToFilter.size() == featureModes.size()) {
                     break;

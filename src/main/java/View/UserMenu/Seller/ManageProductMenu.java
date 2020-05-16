@@ -107,7 +107,7 @@ public class ManageProductMenu extends Menu {
             String modesNumber;
             System.out.println(modesStringForm);
             modesNumber = getNumber("number");
-            while (Integer.parseInt(modesNumber) > featureModes.size() || Integer.parseInt(modesNumber = getNumber("number")) < 1) {
+            while (Integer.parseInt(modesNumber) > featureModes.size() || Integer.parseInt(modesNumber) < 1) {
                 System.out.println("Number is invalid.\nYou only have this chooses.");
                 System.out.println(modesStringForm);
                 modesNumber = getNumber("number");
