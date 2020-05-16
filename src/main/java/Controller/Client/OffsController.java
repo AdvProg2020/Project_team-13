@@ -48,9 +48,9 @@ public class OffsController {
     public void editOff(Offer offer){
       ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("editOffer", new Gson().toJson(offer)));
     }
-    public void addOff(double amount, double maxDiscountAmount, ArrayList<Product> allProducts, Date startDate, Date endDate){
+    public void addOff(double amount, ArrayList<Product> allProducts, Date startDate, Date endDate){
         Gson gson=new Gson();
-        Offer offer=new Offer(amount, ClientController.getInstance().getCurrentUser().getUsername(), allProducts, maxDiscountAmount, startDate, endDate);
+        Offer offer=new Offer(amount, ClientController.getInstance().getCurrentUser().getUsername(), allProducts, startDate, endDate);
         String offerJson=gson.toJson(offer);
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("AddOffer",offerJson));
     }

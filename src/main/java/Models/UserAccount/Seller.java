@@ -231,7 +231,7 @@ public class Seller extends UserAccount {
     }
 
     public boolean hasAnyProduct() {
-        return allProducts != null;
+        return !(allProducts == null||allProducts.isEmpty());
     }
 
     public boolean hasAnyOffer() {

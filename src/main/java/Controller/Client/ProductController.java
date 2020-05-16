@@ -412,9 +412,9 @@ public class ProductController {
     public String getTheProductDetails(ArrayList<Product> allProducts) {
         String allDetails = "";
         for (Product product : allProducts) {
-            allDetails += product.productInfoFor() + "\n\n";
+            allDetails += product.productInfoFor() + "\n";
         }
-        return allDetails;
+        return allDetails.substring(0,allDetails.length()-1);
     }
 
     public void makeProductsViewForm() {
