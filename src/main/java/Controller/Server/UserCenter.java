@@ -221,7 +221,11 @@ public void decreaseProductCount(String productID,String username){
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(username)) {
                 allSeller.remove(seller);
+                for (Product product : seller.getAllProducts()) {
+                   ProductCenter.getInstance().removeProduct(ProductCenter.getInstance().findProductWithID(product.getProductId()));
+                }
                 DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+                DataBase.getInstance().updateAllProducts(new Gson().toJson(ProductCenter.getInstance().getAllProducts()));
                 ServerController.getInstance().sendMessageToClient("@Successful@delete user successfully");
                 return;
             }

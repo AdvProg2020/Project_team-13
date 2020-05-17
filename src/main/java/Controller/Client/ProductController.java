@@ -402,6 +402,8 @@ public class ProductController {
         }
     }
     public Product findProductAfterFilter(String productID){
+        allProductsAfterFilter=allProducts;
+        filterProducts();
         for (Product product : allProductsAfterFilter) {
             if(product.getProductId().equals(productID)){
                 return product;
