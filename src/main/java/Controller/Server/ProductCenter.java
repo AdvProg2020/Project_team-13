@@ -166,6 +166,8 @@ public class ProductCenter {
     }
 
     public void createEditProductRequest(Product product) {
+        getProductWithId(product.getProductId()).setProductStatus(ProductStatus.editing);
+        DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));
         RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("EditProduct", new Gson().toJson(product)));
     }
 
@@ -178,6 +180,7 @@ public class ProductCenter {
             allProducts = new ArrayList<>();
             allProducts.add(product);
         }
+        product.setProductStatus(ProductStatus.accepted);
         UserCenter.getIncstance().editProductInSeller(product);
         CategoryCenter.getIncstance().editProductInCategory(product);
         CategoryCenter.getIncstance().addProductToCategory(product);

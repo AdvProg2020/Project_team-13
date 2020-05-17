@@ -49,20 +49,7 @@ public class ManageProductMenu extends Menu {
                     printError("there is no product with this ID");
                 }
             } else if (command.matches("edit @p\\d+")) {
-                int i = 0;
-                for (Product product : seller.getAllProducts()) {
-                    i++;
-                    if (product.getProductId().equals(command.trim().substring(5))) {
-                        i++;
-                        currentProduct = ProductController.getInstance().getProductWithId(command.substring(5));
-                        editProduct();
-                        break;
-                    }
-                }
-                if (i < seller.getAllProducts().size()) {
-                    printError("there is no product with this id.");
-                }
-
+                edit(seller, command);
             } else if (command.equals("help")) {
                 help();
             } else if (command.matches("remove @p\\d+")) {
@@ -76,6 +63,61 @@ public class ManageProductMenu extends Menu {
             }
         }
         back();
+    }
+
+    private void edit(Seller seller, String command) {
+        int i = 0;
+        for (Product product : seller.getAllProducts()) {
+            i++;
+            if (product.getProductId().equals(command.trim().substring(5))) {
+                i++;
+                currentProduct = new Product(ProductController.getInstance().
+                        getProductWithId(command.substring(5)));
+                editProduct();
+                break;
+            }
+        }
+        if (i < seller.getAllProducts().size()) {
+            printError("there is no product with this id.");
+        }
+    }
+
+    private void editProduct() {
+        String command;
+        System.out.println("Enter The Feature That You Want To Edit You Can Use The Help For Your Commands: ");
+        while (!((command = scanner.nextLine().trim()).equalsIgnoreCase("back"))) {
+            if (command.equalsIgnoreCase("Edit Product's Name")) {
+                currentProduct.setProductName(getName("Product name"));
+            } else if (command.equalsIgnoreCase("Edit Product Cost")) {
+                currentProduct.setProductCost(Double.parseDouble(getDouble("Product Cost")));
+            } else if (command.equalsIgnoreCase("Edit description")) {
+                System.out.println("Enter Products description");
+                String s = "", description = "";
+                while (!(s = scanner.nextLine().trim()).equalsIgnoreCase("finish")) {
+                    description += s;
+                    description += "\\n";
+                }
+                currentProduct.setDescription(description);
+            } else if (command.equalsIgnoreCase("Edit product company")) {
+                currentProduct.setProductCompany(getName("Company Name"));
+            } else if (command.equalsIgnoreCase("Edit available number of product")) {
+                currentProduct.setNumberOfAvailableProducts(Integer.parseInt(getNumber("Available number of product")));
+            } else if (command.equalsIgnoreCase("Edit category features")) {
+                editCategory();
+            } else if (command.equalsIgnoreCase("help")) {
+                String help = "1.Edit Product's Name\n2.Edit Product Cost\n3.Edit description\n" +
+                        "4.Edit product company\n5.Edit available number of product" +
+                        "\n6.Edit category features\n7.Help\n8.Finish\n9.Back";
+                System.out.println(help);
+            } else if (command.equalsIgnoreCase("finish")) {
+                ProductController.getInstance().editProduct(currentProduct);
+                break;
+            } else {
+                System.out.println("invalid command");
+            }
+            System.out.println("Enter The Feature That You Want To Edit You Can Use The Help For Your Commands: ");
+
+        }
     }
 
     private Category getCategoryName(String nameKind, String firstName) {
@@ -139,43 +181,6 @@ public class ManageProductMenu extends Menu {
         ProductController.getInstance().addProduct(fieldsOfProduct, productsFeatures, productsCategory);
     }
 
-    private void editProduct() {
-        String command;
-        while (!((command = scanner.nextLine().trim()).equalsIgnoreCase("back"))) {
-            System.out.println("Enter The Feature That You Want To Edit You Can Use The Help For Your Commands: ");
-            command = scanner.nextLine().trim();
-            if (command.equalsIgnoreCase("Edit Product's Name")) {
-                currentProduct.setProductName(getName("Product name"));
-            } else if (command.equalsIgnoreCase("Edit Product Cost")) {
-                currentProduct.setProductCost(Double.parseDouble(getDouble("Product Cost")));
-            } else if (command.equalsIgnoreCase("Edit description")) {
-                System.out.println("Enter Products description");
-                String s = "", description = "";
-                while (!(s = scanner.nextLine().trim()).equalsIgnoreCase("finish")) {
-                    description += s;
-                    description += "\\n";
-                }
-                currentProduct.setDescription(description);
-            } else if (command.equalsIgnoreCase("Edit product company")) {
-                currentProduct.setProductCompany(getName("Company Name"));
-            } else if (command.equalsIgnoreCase("Edit available number of product")) {
-                currentProduct.setNumberOfAvailableProducts(Integer.parseInt(getNumber("Available number of product")));
-            } else if (command.equalsIgnoreCase("Edit category features")) {
-                editCategory();
-            } else if (command.equalsIgnoreCase("help")) {
-                String help = "1.Edit Product's Name\n2.Edit Product Cost\n3.Edit description\n" +
-                        "4.Edit product company\n5.Edit available number of product" +
-                        "\n6.Edit category features\n7.Help\n8.Finish\n9.Back";
-                System.out.println(help);
-            } else if (command.equalsIgnoreCase("finish")) {
-                ProductController.getInstance().editProduct(currentProduct);
-                break;
-            } else {
-                System.out.println("invalid command");
-            }
-        }
-    }
-
     private String editCategory() {
         String command;
         System.out.println("Now you need to choose features to reset.so pick one or enter back to get back.");
@@ -222,15 +227,13 @@ public class ManageProductMenu extends Menu {
                     modesNumber = getNumber("number");
                 }
                 currentProduct.getFeaturesOfCategoryThatHas().replace(feature, featureModes.get(Integer.parseInt(modesNumber) - 1));
-                System.out.println("you cheesed mode.");
+                System.out.println("you changed mode.");
             } else {
                 System.out.println("you need to choose features to reset.so pick one or enter back to get back.");
             }
             System.out.println("now you can choose another feature to change or enter back to finish.");
             System.out.println(featuresStringForm);
-
         }
-        currentProduct.setFeaturesOfCategoryThatHas(productsFeatures);
         return command;
     }
 
