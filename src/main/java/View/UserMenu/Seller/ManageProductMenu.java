@@ -67,12 +67,12 @@ public class ManageProductMenu extends Menu {
                 help();
             } else if (command.matches("remove @p\\d+")) {
                 Gson gson = new Gson();
-                String sellerObject = gson.toJson((Seller) ClientController.getInstance().getCurrentUser());
+                String sellerObject = gson.toJson(seller);
                 ProductController.getInstance().removeProduct(getTheProductIdByCommand(command, 1), sellerObject);
             } else if (command.equals("add product")) {
                 addProduct();
             } else {
-                System.out.println("invalid command");
+                System.err.println("invalid command");
             }
         }
         back();
@@ -87,9 +87,9 @@ public class ManageProductMenu extends Menu {
             } else if (!CategoryController.getInstance().isThereCategoryWithThisName(name)) {
                 System.out.println("Category with this name doesn't exists.");
             } else {
-                System.out.println(nameKind + " is Invalid");
+                System.out.println("Category" + " is Invalid");
             }
-            System.out.println("Enter " + nameKind);
+            System.out.println("Enter " + "Category");
             name = scanner.nextLine().trim();
         }
     }
