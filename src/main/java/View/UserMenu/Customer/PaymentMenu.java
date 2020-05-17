@@ -2,8 +2,12 @@ package View.UserMenu.Customer;
 
 import Controller.Client.CartController;
 import Controller.Client.ClientController;
+import Models.BuyLog;
+import Models.Product.Cart;
+import Models.UserAccount.Customer;
 import View.MainMenu;
 import View.Menu;
+import com.google.gson.Gson;
 
 public class PaymentMenu extends Menu {
     public PaymentMenu(Menu parentMenu) {
@@ -18,13 +22,5 @@ public class PaymentMenu extends Menu {
     public void execute() {
         CartController.getInstance().pay();
 
-    }
-
-    @Override
-    public void showMessage(String message) {
-        super.showMessage(message);
-        Menu menu= new CustomerMenu(new MainMenu(null)).setScanner(scanner);
-        ClientController.getInstance().setCurrentMenu(menu);
-        menu.execute();
     }
 }

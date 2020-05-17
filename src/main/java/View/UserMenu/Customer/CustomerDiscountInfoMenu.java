@@ -1,5 +1,6 @@
 package View.UserMenu.Customer;
 
+import Controller.Client.CartController;
 import Controller.Client.ClientController;
 import Models.DiscountCode;
 import Models.UserAccount.Customer;
@@ -20,7 +21,7 @@ public class CustomerDiscountInfoMenu extends Menu {
             System.out.println("Do you have any discount code for this payment? (YES/no)");
             String haveDiscount = scanner.next();
             if(haveDiscount.equals("YES")){
-                ClientController.getInstance().setCurrentDiscountCode(getDiscountCode());
+                CartController.getInstance().getCurrentCart().setDiscountCode(getDiscountCode());
                 Menu menu = new PaymentMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
@@ -40,13 +41,13 @@ public class CustomerDiscountInfoMenu extends Menu {
 
 
     private DiscountCode getDiscountCode() {
-        String discountCode;
+        String discountCode="";
         while (true) {
             System.out.println("Enter your discount code or type SKIP");
             discountCode = scanner.nextLine().trim();
             if (discountCode.equals("SKIP")) {
                 return null;
-            } else {
+            } else if(!discountCode.equals("")){
                 DiscountCode discount = ((Customer) ClientController.getInstance().getCurrentUser()).findDiscountCodeWithCode(discountCode);
                 if (discount == null) {
                     printError("you don't have any discount code with this code");

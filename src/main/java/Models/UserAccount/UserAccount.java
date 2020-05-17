@@ -58,7 +58,6 @@ public abstract class UserAccount {
         return email;
     }
     public void addLog(Log log){
-        System.out.println(historyOfTransaction);
         historyOfTransaction.add(log);
     }
     public String getPhoneNumber() {

@@ -3,12 +3,15 @@ package Controller.Client;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.Product.ProductStatus;
+import Models.Request;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.security.SecureRandom;
 import java.util.*;
 
 public class ProductController {
@@ -408,7 +411,19 @@ public class ProductController {
         }
         return null;
     }
-
+    public void showAllBuyersForThisProduct(String productId){
+        Seller seller=(Seller)ClientController.getInstance().getCurrentUser();
+        if (!seller.productExists(productId)) {
+            System.out.println("There Is No Product With This Id For This Seller.");
+        }else if (seller.getProductByID(productId).getAllBuyers() == null) {
+            System.out.println("There Is No Buyer For This Product");
+        }else {
+            for (Customer buyer : seller.getProductByID(productId).getAllBuyers()) {
+                System.out.println(buyer.viewPersonalInfo());
+                System.out.println("\n\n");
+            }
+        }
+    }
     public ArrayList<String> getAllSellers() {
         if (currentCategory != null) {
             ArrayList<String> allSellers = new ArrayList<>();

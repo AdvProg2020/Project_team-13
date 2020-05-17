@@ -71,24 +71,30 @@ public class CartCenter {
             for (String seller : sellers) {
                 ArrayList<Product> allProducts=new ArrayList<>();
                 sellerAndProducts+=seller+": ";
+                double cost=0;
                 for (Product product : cart.getAllproduct()) {
+                    cost=0;
                     if(seller.equals(product.getSeller())) {
                        allProducts.add(product);
+                       cost+=product.getCostAfterOff();
                        sellerAndProducts+=product.getProductId()+" ";
                     }
                 }
+                UserCenter.getIncstance().findSellerWithUsername(seller).setCredit(UserCenter.getIncstance().findSellerWithUsername(seller).getCredit()+cost);
                 sellerAndProducts+="\n";
                 SellLog sellLog = new SellLog(makeLogID(), new Date(),seller,customer.getUsername(),allProducts, ReceivingStatus.DeliveredToThePost, reducedPrice);
+                sellLog.setPrice(price+reducedPrice);
                 UserCenter.getIncstance().findSellerWithUsername(seller).addLog(sellLog);
             }
             BuyLog buyLog =new BuyLog(makeLogID(),price,new Date(),customer.getUsername(),sellerAndProducts,cart.getAllproduct(),ReceivingStatus.DeliveredToThePost,reducedPrice);
+            buyLog.setPrice(price);
             customer.addLog(buyLog);
             DataBase.getInstance().updateAllSellers(new Gson().toJson(UserCenter.getIncstance().getAllSeller()));
             DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
             DataBase.getInstance().updateAllProducts(new Gson().toJson(ProductCenter.getInstance().getAllProducts()));
             DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(DiscountCodeCenter.getIncstance().getAllDiscountCodes()));
             DataBase.getInstance().updateAllOffers(new Gson().toJson(OffCenter.getInstance().getAllOffers()));
-            ServerController.getInstance().sendMessageToClient("@Successful@Successfully purchase");
+            ServerController.getInstance().sendMessageToClient("@payed@"+new Gson().toJson(customer));
         }else {
             ServerController.getInstance().sendMessageToClient("@Error@You don't have enough credit");
         }
