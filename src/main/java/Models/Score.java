@@ -14,6 +14,14 @@ public class Score {
         this.rate = rate;
     }
 
+    @Override
+    public String toString() {
+        return "Score{" +
+                "customer=" + customer + "\n"+
+                ", product=" + product + "\n"+
+                ", rate=" + rate + "\n";
+    }
+
     public Customer getCustomer() {
         return customer;
     }

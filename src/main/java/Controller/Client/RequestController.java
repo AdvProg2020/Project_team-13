@@ -1,7 +1,7 @@
 package Controller.Client;
 
-import Models.Request;
-import Models.RequestType;
+import Models.*;
+import Models.Product.Product;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -43,8 +43,26 @@ public class RequestController {
         String viewDetail = "";
         for (Request request : allRequests) {
             if (request.getRequestId().equals(requestId)) {
-                if (request.getType() == RequestType.sellerRegister) {
-                    viewDetail = requestId + " " + request.getType() + " " + new Gson().fromJson(request.getDetails(), Seller.class).viewPersonalInfo();
+                switch (request.getType()){
+                    case addOff:
+                    case editOff:
+                        viewDetail=requestId+" "+request.getType()+" "+new Gson().fromJson(request.getDetails(), Offer.class).toString();
+                        break;
+                    case sellerRegister:
+                        viewDetail=requestId+ " "+request.getType()+ " "+ new Gson().fromJson(request.getDetails(), Seller.class).viewPersonalInfo();
+                        break;
+                    case addProduct:
+                    case EditProduct:
+                        viewDetail=requestId+" "+request.getType()+" "+new Gson().fromJson(request.getDetails(), Product.class).toString();
+                        break;
+                    case scoring:
+                        viewDetail=requestId+" "+request.getType()+" "+new Gson().fromJson(request.getDetails(), Score.class).toString();
+                        break;
+                    case commenting:
+                        viewDetail=requestId+" "+request.getType()+" "+new Gson().fromJson(request.getDetails(), Comment.class).toString();
+                        break;
+                    default:
+                        break;
                 }
                 ClientController.getInstance().getCurrentMenu().showMessage(viewDetail);
                 return;
