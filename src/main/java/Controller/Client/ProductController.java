@@ -38,6 +38,7 @@ public class ProductController {
     public Product getProductWithId(String productId) {
         for (Product product : allProducts) {
             if (product.getProductId().equals(productId)) {
+                System.out.println(product.getProductId());
                 return product;
             }
         }
@@ -195,6 +196,10 @@ public class ProductController {
                 }
             }
         }
+    }
+
+    public void editProduct(Product product) {
+        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("editProduct",new Gson().toJson(product)));
     }
 
     private void filterByPrice() {

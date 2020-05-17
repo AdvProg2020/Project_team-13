@@ -42,6 +42,20 @@ public class Product {
         this.featuresOfCategoryThatHas = featuresOfCategoryThatHas;
     }
 
+    public Product(Product product) {
+        this.productCompany = product.productCompany;
+        this.productId = product.productId;
+        this.productStatus = product.productStatus;
+        this.productName = product.productName;
+        this.sellerUsername = product.getSeller();
+        this.productCost = product.productCost;
+        this.costAfterOff = product.productCost;
+        this.productsCategory = product.productsCategory;
+        this.description = product.description;
+        this.numberOfAvailableProducts = product.numberOfAvailableProducts;
+        this.featuresOfCategoryThatHas = (HashMap<String, String>) (product.featuresOfCategoryThatHas).clone();
+    }
+
     public ArrayList<Customer> getAllBuyers() {
         return allBuyers;
     }
@@ -220,6 +234,12 @@ public class Product {
         if (offer != null) {
             costAfterOff = ((100 - offer.getAmount()) / 100) * productCost;
         }
+    }
+
+
+
+    public void setProductCompany(String productCompany) {
+        this.productCompany = productCompany;
     }
 
     @Override
