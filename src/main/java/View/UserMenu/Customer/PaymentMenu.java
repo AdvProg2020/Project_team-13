@@ -23,7 +23,7 @@ public class PaymentMenu extends Menu {
     @Override
     public void showMessage(String message) {
         super.showMessage(message);
-        Menu menu= new CustomerMenu(new MainMenu(null));
+        Menu menu= new CustomerMenu(new MainMenu(null)).setScanner(scanner);
         ClientController.getInstance().setCurrentMenu(menu);
         menu.execute();
     }

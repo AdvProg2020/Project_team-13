@@ -28,7 +28,7 @@ public class CartCenter {
     }
     public String makeLogID() {
         lastLogId = "@l" + (Integer.parseInt(lastLogId.substring(2, 7)) + 1);
-        DataBase.getInstance().replaceRequestId(lastLogId);
+        DataBase.getInstance().replaceLogId(lastLogId);
         return lastLogId;
     }
     public static CartCenter getInstance() {
@@ -58,8 +58,10 @@ public class CartCenter {
             if(discountCode!=null) {
                 DiscountCodeCenter.getIncstance().usedDiscountCode(discountCode.getDiscountCodeID(), customer.getUsername());
             }
+            customer.setCredit(customer.getCredit()-price);
             ArrayList<String> sellers=new ArrayList<>();
             for (Product product : cart.getAllproduct()) {
+                ProductCenter.getInstance().findProductWithID(product.getProductId()).addToAllBuyers(UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID()));
                 ProductCenter.getInstance().decreaseProductCount(product.getProductId(),cart.getCountOfEachProduct().get(product.getProductId()));
                 if(!sellers.contains(product.getSeller())){
                     sellers.add(product.getSeller());

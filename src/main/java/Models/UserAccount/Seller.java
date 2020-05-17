@@ -151,10 +151,12 @@ public class Seller extends UserAccount {
         for (Log sellLog : this.historyOfTransaction) {
             history += sellLog.getId() + " ";
             history += sellLog.getReceiverUserName() + " ";
-           // history += ((SellLog)sellLog).getPrice() + " ";
+            history += sellLog.getPrice() + " ";
             history += sellLog.getDate() + " ";
             history += sellLog.getReduceCostForOffs() + " ";
-            history += sellLog.getAllProducts().toString() + " ";
+            for (Product product : allProducts) {
+                history += product.getProductId()+" "+product.getProductCost() + "\n";
+            }
             history += "\n";
         }
         return history;

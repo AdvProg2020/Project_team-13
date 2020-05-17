@@ -8,6 +8,7 @@ import java.util.Date;
 public class Log {
     private String id;
     private Date date;
+    protected double price;
     private String receiverUserName;
     private String otherSideUserName;
     private ArrayList<Product> allProducts;
@@ -43,7 +44,13 @@ public class Log {
     public String getReceiverUserName() {
         return receiverUserName;
     }
+    public double getPrice() {
+        return price;
+    }
 
+    public void setPrice(double price) {
+        this.price = price;
+    }
     public void setReceiverUserName(String receiverUserName) {
         this.receiverUserName = receiverUserName;
     }

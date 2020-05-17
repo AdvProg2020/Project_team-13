@@ -25,7 +25,7 @@ public class Product {
     private ArrayList<Comment> commentList;
     private int numberOfAvailableProducts;
     private HashMap<String, String> featuresOfCategoryThatHas;
-    private ArrayList<Customer> allBuyers;
+    private ArrayList<Customer> allBuyers=new ArrayList<>();
     private Offer offer;
 
     public Product(String productCompany, String productId, String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, HashMap<String, String> featuresOfCategoryThatHas) {
@@ -188,6 +188,9 @@ public class Product {
     }
 
     public void addToAllBuyers(Customer buyer) {
+        if(allBuyers==null){
+            allBuyers=new ArrayList<>();
+        }
         this.allBuyers.add(buyer);
     }
 

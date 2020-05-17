@@ -125,6 +125,9 @@ public class ServerMessageController {
         }else if(message.startsWith("@pay@")){
             message=message.substring(5);
             CartCenter.getInstance().pay(new Gson().fromJson(message, Cart.class));//
+        }else if(message.startsWith("@declineRequest@")){
+            message=message.substring(16);
+            RequestCenter.getIncstance().declineRequest(message);
         }
     }
 }
