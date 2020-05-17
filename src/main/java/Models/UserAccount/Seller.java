@@ -57,9 +57,9 @@ public class Seller extends UserAccount {
         }
         allOffer.add(offer);
         ProductController.getInstance().getAllProductsFromServer();
-        /*for (String product : offer.getProducts()) {
+        for (String product : offer.getProducts()) {
             this.getProductByID(product).setCostAfterOff(this.getProductByID(product).getProductCost()*(1-(offer.getAmount()/100)));
-        }*/
+        }
     }
 
     public void removeProduct(String productId) {
@@ -80,9 +80,9 @@ public class Seller extends UserAccount {
                 break;
             }
         }
-        /*for (String product : newOffer.getProducts()) {
+        for (String product : newOffer.getProducts()) {
             this.getProductByID(product).setCostAfterOff(this.getProductByID(product).getProductCost()*(1-(newOffer.getAmount()/100)));
-        }*/
+        }
 
     }
 

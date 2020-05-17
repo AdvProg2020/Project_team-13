@@ -1,12 +1,8 @@
 package Controller.Server;
 
-import Controller.Client.CategoryController;
-import Controller.Client.OffsController;
 import Models.Offer;
 import Models.OfferStatus;
-import Models.Product.Category;
 import Models.Product.Product;
-import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

@@ -53,11 +53,6 @@ public class ProductController {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("AddProduct", product0));
     }
 
-    /*public void editProduct(String productId, String userName, String field, String newValue){
-
-        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage());
-    }*/
-
     public String getPriceFiltersInStringForm() {
         if (isPriceFilterActive) {
             return ("Price Filter: maximum price= " + max + " minimum price=" + min + "\n");
@@ -207,7 +202,7 @@ public class ProductController {
             List<Product> lst = allProductsAfterFilter;
             Product[] productsAfterPriceFilter =
                     lst.stream().filter(e -> e.getProductCost() <= max && e.getProductCost() >= min).toArray(Product[]::new);
-            allProductsAfterFilter = new ArrayList<Product>(Arrays.asList(productsAfterPriceFilter));
+            allProductsAfterFilter = new ArrayList<>(Arrays.asList(productsAfterPriceFilter));
         }
 
     }
@@ -217,7 +212,7 @@ public class ProductController {
             List<Product> lst = allProductsAfterFilter;
             Product[] productsAfterPriceFilter =
                     lst.stream().filter(e -> allBrandsToFilter.contains(e.getProductCompany())).toArray(Product[]::new);
-            allProductsAfterFilter = new ArrayList<Product>(Arrays.asList(productsAfterPriceFilter));
+            allProductsAfterFilter = new ArrayList<>(Arrays.asList(productsAfterPriceFilter));
         }
     }
 
@@ -226,7 +221,7 @@ public class ProductController {
             List<Product> lst = allProductsAfterFilter;
             Product[] productsAfterPriceFilter =
                     lst.stream().filter(e -> allSellersToFilter.contains(e.getSeller())).toArray(Product[]::new);
-            allProductsAfterFilter = new ArrayList<Product>(Arrays.asList(productsAfterPriceFilter));
+            allProductsAfterFilter = new ArrayList<>(Arrays.asList(productsAfterPriceFilter));
         }
     }
 
@@ -235,7 +230,7 @@ public class ProductController {
             List<Product> lst = allProductsAfterFilter;
             Product[] productsAfterPriceFilter =
                     lst.stream().filter(e -> allProductStatusToFilter.contains(e.getProductStatus())).toArray(Product[]::new);
-            allProductsAfterFilter = new ArrayList<Product>(Arrays.asList(productsAfterPriceFilter));
+            allProductsAfterFilter = new ArrayList<>(Arrays.asList(productsAfterPriceFilter));
         }
     }
 
@@ -244,7 +239,7 @@ public class ProductController {
             List<Product> lst = allProductsAfterFilter;
             Product[] productsAfterPriceFilter =
                     lst.stream().filter(e -> e.getProductName().toLowerCase().contains(nameToFilter.toLowerCase())).toArray(Product[]::new);
-            allProductsAfterFilter = new ArrayList<Product>(Arrays.asList(productsAfterPriceFilter));
+            allProductsAfterFilter = new ArrayList<>(Arrays.asList(productsAfterPriceFilter));
         }
     }
 
@@ -375,7 +370,6 @@ public class ProductController {
                             }
                         }
                     });
-
                 }
             }
         }
@@ -452,15 +446,8 @@ public class ProductController {
         return "";
     }
 
-    public void makeProductsViewForm() {
-//        String productsInviewForm
-        for (Product product : allProducts) {
-
-        }
-    }
-
-    public Product findProductAfterFilter(String productID) {
-        allProductsAfterFilter = new ArrayList<>(allProducts);
+    public Product findProductAfterFilter(String productID){
+        allProductsAfterFilter=new ArrayList<>(allProducts);
         filterProducts();
         for (Product product : allProductsAfterFilter) {
             if (product.getProductId().equals(productID)) {
@@ -503,6 +490,21 @@ public class ProductController {
             ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
         }
 
+    }
+
+
+    public void showAllBuyersForThisProduct(String productId){
+       Seller seller=(Seller)ClientController.getInstance().getCurrentUser();
+        if (seller.productExists(productId)) {
+            System.out.println("There Is No Product With This Id For This Seller.");
+        }else if (seller.getProductByID(productId).getAllBuyers() == null) {
+            System.out.println("There Is No Buyer For This Product");
+        }else {
+            for (Customer buyer : seller.getProductByID(productId).getAllBuyers()) {
+                System.out.println(buyer.viewPersonalInfo());
+                System.out.println("\n\n");
+            }
+        }
     }
 
     public void compareWithProduct(String productId){
