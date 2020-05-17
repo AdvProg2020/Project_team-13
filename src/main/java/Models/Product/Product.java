@@ -25,7 +25,7 @@ public class Product {
     private ArrayList<Comment> commentList;
     private int numberOfAvailableProducts;
     private HashMap<String, String> featuresOfCategoryThatHas;
-    private ArrayList<Customer> allBuyers;
+    private ArrayList<Customer> allBuyers=new ArrayList<>();
     private Offer offer;
 
     public Product(String productCompany, String productId, String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, HashMap<String, String> featuresOfCategoryThatHas) {
@@ -35,7 +35,7 @@ public class Product {
         this.productName = productName;
         this.sellerUsername = seller.getUsername();
         this.productCost = productCost;
-        this.costAfterOff=productCost;
+        this.costAfterOff = productCost;
         this.productsCategory = productsCategory;
         this.description = description;
         this.numberOfAvailableProducts = numberOfAvailableProducts;
@@ -69,6 +69,7 @@ public class Product {
     public void setExistInOfferRegistered(boolean existInOfferRegistered) {
         this.existInOfferRegistered = existInOfferRegistered;
     }
+
     public double getAverageScore() {
         if (allScores != null) {
             double averageScore = 0;
@@ -195,6 +196,9 @@ public class Product {
     }
 
     public void addToAllBuyers(Customer buyer) {
+        if(allBuyers==null){
+            allBuyers=new ArrayList<>();
+        }
         this.allBuyers.add(buyer);
     }
 

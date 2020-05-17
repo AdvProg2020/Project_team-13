@@ -4,7 +4,7 @@ import Models.Product.Cart;
 import com.google.gson.Gson;
 
 public class CartController {
-    private Cart currentCart=new Cart();
+    private Cart currentCart;
     private static CartController cartController;
 
     private CartController() {

@@ -1,14 +1,16 @@
 package Controller.Server;
 
+import Controller.Client.CategoryController;
 import Models.Offer;
 import Models.OfferStatus;
+import Models.Product.Category;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 
 public class OffCenter {
-    private ArrayList<Offer> allOffers=new ArrayList<>();
+    private ArrayList<Offer> allOffers = new ArrayList<>();
     private static OffCenter offCenter;
     private String lastOffId;
 
@@ -25,9 +27,8 @@ public class OffCenter {
     public void createOfferRequest(String message) {
         Gson gson = new Gson();
         Offer offer = gson.fromJson(message, Offer.class);
-        offer.setOfferId(getOfferIdForCreateInOffer());
-        RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("AddOffer", message));
         offer.setOfferStatus(OfferStatus.onReviewForCreate);
+        RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("AddOffer", gson.toJson(offer)));
         ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("CreatingOffer", "The Offer Registered For Manager's Confirmation"));
     }
 
@@ -51,14 +52,16 @@ public class OffCenter {
         RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("editOffer", new Gson().toJson(offer)));
         ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("editOffer", "The Offer's Edition Is Saved For Manager's Confirmation "));
     }
+
     public void setAllOffers(ArrayList<Offer> allOffers) {
         this.allOffers = allOffers;
     }
+
     public Product findProductWithID(String productID) {
         for (Offer offer : allOffers) {
-            for (Product product : offer.getProducts()) {
-                if (product.getProductId().equals(productID)) {
-                    return product;
+            for (String product : offer.getProducts()) {
+                if (product.equals(productID)) {
+                    ProductCenter.getInstance().getProductWithId(productID);
                 }
             }
         }
@@ -71,9 +74,14 @@ public class OffCenter {
 
     public void removeProduct(String productID) {
         for (Offer offer : allOffers) {
-            offer.getProducts().removeIf(product -> product.getProductId().equals(productID));
+            for (String product : offer.getProducts()) {
+                if (product.equals(productID)) {
+                    offer.getProducts().remove(product);
+                }
+            }
         }
     }
+
     public void createNewOff(Offer offer) {
         offer.setOfferId(getOfferIdForCreateInOffer());
         offer.setOfferStatus(OfferStatus.accepted);
@@ -82,6 +90,10 @@ public class OffCenter {
         }
         allOffers.add(offer);
         UserCenter.getIncstance().addOfferToSeller(offer);
+        for (String product : offer.getProducts()) {
+            ProductCenter.getInstance().addOfferToProduct(product, offer);
+            CategoryCenter.getIncstance().updateProductInCategory(ProductCenter.getInstance().getProductWithId(product));
+        }
         DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
     }
 

@@ -1,5 +1,6 @@
 package Models.UserAccount;
 
+import Controller.Client.ProductController;
 import Models.Log;
 import Models.Offer;
 import Models.Product.Product;
@@ -56,9 +57,7 @@ public class Seller extends UserAccount {
             allOffer = new ArrayList<>();
         }
         allOffer.add(offer);
-        for (Product product : offer.getProducts()) {
-            product.setOffer(offer);
-        }
+        ProductController.getInstance().getAllProductsFromServer();
     }
 
     public void removeProduct(String productId) {
@@ -79,9 +78,6 @@ public class Seller extends UserAccount {
                 break;
             }
         }
-        for (Product product : newOffer.getProducts()) {
-             product.setOffer(newOffer);
-        }
     }
 
     public boolean productExistsInOtherOffer(String productId) {
@@ -89,8 +85,8 @@ public class Seller extends UserAccount {
             return false;
         }
         for (Offer offer : allOffer) {
-            for (Product product : offer.getProducts()) {
-                if (product.getProductId().equals(productId)) {
+            for (String product : offer.getProducts()) {
+                if (product.equals(productId)) {
                     return true;
                 }
             }
@@ -155,10 +151,12 @@ public class Seller extends UserAccount {
         for (Log sellLog : this.historyOfTransaction) {
             history += sellLog.getId() + " ";
             history += sellLog.getReceiverUserName() + " ";
-           // history += ((SellLog)sellLog).getPrice() + " ";
+            history += sellLog.getPrice() + " ";
             history += sellLog.getDate() + " ";
             history += sellLog.getReduceCostForOffs() + " ";
-            history += sellLog.getAllProducts().toString() + " ";
+            for (Product product : allProducts) {
+                history += product.getProductId()+" "+product.getProductCost() + "\n";
+            }
             history += "\n";
         }
         return history;

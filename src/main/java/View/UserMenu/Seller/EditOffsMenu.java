@@ -11,6 +11,7 @@ import com.google.gson.internal.bind.util.ISO8601Utils;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.SortedMap;
 
 public class EditOffsMenu extends Menu {
     private Offer offer;
@@ -90,7 +91,11 @@ public class EditOffsMenu extends Menu {
                 if (isBack()) {
                     continue;
                 }
-                offer.setProducts(allProducts);
+                ArrayList<String> allProductsID=new ArrayList<>();
+                for (Product product : allProducts) {
+                    allProductsID.add(product.getProductId());
+                }
+                offer.setProducts(allProductsID);
             } else if (command.equalsIgnoreCase("help")) {
                 help();
             } else if (command.equalsIgnoreCase("finish")) {

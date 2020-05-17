@@ -10,15 +10,15 @@ public class Offer {
     private String offerId;
     private double amount;
     private String seller;
-    private ArrayList<Product> products;
+    private ArrayList<String> productsId;
     private Date startTime;
     private Date endTime;
     private OfferStatus offerStatus;
 
-    public Offer(double amount, String seller, ArrayList<Product> products, Date startTime, Date endTime) {
+    public Offer(double amount, String seller, ArrayList<String> products, Date startTime, Date endTime) {
         this.amount = amount;
         this.seller = seller;
-        this.products = products;
+        this.productsId = products;
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -39,12 +39,12 @@ public class Offer {
         this.amount = amount;
     }
 
-    public ArrayList<Product> getProducts() {
-        return products;
+    public ArrayList<String> getProducts() {
+        return productsId;
     }
 
-    public void setProducts(ArrayList<Product> products) {
-        this.products = products;
+    public void setProducts(ArrayList<String> products) {
+        this.productsId = products;
     }
 
     public Date getStartTime() {
@@ -86,19 +86,23 @@ public class Offer {
 
     @Override
     public String toString() {
+        String listOfProducts="";
+        for (String s : productsId) {
+            listOfProducts+=s+"\t";
+        }
         return "offerId :" + offerId + "\n" +
                 "amount : " + amount + '%'+"\n"+
-                "products :" + products +"\n"+
+                "products :" + listOfProducts +"\n"+
                 "startTime : " + startTime +"\n"+
                 "endTime : "  + endTime +"\n"+
                 "offerStatus : " + offerStatus +"\n"
                 ;
     }
 
-    public Product getProductByIdInOfferList(String id){
-        for (Product product : products) {
-            if(product.getProductId().equals(id)){
-                return product;
+    public String getProductByIdInOfferList(String id){
+        for (String productId : productsId) {
+            if(productId.equalsIgnoreCase(id)){
+                return productId;
             }
         }
         return null;

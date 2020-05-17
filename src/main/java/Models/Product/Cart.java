@@ -58,15 +58,19 @@ public class Cart {
     }
 
     public void changeCountOfProduct(String productID, int count) {
-        if(countOfEachProduct.get(productID) + count>0) {
-            countOfEachProduct.replace(productID, countOfEachProduct.get(productID) + count);
-            ClientController.getInstance().getCurrentMenu().showMessage("The new number of this product is "+countOfEachProduct.get(productID));
-        }else if(countOfEachProduct.get(productID) + count==0) {
-            countOfEachProduct.remove(productID);
-            allproduct.remove(findProductWithID(productID));
-            ClientController.getInstance().getCurrentMenu().showMessage("this product removed from your cart");
-        }else if(countOfEachProduct.get(productID) + count<0) {
-            ClientController.getInstance().getCurrentMenu().printError("You only have "+countOfEachProduct.get(productID)+" of this products in your cart");
+        if(findProductWithID(productID).getNumberOfAvailableProducts()-count>=0) {
+            if (countOfEachProduct.get(productID) + count > 0) {
+                countOfEachProduct.replace(productID, countOfEachProduct.get(productID) + count);
+                ClientController.getInstance().getCurrentMenu().showMessage("The new number of this product is " + countOfEachProduct.get(productID));
+            } else if (countOfEachProduct.get(productID) + count == 0) {
+                countOfEachProduct.remove(productID);
+                allproduct.remove(findProductWithID(productID));
+                ClientController.getInstance().getCurrentMenu().showMessage("this product removed from your cart");
+            } else if (countOfEachProduct.get(productID) + count < 0) {
+                ClientController.getInstance().getCurrentMenu().printError("You only have " + countOfEachProduct.get(productID) + " of this products in your cart");
+            }
+        }else{
+            ClientController.getInstance().getCurrentMenu().printError("there are no more than "+findProductWithID(productID).getNumberOfAvailableProducts()+" of this product in the store");
         }
     }
 

@@ -34,6 +34,7 @@ public class CartMenu extends Menu {
         Cart cart= CartController.getInstance().getCurrentCart();
         if(cart==null){
             CartController.getInstance().setCurrentCart(new Cart());
+            cart= CartController.getInstance().getCurrentCart();
         }
 
         String command;
