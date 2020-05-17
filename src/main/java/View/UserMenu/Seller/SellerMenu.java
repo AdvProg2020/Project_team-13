@@ -29,20 +29,20 @@ public class SellerMenu extends Menu {
                 Menu menu = new ViewAndEditInformationForSeller(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
-            } else if (command.equals("manage products")&& isAccepted) {
-                RequestController.getInstance().getAllRequestsFromServer();
+            } else if (command.equals("manage products") && isAccepted) {
+                ProductController.getInstance().getAllProductsFromServer();
                 Menu menu = new ManageProductMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
-            }else if (command.equals("show categories")&& isAccepted) {
+            } else if (command.equals("show categories") && isAccepted) {
                 CategoryController.getInstance().printAllCategories();
-            }else if(command.equals("view offs")) {
-                Menu menu=new ViewOffsMenu(this).setScanner(scanner);
+            } else if (command.equals("view offs")) {
+                Menu menu = new ViewOffsMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
-            }else if(command.equals("view sales history")) {
-                showMessage(((Seller)ClientController.getInstance().getCurrentUser()).viewSalesHistory());
-            }else if (command.equals("help")) {
+            } else if (command.equals("view sales history")) {
+                showMessage(((Seller) ClientController.getInstance().getCurrentUser()).viewSalesHistory());
+            } else if (command.equals("help")) {
                 help();
             } else if (command.equalsIgnoreCase("logout")) {
                 ClientController.getInstance().setCurrentUser(null);
