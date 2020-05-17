@@ -7,7 +7,6 @@ import Models.Product.Category;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 
 public class OffCenter {
@@ -25,10 +24,6 @@ public class OffCenter {
         return offCenter;
     }
 
-    public void createNewOff(String json) {
-
-    }
-
     public void createOfferRequest(String message) {
         Gson gson = new Gson();
         Offer offer = gson.fromJson(message, Offer.class);
@@ -39,7 +34,7 @@ public class OffCenter {
 
     public String getOfferIdForCreateInOffer() {
         DataBase.getInstance().setLastOfferIdFromDataBase();
-        this.lastOffId = "@o" + (Integer.parseInt(lastOffId.substring(2, lastOffId.length())) + 1);
+        this.lastOffId = "@o" + (Integer.parseInt(lastOffId.substring(2)) + 1);
         DataBase.getInstance().replaceOfferId(lastOffId);
         return this.lastOffId;
     }
@@ -79,11 +74,7 @@ public class OffCenter {
 
     public void removeProduct(String productID) {
         for (Offer offer : allOffers) {
-            for (String product : offer.getProducts()) {
-                if (product.equals(productID)) {
-                    offer.getProducts().remove(product);
-                }
-            }
+            offer.getProducts().removeIf(product -> product.equals(productID));
         }
     }
 
@@ -102,9 +93,26 @@ public class OffCenter {
         DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
     }
 
-    public void editOffer(Offer offer) {
-        offer.setOfferStatus(OfferStatus.accepted);
-        //must be handled
+    public void editOffer(Offer newOffer) {
+        Offer oldOffer=getOfferByOfferId(newOffer.getOfferId());
+        newOffer.setOfferStatus(OfferStatus.accepted);
+        allOffers.set(allOffers.indexOf(oldOffer), newOffer);
+        UserCenter.getIncstance().editOfferForSeller(newOffer);
+        DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
     }
 
+    public void setProductStatusForOffer(Offer offer){
+        for (String product : offer.getProducts()) {
+            ProductCenter.getInstance().getProductWithId(product).setExistInOfferRegistered(false);
+        }
+    }
+
+    public Offer getOfferByOfferId(String offerId){
+        for (Offer offer : allOffers) {
+            if (offer.getOfferId().equals(offerId)) {
+                return offer;
+            }
+        }
+        return null;
+    }
 }

@@ -5,7 +5,6 @@ import Models.Log;
 import Models.Offer;
 import Models.Product.Product;
 import Models.Request;
-import Models.SellLog;
 
 import java.util.ArrayList;
 
@@ -58,6 +57,9 @@ public class Seller extends UserAccount {
         }
         allOffer.add(offer);
         ProductController.getInstance().getAllProductsFromServer();
+        for (String product : offer.getProducts()) {
+            this.getProductByID(product).setCostAfterOff(this.getProductByID(product).getProductCost()*(1-(offer.getAmount()/100)));
+        }
     }
 
     public void removeProduct(String productId) {
@@ -78,10 +80,14 @@ public class Seller extends UserAccount {
                 break;
             }
         }
+        for (String product : newOffer.getProducts()) {
+            this.getProductByID(product).setCostAfterOff(this.getProductByID(product).getProductCost()*(1-(newOffer.getAmount()/100)));
+        }
+
     }
 
     public boolean productExistsInOtherOffer(String productId) {
-        if (!hasAnyOffer()) {
+        if (sAnyOffer()) {
             return false;
         }
         for (Offer offer : allOffer) {
@@ -147,32 +153,32 @@ public class Seller extends UserAccount {
     }
 
     public String viewSalesHistory() {
-        String history = "";
+        StringBuilder history = new StringBuilder();
         for (Log sellLog : this.historyOfTransaction) {
-            history += sellLog.getId() + " ";
-            history += sellLog.getReceiverUserName() + " ";
-            history += sellLog.getPrice() + " ";
-            history += sellLog.getDate() + " ";
-            history += sellLog.getReduceCostForOffs() + " ";
+            history.append(sellLog.getId()).append(" ");
+            history.append(sellLog.getReceiverUserName()).append(" ");
+            history.append(sellLog.getPrice()).append(" ");
+            history.append(sellLog.getDate()).append(" ");
+            history.append(sellLog.getReduceCostForOffs()).append(" ");
             for (Product product : allProducts) {
-                history += product.getProductId()+" "+product.getProductCost() + "\n";
+                history.append(product.getProductId()).append(" ").append(product.getProductCost()).append("\n");
             }
-            history += "\n";
+            history.append("\n");
         }
-        return history;
+        return history.toString();
     }
 
     public String viewAllProducts() {
-        String products = "";
+        StringBuilder products = new StringBuilder();
         if (allProducts != null && !allProducts.isEmpty()) {
             for (Product product : this.allProducts) {
-                products += product.getProductId() + " ";
-                products += product.getProductName() + " ";
-                products += product.getProductCost() + " ";
-                products += "\n";
+                products.append(product.getProductId()).append(" ");
+                products.append(product.getProductName()).append(" ");
+                products.append(product.getProductCost()).append(" ");
+                products.append("\n");
             }
         }
-        return products;
+        return products.toString();
     }
 
     public String viewProduct(String productID) {
@@ -198,7 +204,7 @@ public class Seller extends UserAccount {
     }
 
     public Product getProductByID(String productID) {
-        if (!hasAnyProduct()) {
+        if (AnyOffer()) {
             return null;
         }
         for (Product product : allProducts) {
@@ -209,11 +215,11 @@ public class Seller extends UserAccount {
     }
 
     public boolean productExists(String productId) {
-        return getProductByID(productId) != null;
+        return getProductByID(productId) == null;
     }
 
     public Offer getOfferById(String offerId) {
-        if (!hasAnyOffer()) {
+        if (sAnyOffer()) {
             return null;
         }
         for (Offer offer : allOffer) {
@@ -228,11 +234,11 @@ public class Seller extends UserAccount {
         return getOfferById(offerId) != null;
     }
 
-    public boolean hasAnyProduct() {
-        return !(allProducts == null||allProducts.isEmpty());
+    public boolean AnyOffer() {
+        return allProducts == null || allProducts.isEmpty();
     }
 
-    public boolean hasAnyOffer() {
-        return allOffer != null;
+    public boolean sAnyOffer() {
+        return allOffer == null;
     }
 }

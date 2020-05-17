@@ -42,6 +42,18 @@ public class Product {
         this.featuresOfCategoryThatHas = featuresOfCategoryThatHas;
     }
 
+    public ArrayList<Customer> getAllBuyers() {
+        return allBuyers;
+    }
+
+    public void setCostAfterOff(double costAfterOff) {
+        this.costAfterOff = costAfterOff;
+    }
+
+    public void setAllBuyers(ArrayList<Customer> allBuyers) {
+        this.allBuyers = allBuyers;
+    }
+
     public void setProductId(String productId) {
         this.productId = productId;
     }

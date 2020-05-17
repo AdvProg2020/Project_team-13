@@ -2,16 +2,13 @@ package View.UserMenu.Seller;
 
 import Controller.Client.ClientController;
 import Controller.Client.OffsController;
-import Controller.Client.ProductController;
 import Models.Offer;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import View.Menu;
-import com.google.gson.internal.bind.util.ISO8601Utils;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.SortedMap;
 
 public class EditOffsMenu extends Menu {
     private Offer offer;
@@ -268,7 +265,7 @@ public class EditOffsMenu extends Menu {
             System.out.println("add [product id]");
             command = scanner.nextLine().trim();
             if (command.matches("add @p\\d+")) {
-                if (!seller.productExists(command.substring(4))) {
+                if (seller.productExists(command.substring(4))) {
                     System.out.println("The Product Isn't in Your List.");
                 } else if (OffsController.getInstance().productExitsInOtherOffer(seller, command.substring(4))) {
                     System.out.println("The Product Already Exists In Other Offer.");

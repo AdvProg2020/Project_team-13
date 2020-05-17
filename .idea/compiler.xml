@@ -6,15 +6,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="Project_Team_13" />
         <module name="Project_team" />
-        <module name="peymanProject" />
         <module name="1313" />
-        <module name="پروژه" />
+        <module name="Project_team-13" />
         <module name="Project" />
         <module name="13" />
-        <module name="Project_Team_13" />
+        <module name="پروژه" />
         <module name="project13" />
-        <module name="Project_team-13" />
+        <module name="peymanProject" />
       </profile>
     </annotationProcessing>
   </component>

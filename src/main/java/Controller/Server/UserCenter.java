@@ -138,15 +138,22 @@ public class UserCenter {
         if (isThereUserWithThisUsername(username)) {
             UserAccount userAccount = getUserWithUsername(username);
             if (userAccount.getPassword().equals(password)) {
-                if (userAccount.getType().equals("@Customer")) {
-                    String user = gson.toJson((Customer) userAccount);
-                    ServerController.getInstance().sendMessageToClient("@Login as Customer@" + user);
-                } else if (userAccount.getType().equals("@Seller")) {
-                    String user = gson.toJson((Seller) userAccount);
-                    ServerController.getInstance().sendMessageToClient("@Login as Seller@" + user);
-                } else if (userAccount.getType().equals("@Manager")) {
-                    String user = gson.toJson((Manager) userAccount);
-                    ServerController.getInstance().sendMessageToClient("@Login as Manager@" + user);
+                switch (userAccount.getType()) {
+                    case "@Customer": {
+                        String user = gson.toJson((Customer) userAccount);
+                        ServerController.getInstance().sendMessageToClient("@Login as Customer@" + user);
+                        break;
+                    }
+                    case "@Seller": {
+                        String user = gson.toJson((Seller) userAccount);
+                        ServerController.getInstance().sendMessageToClient("@Login as Seller@" + user);
+                        break;
+                    }
+                    case "@Manager": {
+                        String user = gson.toJson((Manager) userAccount);
+                        ServerController.getInstance().sendMessageToClient("@Login as Manager@" + user);
+                        break;
+                    }
                 }
             } else {
                 ServerController.getInstance().sendMessageToClient("@Error@Password is incorrect");
@@ -176,9 +183,9 @@ public class UserCenter {
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
     }
 
-    public void editOfferForSeller(Offer oldOffer, Offer newOffer) {
+    public void editOfferForSeller(Offer newOffer){
         for (Seller seller : allSeller) {
-            if (seller.getUsername().equals(oldOffer.getSeller())) {
+            if(seller.getUsername().equals(newOffer.getSeller())){
                 seller.editOffer(newOffer);
                 break;
             }
