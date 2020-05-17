@@ -66,7 +66,9 @@ public class ServerMessageController {
             UserCenter.getIncstance().createManagerProfile(message.substring(22, message.length()));
         } else if (message.startsWith("@getAllProductsForManager@")) {
             DataBase.getInstance().getAllProductsFromDataBase();
-        } else if (message.startsWith("@removeProductForManager@")) {
+        }  else if (message.startsWith("@getAllOffers@")) {
+            DataBase.getInstance().getAllOffersFromDataBase();
+        }else if (message.startsWith("@removeProductForManager@")) {
             message = message.substring(25, message.length());
             ProductCenter.getInstance().deleteProduct(message);
         } else if (message.startsWith("@getAllCategories@")) {
