@@ -130,6 +130,9 @@ public class ServerMessageController {
         } else if (message.startsWith("@declineRequest@")) {
             message = message.substring(16);
             RequestCenter.getIncstance().declineRequest(message);
+        }else if(message.startsWith("@rate@")){
+            message=message.substring(6);
+            ProductCenter.getInstance().rating(message);
         }
     }
 }

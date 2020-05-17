@@ -6,6 +6,7 @@ import Models.Offer;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.Product.ProductStatus;
+import Models.Score;
 import Models.Request;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
@@ -54,6 +55,21 @@ public class ProductCenter {
 
         }
 
+    }
+
+    public void rating(String json) {
+        Score score=new Gson().fromJson(json,Score.class);
+        Product product=ProductCenter.getInstance().findProductWithID(score.getProductID());
+        product.addScore(score);
+        UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).findProductWithID(product.getProductId()).addScore(score);
+        UserCenter.getIncstance().findCustomerWithUsername(score.getCustomerID()).findProductWithId(product.getProductId()).addScore(score);
+        if(OffCenter.getInstance().findProductWithID(product.getProductId())!=null)
+        OffCenter.getInstance().findProductWithID(product.getProductId()).addScore(score);
+        DataBase.getInstance().updateAllProducts(new Gson().toJson(ProductCenter.getInstance().getAllProducts()));
+        DataBase.getInstance().updateAllOffers(new Gson().toJson(OffCenter.getInstance().getAllOffers()));
+        DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
+        DataBase.getInstance().updateAllSellers(new Gson().toJson(UserCenter.getIncstance().getAllSeller()));
+        ServerController.getInstance().sendMessageToClient("@Successful@successfully rating");
     }
 
     public Product findProductWithID(String productId) {

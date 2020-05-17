@@ -4,30 +4,22 @@ import Models.Product.Product;
 import Models.UserAccount.Customer;
 
 public class Score {
-    private Customer customer;
-    private Product product;
+    private String customerID;
+    private String  productID;
     private int rate;
 
-    public Score(Customer customer, Product product, int rate) {
-        this.customer = customer;
-        this.product = product;
+    public Score(String customerID, String productID, int rate) {
+        this.customerID = customerID;
+        this.productID = productID;
         this.rate = rate;
     }
 
-    @Override
-    public String toString() {
-        return "Score{" +
-                "customer=" + customer + "\n"+
-                ", product=" + product + "\n"+
-                ", rate=" + rate + "\n";
+    public String getCustomerID() {
+        return customerID;
     }
 
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public Product getProduct() {
-        return product;
+    public String getProductID() {
+        return productID;
     }
 
     public int getRate() {

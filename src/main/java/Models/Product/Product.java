@@ -73,6 +73,9 @@ public class Product {
     }
 
     public void addScore(Score score) {
+        if(allScores==null){
+            allScores=new ArrayList<>();
+        }
         allScores.add(score);
     }
 
@@ -109,6 +112,15 @@ public class Product {
             costAfterOff = this.productCost * ((double) 100 - offer.getAmount()) / (double) 100;
         }
         return this.costAfterOff;
+    }
+
+
+    public ArrayList<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(ArrayList<Comment> commentList) {
+        this.commentList = commentList;
     }
 
     public String viewProduct() {
@@ -181,6 +193,9 @@ public class Product {
         this.productStatus = productStatus;
     }
 
+    public void addScore(String customerID,int rate){
+        allScores.add(new Score(customerID,productId,rate));
+    }
     public void setProductName(String productName) {
         this.productName = productName;
     }
