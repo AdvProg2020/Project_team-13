@@ -4,6 +4,7 @@ import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
 import Controller.Client.ProductController;
 import Models.Product.Category;
+import Models.UserAccount.Seller;
 import View.Menu;
 
 import java.util.ArrayList;
@@ -36,6 +37,8 @@ public class SellerMenu extends Menu {
                 Menu menu=new ViewOffsMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
+            }else if(command.equals("view sales history")) {
+                showMessage(((Seller)ClientController.getInstance().getCurrentUser()).viewSalesHistory());
             }else if (command.equals("help")) {
                 help();
             } else if (command.equalsIgnoreCase("logout")) {
