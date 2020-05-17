@@ -31,7 +31,17 @@ public class ProductController {
         if (productController == null) {
             productController = new ProductController();
         }
+        productController.getAllProductsFromServer();
         return productController;
+    }
+
+    public Product getProductWithId(String productId){
+        for (Product product : allProducts) {
+            if(product.getProductId().equals(productId)){
+                return product;
+            }
+        }
+        return null;
     }
 
     public void addProduct(ArrayList<String> fields, HashMap<String, String> featuresOfCategory, Category category) {
@@ -409,9 +419,10 @@ public class ProductController {
         return null;
     }
 
-    public String getTheProductDetails(ArrayList<Product> allProducts) {
+    public String getTheProductDetails(ArrayList<String> allProducts) {
         String allDetails = "";
-        for (Product product : allProducts) {
+        for (String product1 : allProducts) {
+            Product product=getProductWithId(product1);
             allDetails += product.productInfoFor() + "\n";
         }
         return allDetails.substring(0,allDetails.length()-1);

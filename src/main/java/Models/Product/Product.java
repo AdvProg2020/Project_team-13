@@ -35,7 +35,7 @@ public class Product {
         this.productName = productName;
         this.sellerUsername = seller.getUsername();
         this.productCost = productCost;
-        this.costAfterOff=productCost;
+        this.costAfterOff = productCost;
         this.productsCategory = productsCategory;
         this.description = description;
         this.numberOfAvailableProducts = numberOfAvailableProducts;
@@ -61,6 +61,7 @@ public class Product {
     public void setExistInOfferRegistered(boolean existInOfferRegistered) {
         this.existInOfferRegistered = existInOfferRegistered;
     }
+
     public double getAverageScore() {
         if (allScores != null) {
             double averageScore = 0;

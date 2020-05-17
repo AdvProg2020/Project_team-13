@@ -124,7 +124,6 @@ public class CategoryCenter {
         DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
     }
 
-
     public void deleteCategoryFeature(Category category) {
         for (int i = 0; i < allCategories.size(); i++) {
             if (allCategories.get(i).getName().equalsIgnoreCase(category.getName())) {
@@ -148,6 +147,22 @@ public class CategoryCenter {
             }
         }
         DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
+    }
+
+    public void updateProductInCategory(Product product) {
+        firstLoop:for (Category category : allCategories) {
+            if(category.getName().equals(product.getProductsCategory())) {
+                for (Product product1 : category.getAllProducts()) {
+                    for (int i = 0; i < category.getAllProducts().size(); i++) {
+                        if (category.getAllProducts().get(i).getProductId().equals(product.getProductId())) {
+                            category.getAllProducts().set(i,product);
+                            DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
+                            break firstLoop;
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }

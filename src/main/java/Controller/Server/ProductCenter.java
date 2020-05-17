@@ -1,6 +1,8 @@
 package Controller.Server;
 
+import Controller.Client.CategoryController;
 import Controller.Client.MessageController;
+import Models.Offer;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.Product.ProductStatus;
@@ -35,15 +37,16 @@ public class ProductCenter {
     public void setLastProductId(String lastProductId) {
         this.lastProductId = lastProductId;
     }
-    public void decreaseProductCount(String productId,int count){
-        Product product=findProductWithID(productId);
-        if(product.getNumberOfAvailableProducts()-count>1) {
+
+    public void decreaseProductCount(String productId, int count) {
+        Product product = findProductWithID(productId);
+        if (product.getNumberOfAvailableProducts() - count > 1) {
             product.setNumberOfAvailableProducts(product.getNumberOfAvailableProducts() - count);
-            UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).reduceProductCount(productId,count);
-            if(OffCenter.getInstance().findProductWithID(productId)!=null) {
+            UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).reduceProductCount(productId, count);
+            if (OffCenter.getInstance().findProductWithID(productId) != null) {
                 OffCenter.getInstance().findProductWithID(productId).setNumberOfAvailableProducts(OffCenter.getInstance().findProductWithID(productId).getNumberOfAvailableProducts() - count);
             }
-        }else{
+        } else {
             allProducts.remove(product);
             UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).removeProduct(productId);
             OffCenter.getInstance().removeProduct(productId);
@@ -51,14 +54,16 @@ public class ProductCenter {
         }
 
     }
-    public Product findProductWithID(String productId){
+
+    public Product findProductWithID(String productId) {
         for (Product product : allProducts) {
-            if(product.getProductId().equals(productId)){
+            if (product.getProductId().equals(productId)) {
                 return product;
             }
         }
         return null;
     }
+
     public String getProductIdForCreateInProduct() {
         DataBase.getInstance().setLastProductIdFromDataBase();
         this.lastProductId = "@p" + (Integer.parseInt(lastProductId.substring(2)) + 1);
@@ -103,7 +108,7 @@ public class ProductCenter {
 
     public void deleteProduct(String productId) {
         for (Product product1 : allProducts) {
-            if(product1.getProductId().equals(productId)) {
+            if (product1.getProductId().equals(productId)) {
                 allProducts.remove(product1);
                 UserCenter.getIncstance().removeProductFromSellerProductList(product1);
                 CategoryCenter.getIncstance().removeProductFromCategory(product1);
@@ -140,12 +145,23 @@ public class ProductCenter {
         this.allProducts = allProducts;
     }
 
-    public void createEditProductRequest(Product product){
+    public void createEditProductRequest(Product product) {
         //
 
     }
 
-    public void editProduct(Product product){
+    public void editProduct(Product product) {
         //
+    }
+
+    public void addOfferToProduct(String productId, Offer offer) {
+        for (Product product : allProducts) {
+            if (product.getProductId().equals(productId)) {
+                product.setOffer(offer);
+                DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));
+                break;
+            }
+        }
+
     }
 }

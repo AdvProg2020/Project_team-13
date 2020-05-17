@@ -4,7 +4,7 @@ import Models.Product.Cart;
 import com.google.gson.Gson;
 
 public class CartController {
-    private Cart currentCart=new Cart();
+    private Cart currentCart = new Cart();
     private static CartController cartController;
 
     private CartController() {
@@ -24,7 +24,8 @@ public class CartController {
         }
         return cartController;
     }
-    public void pay(){
-        ClientController.getInstance().sendMessageToServer("@pay@"+new Gson().toJson(currentCart));
+
+    public void pay() {
+        ClientController.getInstance().sendMessageToServer("@pay@" + new Gson().toJson(currentCart));
     }
 }
