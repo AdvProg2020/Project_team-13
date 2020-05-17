@@ -24,7 +24,7 @@ public class RequestController {
     }
 
     public void getAllRequestsFromServer() {
-        ClientController.getInstance().sendMessageToServer("getAllRequests");
+        ClientController.getInstance().sendMessageToServer("@getAllRequests@");
     }
 
 
@@ -38,7 +38,7 @@ public class RequestController {
                 showAllRequests += request.getRequestId() + " " + request.getType() + "\n";
             }
         }
-        ClientController.getInstance().getCurrentMenu().showMessage(showAllRequests.toString());
+        ClientController.getInstance().getCurrentMenu().showMessage(showAllRequests);
     }
 
     public void viewRequestDetail(String requestId) {

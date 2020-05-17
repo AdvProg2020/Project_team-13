@@ -40,7 +40,7 @@ public class ServerMessageController {
             message = message.substring(7, message.length());
             String[] split = message.split("/");
             UserCenter.getIncstance().login(split[0], split[1]);
-        } else if (message.equals("getAllRequests")) {
+        } else if (message.equals("@getAllRequests@")) {
             ServerController.getInstance().sendMessageToClient("@AllRequests@" + new Gson().toJson(RequestCenter.getIncstance().getAllRequests()));
         } else if (message.startsWith("@acceptRequest@")) {
             message = message.substring(15, message.length());
