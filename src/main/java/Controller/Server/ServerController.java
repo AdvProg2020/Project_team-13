@@ -22,6 +22,7 @@ public class ServerController {
         DataBase.getInstance().setLastLogId();
         DataBase.getInstance().setAllProductsFormDataBase();
         DataBase.getInstance().setAllCategoriesFormDataBase();
+        DataBase.getInstance().setAllOffersFromDatabase();
     }
 
     public static ServerController getInstance() {

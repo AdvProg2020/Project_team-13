@@ -56,6 +56,9 @@ public class Seller extends UserAccount {
             allOffer = new ArrayList<>();
         }
         allOffer.add(offer);
+        for (Product product : offer.getProducts()) {
+            product.setOffer(offer);
+        }
     }
 
     public void removeProduct(String productId) {
@@ -66,6 +69,18 @@ public class Seller extends UserAccount {
                     break;
                 }
             }
+        }
+    }
+
+    public void editOffer(Offer newOffer){
+        for (Offer offer : allOffer) {
+            if(offer.getOfferId().equals(newOffer.getOfferId())){
+                allOffer.set(allOffer.indexOf(offer), newOffer);
+                break;
+            }
+        }
+        for (Product product : newOffer.getProducts()) {
+             product.setOffer(newOffer);
         }
     }
 

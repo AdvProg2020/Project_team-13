@@ -63,7 +63,7 @@ public class RequestCenter {
             acceptSellerRegisterRequest(request);
         } else if (request.getType() == RequestType.addProduct) {
             acceptAddProductRequest(request);
-        } else if(request.getType().equals(RequestType.EditProduct)){
+        } else if(request.getType().equals(RequestType.editOff)){
             acceptEditOfferRequest(request);
         } else if(request.getType().equals(RequestType.addOff)){
             acceptAddOfferRequest(request);

@@ -16,6 +16,8 @@ public class OffsController {
     public OffsController() {
     }
 
+
+
     public static OffsController getInstance(){
         if(offsController==null){
             offsController=new OffsController();
@@ -27,8 +29,9 @@ public class OffsController {
             String str="";
             for (Offer offer : seller.getAllOffer()) {
                 str+=offer.toStringForSummery();
+                str+="\n\n";
             }
-            System.out.println(str+'\n');
+            System.out.println(str);
         }else{
             System.out.println("There is no Offer for this seller");
         }
@@ -37,7 +40,7 @@ public class OffsController {
         if(seller.offerExists(offerId)){
             String str="";
             str+=seller.getOfferById(offerId).toString();
-            System.out.println(str+'\n');
+            System.out.println(str+"\n");
         }else {
             System.out.println("There is no Offer With This Id");
         }
@@ -47,13 +50,33 @@ public class OffsController {
     }
     public void addOff(double amount, double maxDiscountAmount, ArrayList<Product> allProducts, Date startDate, Date endDate){
         Gson gson=new Gson();
-        Offer offer=new Offer(amount, (Seller)ClientController.getInstance().getCurrentUser(), allProducts, maxDiscountAmount, startDate, endDate);
+        Offer offer=new Offer(amount, ClientController.getInstance().getCurrentUser().getUsername(), allProducts, maxDiscountAmount, startDate, endDate);
         String offerJson=gson.toJson(offer);
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("AddOffer",offerJson));
     }
     public void viewAllProducts(Offer offer){
         for (Product product : offer.getProducts()) {
-            System.out.println(product.viewProduct());
+            System.out.println(product.productInfoFor());
+        }
+    }
+
+    public boolean productExitsInOtherOffer(Seller seller,String productId){
+        return seller.getProductByID(productId).isExistInOfferRegistered();
+    }
+
+    public void setTheProductExistInOtherOffer(Seller seller, String productId, boolean state){
+        seller.getProductByID(productId).setExistInOfferRegistered(state);
+    }
+
+    public void getAllOffsFromServer(){
+        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("getAllOffsForManager",null));
+    }
+
+    public void showAllOffs(){
+        getAllOffsFromServer();
+        for (Offer offer : allOffs) {
+            System.out.println(offer.toString());
+            System.out.println("\n\n");
         }
     }
 }

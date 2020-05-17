@@ -89,6 +89,14 @@ public class ProductController {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("removeProductForManager", productId));
     }
 
+    public String getTheProductDetails(ArrayList<Product> allProducts){
+        String allDetails="";
+        for (Product product : allProducts) {
+            allDetails+=product.productInfoFor()+"\n\n";
+        }
+        return allDetails;
+    }
+
     public void makeProductsViewForm() {
 //        String productsInviewForm
         for (Product product : allProducts) {

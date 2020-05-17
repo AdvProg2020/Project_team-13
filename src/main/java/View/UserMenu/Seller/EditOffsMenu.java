@@ -41,6 +41,7 @@ public class EditOffsMenu extends Menu {
         EditOffsMenusHelp+="7. Help\n";
         EditOffsMenusHelp+="8. LogOut\n";
         EditOffsMenusHelp+="9. Back\n";
+        EditOffsMenusHelp+="10.Finish\n";
         System.out.println(EditOffsMenusHelp);
     }
 
@@ -65,38 +66,36 @@ public class EditOffsMenu extends Menu {
                   continue;
                 }
                 offer.setAmount(amount);
-                OffsController.getInstance().editOff(offer);
             }else if(command.equalsIgnoreCase("Edit Offer's MaxDiscountAmount")){
                 double maxDiscountAmount=getTheMaxDiscountAmount();
                 if(isBack()) {
                    continue;
                 }
                 offer.setMaxDiscountAmount(maxDiscountAmount);
-                OffsController.getInstance().editOff(offer);
             }else if (command.equalsIgnoreCase("Edit Exact Start Time")){
                 Date startDate=getTheStartDate(offer, null);
                 if(isBack()){
                     continue;
                 }
                 offer.setStartTime(startDate);
-                OffsController.getInstance().editOff(offer);
             }else if(command.equalsIgnoreCase("Edit Exact End Time")){
                 Date endDate=getTheEndDate(offer,null);
                 if(isBack()){
                     continue;
                 }
                 offer.setEndTime(endDate);
-                OffsController.getInstance().editOff(offer);
             }else if(command.equalsIgnoreCase("Edit Products")){
                editProduct();
                if(isBack()){
                     continue;
                 }
                offer.setProducts(allProducts);
-               OffsController.getInstance().editOff(offer);
             }else if(command.equalsIgnoreCase("help")){
                 help();
-            }else {
+            }else if(command.equalsIgnoreCase("finish")) {
+                OffsController.getInstance().editOff(offer);
+                break;
+            } else if(!command.equalsIgnoreCase("back")) {
                 System.out.println("invalid command");
             }
         }while (!(command.equalsIgnoreCase("back")));
@@ -113,11 +112,14 @@ public class EditOffsMenu extends Menu {
 
     private double getTheAmount(){
         String amount;
-        while(!(amount=scanner.nextLine().trim()).equalsIgnoreCase("back")){
+        while(true){
             System.out.println("Enter The Amount: ");
-            if(amount.matches("\\d+(\\.\\d+)?")){
-                return Double.parseDouble(amount);
-            }else{
+            amount=scanner.nextLine().trim();
+            if(amount.matches("\\d+(\\.\\d+)?%")){
+                return Double.parseDouble(amount.substring(0,amount.length()-1));
+            }else if(amount.equalsIgnoreCase("back")){
+                break;
+            }else {
                 System.out.println("Please Enter A Correct Number");
             }
         }
@@ -126,11 +128,14 @@ public class EditOffsMenu extends Menu {
     }
     private double getTheMaxDiscountAmount(){
         String maxDiscountAmount;
-        while(!(maxDiscountAmount=scanner.nextLine().trim()).equalsIgnoreCase("back")){
+        while(true){
             System.out.println("Enter The MaxDiscountAmount: ");
-            if(maxDiscountAmount.matches("\\d+(\\.\\d+)?")){
-                return Double.parseDouble(maxDiscountAmount);
-            }else{
+            maxDiscountAmount=scanner.nextLine().trim();
+            if(maxDiscountAmount.matches("\\d+(\\.\\d+)?%")){
+                return Double.parseDouble(maxDiscountAmount.substring(0, maxDiscountAmount.length()-1));
+            }else if(maxDiscountAmount.equalsIgnoreCase("back")){
+                break;
+            }else {
                 System.out.println("Please Enter A Correct Number");
             }
         }
@@ -157,8 +162,9 @@ public class EditOffsMenu extends Menu {
                 }
             }
         }
-        while(!(startDate=scanner.nextLine().trim()).equalsIgnoreCase("back")){
+        while(true){
             System.out.println("Enter The Start Date (yy/mm/dd): ");
+            startDate=scanner.nextLine().trim();
             if(startDate.matches("[1-9]\\d{3}/([1-9]|(1[0-2]))/([1-9]|([1-2][0-9])|30)")){
                 start=new Date(startDate);
                 if(start.before(date)){
@@ -170,7 +176,9 @@ public class EditOffsMenu extends Menu {
                 }else {
                     return start;
                 }
-            }else{
+            }else if(startDate.equalsIgnoreCase("back")){
+                break;
+            }else {
                 System.out.println("Please Enter A Correct Date");
             }
         }
@@ -192,8 +200,10 @@ public class EditOffsMenu extends Menu {
                     }else {
                         System.out.println("You Should Enter The Correct Time");
                     }
-                }else{
-                    System.out.println("You Should Enter A Correct Date");
+                }else if(endDate.equalsIgnoreCase("back")){
+                    break;
+                }else {
+                    System.out.println("Please Enter A Correct Date");
                 }
             }
         }
@@ -211,8 +221,8 @@ public class EditOffsMenu extends Menu {
                 }else{
                     return end;
                 }
-            }else{
-                System.out.println("Enter A Valid Date");
+            }else if(!endDate.equalsIgnoreCase("back")){
+                System.out.println("Please Enter A Correct Date");
             }
         }while(!(endDate.equalsIgnoreCase("back")));
         setBack(true);
@@ -220,6 +230,7 @@ public class EditOffsMenu extends Menu {
     }
 
     private void removeProduct(){
+      Seller seller=(Seller)ClientController.getInstance().getCurrentUser();
       String command;
       OffsController.getInstance().viewAllProducts(offer);
       do{
@@ -229,11 +240,13 @@ public class EditOffsMenu extends Menu {
               if(offer.getProducts().contains(offer.getProductByIdInOfferList(command.substring(7)))){
                   offer.getProducts().remove(offer.getProductByIdInOfferList(command.substring(7)));
                   offer.getProducts().trimToSize();
+                  OffsController.getInstance().setTheProductExistInOtherOffer(seller, command.substring(7), false);
+                  System.out.println("The Product Successfully Removed");
               }else{
                   System.out.println("The Product Isn't In The List");
               }
-          }else{
-              System.out.println("Enter The Correct Command");
+          } else if(!command.equalsIgnoreCase("back")){
+              System.out.println("invalid command");
           }
       }while (!(command.equalsIgnoreCase("back")));
     }
@@ -248,13 +261,15 @@ public class EditOffsMenu extends Menu {
             if(command.matches("add @p\\d+")){
                 if(!seller.productExists(command.substring(4))){
                     System.out.println("The Product Isn't in Your List.");
-                }else if(seller.productExistsInOtherOffer(command.substring(4))){
+                }else if(OffsController.getInstance().productExitsInOtherOffer(seller, command.substring(4))){
                     System.out.println("The Product Already Exists In Other Offer.");
                 }else{
                     allProducts.add(seller.getProductByID(command.substring(4)));
+                    OffsController.getInstance().setTheProductExistInOtherOffer(seller, command.substring(4), true);
+                    System.out.println("The product added.");
                 }
-            }else{
-                System.out.println("Enter The Correct Command");
+            } else if(!command.equalsIgnoreCase("back")){
+                System.out.println("invalid command");
             }
         }while(!(command.equalsIgnoreCase("back")));
     }
@@ -274,8 +289,8 @@ public class EditOffsMenu extends Menu {
                 addProductFromList();
             }else if(command.equals("Remove Product")){
                 removeProduct();
-            }else{
-                System.out.println("Enter The Correct Command");
+            } else if(!command.equalsIgnoreCase("back")){
+                System.out.println("invalid command");
             }
         }while (!(command.equalsIgnoreCase("back")));
         setBack(true);
