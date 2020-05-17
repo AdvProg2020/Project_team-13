@@ -46,6 +46,10 @@ public class Product {
         return allBuyers;
     }
 
+    public void setCostAfterOff(double costAfterOff) {
+        this.costAfterOff = costAfterOff;
+    }
+
     public void setAllBuyers(ArrayList<Customer> allBuyers) {
         this.allBuyers = allBuyers;
     }

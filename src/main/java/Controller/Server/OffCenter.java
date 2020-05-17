@@ -74,11 +74,7 @@ public class OffCenter {
 
     public void removeProduct(String productID) {
         for (Offer offer : allOffers) {
-            for (String product : offer.getProducts()) {
-                if (product.equals(productID)) {
-                    offer.getProducts().remove(product);
-                }
-            }
+            offer.getProducts().removeIf(product -> product.equals(productID));
         }
     }
 
@@ -106,7 +102,9 @@ public class OffCenter {
     }
 
     public void setProductStatusForOffer(Offer offer){
-
+        for (String product : offer.getProducts()) {
+            ProductCenter.getInstance().getProductWithId(product).setExistInOfferRegistered(false);
+        }
     }
 
     public Offer getOfferByOfferId(String offerId){

@@ -9,7 +9,6 @@ import View.Menu;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Scanner;
 
 public class AddOffsMenu extends Menu {
     private boolean back;
@@ -31,7 +30,7 @@ public class AddOffsMenu extends Menu {
     @Override
     public void execute() {
         Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
-        if (!seller.hasAnyProduct()) {
+        if (seller.AnyOffer()) {
             System.out.println("There Is No Product For Offer!!!");
             back();
         }
