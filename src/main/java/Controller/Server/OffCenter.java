@@ -4,6 +4,7 @@ import Models.Offer;
 import Models.OfferStatus;
 import Models.Product.Product;
 import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 public class OffCenter {
@@ -42,7 +43,7 @@ public class OffCenter {
 
     public void createEditOfferRequest(Offer offer) {
         offer.setOfferStatus(OfferStatus.onReviewForEdit);
-        RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("editOffer", new Gson().toJson(offer)));
+        RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("EditOffer", new Gson().toJson(offer)));
         ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("editOffer", "The Offer's Edition Is Saved For Manager's Confirmation "));
     }
 
@@ -66,9 +67,12 @@ public class OffCenter {
     }
 
     public void removeProduct(String productID) {
+        DataBase.getInstance().getAllOffersFromDataBase();
         for (Offer offer : allOffers) {
             offer.getProducts().removeIf(product -> product.equals(productID));
         }
+        DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
+
     }
 
     public void createNewOff(Offer offer) {
@@ -82,29 +86,36 @@ public class OffCenter {
         for (String product : offer.getProducts()) {
             ProductCenter.getInstance().addOfferToProduct(product, offer);
             CategoryCenter.getIncstance().updateProductInCategory(ProductCenter.getInstance().getProductWithId(product));
+            UserCenter.getIncstance().updateProductOfferInSeller(ProductCenter.getInstance().getProductWithId(product));
         }
         DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
     }
 
     public void editOffer(Offer newOffer) {
-        Offer oldOffer=getOfferByOfferId(newOffer.getOfferId());
+        Offer oldOffer = getOfferByOfferId(newOffer.getOfferId());
         newOffer.setOfferStatus(OfferStatus.accepted);
         allOffers.set(allOffers.indexOf(oldOffer), newOffer);
+        for (String product : oldOffer.getProducts()) {
+            ProductCenter.getInstance().addOfferToProduct(product, null);
+            CategoryCenter.getIncstance().updateProductInCategory(ProductCenter.getInstance().getProductWithId(product));
+            UserCenter.getIncstance().updateProductOfferInSeller(ProductCenter.getInstance().getProductWithId(product));
+        }
         for (String product : newOffer.getProducts()) {
             ProductCenter.getInstance().addOfferToProduct(product, newOffer);
             CategoryCenter.getIncstance().updateProductInCategory(ProductCenter.getInstance().getProductWithId(product));
+            UserCenter.getIncstance().updateProductOfferInSeller(ProductCenter.getInstance().getProductWithId(product));
         }
         UserCenter.getIncstance().editOfferForSeller(newOffer);
         DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
     }
 
-    public void setProductStatusForOffer(Offer offer){
+    public void setProductStatusForOffer(Offer offer) {
         for (String product : offer.getProducts()) {
             ProductCenter.getInstance().getProductWithId(product).setExistInOfferRegistered(false);
         }
     }
 
-    public Offer getOfferByOfferId(String offerId){
+    public Offer getOfferByOfferId(String offerId) {
         for (Offer offer : allOffers) {
             if (offer.getOfferId().equals(offerId)) {
                 return offer;

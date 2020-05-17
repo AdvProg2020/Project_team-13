@@ -61,37 +61,37 @@ public class ProductController {
 
     public String getBrandsFiltersInStringForm() {
         if (allBrandsToFilter != null && !allBrandsToFilter.isEmpty()) {
-            StringBuilder brandsStringForm = new StringBuilder("All brands used to filter:\n");
+            String brandsStringForm = "All brands used to filter:\n";
             int i = 1;
             for (String brand : allBrandsToFilter) {
-                brandsStringForm.append(i).append(".").append(brand).append("\n");
+                brandsStringForm += i + "." + brand + "\n";
                 i++;
             }
-            return brandsStringForm.toString();
+            return brandsStringForm;
         } else return "";
     }
 
     public String getSellersFiltersInStringForm() {
         if (allSellersToFilter != null && !allSellersToFilter.isEmpty()) {
-            StringBuilder stringForm = new StringBuilder("All sellers used to filter:\n");
+            String stringForm = "All sellers used to filter:\n";
             int i = 1;
             for (String seller : allSellersToFilter) {
-                stringForm.append(i).append(".").append(seller).append("\n");
+                stringForm += i + "." + seller + "\n";
                 i++;
             }
-            return stringForm.toString();
+            return stringForm;
         } else return "";
     }
 
     public String getProductsStatusFiltersInStringForm() {
         if (allProductStatusToFilter != null && !allProductStatusToFilter.isEmpty()) {
-            StringBuilder stringForm = new StringBuilder("All productStatus used to filter:\n");
+            String stringForm = "All productStatus used to filter:\n";
             int i = 1;
             for (ProductStatus productStatus : allProductStatusToFilter) {
-                stringForm.append(i).append(".").append(productStatus.getName()).append("\n");
+                stringForm += i + "." + productStatus.getName() + "\n";
                 i++;
             }
-            return stringForm.toString();
+            return stringForm;
         } else return "";
     }
 
@@ -104,18 +104,18 @@ public class ProductController {
 
     public String getCategoryFeaturesFiltersInStringForm() {
         if (categoryFeaturesToFilter != null && !categoryFeaturesToFilter.isEmpty()) {
-            StringBuilder stringForm = new StringBuilder("All features used to filter:\n");
+            String stringForm = "All features used to filter:\n";
             int j = 1;
             for (String feature : categoryFeaturesToFilter.keySet()) {
-                stringForm.append(j).append(".").append(feature).append("  modes:\n");
+                stringForm += j + "." + feature + "  modes:\n";
                 int i = 1;
                 for (String seller : categoryFeaturesToFilter.get(feature)) {
-                    stringForm.append("\t").append(j).append(".").append(i).append(". ").append(seller).append("\n");
+                    stringForm += "\t" + j + "." + i + ". " + seller + "\n";
                     i++;
                 }
                 j++;
             }
-            return stringForm.toString();
+            return stringForm;
         } else return "";
     }
 
@@ -125,7 +125,7 @@ public class ProductController {
 
     public String getCurrentSort() {
         if (isSortActivated) {
-            String sortKind;
+            String sortKind = "";
             if (kindOfSort) {
                 sortKind = "ascending";
             } else {
@@ -156,12 +156,14 @@ public class ProductController {
         filterProducts();
         sortProducts();
         ArrayList<Product> allProducts = new ArrayList<>(allProductsAfterSort);
-        StringBuilder productsInViewFormat = new StringBuilder();
+        String productsInViewFormat = "";
         if (allProductsAfterFilter != null && !allProductsAfterFilter.isEmpty()) {
             for (Product product : allProducts) {
-                productsInViewFormat.append("ProductID: ").append(product.getProductId()).append("\t").append("Product name: ").append(product.getProductName()).append("\t").append("ProductCost: ").append(product.getProductCost()).append("\t").append("Product Status: ").append(product.getProductStatus().toString()).append("\n");
+                productsInViewFormat += "ProductID: " + product.getProductId() + "\t" + "Product name: " + product.getProductName() + "\t"
+                        + "ProductCost: " + product.getProductCost() + "\t"
+                        + "Product Status: " + product.getProductStatus().toString() + "\n";
             }
-            if (!allProducts.isEmpty()) {
+            if (allProducts != null && !allProducts.isEmpty()) {
                 ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
             }
         }
@@ -187,7 +189,7 @@ public class ProductController {
                     productsNeedToDeletedFromList.add(product);
                 }
             }
-            if (!productsNeedToDeletedFromList.isEmpty()) {
+            if (productsNeedToDeletedFromList != null && !productsNeedToDeletedFromList.isEmpty()) {
                 for (Product product : productsNeedToDeletedFromList) {
                     allProductsAfterFilter.remove(product);
                 }
@@ -249,8 +251,8 @@ public class ProductController {
         if (categoryFeaturesToFilter != null && !categoryFeaturesToFilter.isEmpty()) {
             List<Product> lst = allProductsAfterFilter;
             Product[] productsAfterPriceFilter =
-                    lst.stream().filter(this::checkProductHaveFeatureMode).toArray(Product[]::new);
-            allProductsAfterFilter = new ArrayList<>(Arrays.asList(productsAfterPriceFilter));
+                    lst.stream().filter(e -> checkProductHaveFeatureMode(e)).toArray(Product[]::new);
+            allProductsAfterFilter = new ArrayList<Product>(Arrays.asList(productsAfterPriceFilter));
         }
     }
 
@@ -338,35 +340,36 @@ public class ProductController {
         if (allProductsAfterFilter != null) {
             allProductsAfterSort = new ArrayList<>(allProductsAfterFilter);
             if (isSortActivated) {
-                switch (currentSort) {
-                    case "newest":
-                        if (!kindOfSort) {
-                            for (int i = allProductsAfterSort.size() - 1; i >= 0; i--) {
-                                allProductsAfterSort.set(allProductsAfterSort.size() - i - 1, allProductsAfterSort.get(i));
-                            }
+                if (currentSort.equals("newest")) {
+                    if (!kindOfSort) {
+                        for (int i = allProductsAfterSort.size() - 1; i >= 0; i--) {
+                            allProductsAfterSort.set(allProductsAfterSort.size() - i - 1, allProductsAfterSort.get(i));
                         }
-                        break;
-                    case "price":
-                        allProductsAfterSort.sort((o1, o2) -> {
+                    }
+                } else if (currentSort.equals("price")) {
+                    Collections.sort(allProductsAfterSort, new Comparator<Product>() {
+                        @Override
+                        public int compare(Product o1, Product o2) {
                             if (kindOfSort) {
                                 return (int) (o1.getProductCost() - o2.getProductCost());
                             } else {
                                 return (int) (o2.getProductCost() - o1.getProductCost());
                             }
-                        });
+                        }
+                    });
 
-                        break;
-                    case "score":
+                } else if (currentSort.equals("score")) {
 
-                        allProductsAfterSort.sort((o1, o2) -> {
+                    Collections.sort(allProductsAfterSort, new Comparator<Product>() {
+                        @Override
+                        public int compare(Product o1, Product o2) {
                             if (kindOfSort) {
                                 return (int) (o1.getAverageScore() - o2.getAverageScore());
                             } else {
                                 return (int) (o2.getAverageScore() - o1.getAverageScore());
                             }
-                        });
-
-                        break;
+                        }
+                    });
                 }
             }
         }
@@ -402,6 +405,22 @@ public class ProductController {
         }
         return null;
     }
+
+    public void showAllBuyersForThisProduct(String productId) {
+        Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
+        if (!seller.productExists(productId)) {
+            System.out.println("There Is No Product With This Id For This Seller.");
+        } else if (seller.getProductByID(productId).getAllBuyers() == null) {
+            System.out.println("There Is No Buyer For This Product");
+        } else {
+            for (Customer buyer : seller.getProductByID(productId).getAllBuyers()) {
+                System.out.println(buyer.viewPersonalInfo());
+                System.out.println("\n\n");
+            }
+        }
+    }
+
+
 
     public ArrayList<String> getAllSellers() {
         if (currentCategory != null) {
@@ -459,38 +478,26 @@ public class ProductController {
         filterProducts();
         sortProducts();
         ArrayList<Product> allProducts = new ArrayList<>();
-        StringBuilder productsInViewFormat = new StringBuilder();
+        String productsInViewFormat = "";
         for (Product product : allProductsAfterSort) {
             if (product.getOffer() != null) {
                 allProducts.add(product);
             }
         }
         for (Product product : allProducts) {
-            productsInViewFormat.append("ProductID: ").append(product.getProductId()).append("\t").append("Product name: ").append(product.getProductName()).append("\t").append("ProductCost before Off: ").append(product.getProductCost()).append("\t").append("ProductCost after Off: ").append(product.getCostAfterOff()).append("\t").append("Product Status: ").append(product.getProductStatus().toString()).append("\n");
+            productsInViewFormat += "ProductID: " + product.getProductId() + "\t" + "Product name: " + product.getProductName() + "\t"
+                    + "ProductCost before Off: " + product.getProductCost() + "\t"
+                    + "ProductCost after Off: " + product.getCostAfterOff() + "\t"
+                    + "Product Status: " + product.getProductStatus().toString() + "\n";
         }
-        if (!allProducts.isEmpty()) {
+        if (allProducts != null && !allProducts.isEmpty()) {
             ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
         }
 
     }
 
-
-    public void showAllBuyersForThisProduct(String productId){
-       Seller seller=(Seller)ClientController.getInstance().getCurrentUser();
-        if (seller.productExists(productId)) {
-            System.out.println("There Is No Product With This Id For This Seller.");
-        }else if (seller.getProductByID(productId).getAllBuyers() == null) {
-            System.out.println("There Is No Buyer For This Product");
-        }else {
-            for (Customer buyer : seller.getProductByID(productId).getAllBuyers()) {
-                System.out.println(buyer.viewPersonalInfo());
-                System.out.println("\n\n");
-            }
-        }
-    }
-
-    public void compareWithProduct(String productId){
-        if (getProductWithId(productId)==null) {
+    public void compareWithProduct(String productId) {
+        if (getProductWithId(productId) == null) {
             System.out.println("There Is No Product With This Id.");
         }else{
             Product product=ClientController.getInstance().getCurrentProduct();

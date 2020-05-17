@@ -25,7 +25,7 @@ public class Product {
     private ArrayList<Comment> commentList;
     private int numberOfAvailableProducts;
     private HashMap<String, String> featuresOfCategoryThatHas;
-    private ArrayList<Customer> allBuyers=new ArrayList<>();
+    private ArrayList<Customer> allBuyers = new ArrayList<>();
     private Offer offer;
 
     public Product(String productCompany, String productId, String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, HashMap<String, String> featuresOfCategoryThatHas) {
@@ -199,16 +199,27 @@ public class Product {
         }
     }
 
+
+
+    public String viewAllBuyers(){
+        String allBuyer="";
+        for (Customer buyer : allBuyers) {
+            allBuyer+=buyer.getUsername()+"\n";
+        }
+        return allBuyer;
+    }
     public void addToAllBuyers(Customer buyer) {
-        if(allBuyers==null){
-            allBuyers=new ArrayList<>();
+        if (allBuyers == null) {
+            allBuyers = new ArrayList<>();
         }
         this.allBuyers.add(buyer);
     }
 
     public void setOffer(Offer offer) {
         this.offer = offer;
-        costAfterOff = ((100 - offer.getAmount()) / 100) * productCost;
+        if (offer != null) {
+            costAfterOff = ((100 - offer.getAmount()) / 100) * productCost;
+        }
     }
 
     @Override

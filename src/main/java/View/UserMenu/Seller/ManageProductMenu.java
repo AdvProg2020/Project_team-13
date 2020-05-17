@@ -4,6 +4,7 @@ import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
 import Controller.Client.ProductController;
 import Models.Product.Category;
+import Models.Product.Product;
 import Models.UserAccount.Seller;
 import View.Menu;
 import com.google.gson.Gson;
@@ -36,7 +37,12 @@ public class ManageProductMenu extends Menu {
             if (command.matches("view @p\\d+")) {
                 System.out.println(seller.viewProduct(getTheProductIdByCommand(command, 1)));
             } else if (command.matches("view buyers @p\\d+")) {
-                ProductController.getInstance().showAllBuyersForThisProduct(getTheProductIdByCommand(command, 2));
+                Product product = ((Seller) ClientController.getInstance().getCurrentUser()).findProductWithID(command.split("\\s")[2]);
+                if(product!=null){
+                    showMessage(product.viewAllBuyers());
+                }else{
+                    printError("there is no product with this ID");
+                }
             } else if (command.matches("edit @p\\d+")) {
                 Menu menu = new EditProductInfoMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);

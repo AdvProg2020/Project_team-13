@@ -183,9 +183,24 @@ public class UserCenter {
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
     }
 
-    public void editOfferForSeller(Offer newOffer){
+    public void updateProductOfferInSeller(Product product) {
+        firstTag:for (Seller seller : allSeller) {
+            if (seller.getUsername().equals(product.getSeller())) {
+                for (Product product1 : seller.getAllProducts()) {
+                    if (product1.getProductId().equals(product.getProductId())) {
+                        seller.getAllProducts().set(seller.getAllProducts().indexOf(product1), product);
+                        break firstTag;
+                    }
+                }
+                break;
+            }
+        }
+        DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+    }
+
+    public void editOfferForSeller(Offer newOffer) {
         for (Seller seller : allSeller) {
-            if(seller.getUsername().equals(newOffer.getSeller())){
+            if (seller.getUsername().equals(newOffer.getSeller())) {
                 seller.editOffer(newOffer);
                 break;
             }
@@ -221,6 +236,9 @@ public class UserCenter {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(product.getSeller())) {
                 seller.removeProduct(product.getProductId());
+                if(product.getOffer()!=null) {
+                    seller.getOfferById(product.getOffer().getOfferId()).getProducts().remove(product.getProductId());
+                }
             }
         }
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
@@ -231,7 +249,7 @@ public class UserCenter {
             if (seller.getUsername().equals(username)) {
                 allSeller.remove(seller);
                 for (Product product : seller.getAllProducts()) {
-                   ProductCenter.getInstance().removeProduct(ProductCenter.getInstance().findProductWithID(product.getProductId()));
+                    ProductCenter.getInstance().removeProduct(ProductCenter.getInstance().findProductWithID(product.getProductId()));
                 }
                 DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
                 DataBase.getInstance().updateAllProducts(new Gson().toJson(ProductCenter.getInstance().getAllProducts()));

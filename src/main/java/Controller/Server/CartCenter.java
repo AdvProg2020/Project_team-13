@@ -62,6 +62,7 @@ public class CartCenter {
             ArrayList<String> sellers=new ArrayList<>();
             for (Product product : cart.getAllproduct()) {
                 ProductCenter.getInstance().findProductWithID(product.getProductId()).addToAllBuyers(UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID()));
+                UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).findProductWithID(product.getProductId()).addToAllBuyers(customer);
                 ProductCenter.getInstance().decreaseProductCount(product.getProductId(),cart.getCountOfEachProduct().get(product.getProductId()));
                 if(!sellers.contains(product.getSeller())){
                     sellers.add(product.getSeller());
