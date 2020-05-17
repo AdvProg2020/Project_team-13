@@ -2,6 +2,7 @@ package Controller.Server;
 
 import Controller.Client.CategoryController;
 import Controller.Client.MessageController;
+import Models.Comment;
 import Models.Offer;
 import Models.Product.Category;
 import Models.Product.Product;
@@ -71,7 +72,22 @@ public class ProductCenter {
         DataBase.getInstance().updateAllSellers(new Gson().toJson(UserCenter.getIncstance().getAllSeller()));
         ServerController.getInstance().sendMessageToClient("@Successful@successfully rating");
     }
-
+    public void commenting(String json){
+        Comment comment=new Gson().fromJson(json,Comment.class);
+        RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("Commenting",new Gson().toJson(comment)));
+    }
+    public void addComment(Comment comment) {
+        Product product=ProductCenter.getInstance().findProductWithID(comment.getProductId());
+        product.addComment(comment);
+        UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).findProductWithID(product.getProductId()).addComment(comment);
+        if(OffCenter.getInstance().findProductWithID(product.getProductId())!=null)
+            OffCenter.getInstance().findProductWithID(product.getProductId()).addComment(comment);
+        DataBase.getInstance().updateAllProducts(new Gson().toJson(ProductCenter.getInstance().getAllProducts()));
+        DataBase.getInstance().updateAllOffers(new Gson().toJson(OffCenter.getInstance().getAllOffers()));
+        DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
+        DataBase.getInstance().updateAllSellers(new Gson().toJson(UserCenter.getIncstance().getAllSeller()));
+        ServerController.getInstance().sendMessageToClient("@Successful@successfully rating");
+    }
     public Product findProductWithID(String productId) {
         for (Product product : allProducts) {
             if (product.getProductId().equals(productId)) {

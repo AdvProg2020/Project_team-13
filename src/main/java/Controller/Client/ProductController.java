@@ -1,5 +1,6 @@
 package Controller.Client;
 
+import Models.Comment;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.Product.ProductStatus;
@@ -461,7 +462,9 @@ public class ProductController {
         }
         return null;
     }
-
+    public void addComment(Comment comment){
+        ClientController.getInstance().sendMessageToServer("@addComment@"+new Gson().toJson(comment));
+    }
     public void showOffedProductsAfterFilterAndSort() {
         filterProducts();
         sortProducts();
