@@ -200,6 +200,14 @@ public class Product {
     }
 
 
+
+    public String viewAllBuyers(){
+        String allBuyer="";
+        for (Customer buyer : allBuyers) {
+            allBuyer+=buyer.getUsername()+"\n";
+        }
+        return allBuyer;
+    }
     public void addToAllBuyers(Customer buyer) {
         if (allBuyers == null) {
             allBuyers = new ArrayList<>();

@@ -420,6 +420,7 @@ public class ProductController {
         }
     }
 
+
     public ArrayList<String> getAllSellers() {
         if (currentCategory != null) {
             ArrayList<String> allSellers = new ArrayList<>();
@@ -448,8 +449,8 @@ public class ProductController {
         return "";
     }
 
-    public Product findProductAfterFilter(String productID) {
-        allProductsAfterFilter = new ArrayList<>(allProducts);
+    public Product findProductAfterFilter(String productID){
+        allProductsAfterFilter=new ArrayList<>(allProducts);
         filterProducts();
         for (Product product : allProductsAfterFilter) {
             if (product.getProductId().equals(productID)) {
