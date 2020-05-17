@@ -44,10 +44,6 @@ public class OffCenter {
         this.lastOffId = lastOffId;
     }
 
-    public void deleteOff() {
-
-    }
-
     public void createEditOfferRequest(Offer offer) {
         offer.setOfferStatus(OfferStatus.onReviewForEdit);
         RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("editOffer", new Gson().toJson(offer)));
@@ -98,6 +94,10 @@ public class OffCenter {
         Offer oldOffer=getOfferByOfferId(newOffer.getOfferId());
         newOffer.setOfferStatus(OfferStatus.accepted);
         allOffers.set(allOffers.indexOf(oldOffer), newOffer);
+        for (String product : newOffer.getProducts()) {
+            ProductCenter.getInstance().addOfferToProduct(product, newOffer);
+            CategoryCenter.getIncstance().updateProductInCategory(ProductCenter.getInstance().getProductWithId(product));
+        }
         UserCenter.getIncstance().editOfferForSeller(newOffer);
         DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
     }
