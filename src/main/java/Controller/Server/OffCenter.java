@@ -1,12 +1,8 @@
 package Controller.Server;
 
-import Controller.Client.CategoryController;
-import Controller.Client.OffsController;
 import Models.Offer;
 import Models.OfferStatus;
-import Models.Product.Category;
 import Models.Product.Product;
-import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 
@@ -42,10 +38,6 @@ public class OffCenter {
 
     public void setLastOffId(String lastOffId) {
         this.lastOffId = lastOffId;
-    }
-
-    public void deleteOff() {
-
     }
 
     public void createEditOfferRequest(Offer offer) {
