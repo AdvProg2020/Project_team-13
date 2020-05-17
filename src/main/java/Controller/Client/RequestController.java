@@ -33,8 +33,10 @@ public class RequestController {
         }.getType();
         allRequests = new Gson().fromJson(json, requestListType);
         String showAllRequests = "";
-        for (Request request : allRequests) {
-            showAllRequests += request.getRequestId() + " " + request.getType() + "\n";
+        if (allRequests != null && !allRequests.isEmpty()) {
+            for (Request request : allRequests) {
+                showAllRequests += request.getRequestId() + " " + request.getType() + "\n";
+            }
         }
         ClientController.getInstance().getCurrentMenu().showMessage(showAllRequests);
     }
@@ -52,6 +54,7 @@ public class RequestController {
         }
         ClientController.getInstance().getCurrentMenu().printError("there is no request with this id");
     }
+
     public void acceptRequest(String requestId) {
         for (Request request : allRequests) {
             if (request.getRequestId().equals(requestId)) {
@@ -63,7 +66,7 @@ public class RequestController {
         ClientController.getInstance().getCurrentMenu().printError("there is no request with this id");
     }
 
-    public void declineRequest(String requestId){
+    public void declineRequest(String requestId) {
         for (Request request : allRequests) {
             if (request.getRequestId().equals(requestId)) {
                 ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("declineRequest", requestId));

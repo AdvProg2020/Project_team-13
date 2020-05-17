@@ -505,21 +505,6 @@ public class ProductController {
 
     }
 
-
-    public void showAllBuyersForThisProduct(String productId) {
-        Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
-        if (seller.productExists(productId)) {
-            System.out.println("There Is No Product With This Id For This Seller.");
-        } else if (seller.getProductByID(productId).getAllBuyers() == null) {
-            System.out.println("There Is No Buyer For This Product");
-        } else {
-            for (Customer buyer : seller.getProductByID(productId).getAllBuyers()) {
-                System.out.println(buyer.viewPersonalInfo());
-                System.out.println("\n\n");
-            }
-        }
-    }
-
     public void compareWithProduct(String productId){
         if (getProductWithId(productId)==null) {
             System.out.println("There Is No Product With This Id.");
