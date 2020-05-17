@@ -19,6 +19,7 @@ public class ManageRequestMenu extends Menu {
         managerMenuOptions += "3.decline [requestId]\n";
         managerMenuOptions += "4.help\n";
         managerMenuOptions += "5.back\n";
+        managerMenuOptions += "6.logout";
         System.out.println(managerMenuOptions);
     }
 
@@ -38,7 +39,11 @@ public class ManageRequestMenu extends Menu {
                 RequestController.getInstance().declineRequest(command.substring(8));
             }else if (command.equalsIgnoreCase("help")) {
                 help();
-            } else {
+            } else if (command.equalsIgnoreCase("logout")) {
+                ClientController.getInstance().setCurrentUser(null);
+                System.out.println("You Logged out!!");
+                parentMenu.getParentMenu().execute();
+            }else {
                 System.out.println("Invalid Command");
             }
         }

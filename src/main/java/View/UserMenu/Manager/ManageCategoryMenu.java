@@ -1,6 +1,7 @@
 package View.UserMenu.Manager;
 
 import Controller.Client.CategoryController;
+import Controller.Client.ClientController;
 import Models.Product.Category;
 import View.Menu;
 
@@ -22,6 +23,7 @@ public class ManageCategoryMenu extends Menu {
         manageCategoryMenu += "3.Remove [category]\n";
         manageCategoryMenu += "4.Help\n";
         manageCategoryMenu += "5.Back";
+        manageCategoryMenu += "6.Logout";
         System.out.println(manageCategoryMenu);
     }
 
@@ -38,6 +40,12 @@ public class ManageCategoryMenu extends Menu {
                 editCategory(command.substring(5));
             } else if (command.equalsIgnoreCase("help")) {
                 help();
+            } else if (command.equalsIgnoreCase("logout")) {
+                ClientController.getInstance().setCurrentUser(null);
+                System.out.println("You Logged out!!");
+                parentMenu.getParentMenu().execute();
+            } else {
+                System.out.println("command is invalid.");
             }
         }
         back();

@@ -1,6 +1,7 @@
 package View.ProductsAndOffsMenus;
 
 import Controller.Client.CategoryController;
+import Controller.Client.ClientController;
 import Controller.Client.ProductController;
 import Controller.Server.ProductCenter;
 import Models.Product.Category;
@@ -21,7 +22,7 @@ public class FilteringMenu extends Menu {
     @Override
     public void help() {
         String filteringMenuHelp = "1.Filter\n2.Disable filters\n3.Current filters" +
-                "\n4.Show available filters\n5.Help\n6.Back";
+                "\n4.Show available filters\n5.Help\n6.Back\n7.logout";
         System.out.println(filteringMenuHelp);
     }
 
@@ -40,6 +41,14 @@ public class FilteringMenu extends Menu {
                 System.out.println(allFilters);
             } else if (command.equalsIgnoreCase("help")) {
                 help();
+            } else if (command.equalsIgnoreCase("logout")) {
+                if (ClientController.getInstance().getCurrentUser() != null) {
+                    ClientController.getInstance().setCurrentUser(null);
+                    System.out.println("You Logged out!!");
+                    parentMenu.getParentMenu().execute();
+                } else {
+                    printError("you are not signed yet!!");
+                }
             } else {
                 System.out.println("command is invalid");
             }

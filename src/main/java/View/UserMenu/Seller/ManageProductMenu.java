@@ -29,6 +29,8 @@ public class ManageProductMenu extends Menu {
         ManageProductMenuOptions += "2.view buyers [product Id]\n";
         ManageProductMenuOptions += "3.edit [product Id]\n";
         ManageProductMenuOptions += "4.add product\n";
+        ManageProductMenuOptions += "5.logout";
+
         System.out.println(ManageProductMenuOptions);
     }
 
@@ -58,7 +60,11 @@ public class ManageProductMenu extends Menu {
                 ProductController.getInstance().removeProduct(getTheProductIdByCommand(command, 1), sellerObject);
             } else if (command.equals("add product")) {
                 addProduct();
-            } else {
+            } else if (command.equalsIgnoreCase("logout")) {
+                ClientController.getInstance().setCurrentUser(null);
+                System.out.println("You Logged out!!");
+                parentMenu.getParentMenu().execute();
+            }else {
                 System.err.println("invalid command");
             }
         }
