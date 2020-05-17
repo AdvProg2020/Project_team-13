@@ -405,19 +405,21 @@ public class ProductController {
         }
         return null;
     }
-    public void showAllBuyersForThisProduct(String productId){
-        Seller seller=(Seller)ClientController.getInstance().getCurrentUser();
+
+    public void showAllBuyersForThisProduct(String productId) {
+        Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
         if (!seller.productExists(productId)) {
             System.out.println("There Is No Product With This Id For This Seller.");
-        }else if (seller.getProductByID(productId).getAllBuyers() == null) {
+        } else if (seller.getProductByID(productId).getAllBuyers() == null) {
             System.out.println("There Is No Buyer For This Product");
-        }else {
+        } else {
             for (Customer buyer : seller.getProductByID(productId).getAllBuyers()) {
                 System.out.println(buyer.viewPersonalInfo());
                 System.out.println("\n\n");
             }
         }
     }
+
     public ArrayList<String> getAllSellers() {
         if (currentCategory != null) {
             ArrayList<String> allSellers = new ArrayList<>();
@@ -446,8 +448,8 @@ public class ProductController {
         return "";
     }
 
-    public Product findProductAfterFilter(String productID){
-        allProductsAfterFilter=new ArrayList<>(allProducts);
+    public Product findProductAfterFilter(String productID) {
+        allProductsAfterFilter = new ArrayList<>(allProducts);
         filterProducts();
         for (Product product : allProductsAfterFilter) {
             if (product.getProductId().equals(productID)) {
@@ -492,36 +494,21 @@ public class ProductController {
 
     }
 
-
-    public void showAllBuyersForThisProduct(String productId){
-       Seller seller=(Seller)ClientController.getInstance().getCurrentUser();
-        if (seller.productExists(productId)) {
-            System.out.println("There Is No Product With This Id For This Seller.");
-        }else if (seller.getProductByID(productId).getAllBuyers() == null) {
-            System.out.println("There Is No Buyer For This Product");
-        }else {
-            for (Customer buyer : seller.getProductByID(productId).getAllBuyers()) {
-                System.out.println(buyer.viewPersonalInfo());
-                System.out.println("\n\n");
-            }
-        }
-    }
-
-    public void compareWithProduct(String productId){
-        if (getProductWithId(productId)==null) {
+    public void compareWithProduct(String productId) {
+        if (getProductWithId(productId) == null) {
             System.out.println("There Is No Product With This Id.");
-        }else{
-            Product product=ClientController.getInstance().getCurrentProduct();
-            Product compareProduct=getProductWithId(productId);
-            String attributes= "";
-            attributes += compareProduct.getProductId() +"                                  "+product.getProductId()+ "\n";
-            attributes += compareProduct.getProductName() +"                                  "+product.getProductName()+"\n";
-            attributes += compareProduct.getProductsCategory() +"                                  "+product.getProductsCategory()+ "\n";
-            attributes += compareProduct.getSeller() +"                                  "+product.getSeller()+ "\n";
-            attributes += compareProduct.getProductCompany() +"                                  "+product.getProductCompany()+ "\n";
-            attributes += compareProduct.getProductCost() +"                                  "+product.getProductCost()+ "\n";
-            attributes += compareProduct.getCostAfterOff() +"                                  "+product.getCostAfterOff()+ "\n";
-            attributes += compareProduct.getDescription()+"                                  "+product.getDescription()+"\n";
+        } else {
+            Product product = ClientController.getInstance().getCurrentProduct();
+            Product compareProduct = getProductWithId(productId);
+            String attributes = "";
+            attributes += compareProduct.getProductId() + "                                  " + product.getProductId() + "\n";
+            attributes += compareProduct.getProductName() + "                                  " + product.getProductName() + "\n";
+            attributes += compareProduct.getProductsCategory() + "                                  " + product.getProductsCategory() + "\n";
+            attributes += compareProduct.getSeller() + "                                  " + product.getSeller() + "\n";
+            attributes += compareProduct.getProductCompany() + "                                  " + product.getProductCompany() + "\n";
+            attributes += compareProduct.getProductCost() + "                                  " + product.getProductCost() + "\n";
+            attributes += compareProduct.getCostAfterOff() + "                                  " + product.getCostAfterOff() + "\n";
+            attributes += compareProduct.getDescription() + "                                  " + product.getDescription() + "\n";
             ClientController.getInstance().getCurrentMenu().showMessage(attributes);
         }
     }

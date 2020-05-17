@@ -236,6 +236,9 @@ public class UserCenter {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(product.getSeller())) {
                 seller.removeProduct(product.getProductId());
+                if(product.getOffer()!=null) {
+                    seller.getOfferById(product.getOffer().getOfferId()).getProducts().remove(product.getProductId());
+                }
             }
         }
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
