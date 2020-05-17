@@ -45,18 +45,18 @@ public class ManageProductMenu extends Menu {
                 help();
             } else if (command.matches("remove @p\\d+")) {
                 Gson gson = new Gson();
-                String sellerObject = gson.toJson((Seller) ClientController.getInstance().getCurrentUser());
+                String sellerObject = gson.toJson(seller);
                 ProductController.getInstance().removeProduct(getTheProductIdByCommand(command, 1), sellerObject);
             } else if (command.equals("add product")) {
                 addProduct();
             } else {
-                System.out.println("invalid command");
+                System.err.println("invalid command");
             }
         }
         back();
     }
 
-    private Category getCategoryName(String nameKind, String firstName) {
+    private Category getCategoryName(String firstName) {
         String name = firstName;
         CategoryController.getInstance().updateAllCategories();
         while (true) {
@@ -65,9 +65,9 @@ public class ManageProductMenu extends Menu {
             } else if (!CategoryController.getInstance().isThereCategoryWithThisName(name)) {
                 System.out.println("Category with this name doesn't exists.");
             } else {
-                System.out.println(nameKind + " is Invalid");
+                System.out.println("Category" + " is Invalid");
             }
-            System.out.println("Enter " + nameKind);
+            System.out.println("Enter " + "Category");
             name = scanner.nextLine().trim();
         }
     }
@@ -75,11 +75,11 @@ public class ManageProductMenu extends Menu {
     private void addProduct() {
         ArrayList<String> fieldsOfProduct = new ArrayList<>();
         String category = getName("Products Category");
-        Category productsCategory = getCategoryName("Category", category);
+        Category productsCategory = getCategoryName(category);
         fieldsOfProduct.add(getName("Company Name"));
         fieldsOfProduct.add(getName("Product Name"));
         System.out.println("Enter Products  description");
-        String s = "", description = "";
+        String s, description = "";
         while (!(s = scanner.nextLine().trim()).equalsIgnoreCase("finish")) {
             description += s;
             description += "\\n";
@@ -94,16 +94,16 @@ public class ManageProductMenu extends Menu {
             ArrayList<String> featureModes = categoryFeatures.get(feature);
             System.out.println("feature: " + feature);
             System.out.println("Please choose one mode");
-            String modesStringForm = "";
+            StringBuilder modesStringForm = new StringBuilder();
             int i = 1;
             for (String featureMode : featureModes) {
-                modesStringForm += i;
-                modesStringForm += ".";
-                modesStringForm += featureMode;
-                modesStringForm += "\n";
+                modesStringForm.append(i);
+                modesStringForm.append(".");
+                modesStringForm.append(featureMode);
+                modesStringForm.append("\n");
                 i++;
             }
-            modesStringForm = modesStringForm.substring(0, modesStringForm.length() - 1);
+            modesStringForm = new StringBuilder(modesStringForm.substring(0, modesStringForm.length() - 1));
             String modesNumber;
             System.out.println(modesStringForm);
             modesNumber = getNumber("number");

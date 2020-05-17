@@ -2,7 +2,6 @@ package Controller.Client;
 
 import Models.Request;
 import Models.RequestType;
-import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -28,15 +27,16 @@ public class RequestController {
         ClientController.getInstance().sendMessageToServer("getAllRequests");
     }
 
+
     public void printAllRequests(String json) {
         Type requestListType = new TypeToken<ArrayList<Request>>() {
         }.getType();
         allRequests = new Gson().fromJson(json, requestListType);
-        String showAllRequests = "";
+        StringBuilder showAllRequests = new StringBuilder();
         for (Request request : allRequests) {
-            showAllRequests += request.getRequestId() + " " + request.getType() + "\n";
+            showAllRequests.append(request.getRequestId()).append(" ").append(request.getType()).append("\n");
         }
-        ClientController.getInstance().getCurrentMenu().showMessage(showAllRequests);
+        ClientController.getInstance().getCurrentMenu().showMessage(showAllRequests.toString());
     }
 
     public void viewRequestDetail(String requestId) {
@@ -73,4 +73,5 @@ public class RequestController {
         }
         ClientController.getInstance().getCurrentMenu().showMessage("There Is No Request With This Id");
     }
+
 }

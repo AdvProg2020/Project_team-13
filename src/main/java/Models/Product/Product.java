@@ -199,10 +199,6 @@ public class Product {
         }
     }
 
-    public ArrayList<Customer> getAllBuyers() {
-        return allBuyers;
-    }
-
     public void addToAllBuyers(Customer buyer) {
         if(allBuyers==null){
             allBuyers=new ArrayList<>();
