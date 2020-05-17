@@ -14,7 +14,7 @@ public class SortingMenu extends Menu {
     @Override
     public void help() {
         String sortingMenuHelp = "1.Sort by (price|score|newest) (ascending|descending)" +
-                "\n2.Show sorts\n3.help\n4.back";
+                "\n2.Show sorts\n3.current sort\n4.disable sort\n5.help\n6.back";
         System.out.println(sortingMenuHelp);
 
     }
@@ -30,6 +30,10 @@ public class SortingMenu extends Menu {
                 String sorts = "1.Sort by price ascending\n2.Sort by price descending\n3.Sort by score ascending" +
                         "\n4.Sort by score descending\n5.Sort by newest ascending\n6.Sort by newest descending";
                 System.out.println(sorts);
+            } else if (command.equalsIgnoreCase("current sort")) {
+                System.out.println(ProductController.getInstance().getCurrentSort());
+            } else if (command.equalsIgnoreCase("disable sort")) {
+                System.out.println(ProductController.getInstance().disableSort());
             } else if (command.equalsIgnoreCase("help")) {
                 help();
             } else {

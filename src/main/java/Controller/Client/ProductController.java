@@ -103,12 +103,12 @@ public class ProductController {
             int j = 1;
             for (String feature : categoryFeaturesToFilter.keySet()) {
                 stringForm += j + "." + feature + "  modes:\n";
-                j++;
                 int i = 1;
                 for (String seller : categoryFeaturesToFilter.get(feature)) {
-                    stringForm += i + "." + seller + "\n";
+                    stringForm += "\t" + j + "." + i + ". " + seller + "\n";
                     i++;
                 }
+                j++;
             }
             return stringForm;
         } else return "";
@@ -116,6 +116,28 @@ public class ProductController {
 
     public void removeProduct(String productId, String seller) {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("deleteProduct", productId + "/" + seller));
+    }
+
+    public String getCurrentSort() {
+        if (isSortActivated) {
+            String sortKind = "";
+            if (kindOfSort) {
+                sortKind = "ascending";
+            } else {
+                sortKind = "descending";
+            }
+            return "current sort: " + this.currentSort + " " + sortKind;
+        }
+        return "no sort selected";
+    }
+
+    public String disableSort() {
+        if (isSortActivated) {
+            isSortActivated = false;
+            return "current sort disabled.";
+        } else {
+            return "no sort selected";
+        }
     }
 
     public void printAllProducts() {
@@ -131,10 +153,10 @@ public class ProductController {
         ArrayList<Product> allProducts = allProductsAfterFilter;
         String productsInViewFormat = "";
         for (Product product : allProducts) {
-            productsInViewFormat+=product.getProductId() + "\t" + product.getProductName() + "\t" + product.getProductCost()+ "\t" + product.getProductStatus().toString() + "\n" ;
+            productsInViewFormat += product.getProductId() + "\t" + product.getProductName() + "\t" + product.getProductCost() + "\t" + product.getProductStatus().toString() + "\n";
         }
-        if(allProducts!=null&&!allProducts.isEmpty()) {
-            ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0,productsInViewFormat.length()-1));
+        if (allProducts != null && !allProducts.isEmpty()) {
+            ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
         }
 
     }
@@ -390,9 +412,9 @@ public class ProductController {
     public String getTheProductDetails(ArrayList<Product> allProducts){
         String allDetails="";
         for (Product product : allProducts) {
-            allDetails+=product.productInfoFor()+"\n\n";
+            allDetails += product.productInfoFor() + "\n";
         }
-        return allDetails;
+        return allDetails.substring(0,allDetails.length()-1);
     }
 
     public void makeProductsViewForm() {

@@ -62,4 +62,15 @@ public class RequestController {
         }
         ClientController.getInstance().getCurrentMenu().printError("there is no request with this id");
     }
+
+    public void declineRequest(String requestId){
+        for (Request request : allRequests) {
+            if (request.getRequestId().equals(requestId)) {
+                ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("declineRequest", requestId));
+                allRequests.remove(request);
+                return;
+            }
+        }
+        ClientController.getInstance().getCurrentMenu().showMessage("There Is No Request With This Id");
+    }
 }

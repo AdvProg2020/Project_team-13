@@ -123,4 +123,12 @@ public class RequestCenter {
     public void acceptEdiProductRequest(Request request){
 
     }
+
+    public void declineRequest(String requestId){
+        Request request=findRequestWithID(requestId);
+        allRequests.remove(request);
+        String arrayData=new Gson().toJson(allRequests);
+        DataBase.getInstance().updateAllRequests(arrayData);
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "Request declined successfully"));
+    }
 }

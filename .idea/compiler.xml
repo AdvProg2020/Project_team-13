@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Project_team" />
+        <module name="peymanProject" />
         <module name="1313" />
         <module name="پروژه" />
         <module name="Project" />

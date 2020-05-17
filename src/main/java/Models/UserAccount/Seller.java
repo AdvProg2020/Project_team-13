@@ -173,7 +173,7 @@ public class Seller extends UserAccount {
                 products += product.getProductId() + " ";
                 products += product.getProductName() + " ";
                 products += product.getProductCost() + " ";
-                products += '\n';
+                products += "\n";
             }
         }
         return products;
@@ -233,7 +233,7 @@ public class Seller extends UserAccount {
     }
 
     public boolean hasAnyProduct() {
-        return allProducts != null;
+        return !(allProducts == null||allProducts.isEmpty());
     }
 
     public boolean hasAnyOffer() {

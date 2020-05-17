@@ -34,7 +34,6 @@ public class AddOffsMenu extends Menu {
         if (!seller.hasAnyProduct()) {
             System.out.println("There Is No Product For Offer!!!");
             back();
-            return;
         }
         double amount = getTheAmount();
         if (backEntered()) {
@@ -42,11 +41,6 @@ public class AddOffsMenu extends Menu {
             return;
         }
         ArrayList<Product> allProducts = getAllProducts(seller);
-        if (backEntered()) {
-            back();
-            return;
-        }
-        double maxDiscountAmount = getTheMaxDiscountAmount();
         if (backEntered()) {
             back();
             return;
@@ -61,21 +55,21 @@ public class AddOffsMenu extends Menu {
             back();
             return;
         }
-        OffsController.getInstance().addOff(amount, maxDiscountAmount, allProducts, startDate, endDate);
+//        OffsController.getInstance().addOff(amount, allProducts, startDate, endDate);
         back();
     }
 
     private double getTheAmount() {
         String command;
         do {
-            System.out.println("Enter The Off Amount: ");
-            command=scanner.nextLine().trim();
+            System.out.println("Enter The Off Amount(in form dd%): ");
+            command = scanner.nextLine().trim();
             if (command.matches("\\d{1,2}(\\.\\d+)?%")) {
-                return Double.parseDouble(command.substring(0,command.length()-1));
-            } else if(!command.equalsIgnoreCase("back")){
+                return Double.parseDouble(command.substring(0, command.length() - 1));
+            } else if (!command.equalsIgnoreCase("back")) {
                 System.out.println("invalid command");
             }
-        }while(!(command.equalsIgnoreCase("back")));
+        } while (!(command.equalsIgnoreCase("back")));
         setBack(true);
         return 0;
     }
@@ -89,13 +83,13 @@ public class AddOffsMenu extends Menu {
         String command;
         do {
             System.out.println("Enter The Max Discount Amount: ");
-            command=scanner.nextLine().trim();
+            command = scanner.nextLine().trim();
             if (command.matches("\\d{1,2}(\\.\\d+)?%")) {
-                return Double.parseDouble(command.substring(0, command.length()-1));
-            } else if(!command.equalsIgnoreCase("back")){
+                return Double.parseDouble(command.substring(0, command.length() - 1));
+            } else if (!command.equalsIgnoreCase("back")) {
                 System.out.println("invalid command");
             }
-        }while(!(command.equalsIgnoreCase("back")));
+        } while (!(command.equalsIgnoreCase("back")));
         setBack(true);
         return 0;
     }
@@ -103,33 +97,38 @@ public class AddOffsMenu extends Menu {
     private ArrayList<Product> getAllProducts(Seller seller) {
         String command;
         ArrayList<Product> products = new ArrayList<>(seller.getAllProducts());
-        ArrayList<Product> selectedProducts=new ArrayList<>();
+        int productsTotallSize = products.size();
+        ArrayList<Product> selectedProducts = new ArrayList<>();
         while (true) {
-            System.out.println("Enter The Product From The List Below:\n\n"+(ProductController.getInstance().getTheProductDetails(products)));
+//            "\u001B[34m"+message+"\u001B[0m"
+            System.out.println("\u001B[34m" + "Enter The Product From The List Below(add [productId]):\n" + (ProductController.getInstance().getTheProductDetails(products)) + "\u001B[0m");
             command = scanner.nextLine().trim();
             if (command.equalsIgnoreCase("back")) {
                 setBack(true);
                 return null;
             } else if (command.equalsIgnoreCase("finish")) {
                 if (selectedProducts.isEmpty()) {
-                    System.out.println("You Must Choose A Product\n\n");
+                    System.out.println("You Must Choose A Product");
                 } else {
                     return selectedProducts;
                 }
             } else if (command.matches("add @p\\d+")) {
                 if (!products.contains(seller.getProductByID(command.substring(4)))) {
-                    System.out.println("There Is No Product With This Id In That List.\n\n");
+                    System.out.println("There Is No Product With This Id In That List.");
                 } else if (OffsController.getInstance().productExitsInOtherOffer(seller, command.substring(4))) {
-                    System.out.println("The Product Already Exists in Other Offer.\n\n");
+                    System.out.println("The Product Already Exists in Other Offer.");
                 } else {
                     selectedProducts.add(seller.getProductByID(command.substring(4)));
                     products.remove(seller.getProductByID(command.substring(4)));
                     OffsController.getInstance().setTheProductExistInOtherOffer(seller, command.substring(4), true);
-                    System.out.println("Product selected\n\n");
+                    System.out.println("Product selected");
+                    if (selectedProducts.size() == productsTotallSize) {
+                        return selectedProducts;
+                    }
                 }
-            } else if(command.equalsIgnoreCase("View selected products")){
-                System.out.println(ProductController.getInstance().getTheProductDetails(selectedProducts));
-            } else if(!command.equalsIgnoreCase("back")){
+            } else if (command.equalsIgnoreCase("View selected products")) {
+                System.out.println("\u001B[34m" + ProductController.getInstance().getTheProductDetails(selectedProducts) + "\u001B[0m");
+            } else {
                 System.out.println("invalid command");
             }
         }
@@ -137,22 +136,22 @@ public class AddOffsMenu extends Menu {
 
     private Date getTheStartDate() {
         String command;
-        Date date=new Date();
+        Date date = new Date();
         Date startDate;
-        do{
-            System.out.println("Enter The Start Date: ");
-            command=scanner.nextLine().trim();
-            if(command.matches("[1-9]\\d{3}/([1-9]|(1[0-2]))/([1-9]|([1-2][0-9])|30)")){
-                startDate=new Date(command);
-                if(startDate.before(date)){
+        do {
+            System.out.println("Enter The Start Date(2xxx/xx/xx): ");
+            command = scanner.nextLine().trim();
+            if (command.matches("[1-9]\\d{3}/([1-9]|(1[0-2]))/([1-9]|([1-2][0-9])|30)")) {
+                startDate = new Date(command);
+                if (startDate.before(date)) {
                     System.out.println("The Time Is Not Acceptable");
-                }else{
+                } else {
                     return startDate;
                 }
-            } else if(!command.equalsIgnoreCase("back")){
+            } else if (!command.equalsIgnoreCase("back")) {
                 System.out.println("invalid command");
             }
-        }while (!(command.equalsIgnoreCase("back")));
+        } while (!(command.equalsIgnoreCase("back")));
         setBack(true);
         return null;
 
@@ -161,27 +160,29 @@ public class AddOffsMenu extends Menu {
     private Date getTheEndDate(Date startDate) {
         String command;
         Date endDate;
-        do{
-            System.out.println("Enter The End Date: ");
-            command=scanner.nextLine().trim();
-            if(command.matches("[1-3]\\d{3}/([1-9]|(1[0-2]))/([1-9]|([1-2][0-9])|30)")){
-               endDate=new Date(command);
-               if(endDate.before(startDate)){
-                   System.out.println("The Time Is Not Acceptable");
-               }else{
-                   return endDate;
-               }
-            } else if(!command.equalsIgnoreCase("back")){
+        do {
+            System.out.println("Enter The End Date(2xxx/xx/xx): ");
+            command = scanner.nextLine().trim();
+            if (command.matches("[1-3]\\d{3}/([1-9]|(1[0-2]))/([1-9]|([1-2][0-9])|30)")) {
+                endDate = new Date(command);
+                if (endDate.before(startDate)) {
+                    System.out.println("The Time Is Not Acceptable");
+                } else {
+                    return endDate;
+                }
+            } else if (!command.equalsIgnoreCase("back")) {
                 System.out.println("invalid command");
             }
-        }while (!(command.equalsIgnoreCase("back")));
+        } while (!(command.equalsIgnoreCase("back")));
         setBack(true);
         return null;
     }
+
     private boolean backEntered() {
         return back;
     }
-    private void setBack(boolean back){
-        this.back=back;
+
+    private void setBack(boolean back) {
+        this.back = back;
     }
 }
