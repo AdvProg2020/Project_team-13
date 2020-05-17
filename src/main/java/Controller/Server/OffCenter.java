@@ -56,7 +56,9 @@ public class OffCenter {
         RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("editOffer", new Gson().toJson(offer)));
         ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("editOffer", "The Offer's Edition Is Saved For Manager's Confirmation "));
     }
-
+    public void setAllOffers(ArrayList<Offer> allOffers) {
+        this.allOffers = allOffers;
+    }
     public Product findProductWithID(String productID) {
         for (Offer offer : allOffers) {
             for (Product product : offer.getProducts()) {

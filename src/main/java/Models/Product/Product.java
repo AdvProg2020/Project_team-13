@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 public class Product {
 
+    private boolean existInOfferRegistered;
     private String productId;
     private ProductStatus productStatus;
     private String productName;
@@ -53,6 +54,13 @@ public class Product {
         this.commentList.add(comment);
     }
 
+    public boolean isExistInOfferRegistered() {
+        return existInOfferRegistered;
+    }
+
+    public void setExistInOfferRegistered(boolean existInOfferRegistered) {
+        this.existInOfferRegistered = existInOfferRegistered;
+    }
     public double getAverageScore() {
         if (allScores != null) {
             double averageScore = 0;
