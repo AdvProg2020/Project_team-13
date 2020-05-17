@@ -2,6 +2,7 @@ package View.UserMenu.Seller;
 
 import Controller.Client.ClientController;
 import Controller.Client.OffsController;
+import Controller.Client.ProductController;
 import Models.UserAccount.Seller;
 import View.Menu;
 import com.google.gson.Gson;
@@ -35,6 +36,8 @@ public class ViewOffsMenu extends Menu {
 
     @Override
     public void execute() {
+        ProductController.getInstance().getAllProductsFromServer();
+        OffsController.getInstance().getAllOffsFromServer();
        String command;
        OffsController.getInstance().printAllOffs((Seller)ClientController.getInstance().getCurrentUser());
        while(!(command=scanner.nextLine().trim()).equalsIgnoreCase("back")){

@@ -32,9 +32,9 @@ public class ProductController {
         return productController;
     }
 
-    public Product getProductWithId(String productId){
+    public Product getProductWithId(String productId) {
         for (Product product : allProducts) {
-            if(product.getProductId().equals(productId)){
+            if (product.getProductId().equals(productId)) {
                 return product;
             }
         }
@@ -423,12 +423,18 @@ public class ProductController {
     }
 
     public String getTheProductDetails(ArrayList<String> allProducts) {
-        String allDetails = "";
-        for (String product1 : allProducts) {
-            Product product = getProductWithId(product1);
-            allDetails += product.productInfoFor() + "\n";
+        if (allProducts != null) {
+            String allDetails = "";
+            for (String product1 : allProducts) {
+                Product product = getProductWithId(product1);
+                if (product != null) {
+                    allDetails += product.productInfoFor() + "\n";
+                }
+            }
+            if (!allDetails.isEmpty())
+                return allDetails.substring(0, allDetails.length() - 1);
         }
-        return allDetails.substring(0, allDetails.length() - 1);
+        return "";
     }
 
     public void makeProductsViewForm() {
@@ -437,8 +443,9 @@ public class ProductController {
 
         }
     }
-    public Product findProductAfterFilter(String productID){
-        allProductsAfterFilter=new ArrayList<>(allProducts);
+
+    public Product findProductAfterFilter(String productID) {
+        allProductsAfterFilter = new ArrayList<>(allProducts);
         filterProducts();
         for (Product product : allProductsAfterFilter) {
             if (product.getProductId().equals(productID)) {
@@ -484,13 +491,13 @@ public class ProductController {
     }
 
 
-    public void showAllBuyersForThisProduct(String productId){
-       Seller seller=(Seller)ClientController.getInstance().getCurrentUser();
+    public void showAllBuyersForThisProduct(String productId) {
+        Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
         if (seller.productExists(productId)) {
             System.out.println("There Is No Product With This Id For This Seller.");
-        }else if (seller.getProductByID(productId).getAllBuyers() == null) {
+        } else if (seller.getProductByID(productId).getAllBuyers() == null) {
             System.out.println("There Is No Buyer For This Product");
-        }else {
+        } else {
             for (Customer buyer : seller.getProductByID(productId).getAllBuyers()) {
                 System.out.println(buyer.viewPersonalInfo());
                 System.out.println("\n\n");

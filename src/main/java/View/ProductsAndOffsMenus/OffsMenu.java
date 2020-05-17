@@ -35,8 +35,8 @@ public class OffsMenu extends Menu {
 
     @Override
     public void execute() {
-        OffsController.getInstance().getAllOffsFromServer();
         ProductController.getInstance().getAllProductsFromServer();
+        OffsController.getInstance().getAllOffsFromServer();
         OffsController.getInstance().showAllOffs();
         String command;
         while (!(command = scanner.nextLine().trim()).equalsIgnoreCase("back")) {
