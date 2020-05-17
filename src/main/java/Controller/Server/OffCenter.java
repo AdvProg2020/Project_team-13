@@ -1,6 +1,7 @@
 package Controller.Server;
 
 import Controller.Client.CategoryController;
+import Controller.Client.OffsController;
 import Models.Offer;
 import Models.OfferStatus;
 import Models.Product.Category;

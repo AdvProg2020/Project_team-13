@@ -271,4 +271,8 @@ public class Product {
         attributes += getDescription();
         ClientController.getInstance().getCurrentMenu().showMessage(attributes);
     }
+
+    public void setFeaturesOfCategoryThatHas(HashMap<String, String> featuresOfCategoryThatHas) {
+        this.featuresOfCategoryThatHas = featuresOfCategoryThatHas;
+    }
 }

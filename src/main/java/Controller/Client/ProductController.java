@@ -504,4 +504,23 @@ public class ProductController {
             }
         }
     }
+
+    public void compareWithProduct(String productId){
+        if (getProductWithId(productId)==null) {
+            System.out.println("There Is No Product With This Id.");
+        }else{
+            Product product=ClientController.getInstance().getCurrentProduct();
+            Product compareProduct=getProductWithId(productId);
+            String attributes= "";
+            attributes += compareProduct.getProductId() +"                                  "+product.getProductId()+ "\n";
+            attributes += compareProduct.getProductName() +"                                  "+product.getProductName()+"\n";
+            attributes += compareProduct.getProductsCategory() +"                                  "+product.getProductsCategory()+ "\n";
+            attributes += compareProduct.getSeller() +"                                  "+product.getSeller()+ "\n";
+            attributes += compareProduct.getProductCompany() +"                                  "+product.getProductCompany()+ "\n";
+            attributes += compareProduct.getProductCost() +"                                  "+product.getProductCost()+ "\n";
+            attributes += compareProduct.getCostAfterOff() +"                                  "+product.getCostAfterOff()+ "\n";
+            attributes += compareProduct.getDescription()+"                                  "+product.getDescription()+"\n";
+            ClientController.getInstance().getCurrentMenu().showMessage(attributes);
+        }
+    }
 }

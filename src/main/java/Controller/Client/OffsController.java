@@ -105,18 +105,18 @@ public class OffsController {
         } else return "there is no offs";
     }
 
-    public Product getTheProductById(String productId) {
+    public boolean getTheProductById(String productId){
         for (Offer off : allOffs) {
             for (String product : off.getProducts()) {
                 if (product.equals(productId)) {
-                    return ProductController.getInstance().getProductWithId(productId);
+                    return true;
                 }
             }
         }
-        return null;
+        return false;
     }
 
-    public boolean isThereAnyProductWithThisId(String productId) {
-        return getTheProductById(productId) != null;
+    public boolean isThereAnyProductWithThisId(String productId){
+        return getTheProductById(productId);
     }
 }
