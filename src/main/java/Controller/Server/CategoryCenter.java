@@ -117,8 +117,8 @@ public class CategoryCenter {
     public void replaceCategory(Category category) {
         for (int i = 0; i < allCategories.size(); i++) {
             if (allCategories.get(i).getName().equals(category.getName())) {
-                    allCategories.set(i,category);
-                    break;
+                allCategories.set(i, category);
+                break;
             }
         }
         DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
@@ -150,12 +150,13 @@ public class CategoryCenter {
     }
 
     public void updateProductInCategory(Product product) {
-        firstLoop:for (Category category : allCategories) {
-            if(category.getName().equals(product.getProductsCategory())) {
+        firstLoop:
+        for (Category category : allCategories) {
+            if (category.getName().equals(product.getProductsCategory())) {
                 for (Product product1 : category.getAllProducts()) {
                     for (int i = 0; i < category.getAllProducts().size(); i++) {
                         if (category.getAllProducts().get(i).getProductId().equals(product.getProductId())) {
-                            category.getAllProducts().set(i,product);
+                            category.getAllProducts().set(i, product);
                             DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
                             break firstLoop;
                         }
@@ -165,4 +166,14 @@ public class CategoryCenter {
         }
     }
 
+    public void editProductInCategory(Product product) {
+        if (allCategories != null) {
+            for (Category category : allCategories) {
+                if (product.getProductsCategory().equals(category.getName())) {
+                    category.editProduct(product);
+                }
+            }
+            DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
+        }
+    }
 }

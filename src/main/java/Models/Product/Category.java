@@ -45,4 +45,14 @@ public class Category {
     public ArrayList<Product> getAllProducts() {
         return allProducts;
     }
+
+    public void editProduct(Product product) {
+        if (allProducts != null) {
+            for (Product product1 : this.allProducts) {
+                if (product1.getProductId().equals(product.getProductId())) {
+                    allProducts.set(allProducts.indexOf(product1), product);
+                }
+            }
+        }
+    }
 }

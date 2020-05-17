@@ -6,6 +6,7 @@ import Models.Offer;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.Product.ProductStatus;
+import Models.Request;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 
@@ -149,12 +150,22 @@ public class ProductCenter {
     }
 
     public void createEditProductRequest(Product product) {
-        //
-
+        RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("EditProduct", new Gson().toJson(product)));
     }
 
     public void editProduct(Product product) {
-        //
+        product.setProductStatus(ProductStatus.accepted);
+        if (allProducts != null) {
+            allProducts.set(allProducts.indexOf(ProductCenter.getInstance()
+                    .getProductWithId(product.getProductId())), product);
+        } else {
+            allProducts = new ArrayList<>();
+            allProducts.add(product);
+        }
+        UserCenter.getIncstance().editProductInSeller(product);
+        CategoryCenter.getIncstance().editProductInCategory(product);
+        CategoryCenter.getIncstance().addProductToCategory(product);
+        DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));
     }
 
     public void addOfferToProduct(String productId, Offer offer) {
