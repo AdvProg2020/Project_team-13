@@ -36,20 +36,22 @@ public class Customer extends UserAccount{
         return personalInfo;
     }
     public void addDiscountCode(DiscountCode discountCode){
-        System.out.println(discountCode.getMaxDiscountAmount());
         allDiscountCodes.add(discountCode);
     }
     public void removeDiscountCode(String code){
         for (DiscountCode discountCode : allDiscountCodes) {
             if(discountCode.getDiscountCodeID().equals(code)){
                 allDiscountCodes.remove(discountCode);
-                System.out.println("deleted");
                 return;
             }
         }
     }
     public void useDiscountCode(String code){
-        findDiscountCodeWithCode(code).usedOneTime(username);
+        if(findDiscountCodeWithCode(code).getRemainingTimesForEachCustomer().get(username)>1) {
+            findDiscountCodeWithCode(code).usedOneTime(username);
+        }else{
+            removeDiscountCode(code);
+        }
     }
     public DiscountCode findDiscountCodeWithCode(String code){
         for (DiscountCode discountCode : allDiscountCodes) {

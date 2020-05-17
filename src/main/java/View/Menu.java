@@ -11,6 +11,10 @@ public abstract class Menu {
     ClientController controlClient;
     ArrayList<Menu> subMenu;
 
+    public Scanner getScanner() {
+        return scanner;
+    }
+
     public Menu(Menu parentMenu) {
         this.parentMenu = parentMenu;
     }

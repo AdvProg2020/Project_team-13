@@ -90,6 +90,10 @@ public class OffCenter {
         Offer oldOffer=getOfferByOfferId(newOffer.getOfferId());
         newOffer.setOfferStatus(OfferStatus.accepted);
         allOffers.set(allOffers.indexOf(oldOffer), newOffer);
+        for (String product : newOffer.getProducts()) {
+            ProductCenter.getInstance().addOfferToProduct(product, newOffer);
+            CategoryCenter.getIncstance().updateProductInCategory(ProductCenter.getInstance().getProductWithId(product));
+        }
         UserCenter.getIncstance().editOfferForSeller(newOffer);
         DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
     }
