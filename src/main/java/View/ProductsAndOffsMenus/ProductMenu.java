@@ -18,8 +18,9 @@ public class ProductMenu extends Menu {
         userMenuOptions += "2.Attributes\n";
         userMenuOptions += "3.Help\n";
         userMenuOptions += "4.Back\n";
-        userMenuOptions += "5.compare [product id]\n";
-        userMenuOptions += "6.LogOut\n";
+        userMenuOptions += "5.Compare [product id]\n";
+        userMenuOptions += "6.Comments\n";
+        userMenuOptions += "7.LogOut\n";
         System.out.println(userMenuOptions);
 
     }
@@ -50,7 +51,11 @@ public class ProductMenu extends Menu {
                 ClientController.getInstance().setCurrentUser(null);
                 System.out.println("You Logged out!!");
                 parentMenu.execute();
-            } else {
+            }else if(command.equalsIgnoreCase("comments")){
+                Menu menu=new CommentMenu(this).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
+            }else  {
                 System.out.println("Invalid Command");
             }
         }

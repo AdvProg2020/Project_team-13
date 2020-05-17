@@ -21,7 +21,8 @@ public class SellerMenu extends Menu {
     @Override
     public void execute() {
         String command;
-        System.out.println(ClientController.getInstance().getCurrentUser().viewPersonalInfo());
+        Seller seller=(Seller)ClientController.getInstance().getCurrentUser();
+        System.out.println(seller.viewPersonalInfo());
         boolean isAccepted = ClientController.getInstance().getSeller().isAccepted();
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.equals("view personal info") && isAccepted) {
@@ -47,9 +48,11 @@ public class SellerMenu extends Menu {
                 ClientController.getInstance().setCurrentUser(null);
                 System.out.println("You Logged out!!");
                 parentMenu.execute();
-            } else {
+            } else if (command.equalsIgnoreCase("view balance")){
+                showMessage(String.valueOf(seller.getCredit()));
+            }else  {
                 if(isAccepted) {
-                    System.out.println("Invalid command");
+                    System.err.println("Invalid command");
                 }else
                     System.out.println("you should wait for accept your register from a manager");
             }
@@ -66,7 +69,8 @@ public class SellerMenu extends Menu {
         sellerMenuOptions += "2.Show Categories\n";
         sellerMenuOptions += "3.manage products\n";
         sellerMenuOptions += "4.view offs\n";
-        sellerMenuOptions += "5.LogOut\n";
+        sellerMenuOptions += "5.view balance\n";
+        sellerMenuOptions += "6.LogOut\n";
         System.out.println(sellerMenuOptions);
     }
 

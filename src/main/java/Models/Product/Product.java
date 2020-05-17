@@ -97,6 +97,15 @@ public class Product {
         return this.costAfterOff;
     }
 
+
+    public ArrayList<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(ArrayList<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
     public String viewProduct() {
         String projectInformation = "";
         projectInformation += this.productName + "\n";
