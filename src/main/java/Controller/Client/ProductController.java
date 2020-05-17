@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 public class ProductController {
-    private ArrayList<Product> allProducts, allProductsAfterFilter;
+    private ArrayList<Product> allProducts, allProductsAfterFilter, allProductsAfterSort;
     private ArrayList<String> allBrandsToFilter, allSellersToFilter;
     private ArrayList<ProductStatus> allProductStatusToFilter;
     private HashMap<String, ArrayList<String>> categoryFeaturesToFilter;
@@ -29,7 +29,6 @@ public class ProductController {
         if (productController == null) {
             productController = new ProductController();
         }
-        productController.getAllProductsFromServer();
         return productController;
     }
 
@@ -158,13 +157,17 @@ public class ProductController {
     public void showProductsAfterFilterAndSort() {
         filterProducts();
         sortProducts();
-        ArrayList<Product> allProducts = allProductsAfterFilter;
+        ArrayList<Product> allProducts = new ArrayList<>(allProductsAfterSort);
         String productsInViewFormat = "";
-        for (Product product : allProducts) {
-            productsInViewFormat += product.getProductId() + "\t" + product.getProductName() + "\t" + product.getProductCost() + "\t" + product.getProductStatus().toString() + "\n";
-        }
-        if (allProducts != null && !allProducts.isEmpty()) {
-            ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
+        if (allProductsAfterFilter != null && !allProductsAfterFilter.isEmpty()) {
+            for (Product product : allProducts) {
+                productsInViewFormat += "ProductID: " + product.getProductId() + "\t" + "Product name: " + product.getProductName() + "\t"
+                        + "ProductCost: " + product.getProductCost() + "\t"
+                        + "Product Status: " + product.getProductStatus().toString() + "\n";
+            }
+            if (allProducts != null && !allProducts.isEmpty()) {
+                ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
+            }
         }
 
     }
@@ -336,39 +339,41 @@ public class ProductController {
     }
 
     public void sortProducts() {
-        if (isSortActivated) {
-            ArrayList<Product> allProductsAfterSort = new ArrayList<>(allProductsAfterFilter);
-            if (currentSort.equals("newest")) {
-                if (!kindOfSort) {
-                    for (int i = allProductsAfterSort.size() - 1; i >= 0; i--) {
-                        allProductsAfterFilter.set(allProductsAfterSort.size() - i - 1, allProductsAfterSort.get(i));
+        if (allProductsAfterFilter != null) {
+            allProductsAfterSort = new ArrayList<>(allProductsAfterFilter);
+            if (isSortActivated) {
+                if (currentSort.equals("newest")) {
+                    if (!kindOfSort) {
+                        for (int i = allProductsAfterSort.size() - 1; i >= 0; i--) {
+                            allProductsAfterSort.set(allProductsAfterSort.size() - i - 1, allProductsAfterSort.get(i));
+                        }
                     }
+                } else if (currentSort.equals("price")) {
+                    Collections.sort(allProductsAfterSort, new Comparator<Product>() {
+                        @Override
+                        public int compare(Product o1, Product o2) {
+                            if (kindOfSort) {
+                                return (int) (o1.getProductCost() - o2.getProductCost());
+                            } else {
+                                return (int) (o2.getProductCost() - o1.getProductCost());
+                            }
+                        }
+                    });
+
+                } else if (currentSort.equals("score")) {
+
+                    Collections.sort(allProductsAfterSort, new Comparator<Product>() {
+                        @Override
+                        public int compare(Product o1, Product o2) {
+                            if (kindOfSort) {
+                                return (int) (o1.getAverageScore() - o2.getAverageScore());
+                            } else {
+                                return (int) (o2.getAverageScore() - o1.getAverageScore());
+                            }
+                        }
+                    });
+
                 }
-            } else if (currentSort.equals("price")) {
-                Collections.sort(allProductsAfterFilter, new Comparator<Product>() {
-                    @Override
-                    public int compare(Product o1, Product o2) {
-                        if (kindOfSort) {
-                            return (int) (o1.getProductCost() - o2.getProductCost());
-                        } else {
-                            return (int) (o2.getProductCost() - o1.getProductCost());
-                        }
-                    }
-                });
-
-            } else if (currentSort.equals("score")) {
-
-                Collections.sort(allProductsAfterFilter, new Comparator<Product>() {
-                    @Override
-                    public int compare(Product o1, Product o2) {
-                        if (kindOfSort) {
-                            return (int) (o1.getAverageScore() - o2.getAverageScore());
-                        } else {
-                            return (int) (o2.getAverageScore() - o1.getAverageScore());
-                        }
-                    }
-                });
-
             }
         }
     }
@@ -420,10 +425,10 @@ public class ProductController {
     public String getTheProductDetails(ArrayList<String> allProducts) {
         String allDetails = "";
         for (String product1 : allProducts) {
-            Product product=getProductWithId(product1);
+            Product product = getProductWithId(product1);
             allDetails += product.productInfoFor() + "\n";
         }
-        return allDetails.substring(0,allDetails.length()-1);
+        return allDetails.substring(0, allDetails.length() - 1);
     }
 
     public void makeProductsViewForm() {
@@ -433,14 +438,49 @@ public class ProductController {
         }
     }
     public Product findProductAfterFilter(String productID){
-        allProductsAfterFilter=allProducts;
+        allProductsAfterFilter=new ArrayList<>(allProducts);
         filterProducts();
         for (Product product : allProductsAfterFilter) {
-            if(product.getProductId().equals(productID)){
+            if (product.getProductId().equals(productID)) {
                 return product;
             }
         }
         return null;
+    }
+
+    public Product findProductAfterFilterInOffer(String productID) {
+        allProductsAfterFilter = allProducts;
+        filterProducts();
+        for (Product product : allProductsAfterFilter) {
+            if (product.getProductId().equals(productID) && product.getOffer() != null) {
+                return product;
+            } else if (product.getProductId().equals(productID) && product.getOffer() == null) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    public void showOffedProductsAfterFilterAndSort() {
+        filterProducts();
+        sortProducts();
+        ArrayList<Product> allProducts = new ArrayList<>();
+        String productsInViewFormat = "";
+        for (Product product : allProductsAfterSort) {
+            if (product.getOffer() != null) {
+                allProducts.add(product);
+            }
+        }
+        for (Product product : allProducts) {
+            productsInViewFormat += "ProductID: " + product.getProductId() + "\t" + "Product name: " + product.getProductName() + "\t"
+                    + "ProductCost before Off: " + product.getProductCost() + "\t"
+                    + "ProductCost after Off: " + product.getCostAfterOff() + "\t"
+                    + "Product Status: " + product.getProductStatus().toString() + "\n";
+        }
+        if (allProducts != null && !allProducts.isEmpty()) {
+            ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
+        }
+
     }
 
 

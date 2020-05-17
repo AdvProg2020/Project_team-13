@@ -5,7 +5,9 @@ import Models.OfferStatus;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.SortedMap;
@@ -23,6 +25,16 @@ public class OffsController {
             offsController = new OffsController();
         }
         return offsController;
+    }
+
+    public void getAllOffersFromServer() {
+        ClientController.getInstance().sendMessageToServer("@getAllOffers@");
+    }
+
+    public void updateAllOffer(String message) {
+        Type productListType = new TypeToken<ArrayList<Offer>>() {
+        }.getType();
+        allOffs = new Gson().fromJson(message, productListType);
     }
 
     public void printAllOffs(Seller seller) {
@@ -81,12 +93,16 @@ public class OffsController {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("getAllOffsForManager", null));
     }
 
-    public void showAllOffs() {
+    public String showAllOffs() {
         getAllOffsFromServer();
-        for (Offer offer : allOffs) {
-            System.out.println(offer.toString());
-            System.out.println("\n\n");
-        }
+        if (allOffs != null) {
+            String allOffs = "";
+            int i = 1;
+            for (Offer offer : this.allOffs) {
+                allOffs += i + "." + offer.toString() + "\n";
+            }
+            return allOffs;
+        } else return "there is no offs";
     }
 
     public boolean getTheProductById(String productId){

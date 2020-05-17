@@ -68,7 +68,7 @@ public class MessageController {
         } else if (message.startsWith("@AllRequests@")) {
             message = message.substring(13, message.length());
             RequestController.getInstance().printAllRequests(message);
-        }else if (message.startsWith("@AllDiscountCodes@")) {
+        } else if (message.startsWith("@AllDiscountCodes@")) {
             message = message.substring(18, message.length());
             DiscountController.getInstance().printAllDiscountCodes(message);
         } else if (message.startsWith("@allCustomers@")) {
@@ -90,6 +90,8 @@ public class MessageController {
             ClientController.getInstance().getCurrentMenu().showMessage("Category created.");
         } else if (message.startsWith("@productRemoved@")) {
             ClientController.getInstance().getCurrentMenu().showMessage("Category removed successfully.");
+        } else if (message.startsWith("getAllOffers")) {
+            OffsController.getInstance().updateAllOffer(message);
         }
     }
 

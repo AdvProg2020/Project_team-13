@@ -152,6 +152,7 @@ public class DataBase {
         } catch (IOException e) {
         }
     }
+
     public void replaceLogId(String logId) {
         try {
             FileWriter fileWriter = new FileWriter("lastLogId.txt");
@@ -160,6 +161,7 @@ public class DataBase {
         } catch (IOException e) {
         }
     }
+
     public void setAllUsersListFromDateBase() {
         FileReader fileReader = null;
         try {
@@ -235,6 +237,7 @@ public class DataBase {
             }
         }
     }
+
     public void updateAllRequests(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allRequests.txt");
@@ -354,6 +357,7 @@ public class DataBase {
             }
         }
     }
+
     public void setLastLogId() {
         FileReader fileReader = null;
         try {
@@ -377,6 +381,7 @@ public class DataBase {
             }
         }
     }
+
     public void setLastDiscountCodeId() {
         FileReader fileReader = null;
         try {
@@ -466,6 +471,35 @@ public class DataBase {
         }
     }
 
+    public void getAllOffersFromDataBase() {
+        FileReader fileReader = null;
+        Scanner scanner;
+        try {
+            fileReader = new FileReader("allOffers.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        scanner = new Scanner(fileReader);
+        try {
+            String json = null;
+            while (scanner.hasNextLine()) {
+                json = scanner.nextLine();
+            }
+            if (json != null) {
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("getAllOffers", json));
+            } else {
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Error", "There is no Product"));
+            }
+        } finally {
+            try {
+                fileReader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            scanner.close();
+        }
+    }
+
     public void getAllProductsFromDataBase() {
         FileReader fileReader = null;
         Scanner scanner;
@@ -502,9 +536,10 @@ public class DataBase {
             fileReader = new FileReader("lastOfferId.txt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }try {
+        }
+        try {
             scanner = new Scanner(fileReader);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.getCause();
         }
         try {
@@ -513,18 +548,19 @@ public class DataBase {
                 lastOfferId = scanner.nextLine();
                 OffCenter.getInstance().setLastOffId(lastOfferId);
             }
-        } catch (NullPointerException nullPointer){
+        } catch (NullPointerException nullPointer) {
             nullPointer.getCause();
-        }finally {
+        } finally {
             try {
                 fileReader.close();///
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (NullPointerException error){
+            } catch (NullPointerException error) {
                 error.getCause();
-            }try {
+            }
+            try {
                 scanner.close();
-            }catch (NullPointerException error2){
+            } catch (NullPointerException error2) {
                 error2.getCause();
             }
         }
@@ -540,9 +576,10 @@ public class DataBase {
             System.out.println(e);
         }
     }
-    public void updateAllOffers(String json){
+
+    public void updateAllOffers(String json) {
         try {
-            FileWriter fileWriter=new FileWriter("allOffers.txt");
+            FileWriter fileWriter = new FileWriter("allOffers.txt");
             fileWriter.write(json);
             fileWriter.close();
         } catch (IOException e) {
@@ -550,40 +587,42 @@ public class DataBase {
         }
     }
 
-    public void setAllOffersFromDatabase(){
-       FileReader fileReader=null;
-       Scanner scanner=null;
-       try{
-           fileReader=new FileReader("allOffers.txt");
-       }catch (FileNotFoundException e){
-           e.printStackTrace();
-       }try{
-       scanner=new Scanner(fileReader);
-       }catch (NullPointerException nullPointer){
-           nullPointer.getCause();
+    public void setAllOffersFromDatabase() {
+        FileReader fileReader = null;
+        Scanner scanner = null;
+        try {
+            fileReader = new FileReader("allOffers.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
-       try{
-           String json;
-           while(scanner.hasNextLine()){
-               String read=scanner.nextLine();
-               Gson gson=new Gson();
-               Type allOffersList=new TypeToken<ArrayList<Offer>>(){
-               }.getType();
-               ArrayList<Offer> allOffers=gson.fromJson(read, allOffersList);
-               OffCenter.getInstance().setAllOffers(allOffers);
-           }
-       } catch(NullPointerException e){
-           e.getCause();
-       } finally {
-           try {
-               fileReader.close();
-           } catch (IOException|NullPointerException e) {
-               e.printStackTrace();
-           }try {
-               scanner.close();
-           }catch (NullPointerException e){
-               e.getCause();
-           }
-       }
+        try {
+            scanner = new Scanner(fileReader);
+        } catch (NullPointerException nullPointer) {
+            nullPointer.getCause();
+        }
+        try {
+            String json;
+            while (scanner.hasNextLine()) {
+                String read = scanner.nextLine();
+                Gson gson = new Gson();
+                Type allOffersList = new TypeToken<ArrayList<Offer>>() {
+                }.getType();
+                ArrayList<Offer> allOffers = gson.fromJson(read, allOffersList);
+                OffCenter.getInstance().setAllOffers(allOffers);
+            }
+        } catch (NullPointerException e) {
+            e.getCause();
+        } finally {
+            try {
+                fileReader.close();
+            } catch (IOException | NullPointerException e) {
+                e.printStackTrace();
+            }
+            try {
+                scanner.close();
+            } catch (NullPointerException e) {
+                e.getCause();
+            }
+        }
     }
 }
