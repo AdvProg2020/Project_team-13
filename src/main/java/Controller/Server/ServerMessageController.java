@@ -33,6 +33,7 @@ public class ServerMessageController {
     }
 
     void processMessage(String message) {
+        ServerController.getInstance().passTime();
         if (message.startsWith("@Register@")) {
             message = message.substring(10, message.length());
             UserCenter.getIncstance().createNewUserAccount(message);

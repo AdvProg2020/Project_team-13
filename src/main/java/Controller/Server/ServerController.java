@@ -1,6 +1,8 @@
 package Controller.Server;
 
 import Controller.Client.ClientController;
+import Controller.Client.DiscountController;
+import Models.DiscountCode;
 
 public class ServerController {
     private static ServerController serverController;
@@ -32,11 +34,16 @@ public class ServerController {
         return serverController;
     }
 
-    public void getMessageFromClient(String message)  {
+    public void getMessageFromClient(String message) {
         ServerMessageController.getInstance().processMessage(message);
     }
 
     public void sendMessageToClient(String message) {
         ClientController.getInstance().getMessageFromServer(message);
+    }
+
+    public void passTime() {
+        DiscountCodeCenter.getIncstance().passTime();
+        OffCenter.getInstance().passTime();
     }
 }

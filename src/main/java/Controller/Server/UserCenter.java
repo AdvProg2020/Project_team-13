@@ -186,7 +186,8 @@ public class UserCenter {
     }
 
     public void updateProductOfferInSeller(Product product) {
-        firstTag:for (Seller seller : allSeller) {
+        firstTag:
+        for (Seller seller : allSeller) {
             if (seller.getUsername().equals(product.getSeller())) {
                 for (Product product1 : seller.getAllProducts()) {
                     if (product1.getProductId().equals(product.getProductId())) {
@@ -204,6 +205,16 @@ public class UserCenter {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(newOffer.getSeller())) {
                 seller.editOffer(newOffer);
+                break;
+            }
+        }
+        DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+    }
+
+    public void removeOfferForSeller(Offer offer) {
+        for (Seller seller : allSeller) {
+            if (seller.getUsername().equals(offer.getSeller())) {
+                seller.removeOffer(offer);
                 break;
             }
         }
@@ -238,7 +249,7 @@ public class UserCenter {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(product.getSeller())) {
                 seller.removeProduct(product.getProductId());
-                if(product.getOffer()!=null) {
+                if (product.getOffer() != null) {
                     seller.getOfferById(product.getOffer().getOfferId()).getProducts().remove(product.getProductId());
                 }
             }
@@ -248,7 +259,7 @@ public class UserCenter {
 
     public void editProductInSeller(Product product) {
         for (Seller seller : allSeller) {
-            if(seller.getUsername().equals(product.getSeller())) {
+            if (seller.getUsername().equals(product.getSeller())) {
                 seller.editProduct(product);
             }
         }

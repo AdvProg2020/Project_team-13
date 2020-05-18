@@ -24,6 +24,18 @@ public class Seller extends UserAccount {
         allProducts = new ArrayList<>();
     }
 
+
+    public void removeOffer(Offer offer) {
+        if (allOffer != null && !allOffer.isEmpty()) {
+            for (Offer offer1 : allOffer) {
+                if (offer1.getOfferId().equals(offer.getOfferId())) {
+                    allOffer.remove(offer1);
+                    return;
+                }
+            }
+        }
+    }
+
     public void addProduct(Product product) {
 
         if (allProducts != null && !allProducts.isEmpty()) {

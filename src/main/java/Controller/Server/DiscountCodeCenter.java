@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 
 import java.net.UnknownServiceException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class DiscountCodeCenter {
     private static DiscountCodeCenter discountCodeCenter;
@@ -89,9 +91,9 @@ public class DiscountCodeCenter {
         ServerController.getInstance().sendMessageToClient("@Successful@discount code successfully removed");
     }
 
-    public void usedDiscountCode(String code,String username) {
+    public void usedDiscountCode(String code, String username) {
         DiscountCode discountCode = findDiscountCodeWithThisId(code);
-        if(discountCode!=null) {
+        if (discountCode != null) {
             if (discountCode.getRemainingTimesForEachCustomer().get(username) > 1) {
                 discountCode.usedOneTime(username);
                 UserCenter.getIncstance().findCustomerWithUsername(username).useDiscountCode(code);
@@ -103,6 +105,7 @@ public class DiscountCodeCenter {
             DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
         }
     }
+
     public DiscountCode findDiscountCodeWithThisId(String codeId) {
         for (DiscountCode discountCode : allDiscountCodes) {
             if (discountCode.getDiscountCodeID().equals(codeId)) {
@@ -124,5 +127,16 @@ public class DiscountCodeCenter {
         }
         DataBase.getInstance().replaceDiscountCodeId(lastDiscountCodeID);
         return lastDiscountCodeID;
+    }
+
+    public void passTime() {
+        Calendar calendar = Calendar.getInstance();
+        DataBase.getInstance().setAllDiscountCodesListFromDateBase();
+        for (DiscountCode discountCode : allDiscountCodes) {
+            if(calendar.getTime().after(discountCode.getEndTime())) {
+                removeDiscountCode(discountCode.getDiscountCodeID());
+            }
+        }
+
     }
 }

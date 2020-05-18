@@ -1,11 +1,13 @@
 package Controller.Server;
 
+import Models.DiscountCode;
 import Models.Offer;
 import Models.OfferStatus;
 import Models.Product.Product;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class OffCenter {
     private ArrayList<Offer> allOffers = new ArrayList<>();
@@ -108,6 +110,16 @@ public class OffCenter {
         UserCenter.getIncstance().editOfferForSeller(newOffer);
         DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
     }
+    public void deleteOffer(Offer offer) {
+        allOffers.remove(offer);
+        for (String product : offer.getProducts()) {
+            ProductCenter.getInstance().addOfferToProduct(product, null);
+            CategoryCenter.getIncstance().updateProductInCategory(ProductCenter.getInstance().getProductWithId(product));
+            UserCenter.getIncstance().updateProductOfferInSeller(ProductCenter.getInstance().getProductWithId(product));
+        }
+        UserCenter.getIncstance().removeOfferForSeller(offer);
+        DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
+    }
 
     public void setProductStatusForOffer(Offer offer) {
         for (String product : offer.getProducts()) {
@@ -122,5 +134,15 @@ public class OffCenter {
             }
         }
         return null;
+    }
+
+    public void passTime() {
+            Calendar calendar = Calendar.getInstance();
+            DataBase.getInstance().setAllOffersFromDatabase();
+        for (Offer offer : allOffers) {
+         if(offer.getEndTime().before(calendar.getTime())) {
+
+         }
+        }
     }
 }
