@@ -69,7 +69,6 @@ public class ProductMenu extends Menu {
                 System.out.println("Invalid Command");
             }
         }
-        back();
     }
 
 }
