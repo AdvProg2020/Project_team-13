@@ -2,6 +2,9 @@ package Controller.Server;
 
 import Models.*;
 import Models.Product.Product;
+import Models.Request;
+import Models.RequestStatus;
+import Models.RequestType;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 
@@ -47,6 +50,8 @@ public class RequestCenter {
                 return new Request(RequestType.editOff, RequestStatus.onReview, makeRequestID(), details);
             case "Commenting":
                 return new Request(RequestType.commenting, RequestStatus.onReview, makeRequestID(), details);
+            case "EditProduct":
+                return new Request(RequestType.EditProduct, RequestStatus.onReview, makeRequestID(), details);
             default:
                 return null;
         }
@@ -130,7 +135,18 @@ public class RequestCenter {
     }
 
     public void acceptEdiProductRequest(Request request) {
-
+        Product product = new Gson().fromJson(request.getDetails(), Product.class);
+        for (Product product1 : ProductCenter.getInstance().getAllProducts()) {
+            if (product1.getProductId().equals(product.getProductId())) {
+                allRequests.remove(request);
+                ProductCenter.getInstance().editProduct(product);
+                String arrayData = new Gson().toJson(allRequests);
+                DataBase.getInstance().updateAllRequests(arrayData);
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "Request accept successfully"));
+                return;
+            }
+        }
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Error", "There is no product with this Id."));
     }
 
     public void declineRequest(String requestId) {
