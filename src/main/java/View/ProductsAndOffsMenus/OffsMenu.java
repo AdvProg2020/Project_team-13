@@ -5,6 +5,7 @@ import Controller.Client.OffsController;
 import Controller.Client.ProductController;
 import View.Menu;
 import View.UserMenu.Manager.ManagerMenu;
+import View.UserMenu.UserMenu;
 
 public class OffsMenu extends Menu {
     public OffsMenu(Menu parentMenu) {
@@ -70,6 +71,10 @@ public class OffsMenu extends Menu {
                 }else {
                     printError("you are not signed yet!!");
                 }
+            }  else if (command.equalsIgnoreCase("login")) {
+                Menu menu = new UserMenu(this).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
             } else {
                 System.out.println("invalid command");
             }

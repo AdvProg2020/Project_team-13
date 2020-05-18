@@ -109,7 +109,7 @@ public class FilteringMenu extends Menu {
         }
         System.out.println("now you have this filters to filter.");
         String allFilters = "1.Filter by price range\n2.Filter by brand\n3.Filter by seller\n4.Filter by product status\n5.filter by name\n6.filter by category features";
-        System.out.println(allFilters + "\nnow you need to enter a number 1-5 to filter products.");
+        System.out.println(allFilters + "\nnow you need to enter a number 1-6 to filter products.");
         int a = 0;
         while (true) {
             a = Integer.parseInt(getNumber("Number"));
@@ -182,25 +182,23 @@ public class FilteringMenu extends Menu {
     }
 
     private void disableCategoryFeaturesFilters() {
-        Category currentCategory = ProductController.getInstance().getCurrentCategory();
         HashMap<String, ArrayList<String>> categoryFeatures = ProductController.getInstance().getCategoryFeaturesToFilter();
+        ArrayList<String> featuresToRemove = new ArrayList<>();
         for (String feature : categoryFeatures.keySet()) {
-            ArrayList<String> featureModes = categoryFeatures.get(feature);
+            ArrayList<String> featureModesToFilter = categoryFeatures.get(feature);
             System.out.println("feature: " + feature);
             System.out.println("Please choose modes To delete");
             String modesStringForm = "";
             int i = 1;
-            for (String featureMode : featureModes) {
+            for (String featureMode : featureModesToFilter) {
                 modesStringForm += i;
                 modesStringForm += ".";
                 modesStringForm += featureMode;
                 modesStringForm += "\n";
                 i++;
             }
-            ArrayList<String> featureModesToFilter = categoryFeatures.get(feature);
             modesStringForm = modesStringForm.substring(0, modesStringForm.length() - 1);
             System.out.println(modesStringForm);
-            String modesNumber;
             System.out.println("Pick modes of this feature to disable filter and when you done enter 9999.");
             while (true) {
                 String modeNumber = getNumber("mode number");
@@ -224,9 +222,14 @@ public class FilteringMenu extends Menu {
 
                 }
             }
-            if (featureModes != null && !featureModes.isEmpty()) {
+            if (featureModesToFilter != null && !featureModesToFilter.isEmpty()) {
                 categoryFeatures.replace(feature, featureModesToFilter);
             } else {
+                featuresToRemove.add(feature);
+            }
+        }
+        if (featuresToRemove != null && !featuresToRemove.isEmpty()) {
+            for (String feature : featuresToRemove) {
                 categoryFeatures.remove(feature);
             }
         }

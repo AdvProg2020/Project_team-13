@@ -9,6 +9,7 @@ import Models.Product.Product;
 import View.Menu;
 import View.UserMenu.Customer.CartMenu;
 import View.UserMenu.Seller.SellerMenu;
+import View.UserMenu.UserMenu;
 import com.sun.source.tree.PackageTree;
 
 import java.util.regex.Pattern;
@@ -50,7 +51,7 @@ public class ProductsMenu extends Menu {
                     Menu menu = new ProductMenu(this).setScanner(scanner);
                     ClientController.getInstance().setCurrentMenu(menu);
                     menu.execute();
-                }else {
+                } else {
                     printError("there is no product with this ID");
                 }
             } else if (command.equalsIgnoreCase("view Cart")) {
@@ -67,6 +68,10 @@ public class ProductsMenu extends Menu {
                 } else {
                     printError("you are not signed yet!!");
                 }
+            } else if (command.equalsIgnoreCase("login")) {
+                Menu menu = new UserMenu(this).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
             } else {
                 System.out.println("command is invalid");
             }

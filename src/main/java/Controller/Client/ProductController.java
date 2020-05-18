@@ -54,6 +54,7 @@ public class ProductController {
         String product0 = gson.toJson(product);
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("AddProduct", product0));
     }
+
     public String getPriceFiltersInStringForm() {
         if (isPriceFilterActive) {
             return ("Price Filter: maximum price= " + max + " minimum price=" + min + "\n");
@@ -199,7 +200,7 @@ public class ProductController {
     }
 
     public void editProduct(Product product) {
-        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("editProduct",new Gson().toJson(product)));
+        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("editProduct", new Gson().toJson(product)));
     }
 
     private void filterByPrice() {
@@ -347,22 +348,22 @@ public class ProductController {
             if (isSortActivated) {
                 if (currentSort.equals("newest")) {
                     if (!kindOfSort) {
-                        for (int i = allProductsAfterSort.size() - 1; i >= 0; i--) {
-                            allProductsAfterSort.set(allProductsAfterSort.size() - i - 1, allProductsAfterSort.get(i));
-                        }
+                        Collections.sort(allProductsAfterSort, (o1, o2) -> {
+                            if (kindOfSort) {
+                                return (o1.getProductId().compareTo(o2.getProductId()));
+                            } else {
+                                return (o2.getProductId().compareTo(o1.getProductId()));
+                            }
+                        });
                     }
                 } else if (currentSort.equals("price")) {
-                    Collections.sort(allProductsAfterSort, new Comparator<Product>() {
-                        @Override
-                        public int compare(Product o1, Product o2) {
-                            if (kindOfSort) {
-                                return (int) (o1.getProductCost() - o2.getProductCost());
-                            } else {
-                                return (int) (o2.getProductCost() - o1.getProductCost());
-                            }
+                    Collections.sort(allProductsAfterSort, (o1, o2) -> {
+                        if (kindOfSort) {
+                            return (int) (o1.getProductCost() - o2.getProductCost());
+                        } else {
+                            return (int) (o2.getProductCost() - o1.getProductCost());
                         }
                     });
-
                 } else if (currentSort.equals("score")) {
 
                     Collections.sort(allProductsAfterSort, new Comparator<Product>() {
@@ -462,9 +463,11 @@ public class ProductController {
         }
         return null;
     }
-    public void addComment(Comment comment){
-        ClientController.getInstance().sendMessageToServer("@addComment@"+new Gson().toJson(comment));
+
+    public void addComment(Comment comment) {
+        ClientController.getInstance().sendMessageToServer("@addComment@" + new Gson().toJson(comment));
     }
+
     public void showOffedProductsAfterFilterAndSort() {
         filterProducts();
         sortProducts();
@@ -486,31 +489,33 @@ public class ProductController {
         }
 
     }
-    public void rating(String productID,int rate){
-        Product product=((Customer)ClientController.getInstance().getCurrentUser()).findProductWithId(productID);
-        if(product!=null){
-            Score score=new Score(ClientController.getInstance().getCurrentUser().getUsername(),productID,rate);
+
+    public void rating(String productID, int rate) {
+        Product product = ((Customer) ClientController.getInstance().getCurrentUser()).findProductWithId(productID);
+        if (product != null) {
+            Score score = new Score(ClientController.getInstance().getCurrentUser().getUsername(), productID, rate);
             product.addScore(score);
-            ClientController.getInstance().sendMessageToServer("@rate@"+new Gson().toJson(score));
-        }else{
+            ClientController.getInstance().sendMessageToServer("@rate@" + new Gson().toJson(score));
+        } else {
             ClientController.getInstance().getCurrentMenu().printError("there is no product with this ID");
         }
     }
-    public void compareWithProduct(String productId){
-        if (getProductWithId(productId)==null) {
+
+    public void compareWithProduct(String productId) {
+        if (getProductWithId(productId) == null) {
             System.out.println("There Is No Product With This Id.");
-        }else{
-            Product product=ClientController.getInstance().getCurrentProduct();
-            Product compareProduct=getProductWithId(productId);
-            String attributes= "";
-            attributes += "Product Ids:\t"+compareProduct.getProductId() +"\t\t"+product.getProductId()+ "\n";
-            attributes += "Product Names:\t"+compareProduct.getProductName() +"\t\t"+product.getProductName()+"\n";
-            attributes += "Product Category:\t"+compareProduct.getProductsCategory() +"\t\t"+product.getProductsCategory()+ "\n";
-            attributes += "Product Sellers:\t"+compareProduct.getSeller() +"\t\t"+product.getSeller()+ "\n";
-            attributes += "Product Companies:\t"+compareProduct.getProductCompany() +"\t\t"+product.getProductCompany()+ "\n";
-            attributes += "Product Costs:\t"+compareProduct.getProductCost() +"\t\t"+product.getProductCost()+ "\n";
-            attributes += "Product Costs After Off:\t"+compareProduct.getCostAfterOff() +"\t\t"+product.getCostAfterOff()+ "\n";
-            attributes += "Product Descriptions:\t"+compareProduct.getDescription()+"\t\t"+product.getDescription()+"\n";
+        } else {
+            Product product = ClientController.getInstance().getCurrentProduct();
+            Product compareProduct = getProductWithId(productId);
+            String attributes = "";
+            attributes += "Product Ids:\t" + compareProduct.getProductId() + "\t\t" + product.getProductId() + "\n";
+            attributes += "Product Names:\t" + compareProduct.getProductName() + "\t\t" + product.getProductName() + "\n";
+            attributes += "Product Category:\t" + compareProduct.getProductsCategory() + "\t\t" + product.getProductsCategory() + "\n";
+            attributes += "Product Sellers:\t" + compareProduct.getSeller() + "\t\t" + product.getSeller() + "\n";
+            attributes += "Product Companies:\t" + compareProduct.getProductCompany() + "\t\t" + product.getProductCompany() + "\n";
+            attributes += "Product Costs:\t" + compareProduct.getProductCost() + "\t\t" + product.getProductCost() + "\n";
+            attributes += "Product Costs After Off:\t" + compareProduct.getCostAfterOff() + "\t\t" + product.getCostAfterOff() + "\n";
+            attributes += "Product Descriptions:\t" + compareProduct.getDescription() + "\t\t" + product.getDescription() + "\n";
             ClientController.getInstance().getCurrentMenu().showMessage(attributes);
         }
     }

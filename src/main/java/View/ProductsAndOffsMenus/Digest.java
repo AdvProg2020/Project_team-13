@@ -5,11 +5,13 @@ import Controller.Client.ClientController;
 import Models.Product.Product;
 import Models.UserAccount.Customer;
 import View.Menu;
+import View.UserMenu.UserMenu;
 
 public class Digest extends Menu {
     public Digest(Menu parentMenu) {
         super(parentMenu);
     }
+
     @Override
     public void help() {
         String userMenuOptions = "";
@@ -23,7 +25,7 @@ public class Digest extends Menu {
 
     @Override
     public void execute() {
-        Product product =  ClientController.getInstance().getCurrentProduct();
+        Product product = ClientController.getInstance().getCurrentProduct();
         product.showDigest();
         String command;
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
@@ -35,6 +37,10 @@ public class Digest extends Menu {
                 ClientController.getInstance().setCurrentUser(null);
                 System.out.println("You Logged out!!");
                 parentMenu.execute();
+            } else if (command.equalsIgnoreCase("login")) {
+                Menu menu = new UserMenu(this).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
             } else {
                 System.out.println("Invalid Command");
             }
