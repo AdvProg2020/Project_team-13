@@ -4,6 +4,7 @@ import Models.Product.Category;
 import Models.Product.Product;
 import Models.Product.ProductStatus;
 import Models.Request;
+import Models.Score;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
@@ -478,10 +479,16 @@ public class ProductController {
         }
 
     }
-
-
-
-
+    public void rating(String productID,int rate){
+        Product product=((Customer)ClientController.getInstance().getCurrentUser()).findProductWithId(productID);
+        if(product!=null){
+            Score score=new Score(ClientController.getInstance().getCurrentUser().getUsername(),productID,rate);
+            product.addScore(score);
+            ClientController.getInstance().sendMessageToServer("@rate@"+new Gson().toJson(score));
+        }else{
+            ClientController.getInstance().getCurrentMenu().printError("there is no product with this ID");
+        }
+    }
     public void compareWithProduct(String productId){
         if (getProductWithId(productId)==null) {
             System.out.println("There Is No Product With This Id.");

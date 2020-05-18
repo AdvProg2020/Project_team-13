@@ -166,7 +166,7 @@ public class Seller extends UserAccount {
         StringBuilder history = new StringBuilder();
         for (Log sellLog : this.historyOfTransaction) {
             history.append(sellLog.getId()).append(" ");
-            history.append(sellLog.getReceiverUserName()).append(" ");
+            history.append(sellLog.getOtherSideUserName()).append(" ");
             history.append(sellLog.getPrice()).append(" ");
             history.append(sellLog.getDate()).append(" ");
             history.append(sellLog.getReduceCostForOffs()).append(" ");

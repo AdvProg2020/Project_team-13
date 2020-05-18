@@ -41,6 +41,20 @@ public class Log {
         this.date = date;
     }
 
+    public String viewOrders(){
+        String order="";
+        order+=id+"\n";
+        order+=receiverUserName+"\n";
+        order+=otherSideUserName;
+        order+=date+"\n";
+        order+=price+"\n";
+        order+=reduceCostForOffs+"\n";
+        order+=receivingStatus+"\n";
+        for (Product product : allProducts) {
+            order += product.getProductId() + " " + product.getCostAfterOff() + "\n";
+        }
+        return order;
+    }
     public String getReceiverUserName() {
         return receiverUserName;
     }

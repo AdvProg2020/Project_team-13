@@ -41,6 +41,8 @@ public class SellerMenu extends Menu {
                 menu.execute();
             }else if(command.equals("view sales history")) {
                 showMessage(((Seller)ClientController.getInstance().getCurrentUser()).viewSalesHistory());
+            }else if(command.equals("view company information")) {
+                showMessage(((Seller)ClientController.getInstance().getCurrentUser()).getCompanyName());
             }else if (command.equals("help")) {
                 help();
             } else if (command.equalsIgnoreCase("logout")) {
@@ -66,7 +68,9 @@ public class SellerMenu extends Menu {
         sellerMenuOptions += "2.Show Categories\n";
         sellerMenuOptions += "3.manage products\n";
         sellerMenuOptions += "4.view offs\n";
-        sellerMenuOptions += "5.LogOut\n";
+        sellerMenuOptions += "5.view sales history\n";
+        sellerMenuOptions += "6.view company information\n";
+        sellerMenuOptions += "7.LogOut\n";
         System.out.println(sellerMenuOptions);
     }
 
