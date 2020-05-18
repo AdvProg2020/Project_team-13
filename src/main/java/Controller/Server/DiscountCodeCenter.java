@@ -44,6 +44,7 @@ public class DiscountCodeCenter {
         DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(allDiscountCodes));
         ServerController.getInstance().sendMessageToClient("@Successful@discount code with code:" + lastDiscountCodeID + " successfully created");
     }
+
     public void createDiscountCodeForGift(DiscountCode discountCode) {
         discountCode.setDiscountCodeID(makeCode());
         allDiscountCodes.add(discountCode);
@@ -57,19 +58,21 @@ public class DiscountCodeCenter {
     public void setLastDiscountCodeID(String lastDiscountCodeID) {
         this.lastDiscountCodeID = lastDiscountCodeID;
     }
-    public void makeDiscountCodeForRandomCustomer(){
-        Random random=new Random();
-        String username=UserCenter.getIncstance().getAllCustomer().get(random.nextInt(UserCenter.getIncstance().getAllCustomer().size())).getUsername();
-        Date endDate=new Date();
+
+    public void makeDiscountCodeForRandomCustomer() {
+        Random random = new Random();
+        String username = UserCenter.getIncstance().getAllCustomer().get(random.nextInt(UserCenter.getIncstance().getAllCustomer().size())).getUsername();
+        Date endDate = new Date();
         endDate.setYear(60);
-        ArrayList<String> alluser=new ArrayList<>();
+        ArrayList<String> alluser = new ArrayList<>();
         alluser.add(username);
-        HashMap<String,Integer> maxusingTime=new HashMap<String, Integer>();
-        maxusingTime.put(username,1);
-        DiscountCode discountCodeForGift=new DiscountCode(new Date(),endDate,alluser,90,20000,maxusingTime,maxusingTime);
+        HashMap<String, Integer> maxusingTime = new HashMap<String, Integer>();
+        maxusingTime.put(username, 1);
+        DiscountCode discountCodeForGift = new DiscountCode(new Date(), endDate, alluser, 90, 20000, maxusingTime, maxusingTime);
         DiscountCodeCenter.getIncstance().createDiscountCodeForGift(discountCodeForGift);
 
     }
+
     public ArrayList<DiscountCode> getAllDiscountCodes() {
         return allDiscountCodes;
     }
@@ -157,10 +160,14 @@ public class DiscountCodeCenter {
         Calendar calendar = Calendar.getInstance();
         DataBase.getInstance().setAllDiscountCodesListFromDateBase();
         for (DiscountCode discountCode : allDiscountCodes) {
-            if(calendar.getTime().after(discountCode.getEndTime())) {
+            if (calendar.getTime().after(discountCode.getEndTime())) {
                 removeDiscountCode(discountCode.getDiscountCodeID());
+                break;
             }
         }
-
+        if ((calendar.get(Calendar.DAY_OF_MONTH) == 18 && calendar.get(Calendar.MONTH) == 4) || calendar.getTime().getDay() == calendar.getTime().getMonth()) {
+            makeDiscountCodeForRandomCustomer();
+        }
     }
+
 }
