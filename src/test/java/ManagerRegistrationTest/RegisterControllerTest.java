@@ -1,5 +1,4 @@
 package ManagerRegistrationTest;
-
 import Controller.Client.RegisterController;
 import Models.UserAccount.Manager;
 import Models.UserAccount.UserAccount;
@@ -12,8 +11,10 @@ class RegisterControllerTest {
 
     @Test
     void createNewUserAccount() {
+        /// must Database Added.
         UserAccount userAccount=new Manager("WolfOfWallStreet", "12234","majid","kori","majid.kori@gmail.com", "09182831", 12);
-        registerController.createNewUserAccount(userAccount);
-        //Assert.assertTrue(("@Register@"+new Gson().toJson(userAccount)).equals(registerController.createNewUserAccount(userAccount)));
+        ClientControllerTest clientControllerTest=new ClientControllerTest();
+        String message="@Register@"+new Gson().toJson(userAccount);
+        clientControllerTest.sendMessageToServer(message);
     }
 }

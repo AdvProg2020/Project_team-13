@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class CartCenter {
     private static CartCenter cartCenter;
@@ -59,6 +60,10 @@ public class CartCenter {
                 DiscountCodeCenter.getIncstance().usedDiscountCode(discountCode.getDiscountCodeID(), customer.getUsername());
             }
             customer.setCredit(customer.getCredit()-price);
+            customer.setTotalBuyAmount(customer.getTotalBuyAmount()+price);
+            if(customer.getTotalBuyAmount()>1000000){
+               makeDiscountCodeForGift(customer.getUsername());
+            }
             ArrayList<String> sellers=new ArrayList<>();
             for (Product product : cart.getAllproduct()) {
                 ProductCenter.getInstance().findProductWithID(product.getProductId()).addToAllBuyers(UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID()));
@@ -99,5 +104,16 @@ public class CartCenter {
         }else {
             ServerController.getInstance().sendMessageToClient("@Error@You don't have enough credit");
         }
+    }
+    public void makeDiscountCodeForGift(String username){
+        Date endDate=new Date();
+        endDate.setYear(60);
+        ArrayList<String> alluser=new ArrayList<>();
+        alluser.add(username);
+        HashMap<String,Integer> maxusingTime=new HashMap<String, Integer>();
+        maxusingTime.put(username,1);
+        DiscountCode discountCodeForGift=new DiscountCode(new Date(),endDate,alluser,90,20000,maxusingTime,maxusingTime);
+        DiscountCodeCenter.getIncstance().createDiscountCodeForGift(discountCodeForGift);
+
     }
 }
