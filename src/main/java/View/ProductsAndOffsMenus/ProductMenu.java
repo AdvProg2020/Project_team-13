@@ -16,9 +16,11 @@ public class ProductMenu extends Menu {
         String userMenuOptions = "";
         userMenuOptions += "1.Digest\n";
         userMenuOptions += "2.Attributes\n";
-        userMenuOptions += "7.Help\n";
+        userMenuOptions += "3.Help\n";
         userMenuOptions += "4.Back\n";
-        userMenuOptions += "5.LogOut\n";
+        userMenuOptions += "5.Compare [product id]\n";
+        userMenuOptions += "6.Comments\n";
+        userMenuOptions += "7.LogOut\n";
         System.out.println(userMenuOptions);
 
     }
@@ -40,12 +42,20 @@ public class ProductMenu extends Menu {
             } else if (command.equalsIgnoreCase("help")) {
                 help();
             }else if(command.matches("compare @p\\d+")){
-                ProductController.getInstance().compareWithProduct(command.substring(8));
+                if (command.substring(8).equals(product.getProductId())) {
+                    System.out.println("You Entered The Current Product Id.");
+                }else {
+                    ProductController.getInstance().compareWithProduct(command.substring(8));
+                }
             }else if (command.equalsIgnoreCase("logout")) {
                 ClientController.getInstance().setCurrentUser(null);
                 System.out.println("You Logged out!!");
                 parentMenu.execute();
-            } else {
+            }else if(command.equalsIgnoreCase("comments")){
+                Menu menu=new CommentMenu(this).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
+            }else  {
                 System.out.println("Invalid Command");
             }
         }

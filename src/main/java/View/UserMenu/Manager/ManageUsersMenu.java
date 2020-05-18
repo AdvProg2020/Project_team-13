@@ -12,6 +12,8 @@ public class ManageUsersMenu extends Menu {
         String managerMenuOptions = "";
         managerMenuOptions += "1.view [username]\n";
         managerMenuOptions += "2.delete user [username]\n";
+        managerMenuOptions += "3.help\n";
+        managerMenuOptions += "2.back\n";
         System.out.println(managerMenuOptions);
     }
 

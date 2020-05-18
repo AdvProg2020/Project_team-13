@@ -67,9 +67,12 @@ public class OffCenter {
     }
 
     public void removeProduct(String productID) {
+        DataBase.getInstance().getAllOffersFromDataBase();
         for (Offer offer : allOffers) {
             offer.getProducts().removeIf(product -> product.equals(productID));
         }
+        DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
+
     }
 
     public void createNewOff(Offer offer) {

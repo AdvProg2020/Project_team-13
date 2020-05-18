@@ -1,6 +1,7 @@
 package View.UserMenu.Manager;
 
 import Controller.Client.ClientController;
+import Controller.Client.RegisterController;
 import Controller.Client.RequestController;
 import View.Menu;
 import View.UserMenu.LoginMenu;
@@ -33,7 +34,9 @@ public class ManageRequestMenu extends Menu {
                 if (command.matches("accept @r\\d+")) {
                     RequestController.getInstance().acceptRequest(command.split("\\s")[1]);
                 } else System.out.println("this ID isn't a requestId");
-            } else if (command.equalsIgnoreCase("help")) {
+            } else if(command.matches("decline @r\\d+")){
+                RequestController.getInstance().declineRequest(command.substring(8));
+            }else if (command.equalsIgnoreCase("help")) {
                 help();
             } else {
                 System.out.println("Invalid Command");

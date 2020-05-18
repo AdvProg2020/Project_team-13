@@ -126,6 +126,7 @@ public class ProductCenter {
         for (Product product1 : allProducts) {
             if (product1.getProductId().equals(productId)) {
                 allProducts.remove(product1);
+                OffCenter.getInstance().removeProduct(product1.getProductId());
                 UserCenter.getIncstance().removeProductFromSellerProductList(product1);
                 CategoryCenter.getIncstance().removeProductFromCategory(product1);
                 break;
@@ -138,7 +139,9 @@ public class ProductCenter {
         for (Product product1 : allProducts) {
             if (product1.getProductId().equals(product.getProductId())) {
                 allProducts.remove(product1);
-                UserCenter.getIncstance().removeProductFromSellerProductList(product);
+                OffCenter.getInstance().removeProduct(product1.getProductId());
+                UserCenter.getIncstance().removeProductFromSellerProductList(product1);
+                CategoryCenter.getIncstance().removeProductFromCategory(product1);
                 break;
             }
         }

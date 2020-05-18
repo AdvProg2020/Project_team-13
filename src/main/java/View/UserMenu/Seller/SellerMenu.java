@@ -21,15 +21,16 @@ public class SellerMenu extends Menu {
     @Override
     public void execute() {
         String command;
-        System.out.println(ClientController.getInstance().getCurrentUser().viewPersonalInfo());
+        Seller seller=(Seller)ClientController.getInstance().getCurrentUser();
+        System.out.println(seller.viewPersonalInfo());
         boolean isAccepted = ClientController.getInstance().getSeller().isAccepted();
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.equals("view personal info") && isAccepted) {
                 Menu menu = new ViewAndEditInformationForSeller(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
-            } else if (command.equals("manage products")&& isAccepted) {
-                RequestController.getInstance().getAllRequestsFromServer();
+            } else if (command.equals("manage products") && isAccepted) {
+                ProductController.getInstance().getAllProductsFromServer();
                 Menu menu = new ManageProductMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
@@ -49,9 +50,11 @@ public class SellerMenu extends Menu {
                 ClientController.getInstance().setCurrentUser(null);
                 System.out.println("You Logged out!!");
                 parentMenu.execute();
-            } else {
+            } else if (command.equalsIgnoreCase("view balance")){
+                showMessage(String.valueOf(seller.getCredit()));
+            }else  {
                 if(isAccepted) {
-                    System.out.println("Invalid command");
+                    System.err.println("Invalid command");
                 }else
                     System.out.println("you should wait for accept your register from a manager");
             }
@@ -71,6 +74,8 @@ public class SellerMenu extends Menu {
         sellerMenuOptions += "5.view sales history\n";
         sellerMenuOptions += "6.view company information\n";
         sellerMenuOptions += "7.LogOut\n";
+        sellerMenuOptions += "5.view balance\n";
+        sellerMenuOptions += "6.LogOut\n";
         System.out.println(sellerMenuOptions);
     }
 

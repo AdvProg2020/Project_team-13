@@ -197,6 +197,10 @@ public class ProductController {
         }
     }
 
+    public void editProduct(Product product) {
+        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("editProduct",new Gson().toJson(product)));
+    }
+
     private void filterByPrice() {
         if (isPriceFilterActive) {
             List<Product> lst = allProductsAfterFilter;
@@ -421,14 +425,14 @@ public class ProductController {
 
     public String getTheProductDetails(ArrayList<String> allProducts) {
         if (allProducts != null) {
-            String allDetails = "";
+            StringBuilder allDetails = new StringBuilder();
             for (String product1 : allProducts) {
                 Product product = getProductWithId(product1);
                 if (product != null) {
-                    allDetails += product.productInfoFor() + "\n";
+                    allDetails.append(product.productInfoFor()).append("\n");
                 }
             }
-            if (!allDetails.isEmpty())
+            if (allDetails.length() > 0)
                 return allDetails.substring(0, allDetails.length() - 1);
         }
         return "";
@@ -496,14 +500,14 @@ public class ProductController {
             Product product=ClientController.getInstance().getCurrentProduct();
             Product compareProduct=getProductWithId(productId);
             String attributes= "";
-            attributes += compareProduct.getProductId() +"                                  "+product.getProductId()+ "\n";
-            attributes += compareProduct.getProductName() +"                                  "+product.getProductName()+"\n";
-            attributes += compareProduct.getProductsCategory() +"                                  "+product.getProductsCategory()+ "\n";
-            attributes += compareProduct.getSeller() +"                                  "+product.getSeller()+ "\n";
-            attributes += compareProduct.getProductCompany() +"                                  "+product.getProductCompany()+ "\n";
-            attributes += compareProduct.getProductCost() +"                                  "+product.getProductCost()+ "\n";
-            attributes += compareProduct.getCostAfterOff() +"                                  "+product.getCostAfterOff()+ "\n";
-            attributes += compareProduct.getDescription()+"                                  "+product.getDescription()+"\n";
+            attributes += "Product Ids:\t"+compareProduct.getProductId() +"\t\t"+product.getProductId()+ "\n";
+            attributes += "Product Names:\t"+compareProduct.getProductName() +"\t\t"+product.getProductName()+"\n";
+            attributes += "Product Category:\t"+compareProduct.getProductsCategory() +"\t\t"+product.getProductsCategory()+ "\n";
+            attributes += "Product Sellers:\t"+compareProduct.getSeller() +"\t\t"+product.getSeller()+ "\n";
+            attributes += "Product Companies:\t"+compareProduct.getProductCompany() +"\t\t"+product.getProductCompany()+ "\n";
+            attributes += "Product Costs:\t"+compareProduct.getProductCost() +"\t\t"+product.getProductCost()+ "\n";
+            attributes += "Product Costs After Off:\t"+compareProduct.getCostAfterOff() +"\t\t"+product.getCostAfterOff()+ "\n";
+            attributes += "Product Descriptions:\t"+compareProduct.getDescription()+"\t\t"+product.getDescription()+"\n";
             ClientController.getInstance().getCurrentMenu().showMessage(attributes);
         }
     }

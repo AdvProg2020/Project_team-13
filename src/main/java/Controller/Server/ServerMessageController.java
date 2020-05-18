@@ -40,7 +40,7 @@ public class ServerMessageController {
             message = message.substring(7, message.length());
             String[] split = message.split("/");
             UserCenter.getIncstance().login(split[0], split[1]);
-        } else if (message.equals("getAllRequests")) {
+        } else if (message.equals("@getAllRequests@")) {
             ServerController.getInstance().sendMessageToClient("@AllRequests@" + new Gson().toJson(RequestCenter.getIncstance().getAllRequests()));
         } else if (message.startsWith("@acceptRequest@")) {
             message = message.substring(15, message.length());
@@ -123,7 +123,8 @@ public class ServerMessageController {
             OffCenter.getInstance().createEditOfferRequest(new Gson().fromJson(message, Offer.class));
         }else if(message.startsWith("@editProduct@")){
             message=message.substring(13);
-            ProductCenter.getInstance().createEditProductRequest(new Gson().fromJson(message, Product.class));//
+            System.out.println("!11111111111");
+            //ProductCenter.getInstance().createEditProductRequest(new Gson().fromJson(message, Product.class));//
         }else if(message.startsWith("@pay@")){
             message=message.substring(5);
             CartCenter.getInstance().pay(new Gson().fromJson(message, Cart.class));//
