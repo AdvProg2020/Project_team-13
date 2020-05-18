@@ -39,14 +39,15 @@ public class Seller extends UserAccount {
         }
     }
 
-    public void reduceProductCount(String productID,int count){
+    public void reduceProductCount(String productID, int count) {
         for (Product product : allProducts) {
-            if(product.getProductId().equals(productID)){
-                product.setNumberOfAvailableProducts(product.getNumberOfAvailableProducts()-count);
+            if (product.getProductId().equals(productID)) {
+                product.setNumberOfAvailableProducts(product.getNumberOfAvailableProducts() - count);
             }
         }
     }
-    public void addOffer(Offer offer){
+
+    public void addOffer(Offer offer) {
         if (allOffer != null && !allOffer.isEmpty()) {
             for (Offer offers : allOffer) {
                 if (offers.getOfferId().equals(offer.getOfferId())) {
@@ -59,23 +60,24 @@ public class Seller extends UserAccount {
         allOffer.add(offer);
         ProductController.getInstance().getAllProductsFromServer();
         for (String product : offer.getProducts()) {
-            this.getProductByID(product).setCostAfterOff(this.getProductByID(product).getProductCost()*(1-(offer.getAmount()/100)));
+            this.getProductByID(product).setCostAfterOff(this.getProductByID(product).getProductCost() * (1 - (offer.getAmount() / 100)));
         }
     }
 
 
-    public Product findProductWithID(String productID){
+    public Product findProductWithID(String productID) {
         for (Product product : allProducts) {
-            if(product.getProductId().equals(productID)){
+            if (product.getProductId().equals(productID)) {
                 return product;
             }
         }
         return null;
     }
+
     public void removeProduct(String productId) {
         if (allProducts != null && !allProducts.isEmpty()) {
             for (Product product : allProducts) {
-                if(product.getProductId().equals(productId)) {
+                if (product.getProductId().equals(productId)) {
                     allProducts.remove(product);
                     break;
                 }
@@ -83,18 +85,29 @@ public class Seller extends UserAccount {
         }
     }
 
-    public void editOffer(Offer newOffer){
+    public void editProduct(Product product) {
+        if (allProducts != null) {
+            for (Product product1 : this.allProducts) {
+                if (product1.getProductId().equals(product.getProductId())) {
+                    allProducts.set(allProducts.indexOf(product1), product);
+                }
+            }
+        }
+    }
+
+    public void editOffer(Offer newOffer) {
         for (Offer offer : allOffer) {
-            if(offer.getOfferId().equals(newOffer.getOfferId())){
+            if (offer.getOfferId().equals(newOffer.getOfferId())) {
                 allOffer.set(allOffer.indexOf(offer), newOffer);
                 break;
             }
         }
         for (String product : newOffer.getProducts()) {
-            this.getProductByID(product).setCostAfterOff(this.getProductByID(product).getProductCost()*(1-(newOffer.getAmount()/100)));
+            this.getProductByID(product).setCostAfterOff(this.getProductByID(product).getProductCost() * (1 - (newOffer.getAmount() / 100)));
         }
 
     }
+
 
     public boolean productExistsInOtherOffer(String productId) {
         if (sAnyOffer()) {
@@ -166,7 +179,7 @@ public class Seller extends UserAccount {
         StringBuilder history = new StringBuilder();
         for (Log sellLog : this.historyOfTransaction) {
             history.append(sellLog.getId()).append(" ");
-            history.append(sellLog.getReceiverUserName()).append(" ");
+            history.append(sellLog.getOtherSideUserName()).append(" ");
             history.append(sellLog.getPrice()).append(" ");
             history.append(sellLog.getDate()).append(" ");
             history.append(sellLog.getReduceCostForOffs()).append(" ");

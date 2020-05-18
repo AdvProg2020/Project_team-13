@@ -22,9 +22,8 @@ public class ProductsMenu extends Menu {
 
     @Override
     public void help() {
-        String productsMenuHelp="1.view categories\n";
-        productsMenuHelp+="2.filtering\n3.sorting\n4.show products\n5.show product [productId]\n6.help\n7.back";
-        productsMenuHelp+="2.filtering\n3.sorting\n4.show products\n5.show product [productId]\n6.help\n7.back\n8.View Cart";
+        String productsMenuHelp = "1.view categories\n";
+        productsMenuHelp += "2.filtering\n3.sorting\n4.show products\n5.show product [productId]\n6.help\n7.back\n8.View Cart\n9.logout";
         System.out.println(productsMenuHelp);
 
     }
@@ -36,30 +35,38 @@ public class ProductsMenu extends Menu {
             if (command.equalsIgnoreCase("view Categories")) {
                 CategoryController.getInstance().printAllCategories();
             } else if (command.equalsIgnoreCase("filtering")) {
-                Menu menu=new FilteringMenu(parentMenu).setScanner(scanner);
+                Menu menu = new FilteringMenu(parentMenu).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("sorting")) {
-                Menu menu=new SortingMenu(parentMenu).setScanner(scanner);
+                Menu menu = new SortingMenu(parentMenu).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
-            }else if (command.equalsIgnoreCase("show products")) {
+            } else if (command.equalsIgnoreCase("show products")) {
                 ProductController.getInstance().showProductsAfterFilterAndSort();
-            } else if (Pattern.matches("show product @p\\d+",command)) {
+            } else if (Pattern.matches("show product @p\\d+", command)) {
                 ClientController.getInstance().setCurrentProduct(ProductController.getInstance().findProductAfterFilter(command.split("\\s")[2]));
-                if(ClientController.getInstance().getCurrentProduct()!=null) {
+                if (ClientController.getInstance().getCurrentProduct() != null) {
                     Menu menu = new ProductMenu(this).setScanner(scanner);
                     ClientController.getInstance().setCurrentMenu(menu);
                     menu.execute();
                 }else {
-                    printError("there is no product with this ID in your Cart");
+                    printError("there is no product with this ID");
                 }
-            }else if (command.equalsIgnoreCase("view Cart")) {
+            } else if (command.equalsIgnoreCase("view Cart")) {
                 Menu menu = new CartMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("help")) {
                 help();
+            } else if (command.equalsIgnoreCase("logout")) {
+                if (ClientController.getInstance().getCurrentUser() != null) {
+                    ClientController.getInstance().setCurrentUser(null);
+                    System.out.println("You Logged out!!");
+                    parentMenu.execute();
+                } else {
+                    printError("you are not signed yet!!");
+                }
             } else {
                 System.out.println("command is invalid");
             }

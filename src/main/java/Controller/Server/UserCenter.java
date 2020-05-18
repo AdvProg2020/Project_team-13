@@ -1,6 +1,8 @@
 package Controller.Server;
 
+import Controller.Client.CategoryController;
 import Models.Offer;
+import Models.Product.Category;
 import Models.Product.Product;
 import Models.Request;
 import Models.UserAccount.Customer;
@@ -239,6 +241,15 @@ public class UserCenter {
                 if(product.getOffer()!=null) {
                     seller.getOfferById(product.getOffer().getOfferId()).getProducts().remove(product.getProductId());
                 }
+            }
+        }
+        DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+    }
+
+    public void editProductInSeller(Product product) {
+        for (Seller seller : allSeller) {
+            if(seller.getUsername().equals(product.getSeller())) {
+                seller.editProduct(product);
             }
         }
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));

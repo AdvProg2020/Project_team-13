@@ -46,7 +46,7 @@ public class CustomerInfoForPurchaseMenu extends Menu {
             phoneNumber = scanner.nextLine().trim();
             if (phoneNumber.length() == 8) {
                 break;
-            } else {
+            }  else {
                 System.out.println("Please enter a valid phoneNumber.");
             }
         }

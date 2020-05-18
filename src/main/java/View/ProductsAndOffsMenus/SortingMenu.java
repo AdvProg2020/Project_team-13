@@ -1,5 +1,6 @@
 package View.ProductsAndOffsMenus;
 
+import Controller.Client.ClientController;
 import Controller.Client.ProductController;
 import Models.Product.Product;
 import View.Menu;
@@ -14,7 +15,7 @@ public class SortingMenu extends Menu {
     @Override
     public void help() {
         String sortingMenuHelp = "1.Sort by (price|score|newest) (ascending|descending)" +
-                "\n2.Show sorts\n3.current sort\n4.disable sort\n5.help\n6.back";
+                "\n2.Show sorts\n3.current sort\n4.disable sort\n5.help\n6.back\n7.logout";
         System.out.println(sortingMenuHelp);
 
     }
@@ -36,7 +37,15 @@ public class SortingMenu extends Menu {
                 System.out.println(ProductController.getInstance().disableSort());
             } else if (command.equalsIgnoreCase("help")) {
                 help();
-            } else {
+            } else if (command.equalsIgnoreCase("logout")) {
+                if (ClientController.getInstance().getCurrentUser() != null) {
+                    ClientController.getInstance().setCurrentUser(null);
+                    System.out.println("You Logged out!!");
+                    parentMenu.getParentMenu().execute();
+                } else {
+                    printError("you are not signed yet!!");
+                }
+            }else {
                 System.out.println("command is invalid.");
             }
         }

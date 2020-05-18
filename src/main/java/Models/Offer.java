@@ -99,6 +99,8 @@ public class Offer {
                 ;
     }
 
+
+
     public String getProductByIdInOfferList(String id){
         for (String productId : productsId) {
             if(productId.equalsIgnoreCase(id)){

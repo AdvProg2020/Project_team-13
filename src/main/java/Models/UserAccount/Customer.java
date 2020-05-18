@@ -4,6 +4,7 @@ import Controller.Client.ClientController;
 import Models.DiscountCode;
 import Models.Log;
 import Models.Product.Cart;
+import Models.Product.Product;
 import Models.Request;
 
 import java.util.ArrayList;
@@ -52,6 +53,33 @@ public class Customer extends UserAccount{
         }else{
             removeDiscountCode(code);
         }
+    }
+    public String viewOrders() {
+        StringBuilder orders = new StringBuilder();
+        for (Log buylog : this.historyOfTransaction) {
+            orders.append(buylog.getId()).append(" ");
+            orders.append(buylog.getOtherSideUserName()).append(" ");
+            orders.append("\n");
+        }
+        return orders.toString();
+    }
+    public Log findOrderWithId(String logID){
+        for (Log log : historyOfTransaction) {
+            if(log.getId().equals(logID)){
+                return log;
+            }
+        }
+        return null;
+    }
+    public Product findProductWithId(String productID){
+        for (Log log : historyOfTransaction) {
+            for (Product product : log.getAllProducts()) {
+                if(product.getProductId().equals(productID)){
+                    return product;
+                }
+            }
+        }
+        return null;
     }
     public DiscountCode findDiscountCodeWithCode(String code){
         for (DiscountCode discountCode : allDiscountCodes) {

@@ -2,10 +2,13 @@ package Controller.Server;
 
 import Controller.Client.CategoryController;
 import Controller.Client.MessageController;
+import Models.Comment;
 import Models.Offer;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.Product.ProductStatus;
+import Models.Score;
+import Models.Request;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 
@@ -55,6 +58,36 @@ public class ProductCenter {
 
     }
 
+    public void rating(String json) {
+        Score score=new Gson().fromJson(json,Score.class);
+        Product product=ProductCenter.getInstance().findProductWithID(score.getProductID());
+        product.addScore(score);
+        UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).findProductWithID(product.getProductId()).addScore(score);
+        UserCenter.getIncstance().findCustomerWithUsername(score.getCustomerID()).findProductWithId(product.getProductId()).addScore(score);
+        if(OffCenter.getInstance().findProductWithID(product.getProductId())!=null)
+        OffCenter.getInstance().findProductWithID(product.getProductId()).addScore(score);
+        DataBase.getInstance().updateAllProducts(new Gson().toJson(ProductCenter.getInstance().getAllProducts()));
+        DataBase.getInstance().updateAllOffers(new Gson().toJson(OffCenter.getInstance().getAllOffers()));
+        DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
+        DataBase.getInstance().updateAllSellers(new Gson().toJson(UserCenter.getIncstance().getAllSeller()));
+        ServerController.getInstance().sendMessageToClient("@Successful@successfully rating");
+    }
+    public void commenting(String json){
+        Comment comment=new Gson().fromJson(json,Comment.class);
+        RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("Commenting",new Gson().toJson(comment)));
+    }
+    public void addComment(Comment comment) {
+        Product product=ProductCenter.getInstance().findProductWithID(comment.getProductId());
+        product.addComment(comment);
+        UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).findProductWithID(product.getProductId()).addComment(comment);
+        if(OffCenter.getInstance().findProductWithID(product.getProductId())!=null)
+            OffCenter.getInstance().findProductWithID(product.getProductId()).addComment(comment);
+        DataBase.getInstance().updateAllProducts(new Gson().toJson(ProductCenter.getInstance().getAllProducts()));
+        DataBase.getInstance().updateAllOffers(new Gson().toJson(OffCenter.getInstance().getAllOffers()));
+        DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
+        DataBase.getInstance().updateAllSellers(new Gson().toJson(UserCenter.getIncstance().getAllSeller()));
+        ServerController.getInstance().sendMessageToClient("@Successful@successfully rating");
+    }
     public Product findProductWithID(String productId) {
         for (Product product : allProducts) {
             if (product.getProductId().equals(productId)) {
@@ -149,12 +182,25 @@ public class ProductCenter {
     }
 
     public void createEditProductRequest(Product product) {
-        //
-
+        getProductWithId(product.getProductId()).setProductStatus(ProductStatus.editing);
+        DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));
+        RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("EditProduct", new Gson().toJson(product)));
     }
 
     public void editProduct(Product product) {
-        //
+        product.setProductStatus(ProductStatus.accepted);
+        if (allProducts != null) {
+            allProducts.set(allProducts.indexOf(ProductCenter.getInstance()
+                    .getProductWithId(product.getProductId())), product);
+        } else {
+            allProducts = new ArrayList<>();
+            allProducts.add(product);
+        }
+        product.setProductStatus(ProductStatus.accepted);
+        UserCenter.getIncstance().editProductInSeller(product);
+        CategoryCenter.getIncstance().editProductInCategory(product);
+        CategoryCenter.getIncstance().addProductToCategory(product);
+        DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));
     }
 
     public void addOfferToProduct(String productId, Offer offer) {

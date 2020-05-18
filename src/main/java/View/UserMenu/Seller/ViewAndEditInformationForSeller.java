@@ -24,6 +24,7 @@ public class ViewAndEditInformationForSeller extends Menu {
         managerMenuOptions += "7.LogOut\n";
         managerMenuOptions += "8.Help\n";
         managerMenuOptions += "9.Back";
+        managerMenuOptions += "10.Logout";
         System.out.println(managerMenuOptions);
     }
 
@@ -56,7 +57,11 @@ public class ViewAndEditInformationForSeller extends Menu {
                 ClientController.getInstance().sendMessageToServer("@editSeller@"+new Gson().toJson(seller));
             } else if (command.equalsIgnoreCase("help")) {
                 help();
-            } else {
+            } else if (command.equalsIgnoreCase("logout")) {
+                ClientController.getInstance().setCurrentUser(null);
+                System.out.println("You Logged out!!");
+                parentMenu.getParentMenu().execute();
+            }else {
                 System.out.println("Invalid Command");
             }
         }

@@ -73,10 +73,16 @@ public class Product {
     }
 
     public void addScore(Score score) {
+        if(allScores==null){
+            allScores=new ArrayList<>();
+        }
         allScores.add(score);
     }
 
     public void addComment(Comment comment) {
+        if(commentList==null){
+            commentList=new ArrayList<>();
+        }
         this.commentList.add(comment);
     }
 
@@ -190,6 +196,9 @@ public class Product {
         this.productStatus = productStatus;
     }
 
+    public void addScore(String customerID,int rate){
+        allScores.add(new Score(customerID,productId,rate));
+    }
     public void setProductName(String productName) {
         this.productName = productName;
     }

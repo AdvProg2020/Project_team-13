@@ -1,9 +1,11 @@
 package Controller.Client;
 
+import Models.Comment;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.Product.ProductStatus;
 import Models.Request;
+import Models.Score;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
@@ -38,7 +40,6 @@ public class ProductController {
     public Product getProductWithId(String productId) {
         for (Product product : allProducts) {
             if (product.getProductId().equals(productId)) {
-                System.out.println(product.getProductId());
                 return product;
             }
         }
@@ -53,7 +54,6 @@ public class ProductController {
         String product0 = gson.toJson(product);
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("AddProduct", product0));
     }
-
     public String getPriceFiltersInStringForm() {
         if (isPriceFilterActive) {
             return ("Price Filter: maximum price= " + max + " minimum price=" + min + "\n");
@@ -411,22 +411,6 @@ public class ProductController {
         return null;
     }
 
-    public void showAllBuyersForThisProduct(String productId) {
-        Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
-        if (!seller.productExists(productId)) {
-            System.out.println("There Is No Product With This Id For This Seller.");
-        } else if (seller.getProductByID(productId).getAllBuyers() == null) {
-            System.out.println("There Is No Buyer For This Product");
-        } else {
-            for (Customer buyer : seller.getProductByID(productId).getAllBuyers()) {
-                System.out.println(buyer.viewPersonalInfo());
-                System.out.println("\n\n");
-            }
-        }
-    }
-
-
-
     public ArrayList<String> getAllSellers() {
         if (currentCategory != null) {
             ArrayList<String> allSellers = new ArrayList<>();
@@ -455,8 +439,8 @@ public class ProductController {
         return "";
     }
 
-    public Product findProductAfterFilter(String productID){
-        allProductsAfterFilter=new ArrayList<>(allProducts);
+    public Product findProductAfterFilter(String productID) {
+        allProductsAfterFilter = new ArrayList<>(allProducts);
         filterProducts();
         for (Product product : allProductsAfterFilter) {
             if (product.getProductId().equals(productID)) {
@@ -478,7 +462,9 @@ public class ProductController {
         }
         return null;
     }
-
+    public void addComment(Comment comment){
+        ClientController.getInstance().sendMessageToServer("@addComment@"+new Gson().toJson(comment));
+    }
     public void showOffedProductsAfterFilterAndSort() {
         filterProducts();
         sortProducts();
@@ -500,9 +486,18 @@ public class ProductController {
         }
 
     }
-
-    public void compareWithProduct(String productId) {
-        if (getProductWithId(productId) == null) {
+    public void rating(String productID,int rate){
+        Product product=((Customer)ClientController.getInstance().getCurrentUser()).findProductWithId(productID);
+        if(product!=null){
+            Score score=new Score(ClientController.getInstance().getCurrentUser().getUsername(),productID,rate);
+            product.addScore(score);
+            ClientController.getInstance().sendMessageToServer("@rate@"+new Gson().toJson(score));
+        }else{
+            ClientController.getInstance().getCurrentMenu().printError("there is no product with this ID");
+        }
+    }
+    public void compareWithProduct(String productId){
+        if (getProductWithId(productId)==null) {
             System.out.println("There Is No Product With This Id.");
         }else{
             Product product=ClientController.getInstance().getCurrentProduct();

@@ -1,6 +1,6 @@
 package Controller.Server;
 
-import Models.Offer;
+import Models.*;
 import Models.Product.Product;
 import Models.Request;
 import Models.RequestStatus;
@@ -48,6 +48,10 @@ public class RequestCenter {
                 return new Request(RequestType.addOff, RequestStatus.onReview, makeRequestID(), details);
             case "EditOffer":
                 return new Request(RequestType.editOff, RequestStatus.onReview, makeRequestID(), details);
+            case "Commenting":
+                return new Request(RequestType.commenting, RequestStatus.onReview, makeRequestID(), details);
+            case "EditProduct":
+                return new Request(RequestType.EditProduct, RequestStatus.onReview, makeRequestID(), details);
             default:
                 return null;
         }
@@ -69,6 +73,8 @@ public class RequestCenter {
             acceptAddOfferRequest(request);
         } else if (request.getType().equals(RequestType.EditProduct)) {
             acceptEdiProductRequest(request);
+        }else if (request.getType().equals(RequestType.commenting)) {
+            acceptCommentRequest(request);
         }
     }
 
@@ -79,7 +85,13 @@ public class RequestCenter {
         DataBase.getInstance().updateAllRequests(arrayData);
         ServerController.getInstance().sendMessageToClient("@Successful@" + "request accepted successfully");
     }
-
+    public void acceptCommentRequest(Request request) {
+        allRequests.remove(request);
+        ProductCenter.getInstance().addComment(new Gson().fromJson(request.getDetails(), Comment.class));
+        String arrayData = new Gson().toJson(allRequests);
+        DataBase.getInstance().updateAllRequests(arrayData);
+        ServerController.getInstance().sendMessageToClient("@Successful@" + "request accepted successfully");
+    }
     public void acceptSellerRegisterRequest(Request request) {
         if (UserCenter.getIncstance().canAcceptSellerRegister(new Gson().fromJson(request.getDetails(), Seller.class).getUsername())) {
             allRequests.remove(request);
@@ -123,7 +135,18 @@ public class RequestCenter {
     }
 
     public void acceptEdiProductRequest(Request request) {
-
+        Product product = new Gson().fromJson(request.getDetails(), Product.class);
+        for (Product product1 : ProductCenter.getInstance().getAllProducts()) {
+            if (product1.getProductId().equals(product.getProductId())) {
+                allRequests.remove(request);
+                ProductCenter.getInstance().editProduct(product);
+                String arrayData = new Gson().toJson(allRequests);
+                DataBase.getInstance().updateAllRequests(arrayData);
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "Request accept successfully"));
+                return;
+            }
+        }
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Error", "There is no product with this Id."));
     }
 
     public void declineRequest(String requestId) {

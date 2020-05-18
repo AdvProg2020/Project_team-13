@@ -19,9 +19,10 @@ public class CustomerMenu extends Menu {
         userMenuOptions += "1.View Discount Codes\n";
         userMenuOptions += "2.View Cart\n";
         userMenuOptions += "3.View Balance\n";
-        userMenuOptions += "4.Help\n";
-        userMenuOptions += "5.Back\n";
-        userMenuOptions += "6.LogOut\n";
+        userMenuOptions += "4.View Orders\n";
+        userMenuOptions += "5.Help\n";
+        userMenuOptions += "6.Back\n";
+        userMenuOptions += "7.LogOut\n";
         System.out.println(userMenuOptions);
 
     }
@@ -43,6 +44,11 @@ public class CustomerMenu extends Menu {
                 menu.execute();
             }else if (command.equalsIgnoreCase("view balance")) {
                 showMessage(String.valueOf(ClientController.getInstance().getCurrentUser().getCredit()));
+            }else if (command.equalsIgnoreCase("view orders")) {
+                Menu menu = new OrdersMenu(this).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
+                showMessage(((Customer)ClientController.getInstance().getCurrentUser()).viewOrders());
             }  else if (command.equalsIgnoreCase("help")) {
                 help();
             } else if (command.equalsIgnoreCase("logout")) {

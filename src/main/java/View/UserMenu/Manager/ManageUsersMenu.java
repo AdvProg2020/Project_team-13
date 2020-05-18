@@ -1,5 +1,6 @@
 package View.UserMenu.Manager;
 
+import Controller.Client.ClientController;
 import Controller.Client.ManagerController;
 import View.Menu;
 
@@ -13,7 +14,8 @@ public class ManageUsersMenu extends Menu {
         managerMenuOptions += "1.view [username]\n";
         managerMenuOptions += "2.delete user [username]\n";
         managerMenuOptions += "3.help\n";
-        managerMenuOptions += "2.back\n";
+        managerMenuOptions += "4.back\n";
+        managerMenuOptions += "5.logout\n";
         System.out.println(managerMenuOptions);
     }
 
@@ -30,7 +32,11 @@ public class ManageUsersMenu extends Menu {
                 ManagerController.getInstance().deleteUser(command.split("\\s")[2]);
             } else if (command.equalsIgnoreCase("help")) {
                 help();
-            } else {
+            }  else if (command.equalsIgnoreCase("logout")) {
+                ClientController.getInstance().setCurrentUser(null);
+                System.out.println("You Logged out!!");
+                parentMenu.getParentMenu().execute();
+            }else {
                 System.out.println("Invalid Command");
             }
         }

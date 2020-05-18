@@ -29,7 +29,8 @@ public class OffsMenu extends Menu {
         offsMenuHelp += "3.sorting\n";
         offsMenuHelp += "4.show products\n";
         offsMenuHelp += "5.help\n";
-        offsMenuHelp += "6.back";
+        offsMenuHelp += "6.back\n";
+        offsMenuHelp += "7.logout";
         System.out.println(offsMenuHelp);
     }
 
@@ -61,6 +62,14 @@ public class OffsMenu extends Menu {
                 ProductController.getInstance().showOffedProductsAfterFilterAndSort();
             } else if (command.equalsIgnoreCase("help")) {
                 help();
+            } else if (command.equalsIgnoreCase("logout")) {
+                if (ClientController.getInstance().getCurrentUser() != null) {
+                    ClientController.getInstance().setCurrentUser(null);
+                    System.out.println("You Logged out!!");
+                    parentMenu.execute();
+                }else {
+                    printError("you are not signed yet!!");
+                }
             } else {
                 System.out.println("invalid command");
             }

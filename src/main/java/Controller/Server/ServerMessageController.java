@@ -66,9 +66,9 @@ public class ServerMessageController {
             UserCenter.getIncstance().createManagerProfile(message.substring(22, message.length()));
         } else if (message.startsWith("@getAllProductsForManager@")) {
             DataBase.getInstance().getAllProductsFromDataBase();
-        }  else if (message.startsWith("@getAllOffers@")) {
+        } else if (message.startsWith("@getAllOffers@")) {
             DataBase.getInstance().getAllOffersFromDataBase();
-        }else if (message.startsWith("@removeProductForManager@")) {
+        } else if (message.startsWith("@removeProductForManager@")) {
             message = message.substring(25, message.length());
             ProductCenter.getInstance().deleteProduct(message);
         } else if (message.startsWith("@getAllCategories@")) {
@@ -109,28 +109,34 @@ public class ServerMessageController {
         } else if (message.startsWith("@editCategory@")) {
             message = message.substring(14);
             if (message.startsWith("add")) {
-                message=message.substring(3);
+                message = message.substring(3);
                 CategoryCenter.getIncstance().editCategory(new Gson().fromJson(message, Category.class));
-            } else if(message.startsWith("del")) {
-                message=message.substring(3);
+            } else if (message.startsWith("del")) {
+                message = message.substring(3);
                 CategoryCenter.getIncstance().deleteCategoryFeature(new Gson().fromJson(message, Category.class));
-            } else if(message.startsWith("adM")) {
-                    message=message.substring(3);
+            } else if (message.startsWith("adM")) {
+                message = message.substring(3);
                 CategoryCenter.getIncstance().replaceCategory(new Gson().fromJson(message, Category.class));
             }
-        }else if(message.startsWith("@editOffer@")){
-            message=message.substring(11);
+        } else if (message.startsWith("@editOffer@")) {
+            message = message.substring(11);
             OffCenter.getInstance().createEditOfferRequest(new Gson().fromJson(message, Offer.class));
-        }else if(message.startsWith("@editProduct@")){
-            message=message.substring(13);
-            System.out.println("!11111111111");
-            //ProductCenter.getInstance().createEditProductRequest(new Gson().fromJson(message, Product.class));//
-        }else if(message.startsWith("@pay@")){
-            message=message.substring(5);
+        } else if (message.startsWith("@editProduct@")) {
+            message = message.substring(13);
+            ProductCenter.getInstance().createEditProductRequest(new Gson().fromJson(message, Product.class));
+        } else if (message.startsWith("@pay@")) {
+            message = message.substring(5);
             CartCenter.getInstance().pay(new Gson().fromJson(message, Cart.class));//
-        }else if(message.startsWith("@declineRequest@")){
-            message=message.substring(16);
+        } else if (message.startsWith("@declineRequest@")) {
+            message = message.substring(16);
             RequestCenter.getIncstance().declineRequest(message);
+        }else if(message.startsWith("@rate@")){
+            message=message.substring(6);
+            ProductCenter.getInstance().rating(message);
+        }else if(message.startsWith("@addComment@")){
+            message=message.substring(12);
+            ProductCenter.getInstance().commenting(message);
+            ServerController.getInstance().sendMessageToClient("@Successful@your comment sent to manager for accept");
         }
     }
 }

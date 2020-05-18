@@ -12,6 +12,7 @@ public class ViewAndEditInformationForManager extends Menu {
     public ViewAndEditInformationForManager(Menu parentMenu) {
         super(parentMenu);
     }
+
     @Override
     public void help() {
         String managerMenuOptions = "";
@@ -23,34 +24,40 @@ public class ViewAndEditInformationForManager extends Menu {
         managerMenuOptions += "5.Edit Credit\n";
         managerMenuOptions += "6.LogOut\n";
         managerMenuOptions += "7.Help\n";
-        managerMenuOptions += "8.Back";
+        managerMenuOptions += "8.Back\n";
+        managerMenuOptions += "9.Logout";
+
         System.out.println(managerMenuOptions);
     }
 
     @Override
     public void execute() {
-        Manager manager=(Manager) ClientController.getInstance().getCurrentUser();
+        Manager manager = (Manager) ClientController.getInstance().getCurrentUser();
         System.out.println(manager.viewPersonalInfo());
         String command;
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.equalsIgnoreCase("Edit First Name")) {
                 manager.setFirstName(getFirstName());
-                ClientController.getInstance().sendMessageToServer("@editManager@"+new Gson().toJson(manager));
+                ClientController.getInstance().sendMessageToServer("@editManager@" + new Gson().toJson(manager));
             } else if (command.equalsIgnoreCase("Edit Last Name")) {
                 manager.setLastName(getLastName());
-                ClientController.getInstance().sendMessageToServer("@editManager@"+new Gson().toJson(manager));
+                ClientController.getInstance().sendMessageToServer("@editManager@" + new Gson().toJson(manager));
             } else if (command.equalsIgnoreCase("Edit Password")) {
                 manager.setPassword(getPassword());
-                ClientController.getInstance().sendMessageToServer("@editManager@"+new Gson().toJson(manager));
+                ClientController.getInstance().sendMessageToServer("@editManager@" + new Gson().toJson(manager));
             } else if (command.equalsIgnoreCase("Edit PhoneNumber")) {
                 manager.setPhoneNumber(getPhoneNumber());
-                ClientController.getInstance().sendMessageToServer("@editManager@"+new Gson().toJson(manager));
+                ClientController.getInstance().sendMessageToServer("@editManager@" + new Gson().toJson(manager));
             } else if (command.equalsIgnoreCase("Edit Email")) {
                 manager.setEmail(getEmail());
-                ClientController.getInstance().sendMessageToServer("@editManager@"+new Gson().toJson(manager));
-            }else if (command.equalsIgnoreCase("Edit Credit")) {
+                ClientController.getInstance().sendMessageToServer("@editManager@" + new Gson().toJson(manager));
+            } else if (command.equalsIgnoreCase("Edit Credit")) {
                 manager.setCredit(Double.parseDouble(getCredit()));
-                ClientController.getInstance().sendMessageToServer("@editManager@"+new Gson().toJson(manager));
+                ClientController.getInstance().sendMessageToServer("@editManager@" + new Gson().toJson(manager));
+            } else if (command.equalsIgnoreCase("logout")) {
+                ClientController.getInstance().setCurrentUser(null);
+                System.out.println("You Logged out!!");
+                parentMenu.getParentMenu().execute();
             } else if (command.equalsIgnoreCase("help")) {
                 help();
             } else {
@@ -60,6 +67,7 @@ public class ViewAndEditInformationForManager extends Menu {
         back();
 
     }
+
     private String getCredit() {
         String credit;
         while (true) {
