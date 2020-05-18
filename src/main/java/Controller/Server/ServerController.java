@@ -5,7 +5,7 @@ import Controller.Client.ClientController;
 public class ServerController {
     private static ServerController serverController;
 
-    private ServerController() {
+    public ServerController() {
 
     }
 

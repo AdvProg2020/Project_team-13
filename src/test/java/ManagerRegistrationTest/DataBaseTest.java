@@ -6,10 +6,12 @@ class DataBaseTest {
 
     @Test
     void getInstance() {
+
     }
 
     @Test
     void updateAllManagers() {
+
     }
 
     @Test
