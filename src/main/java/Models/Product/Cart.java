@@ -62,7 +62,7 @@ public class Cart {
     }
 
     public void changeCountOfProduct(String productID, int count) {
-        if(findProductWithID(productID).getNumberOfAvailableProducts()-count>=0) {
+        if(findProductWithID(productID).getNumberOfAvailableProducts()-(count+countOfEachProduct.get(productID))>=0) {
             if (countOfEachProduct.get(productID) + count > 0) {
                 countOfEachProduct.replace(productID, countOfEachProduct.get(productID) + count);
                 ClientController.getInstance().getCurrentMenu().showMessage("The new number of this product is " + countOfEachProduct.get(productID));

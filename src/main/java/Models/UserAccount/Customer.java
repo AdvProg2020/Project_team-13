@@ -9,14 +9,15 @@ import Models.Request;
 
 import java.util.ArrayList;
 
-public class Customer extends UserAccount{
+public class Customer extends UserAccount {
 
+    private double totalBuyAmount = 0;
     private ArrayList<Request> allRequests;
 
     public Customer(String username, String password, String firstName, String lastName, String email, String phoneNumber, double credit) {
         super(username, password, firstName, lastName, email, phoneNumber, credit);
-        this.allDiscountCodes=new ArrayList<>();
-        this.type="@Customer";
+        this.allDiscountCodes = new ArrayList<>();
+        this.type = "@Customer";
     }
 
 
@@ -28,32 +29,44 @@ public class Customer extends UserAccount{
     @Override
     public String viewPersonalInfo() {
         String personalInfo = "";
-        personalInfo += this.username + "\n";
-        personalInfo += this.firstName + "\n";
-        personalInfo += this.lastName + "\n";
-        personalInfo += this.email + "\n";
-        personalInfo += this.phoneNumber + "\n";
-        personalInfo += this.credit ;
+        personalInfo += "Username: " + this.username + "\n";
+        personalInfo += "First name: " + this.firstName + "\n";
+        personalInfo += "Last name: " + this.lastName + "\n";
+        personalInfo += "Email: " + this.email + "\n";
+        personalInfo += "Phone Number: " + this.phoneNumber + "\n";
+        personalInfo += "Credit: " + this.credit;
         return personalInfo;
     }
-    public void addDiscountCode(DiscountCode discountCode){
+
+    public void addDiscountCode(DiscountCode discountCode) {
         allDiscountCodes.add(discountCode);
     }
-    public void removeDiscountCode(String code){
+
+    public double getTotalBuyAmount() {
+        return totalBuyAmount;
+    }
+
+    public void setTotalBuyAmount(double totalBuyAmount) {
+        this.totalBuyAmount = totalBuyAmount;
+    }
+
+    public void removeDiscountCode(String code) {
         for (DiscountCode discountCode : allDiscountCodes) {
-            if(discountCode.getDiscountCodeID().equals(code)){
+            if (discountCode.getDiscountCodeID().equals(code)) {
                 allDiscountCodes.remove(discountCode);
                 return;
             }
         }
     }
-    public void useDiscountCode(String code){
-        if(findDiscountCodeWithCode(code).getRemainingTimesForEachCustomer().get(username)>1) {
+
+    public void useDiscountCode(String code) {
+        if (findDiscountCodeWithCode(code).getRemainingTimesForEachCustomer().get(username) > 1) {
             findDiscountCodeWithCode(code).usedOneTime(username);
-        }else{
+        } else {
             removeDiscountCode(code);
         }
     }
+
     public String viewOrders() {
         StringBuilder orders = new StringBuilder();
         for (Log buylog : this.historyOfTransaction) {
@@ -63,27 +76,30 @@ public class Customer extends UserAccount{
         }
         return orders.toString();
     }
-    public Log findOrderWithId(String logID){
+
+    public Log findOrderWithId(String logID) {
         for (Log log : historyOfTransaction) {
-            if(log.getId().equals(logID)){
+            if (log.getId().equals(logID)) {
                 return log;
             }
         }
         return null;
     }
-    public Product findProductWithId(String productID){
+
+    public Product findProductWithId(String productID) {
         for (Log log : historyOfTransaction) {
             for (Product product : log.getAllProducts()) {
-                if(product.getProductId().equals(productID)){
+                if (product.getProductId().equals(productID)) {
                     return product;
                 }
             }
         }
         return null;
     }
-    public DiscountCode findDiscountCodeWithCode(String code){
+
+    public DiscountCode findDiscountCodeWithCode(String code) {
         for (DiscountCode discountCode : allDiscountCodes) {
-            if(discountCode.getDiscountCodeID().equals(code)){
+            if (discountCode.getDiscountCodeID().equals(code)) {
                 return discountCode;
             }
         }
@@ -92,8 +108,8 @@ public class Customer extends UserAccount{
 
     public void printAllDiscountCodes() {
         String showAllDiscountCodes = "";
-        for (DiscountCode discountCode :allDiscountCodes ) {
-            showAllDiscountCodes += discountCode.getDiscountCodeID() + " " +discountCode.getDiscountPercent()+"% "+discountCode.getMaxDiscountAmount()+" ("+ discountCode.getStartTime()+") TO ("+discountCode.getEndTime() + ")\n";
+        for (DiscountCode discountCode : allDiscountCodes) {
+            showAllDiscountCodes += discountCode.getDiscountCodeID() + " " + discountCode.getDiscountPercent() + "% " + discountCode.getMaxDiscountAmount() + " (" + discountCode.getStartTime() + ") TO (" + discountCode.getEndTime() + ")\n";
         }
         ClientController.getInstance().getCurrentMenu().showMessage(showAllDiscountCodes);
     }

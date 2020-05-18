@@ -39,7 +39,15 @@ public class DiscountCodeCenter {
         DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(allDiscountCodes));
         ServerController.getInstance().sendMessageToClient("@Successful@discount code with code:" + lastDiscountCodeID + " successfully created");
     }
-
+    public void createDiscountCodeForGift(DiscountCode discountCode) {
+        discountCode.setDiscountCodeID(makeCode());
+        allDiscountCodes.add(discountCode);
+        for (String username : discountCode.getAllUserAccountsThatHaveDiscount()) {
+            UserCenter.getIncstance().findCustomerWithUsername(username).addDiscountCode(discountCode);
+        }
+        DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
+        DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(allDiscountCodes));
+    }
     public void setLastDiscountCodeID(String lastDiscountCodeID) {
         this.lastDiscountCodeID = lastDiscountCodeID;
     }
