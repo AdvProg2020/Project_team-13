@@ -17,12 +17,6 @@ class UserCenterTest {
     void setAllManager() {
     }
 
-    @Test
-    void createNewUserAccount(String message) {
-        Gson gson=new Gson();
-        Manager manager=gson.fromJson(message, Manager.class);
-        Assert.assertTrue(message.contains("@Manager"));
-    }
 
     @Test
     void createManagerProfile() {
@@ -30,5 +24,10 @@ class UserCenterTest {
 
     @Test
     void findManagerWithUsername() {
+    }
+
+    @Test
+    void updateAllSellers() {
+        Assert.assertNotNull(UserCenter.getIncstance().getAllSeller().getClass());
     }
 }

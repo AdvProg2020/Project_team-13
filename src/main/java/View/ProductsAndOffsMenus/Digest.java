@@ -19,8 +19,8 @@ public class Digest extends Menu {
         userMenuOptions += "7.Help\n";
         userMenuOptions += "4.Back\n";
         userMenuOptions += "5.LogOut\n";
+        userMenuOptions += "6.Login/Register\n";
         System.out.println(userMenuOptions);
-
     }
 
     @Override
@@ -37,10 +37,15 @@ public class Digest extends Menu {
                 ClientController.getInstance().setCurrentUser(null);
                 System.out.println("You Logged out!!");
                 parentMenu.execute();
-            } else if (command.equalsIgnoreCase("login")) {
-                Menu menu = new UserMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
-                menu.execute();
+            } else if (command.equalsIgnoreCase("Login/Register")) {
+                if (ClientController.getInstance().getCurrentUser() != null) {
+                    System.out.println("you already logged in");
+                } else {
+                    Menu menu = new UserMenu(this).setScanner(scanner);
+                    ClientController.getInstance().setCurrentMenu(menu);
+                    menu.execute();
+                }
+
             } else {
                 System.out.println("Invalid Command");
             }

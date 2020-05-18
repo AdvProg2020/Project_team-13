@@ -32,6 +32,7 @@ public class OffsMenu extends Menu {
         offsMenuHelp += "5.help\n";
         offsMenuHelp += "6.back\n";
         offsMenuHelp += "7.logout";
+        offsMenuHelp += "8.Login/Register";
         System.out.println(offsMenuHelp);
     }
 
@@ -68,13 +69,18 @@ public class OffsMenu extends Menu {
                     ClientController.getInstance().setCurrentUser(null);
                     System.out.println("You Logged out!!");
                     parentMenu.execute();
-                }else {
+                } else {
                     printError("you are not signed yet!!");
                 }
-            }  else if (command.equalsIgnoreCase("login")) {
-                Menu menu = new UserMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
-                menu.execute();
+            } else if (command.equalsIgnoreCase("Login/Register")) {
+                if (ClientController.getInstance().getCurrentUser() != null) {
+                    System.out.println("you already logged in");
+                } else {
+                    Menu menu = new UserMenu(this).setScanner(scanner);
+                    ClientController.getInstance().setCurrentMenu(menu);
+                    menu.execute();
+                }
+
             } else {
                 System.out.println("invalid command");
             }

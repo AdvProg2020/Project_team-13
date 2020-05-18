@@ -8,6 +8,7 @@ import Models.Product.Category;
 import Models.Product.Product;
 import Models.Product.ProductStatus;
 import View.Menu;
+import View.UserMenu.UserMenu;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ public class FilteringMenu extends Menu {
     @Override
     public void help() {
         String filteringMenuHelp = "1.Filter\n2.Disable filters\n3.Current filters" +
-                "\n4.Show available filters\n5.Help\n6.Back\n7.logout";
+                "\n4.Show available filters\n5.Help\n6.Back\n7.logout\n8.Login/Register";
         System.out.println(filteringMenuHelp);
     }
 
@@ -49,6 +50,15 @@ public class FilteringMenu extends Menu {
                 } else {
                     printError("you are not signed yet!!");
                 }
+            } else if (command.equalsIgnoreCase("Login/Register")) {
+                if (ClientController.getInstance().getCurrentUser() != null) {
+                    System.out.println("you already logged in");
+                } else {
+                    Menu menu = new UserMenu(this).setScanner(scanner);
+                    ClientController.getInstance().setCurrentMenu(menu);
+                    menu.execute();
+                }
+
             } else {
                 System.out.println("command is invalid");
             }

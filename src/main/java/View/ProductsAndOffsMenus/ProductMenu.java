@@ -23,8 +23,8 @@ public class ProductMenu extends Menu {
         userMenuOptions += "5.Compare [product id]\n";
         userMenuOptions += "6.Comments\n";
         userMenuOptions += "7.LogOut\n";
+        userMenuOptions += "8.Login/Register";
         System.out.println(userMenuOptions);
-
     }
 
     @Override
@@ -65,7 +65,16 @@ public class ProductMenu extends Menu {
                 Menu menu = new UserMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
-            } else {
+            } else if (command.equalsIgnoreCase("Login/Register")) {
+                if (ClientController.getInstance().getCurrentUser() != null) {
+                    System.out.println("you already logged in");
+                } else {
+                    Menu menu = new UserMenu(this).setScanner(scanner);
+                    ClientController.getInstance().setCurrentMenu(menu);
+                    menu.execute();
+                }
+
+            }else {
                 System.out.println("Invalid Command");
             }
         }

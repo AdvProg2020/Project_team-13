@@ -24,7 +24,7 @@ public class ProductsMenu extends Menu {
     @Override
     public void help() {
         String productsMenuHelp = "1.view categories\n";
-        productsMenuHelp += "2.filtering\n3.sorting\n4.show products\n5.show product [productId]\n6.help\n7.back\n8.View Cart\n9.logout";
+        productsMenuHelp += "2.filtering\n3.sorting\n4.show products\n5.show product [productId]\n6.help\n7.back\n8.View Cart\n9.logout\n10.Login/Register";
         System.out.println(productsMenuHelp);
 
     }
@@ -68,10 +68,14 @@ public class ProductsMenu extends Menu {
                 } else {
                     printError("you are not signed yet!!");
                 }
-            } else if (command.equalsIgnoreCase("login")) {
-                Menu menu = new UserMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
-                menu.execute();
+            } else if (command.equalsIgnoreCase("Login/Register")) {
+                if (ClientController.getInstance().getCurrentUser() != null) {
+                    System.out.println("you already logged in");
+                } else {
+                    Menu menu = new UserMenu(this).setScanner(scanner);
+                    ClientController.getInstance().setCurrentMenu(menu);
+                    menu.execute();
+                }
             } else {
                 System.out.println("command is invalid");
             }

@@ -10,10 +10,5 @@ class ServerMessageControllerTest {
 
     }
 
-    @Test
-    void processMessage(String message) {
-        message = message.substring(10);
-        UserCenterTest userCenterTest=new UserCenterTest();
-        userCenterTest.createNewUserAccount(message);
-    }
+
 }

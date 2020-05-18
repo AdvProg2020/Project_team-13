@@ -11,11 +11,7 @@ class ClientControllerTest {
         Assert.assertNotNull(ClientController.getInstance());
     }
 
-    @Test
-    void sendMessageToServer(String message) {
-        ServerControllerTest serverControllerTest=new ServerControllerTest();
-        serverControllerTest.getMessageFromClient(message);
-    }
+
 
     @Test
     void getMessageFromServer() {

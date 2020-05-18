@@ -20,9 +20,10 @@ public class CustomerMenu extends Menu {
         userMenuOptions += "2.View Cart\n";
         userMenuOptions += "3.View Balance\n";
         userMenuOptions += "4.View Orders\n";
-        userMenuOptions += "5.Help\n";
-        userMenuOptions += "6.Back\n";
-        userMenuOptions += "7.LogOut\n";
+        userMenuOptions += "5.View personal info\n";
+        userMenuOptions += "6.Help\n";
+        userMenuOptions += "7.Back\n";
+        userMenuOptions += "8.LogOut\n";
         System.out.println(userMenuOptions);
 
     }

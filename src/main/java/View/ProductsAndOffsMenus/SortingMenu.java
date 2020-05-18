@@ -4,6 +4,7 @@ import Controller.Client.ClientController;
 import Controller.Client.ProductController;
 import Models.Product.Product;
 import View.Menu;
+import View.UserMenu.UserMenu;
 
 import java.util.regex.Pattern;
 
@@ -15,7 +16,7 @@ public class SortingMenu extends Menu {
     @Override
     public void help() {
         String sortingMenuHelp = "1.Sort by (price|score|newest) (ascending|descending)" +
-                "\n2.Show sorts\n3.current sort\n4.disable sort\n5.help\n6.back\n7.logout";
+                "\n2.Show sorts\n3.current sort\n4.disable sort\n5.help\n6.back\n7.logout\n10.Login/Register";
         System.out.println(sortingMenuHelp);
 
     }
@@ -45,7 +46,16 @@ public class SortingMenu extends Menu {
                 } else {
                     printError("you are not signed yet!!");
                 }
-            }else {
+            } else if (command.equalsIgnoreCase("Login/Register")) {
+                if (ClientController.getInstance().getCurrentUser() != null) {
+                    System.out.println("you already logged in");
+                } else {
+                    Menu menu = new UserMenu(this).setScanner(scanner);
+                    ClientController.getInstance().setCurrentMenu(menu);
+                    menu.execute();
+                }
+
+            } else {
                 System.out.println("command is invalid.");
             }
         }
