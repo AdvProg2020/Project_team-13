@@ -42,6 +42,7 @@ public class EditOffsMenu extends Menu {
         EditOffsMenusHelp += "8. LogOut\n";
         EditOffsMenusHelp += "9. Back\n";
         EditOffsMenusHelp += "10.Finish\n";
+        EditOffsMenusHelp += "11.Logout\n";
         System.out.println(EditOffsMenusHelp);
     }
 
@@ -100,6 +101,10 @@ public class EditOffsMenu extends Menu {
                 break;
             } else if (!command.equalsIgnoreCase("back")) {
                 System.out.println("invalid command");
+            }else if (command.equalsIgnoreCase("logout")) {
+                ClientController.getInstance().setCurrentUser(null);
+                System.out.println("You Logged out!!");
+                parentMenu.getParentMenu().getParentMenu().execute();
             }
         } while (!(command.equalsIgnoreCase("back")));
         back();

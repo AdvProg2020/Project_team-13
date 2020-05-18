@@ -21,30 +21,35 @@ public class ManageProductsMenu extends Menu {
 
     @Override
     public void help() {
-       String ManageProductMenuHelp="";
-       ManageProductMenuHelp+="1. remove [productId]\n";
-       ManageProductMenuHelp+="2. help\n";
-       ManageProductMenuHelp+="3. back\n";
-       System.out.println(ManageProductMenuHelp);
+        String ManageProductMenuHelp = "";
+        ManageProductMenuHelp += "1.remove [productId]\n";
+        ManageProductMenuHelp += "2.help\n";
+        ManageProductMenuHelp += "3.back\n";
+        ManageProductMenuHelp += "4.logout\n";
+        System.out.println(ManageProductMenuHelp);
     }
 
     @Override
     public void execute() {
-      String command;
-      ProductController.getInstance().printAllProducts();
-      while(!(command=scanner.nextLine().trim()).equalsIgnoreCase("back")){
-          if(command.matches("remove @p\\w+")){
-             ProductController.getInstance().removeProductForManager(getTheProductId(command));
-          }else if(command.equals("help")){
-             help();
-          }else{
-             System.out.println("invalid command");
-          }
-      }
-      back();
+        String command;
+        ProductController.getInstance().printAllProducts();
+        while (!(command = scanner.nextLine().trim()).equalsIgnoreCase("back")) {
+            if (command.matches("remove @p\\w+")) {
+                ProductController.getInstance().removeProductForManager(getTheProductId(command));
+            } else if (command.equals("help")) {
+                help();
+            } else if (command.equalsIgnoreCase("logout")) {
+                ClientController.getInstance().setCurrentUser(null);
+                System.out.println("You Logged out!!");
+                parentMenu.getParentMenu().execute();
+            } else {
+                System.out.println("invalid command");
+            }
+        }
+        back();
     }
 
-    private String getTheProductId(String command){
-        return command.substring(7,command.length());
+    private String getTheProductId(String command) {
+        return command.substring(7, command.length());
     }
 }

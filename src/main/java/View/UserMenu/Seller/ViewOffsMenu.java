@@ -31,6 +31,7 @@ public class ViewOffsMenu extends Menu {
        ViewOffsMenuHelp+="3. add off\n";
        ViewOffsMenuHelp+="4. help\n";
        ViewOffsMenuHelp+="5. back\n";
+        ViewOffsMenuHelp+="6 logout";
        System.out.println(ViewOffsMenuHelp);
     }
 
@@ -54,6 +55,10 @@ public class ViewOffsMenu extends Menu {
                menu.execute();
            }else if(command.equalsIgnoreCase("help")){
                help();
+           }else if (command.equalsIgnoreCase("logout")) {
+               ClientController.getInstance().setCurrentUser(null);
+               System.out.println("You Logged out!!");
+               parentMenu.getParentMenu().execute();
            }else{
                System.out.println("invalid command");
            }

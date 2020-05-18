@@ -23,7 +23,9 @@ public class ViewAndEditInformationForCustomer extends Menu {
         managerMenuOptions += "5.Edit Credit\n";
         managerMenuOptions += "6.LogOut\n";
         managerMenuOptions += "7.Help\n";
-        managerMenuOptions += "8.Back";
+        managerMenuOptions += "8.Back\n";
+        managerMenuOptions += "9.Logout\n";
+
         System.out.println(managerMenuOptions);
     }
 
@@ -51,7 +53,11 @@ public class ViewAndEditInformationForCustomer extends Menu {
             }else if (command.equalsIgnoreCase("Edit Credit")) {
                 customer.setCredit(Double.parseDouble(getCredit()));
                 ClientController.getInstance().sendMessageToServer("@editCustomer@"+new Gson().toJson(customer));
-            } else if (command.equalsIgnoreCase("help")) {
+            } else if (command.equalsIgnoreCase("logout")) {
+                ClientController.getInstance().setCurrentUser(null);
+                System.out.println("You Logged out!!");
+                parentMenu.getParentMenu().execute();
+            }else if (command.equalsIgnoreCase("help")) {
                 help();
             } else {
                 System.out.println("Invalid Command");
