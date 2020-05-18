@@ -3,6 +3,7 @@ package View.UserMenu.Seller;
 import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
 import Controller.Client.ProductController;
+import Controller.Client.RequestController;
 import Models.Product.Category;
 import Models.UserAccount.Seller;
 import View.Menu;
@@ -28,6 +29,7 @@ public class SellerMenu extends Menu {
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equals("manage products")&& isAccepted) {
+                RequestController.getInstance().getAllRequestsFromServer();
                 Menu menu = new ManageProductMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();

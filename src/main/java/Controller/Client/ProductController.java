@@ -52,12 +52,6 @@ public class ProductController {
         String product0 = gson.toJson(product);
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("AddProduct", product0));
     }
-
-    /*public void editProduct(String productId, String userName, String field, String newValue){
-
-        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage());
-    }*/
-
     public String getPriceFiltersInStringForm() {
         if (isPriceFilterActive) {
             return ("Price Filter: maximum price= " + max + " minimum price=" + min + "\n");
@@ -207,7 +201,7 @@ public class ProductController {
             List<Product> lst = allProductsAfterFilter;
             Product[] productsAfterPriceFilter =
                     lst.stream().filter(e -> e.getProductCost() <= max && e.getProductCost() >= min).toArray(Product[]::new);
-            allProductsAfterFilter = new ArrayList<Product>(Arrays.asList(productsAfterPriceFilter));
+            allProductsAfterFilter = new ArrayList<>(Arrays.asList(productsAfterPriceFilter));
         }
 
     }
@@ -217,7 +211,7 @@ public class ProductController {
             List<Product> lst = allProductsAfterFilter;
             Product[] productsAfterPriceFilter =
                     lst.stream().filter(e -> allBrandsToFilter.contains(e.getProductCompany())).toArray(Product[]::new);
-            allProductsAfterFilter = new ArrayList<Product>(Arrays.asList(productsAfterPriceFilter));
+            allProductsAfterFilter = new ArrayList<>(Arrays.asList(productsAfterPriceFilter));
         }
     }
 
@@ -226,7 +220,7 @@ public class ProductController {
             List<Product> lst = allProductsAfterFilter;
             Product[] productsAfterPriceFilter =
                     lst.stream().filter(e -> allSellersToFilter.contains(e.getSeller())).toArray(Product[]::new);
-            allProductsAfterFilter = new ArrayList<Product>(Arrays.asList(productsAfterPriceFilter));
+            allProductsAfterFilter = new ArrayList<>(Arrays.asList(productsAfterPriceFilter));
         }
     }
 
@@ -235,7 +229,7 @@ public class ProductController {
             List<Product> lst = allProductsAfterFilter;
             Product[] productsAfterPriceFilter =
                     lst.stream().filter(e -> allProductStatusToFilter.contains(e.getProductStatus())).toArray(Product[]::new);
-            allProductsAfterFilter = new ArrayList<Product>(Arrays.asList(productsAfterPriceFilter));
+            allProductsAfterFilter = new ArrayList<>(Arrays.asList(productsAfterPriceFilter));
         }
     }
 
@@ -244,7 +238,7 @@ public class ProductController {
             List<Product> lst = allProductsAfterFilter;
             Product[] productsAfterPriceFilter =
                     lst.stream().filter(e -> e.getProductName().toLowerCase().contains(nameToFilter.toLowerCase())).toArray(Product[]::new);
-            allProductsAfterFilter = new ArrayList<Product>(Arrays.asList(productsAfterPriceFilter));
+            allProductsAfterFilter = new ArrayList<>(Arrays.asList(productsAfterPriceFilter));
         }
     }
 
@@ -375,7 +369,6 @@ public class ProductController {
                             }
                         }
                     });
-
                 }
             }
         }
@@ -438,13 +431,6 @@ public class ProductController {
                 return allDetails.substring(0, allDetails.length() - 1);
         }
         return "";
-    }
-
-    public void makeProductsViewForm() {
-//        String productsInviewForm
-        for (Product product : allProducts) {
-
-        }
     }
 
     public Product findProductAfterFilter(String productID) {
