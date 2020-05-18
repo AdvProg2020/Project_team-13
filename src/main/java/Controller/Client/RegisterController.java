@@ -9,7 +9,7 @@ import java.io.IOException;
 public class RegisterController {
     private static RegisterController registerController;
 
-    private RegisterController() {
+    public RegisterController() {
     }
 
     public static RegisterController getInstance() {

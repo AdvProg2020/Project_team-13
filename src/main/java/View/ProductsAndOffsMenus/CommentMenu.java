@@ -2,7 +2,6 @@ package View.ProductsAndOffsMenus;
 
 import Controller.Client.ClientController;
 import Models.Comment;
-import Models.Product.Product;
 import View.Menu;
 
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ public class CommentMenu extends Menu {
 
     @Override
     public void execute() {
+        showMessage("The Average Score Of This Product: "+ ClientController.getInstance().getCurrentProduct().getAverageScore()+"\n");
         if (ClientController.getInstance().getCurrentProduct().getCommentList()==null) {
             ClientController.getInstance().getCurrentProduct().setCommentList(new ArrayList<>());
         }
@@ -44,13 +44,13 @@ public class CommentMenu extends Menu {
             showMessage("\n");
         }
         String command;
-        //while (!(command = scanner.nextLine().trim()).equalsIgnoreCase("back")) {
-            //if (command.equalsIgnoreCase("Add Comment")) {
-
-            //}else {
-            //    printError("invalid command");
-          //  }
-        //}
+//        while (!(command = scanner.nextLine().trim()).equalsIgnoreCase("back")) {
+//            if (command.equalsIgnoreCase("Add Comment")) {
+//
+//            }else {
+//                printError("invalid command");
+//            }
+//        }
         back();
     }
 }
