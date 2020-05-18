@@ -1,5 +1,6 @@
 package Models.UserAccount;
 
+import Controller.Client.ClientController;
 import Controller.Client.ProductController;
 import Models.Log;
 import Models.Offer;
@@ -62,6 +63,15 @@ public class Seller extends UserAccount {
         }*/
     }
 
+
+    public Product findProductWithID(String productID){
+        for (Product product : allProducts) {
+            if(product.getProductId().equals(productID)){
+                return product;
+            }
+        }
+        return null;
+    }
     public void removeProduct(String productId) {
         if (allProducts != null && !allProducts.isEmpty()) {
             for (Product product : allProducts) {
