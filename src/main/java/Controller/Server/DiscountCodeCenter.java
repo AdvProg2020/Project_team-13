@@ -7,6 +7,9 @@ import com.google.gson.Gson;
 
 import java.net.UnknownServiceException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Random;
 
 public class DiscountCodeCenter {
     private static DiscountCodeCenter discountCodeCenter;
@@ -48,10 +51,23 @@ public class DiscountCodeCenter {
         DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
         DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(allDiscountCodes));
     }
+
     public void setLastDiscountCodeID(String lastDiscountCodeID) {
         this.lastDiscountCodeID = lastDiscountCodeID;
     }
+    public void makeDiscountCodeForRandomCustomer(){
+        Random random=new Random();
+        String username=UserCenter.getIncstance().getAllCustomer().get(random.nextInt(UserCenter.getIncstance().getAllCustomer().size())).getUsername();
+        Date endDate=new Date();
+        endDate.setYear(60);
+        ArrayList<String> alluser=new ArrayList<>();
+        alluser.add(username);
+        HashMap<String,Integer> maxusingTime=new HashMap<String, Integer>();
+        maxusingTime.put(username,1);
+        DiscountCode discountCodeForGift=new DiscountCode(new Date(),endDate,alluser,90,20000,maxusingTime,maxusingTime);
+        DiscountCodeCenter.getIncstance().createDiscountCodeForGift(discountCodeForGift);
 
+    }
     public ArrayList<DiscountCode> getAllDiscountCodes() {
         return allDiscountCodes;
     }
