@@ -1,10 +1,7 @@
 package Controller.Server;
 
-import Models.Offer;
+import Models.*;
 import Models.Product.Product;
-import Models.Request;
-import Models.RequestStatus;
-import Models.RequestType;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 
@@ -48,6 +45,8 @@ public class RequestCenter {
                 return new Request(RequestType.addOff, RequestStatus.onReview, makeRequestID(), details);
             case "EditOffer":
                 return new Request(RequestType.editOff, RequestStatus.onReview, makeRequestID(), details);
+            case "Commenting":
+                return new Request(RequestType.commenting, RequestStatus.onReview, makeRequestID(), details);
             default:
                 return null;
         }
@@ -69,6 +68,8 @@ public class RequestCenter {
             acceptAddOfferRequest(request);
         } else if (request.getType().equals(RequestType.EditProduct)) {
             acceptEdiProductRequest(request);
+        }else if (request.getType().equals(RequestType.commenting)) {
+            acceptCommentRequest(request);
         }
     }
 
@@ -79,7 +80,13 @@ public class RequestCenter {
         DataBase.getInstance().updateAllRequests(arrayData);
         ServerController.getInstance().sendMessageToClient("@Successful@" + "request accepted successfully");
     }
-
+    public void acceptCommentRequest(Request request) {
+        allRequests.remove(request);
+        ProductCenter.getInstance().addComment(new Gson().fromJson(request.getDetails(), Comment.class));
+        String arrayData = new Gson().toJson(allRequests);
+        DataBase.getInstance().updateAllRequests(arrayData);
+        ServerController.getInstance().sendMessageToClient("@Successful@" + "request accepted successfully");
+    }
     public void acceptSellerRegisterRequest(Request request) {
         if (UserCenter.getIncstance().canAcceptSellerRegister(new Gson().fromJson(request.getDetails(), Seller.class).getUsername())) {
             allRequests.remove(request);

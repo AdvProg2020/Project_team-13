@@ -123,7 +123,6 @@ public class ServerMessageController {
             OffCenter.getInstance().createEditOfferRequest(new Gson().fromJson(message, Offer.class));
         }else if(message.startsWith("@editProduct@")){
             message=message.substring(13);
-            System.out.println("!11111111111");
             //ProductCenter.getInstance().createEditProductRequest(new Gson().fromJson(message, Product.class));//
         }else if(message.startsWith("@pay@")){
             message=message.substring(5);
@@ -134,6 +133,10 @@ public class ServerMessageController {
         }else if(message.startsWith("@rate@")){
             message=message.substring(6);
             ProductCenter.getInstance().rating(message);
+        }else if(message.startsWith("@addComment@")){
+            message=message.substring(12);
+            ProductCenter.getInstance().commenting(message);
+            ServerController.getInstance().sendMessageToClient("@Successful@your comment sent to manager for accept");
         }
     }
 }

@@ -52,7 +52,7 @@ public class ProductsMenu extends Menu {
                     ClientController.getInstance().setCurrentMenu(menu);
                     menu.execute();
                 }else {
-                    printError("there is no product with this ID in your Cart");
+                    printError("there is no product with this ID");
                 }
             }else if (command.equalsIgnoreCase("view Cart")) {
                 Menu menu = new CartMenu(this).setScanner(scanner);

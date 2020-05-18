@@ -80,6 +80,9 @@ public class Product {
     }
 
     public void addComment(Comment comment) {
+        if(commentList==null){
+            commentList=new ArrayList<>();
+        }
         this.commentList.add(comment);
     }
 
