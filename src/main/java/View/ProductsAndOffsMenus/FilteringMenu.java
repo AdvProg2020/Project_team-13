@@ -165,7 +165,7 @@ public class FilteringMenu extends Menu {
                 }
             }
             if (featureModes != null && !featureModes.isEmpty()) {
-                categoryFeaturesToFilter.put(feature, featureModes);
+                categoryFeaturesToFilter.put(feature, featureModesToFilter);
             }
         }
         ProductController.getInstance().setCategoryFeaturesToFilter(categoryFeaturesToFilter);

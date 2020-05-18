@@ -2,12 +2,10 @@ package View.UserMenu.Seller;
 
 import Controller.Client.ClientController;
 import Controller.Client.OffsController;
-import Controller.Client.ProductController;
 import Models.Offer;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import View.Menu;
-import com.google.gson.internal.bind.util.ISO8601Utils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -90,7 +88,11 @@ public class EditOffsMenu extends Menu {
                 if (isBack()) {
                     continue;
                 }
-                offer.setProducts(allProducts);
+                ArrayList<String> allProductsID=new ArrayList<>();
+                for (Product product : allProducts) {
+                    allProductsID.add(product.getProductId());
+                }
+                offer.setProducts(allProductsID);
             } else if (command.equalsIgnoreCase("help")) {
                 help();
             } else if (command.equalsIgnoreCase("finish")) {
@@ -263,7 +265,7 @@ public class EditOffsMenu extends Menu {
             System.out.println("add [product id]");
             command = scanner.nextLine().trim();
             if (command.matches("add @p\\d+")) {
-                if (!seller.productExists(command.substring(4))) {
+                if (seller.productExists(command.substring(4))) {
                     System.out.println("The Product Isn't in Your List.");
                 } else if (OffsController.getInstance().productExitsInOtherOffer(seller, command.substring(4))) {
                     System.out.println("The Product Already Exists In Other Offer.");

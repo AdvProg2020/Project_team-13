@@ -23,33 +23,48 @@ public class OffsMenu extends Menu {
 
     @Override
     public void help() {
-       String offsMenuHelp="";
-       offsMenuHelp+="1.show product [productId]";
-       offsMenuHelp+="2.";
+        String offsMenuHelp = "";
+        offsMenuHelp += "1.show product [productId]\n";
+        offsMenuHelp += "2.filtering\n";
+        offsMenuHelp += "3.sorting\n";
+        offsMenuHelp += "4.show products\n";
+        offsMenuHelp += "5.help\n";
+        offsMenuHelp += "6.back";
+        System.out.println(offsMenuHelp);
     }
 
     @Override
     public void execute() {
-       OffsController.getInstance().showAllOffs();
-       String command;
-       while (!(command=scanner.nextLine().trim()).equalsIgnoreCase("back")){
-           if(command.matches("show product @p\\d+")){
-               if(OffsController.getInstance().isThereAnyProductWithThisId(command.substring(13))){
-                   System.out.println("There Isn't Any Product With This Id In Offers.");
-               }else{
-                   Menu menu=new ProductMenu(this).setScanner(scanner);
-                   ClientController.getInstance().setCurrentMenu(menu);
-                   ClientController.getInstance().setCurrentProduct(OffsController.getInstance().getTheProductById(command.substring(13)));
-                   menu.execute();
-               }
-//           }else if(){
-//
-//           }else if(){
-//
-//           }else{
-//               System.out.println("invalid command");
-           }
-       }
-       back();
+        ProductController.getInstance().getAllProductsFromServer();
+        OffsController.getInstance().getAllOffsFromServer();
+        OffsController.getInstance().showAllOffs();
+        String command;
+        while (!(command = scanner.nextLine().trim()).equalsIgnoreCase("back")) {
+            if (command.matches("show product @p\\d+")) {
+                ClientController.getInstance().setCurrentProduct(ProductController.getInstance().findProductAfterFilterInOffer(command.split("\\s")[2]));
+                if (ClientController.getInstance().getCurrentProduct() != null) {
+                    Menu menu = new ProductMenu(this).setScanner(scanner);
+                    ClientController.getInstance().setCurrentMenu(menu);
+                    menu.execute();
+                } else {
+                    printError("there is no product with this ID in your Cart");
+                }
+            } else if (command.equalsIgnoreCase("filtering")) {
+                Menu menu = new FilteringMenu(parentMenu).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
+            } else if (command.equalsIgnoreCase("sorting")) {
+                Menu menu = new SortingMenu(parentMenu).setScanner(scanner);
+                ClientController.getInstance().setCurrentMenu(menu);
+                menu.execute();
+            } else if (command.equalsIgnoreCase("show products")) {
+                ProductController.getInstance().showOffedProductsAfterFilterAndSort();
+            } else if (command.equalsIgnoreCase("help")) {
+                help();
+            } else {
+                System.out.println("invalid command");
+            }
+        }
+        back();
     }
 }

@@ -127,6 +127,9 @@ public class RequestCenter {
     public void declineRequest(String requestId){
         Request request=findRequestWithID(requestId);
         allRequests.remove(request);
+        if (request.getType().equals(RequestType.addOff)||request.getType().equals(RequestType.editOff)) {
+            OffCenter.getInstance().setProductStatusForOffer(new Gson().fromJson(request.getDetails(), Offer.class));
+        }
         String arrayData=new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);
         ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "Request declined successfully"));

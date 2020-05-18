@@ -22,13 +22,15 @@ public class UserCenter {
     private UserCenter() {
 
     }
-public void decreaseProductCount(String productID,String username){
-    for (Seller seller : allSeller) {
-        if(seller.getUsername().equals(username)){
 
+    public void decreaseProductCount(String productID, String username) {
+        for (Seller seller : allSeller) {
+            if (seller.getUsername().equals(username)) {
+
+            }
         }
     }
-}
+
     public static UserCenter getIncstance() {
         if (userCenter == null) {
             userCenter = new UserCenter();
@@ -136,15 +138,22 @@ public void decreaseProductCount(String productID,String username){
         if (isThereUserWithThisUsername(username)) {
             UserAccount userAccount = getUserWithUsername(username);
             if (userAccount.getPassword().equals(password)) {
-                if (userAccount.getType().equals("@Customer")) {
-                    String user = gson.toJson((Customer) userAccount);
-                    ServerController.getInstance().sendMessageToClient("@Login as Customer@" + user);
-                } else if (userAccount.getType().equals("@Seller")) {
-                    String user = gson.toJson((Seller) userAccount);
-                    ServerController.getInstance().sendMessageToClient("@Login as Seller@" + user);
-                } else if (userAccount.getType().equals("@Manager")) {
-                    String user = gson.toJson((Manager) userAccount);
-                    ServerController.getInstance().sendMessageToClient("@Login as Manager@" + user);
+                switch (userAccount.getType()) {
+                    case "@Customer": {
+                        String user = gson.toJson((Customer) userAccount);
+                        ServerController.getInstance().sendMessageToClient("@Login as Customer@" + user);
+                        break;
+                    }
+                    case "@Seller": {
+                        String user = gson.toJson((Seller) userAccount);
+                        ServerController.getInstance().sendMessageToClient("@Login as Seller@" + user);
+                        break;
+                    }
+                    case "@Manager": {
+                        String user = gson.toJson((Manager) userAccount);
+                        ServerController.getInstance().sendMessageToClient("@Login as Manager@" + user);
+                        break;
+                    }
                 }
             } else {
                 ServerController.getInstance().sendMessageToClient("@Error@Password is incorrect");
@@ -164,9 +173,9 @@ public void decreaseProductCount(String productID,String username){
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
     }
 
-    public void addOfferToSeller(Offer offer){
+    public void addOfferToSeller(Offer offer) {
         for (Seller seller : allSeller) {
-            if(seller.getUsername().equals(offer.getSeller())){
+            if (seller.getUsername().equals(offer.getSeller())) {
                 seller.addOffer(offer);
                 break;
             }
@@ -174,9 +183,9 @@ public void decreaseProductCount(String productID,String username){
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
     }
 
-    public void editOfferForSeller(Offer oldOffer, Offer newOffer){
+    public void editOfferForSeller(Offer newOffer){
         for (Seller seller : allSeller) {
-            if(seller.getUsername().equals(oldOffer.getSeller())){
+            if(seller.getUsername().equals(newOffer.getSeller())){
                 seller.editOffer(newOffer);
                 break;
             }
@@ -210,7 +219,7 @@ public void decreaseProductCount(String productID,String username){
 
     public void removeProductFromSellerProductList(Product product) {
         for (Seller seller : allSeller) {
-            if(seller.getUsername().equals(product.getSeller())) {
+            if (seller.getUsername().equals(product.getSeller())) {
                 seller.removeProduct(product.getProductId());
             }
         }
@@ -261,46 +270,51 @@ public void decreaseProductCount(String productID,String username){
         return allCustomer;
     }
 
-    public void editManager(Manager manager){
-        int index=allManager.indexOf(findManagerWithUsername(manager.getUsername()));
+    public void editManager(Manager manager) {
+        int index = allManager.indexOf(findManagerWithUsername(manager.getUsername()));
         allManager.remove(findManagerWithUsername(manager.getUsername()));
-        allManager.add(index,manager);
+        allManager.add(index, manager);
         DataBase.getInstance().updateAllManagers(new Gson().toJson(allManager));
         ServerController.getInstance().sendMessageToClient("@Successful@user successfully edited");
     }
-    public void editCustomer(Customer customer){
-        int index=allCustomer.indexOf(findCustomerWithUsername(customer.getUsername()));
+
+    public void editCustomer(Customer customer) {
+        int index = allCustomer.indexOf(findCustomerWithUsername(customer.getUsername()));
         allCustomer.remove(findCustomerWithUsername(customer.getUsername()));
-        allCustomer.add(index,customer);
+        allCustomer.add(index, customer);
         DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
         ServerController.getInstance().sendMessageToClient("@Successful@user successfully edited");
     }
-    public void editSeller(Seller seller){
-        int index=allSeller.indexOf(findSellerWithUsername(seller.getUsername()));
+
+    public void editSeller(Seller seller) {
+        int index = allSeller.indexOf(findSellerWithUsername(seller.getUsername()));
         allSeller.remove(findCustomerWithUsername(seller.getUsername()));
-        allSeller.add(index,seller);
+        allSeller.add(index, seller);
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
         ServerController.getInstance().sendMessageToClient("@Successful@user successfully edited");
     }
-    public Seller findSellerWithUsername(String username){
+
+    public Seller findSellerWithUsername(String username) {
         for (Seller seller : allSeller) {
-            if(seller.getUsername().equals(username)){
+            if (seller.getUsername().equals(username)) {
                 return seller;
             }
         }
         return null;
     }
-    public Customer findCustomerWithUsername(String username){
+
+    public Customer findCustomerWithUsername(String username) {
         for (Customer customer : allCustomer) {
-            if(customer.getUsername().equals(username)){
+            if (customer.getUsername().equals(username)) {
                 return customer;
             }
         }
         return null;
     }
-    public Manager findManagerWithUsername(String username){
+
+    public Manager findManagerWithUsername(String username) {
         for (Manager manager : allManager) {
-            if(manager.getUsername().equals(username)){
+            if (manager.getUsername().equals(username)) {
                 return manager;
             }
         }

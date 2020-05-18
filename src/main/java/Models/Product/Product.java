@@ -35,11 +35,23 @@ public class Product {
         this.productName = productName;
         this.sellerUsername = seller.getUsername();
         this.productCost = productCost;
-        this.costAfterOff=productCost;
+        this.costAfterOff = productCost;
         this.productsCategory = productsCategory;
         this.description = description;
         this.numberOfAvailableProducts = numberOfAvailableProducts;
         this.featuresOfCategoryThatHas = featuresOfCategoryThatHas;
+    }
+
+    public ArrayList<Customer> getAllBuyers() {
+        return allBuyers;
+    }
+
+    public void setCostAfterOff(double costAfterOff) {
+        this.costAfterOff = costAfterOff;
+    }
+
+    public void setAllBuyers(ArrayList<Customer> allBuyers) {
+        this.allBuyers = allBuyers;
     }
 
     public void setProductId(String productId) {
@@ -61,6 +73,7 @@ public class Product {
     public void setExistInOfferRegistered(boolean existInOfferRegistered) {
         this.existInOfferRegistered = existInOfferRegistered;
     }
+
     public double getAverageScore() {
         if (allScores != null) {
             double averageScore = 0;
@@ -261,5 +274,9 @@ public class Product {
         attributes += getCostAfterOff() + "\n";
         attributes += getDescription();
         ClientController.getInstance().getCurrentMenu().showMessage(attributes);
+    }
+
+    public void setFeaturesOfCategoryThatHas(HashMap<String, String> featuresOfCategoryThatHas) {
+        this.featuresOfCategoryThatHas = featuresOfCategoryThatHas;
     }
 }

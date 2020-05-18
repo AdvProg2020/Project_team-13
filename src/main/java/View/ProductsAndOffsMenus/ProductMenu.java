@@ -2,6 +2,7 @@ package View.ProductsAndOffsMenus;
 
 import Controller.Client.CartController;
 import Controller.Client.ClientController;
+import Controller.Client.ProductController;
 import Models.Product.Cart;
 import Models.Product.Product;
 import View.Menu;
@@ -38,7 +39,9 @@ public class ProductMenu extends Menu {
                 product.showAttributes();
             } else if (command.equalsIgnoreCase("help")) {
                 help();
-            } else if (command.equalsIgnoreCase("logout")) {
+            }else if(command.matches("compare @p\\d+")){
+                ProductController.getInstance().compareWithProduct(command.substring(8));
+            }else if (command.equalsIgnoreCase("logout")) {
                 ClientController.getInstance().setCurrentUser(null);
                 System.out.println("You Logged out!!");
                 parentMenu.execute();

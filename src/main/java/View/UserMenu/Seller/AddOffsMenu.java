@@ -9,7 +9,6 @@ import View.Menu;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Scanner;
 
 public class AddOffsMenu extends Menu {
     private boolean back;
@@ -31,7 +30,7 @@ public class AddOffsMenu extends Menu {
     @Override
     public void execute() {
         Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
-        if (!seller.hasAnyProduct()) {
+        if (seller.AnyOffer()) {
             System.out.println("There Is No Product For Offer!!!");
             back();
         }
@@ -40,7 +39,7 @@ public class AddOffsMenu extends Menu {
             back();
             return;
         }
-        ArrayList<Product> allProducts = getAllProducts(seller);
+        ArrayList<String> allProducts = getAllProducts(seller);
         if (backEntered()) {
             back();
             return;
@@ -55,7 +54,7 @@ public class AddOffsMenu extends Menu {
             back();
             return;
         }
-//        OffsController.getInstance().addOff(amount, allProducts, startDate, endDate);
+       OffsController.getInstance().addOff(amount, allProducts, startDate, endDate);
         back();
     }
 
@@ -94,14 +93,18 @@ public class AddOffsMenu extends Menu {
         return 0;
     }
 
-    private ArrayList<Product> getAllProducts(Seller seller) {
+    private ArrayList<String> getAllProducts(Seller seller) {
         String command;
         ArrayList<Product> products = new ArrayList<>(seller.getAllProducts());
         int productsTotallSize = products.size();
-        ArrayList<Product> selectedProducts = new ArrayList<>();
+        ArrayList<String> selectedProducts = new ArrayList<>();
         while (true) {
 //            "\u001B[34m"+message+"\u001B[0m"
-            System.out.println("\u001B[34m" + "Enter The Product From The List Below(add [productId]):\n" + (ProductController.getInstance().getTheProductDetails(products)) + "\u001B[0m");
+            ArrayList<String> productsId=new ArrayList<>();
+            for (Product product : products) {
+                productsId.add(product.getProductId());
+            }
+            System.out.println("\u001B[34m" + "Enter The Product From The List Below(add [productId]):\n" + (ProductController.getInstance().getTheProductDetails(productsId)) + "\u001B[0m");
             command = scanner.nextLine().trim();
             if (command.equalsIgnoreCase("back")) {
                 setBack(true);
@@ -118,7 +121,7 @@ public class AddOffsMenu extends Menu {
                 } else if (OffsController.getInstance().productExitsInOtherOffer(seller, command.substring(4))) {
                     System.out.println("The Product Already Exists in Other Offer.");
                 } else {
-                    selectedProducts.add(seller.getProductByID(command.substring(4)));
+                    selectedProducts.add(command.substring(4));
                     products.remove(seller.getProductByID(command.substring(4)));
                     OffsController.getInstance().setTheProductExistInOtherOffer(seller, command.substring(4), true);
                     System.out.println("Product selected");

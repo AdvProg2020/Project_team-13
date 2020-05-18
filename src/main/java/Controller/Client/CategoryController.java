@@ -36,7 +36,9 @@ public class CategoryController {
                 }
                 categoryCount++;
             }
-            allCategories = allCategories.substring(0, allCategories.length() - 1);
+            if (allCategories.length() != 0 && !allCategories.isEmpty()) {
+                allCategories = allCategories.substring(0, allCategories.length() - 1);
+            }
             ClientController.getInstance().getCurrentMenu().showMessage(allCategories);
         } else {
             ClientController.getInstance().getCurrentMenu().showMessage("there is no caegory");
