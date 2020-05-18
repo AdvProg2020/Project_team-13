@@ -36,7 +36,7 @@ public class ManageProductMenu extends Menu {
             if (command.matches("view @p\\d+")) {
                 System.out.println(seller.viewProduct(getTheProductIdByCommand(command, 1)));
             } else if (command.matches("view buyers @p\\d+")) {
-                //This is for score!!!
+                ProductController.getInstance().showAllBuyersForThisProduct(getTheProductIdByCommand(command, 2));
             } else if (command.matches("edit @p\\d+")) {
                 Menu menu = new EditProductInfoMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);

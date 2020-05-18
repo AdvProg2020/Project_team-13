@@ -57,6 +57,10 @@ public class Cart {
         return receivingInformation;
     }
 
+    public void setDiscountCode(DiscountCode discountCode) {
+        this.discountCode = discountCode;
+    }
+
     public void changeCountOfProduct(String productID, int count) {
         if(findProductWithID(productID).getNumberOfAvailableProducts()-count>=0) {
             if (countOfEachProduct.get(productID) + count > 0) {
