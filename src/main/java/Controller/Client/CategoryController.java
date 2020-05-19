@@ -16,15 +16,15 @@ public class CategoryController {
         this.allCategories = new ArrayList<>();
     }
 
-    public String getCategoriesStringForm() {
+    public void getCategoriesStringForm() {
         updateAllCategories();
         String categoriesStringForm = "";
         if (allCategories != null && !allCategories.isEmpty()) {
             for (Category category : allCategories) {
                 categoriesStringForm += category.getName() + "\n";
             }
-            return categoriesStringForm.substring(0, categoriesStringForm.length() - 1);
-        }else return "";
+            ClientController.getInstance().getCurrentMenu().showMessage(categoriesStringForm);
+        } else ClientController.getInstance().getCurrentMenu().printError(categoriesStringForm);
     }
 
     public static CategoryController getInstance() {
@@ -52,7 +52,7 @@ public class CategoryController {
             }
             ClientController.getInstance().getCurrentMenu().showMessage(allCategories);
         } else {
-            ClientController.getInstance().getCurrentMenu().showMessage("there is no caegory");
+            ClientController.getInstance().getCurrentMenu().showMessage("there is no category");
         }
     }
 
