@@ -73,9 +73,9 @@ public class SellerMenu extends Menu {
         sellerMenuOptions += "4.view offs\n";
         sellerMenuOptions += "5.view sales history\n";
         sellerMenuOptions += "6.view company information\n";
-        sellerMenuOptions += "7.LogOut\n";
-        sellerMenuOptions += "5.view balance\n";
-        sellerMenuOptions += "6.LogOut\n";
+        sellerMenuOptions += "7.view balance\n";
+        sellerMenuOptions += "8.Back\n";
+        sellerMenuOptions += "9.LogOut\n";
         System.out.println(sellerMenuOptions);
     }
 

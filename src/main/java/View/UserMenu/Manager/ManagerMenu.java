@@ -79,7 +79,7 @@ public class ManagerMenu extends Menu {
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else {
-                System.out.println("Invalid Command");
+                System.err.println("invalid command");
             }
         }
         back();

@@ -45,7 +45,7 @@ public class MainMenu extends Menu {
             } else if (command.equalsIgnoreCase("help")) {
                 help();
             } else {
-                System.out.println("Invalid Command");
+                System.err.println("invalid command");
             }
         }
 

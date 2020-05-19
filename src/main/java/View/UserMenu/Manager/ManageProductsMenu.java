@@ -43,7 +43,7 @@ public class ManageProductsMenu extends Menu {
                 System.out.println("You Logged out!!");
                 parentMenu.getParentMenu().execute();
             } else {
-                System.out.println("invalid command");
+                System.err.println("invalid command");
             }
         }
         back();

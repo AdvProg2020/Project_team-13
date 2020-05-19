@@ -47,7 +47,7 @@ public class Digest extends Menu {
                 }
 
             } else {
-                System.out.println("Invalid Command");
+                System.err.println("invalid command");
             }
         }
         back();

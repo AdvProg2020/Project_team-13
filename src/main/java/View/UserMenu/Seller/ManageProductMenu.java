@@ -119,7 +119,7 @@ public class ManageProductMenu extends Menu {
                 ProductController.getInstance().editProduct(currentProduct);
                 break;
             } else {
-                System.out.println("invalid command");
+                System.err.println("invalid command");
             }
             System.out.println("Enter The Feature That You Want To Edit You Can Use The Help For Your Commands: ");
 
