@@ -21,7 +21,6 @@ public class UserMenu extends Menu {
         userMenuOptions += "3. Help\n";
         userMenuOptions += "4. Back\n";
         System.out.println(userMenuOptions);
-
     }
 
     @Override

@@ -32,41 +32,13 @@ public class RegisterMenu extends Menu {
         while (true) {
             String command = scanner.nextLine().trim();
             if (command.equalsIgnoreCase("Register As a Customer")) {
-                String username, password, firstName, lastName, email, phoneNumber, credit;
-                username = getUserNamer();
-                password = getPassword();
-                firstName = getFirstName();
-                lastName = getLastName();
-                email = getEmail();
-                phoneNumber = getPhoneNumber();
-                credit = getCredit();
-                Customer customer = new Customer(username, password, firstName, lastName, email, phoneNumber, Double.parseDouble(credit));
-                RegisterController.getInstance().createNewUserAccount(customer);
+                registerAsCustomer();
                 break;
             } else if (command.equalsIgnoreCase("Register As a Manager")) {
-                String username, password, firstName, lastName, email, phoneNumber, credit;
-                username = getUserNamer();
-                password = getPassword();
-                firstName = getFirstName();
-                lastName = getLastName();
-                email = getEmail();
-                phoneNumber = getPhoneNumber();
-                credit = getCredit();
-                Manager manager = new Manager(username, password, firstName, lastName, email, phoneNumber, Double.parseDouble(credit));
-                RegisterController.getInstance().createNewUserAccount(manager);
+                registerAsManager();
                 break;
             } else if (command.equalsIgnoreCase("Register As a Seller")) {
-                String username, password, firstName, lastName, email, phoneNumber, companyName;
-                username = getUserNamer();
-                password = getPassword();
-                firstName = getFirstName();
-                lastName = getLastName();
-                email = getEmail();
-                phoneNumber = getPhoneNumber();
-                companyName = getCompanyName();
-                Seller seller = new Seller(username, password, firstName, lastName, email, phoneNumber, 0, companyName, false);
-                RegisterController.getInstance().createNewUserAccount(seller);
-
+                registerAsSeller();
                 break;
             } else if (command.equalsIgnoreCase("Help")) {
                 help();
@@ -77,6 +49,83 @@ public class RegisterMenu extends Menu {
         }
     }
 
+    private void registerAsSeller() {
+        String username, password, firstName, lastName, email, phoneNumber, companyName;
+        username = getUserNamer();
+        password = getPassword();
+        firstName = getFirstName();
+        lastName = getLastName();
+        email = getEmail();
+        phoneNumber = getPhoneNumber();
+        companyName = getCompanyName();
+        super.showMessage("You sure you want to register?(Yes/No)");
+        String command;
+        while (true) {
+            if ((command = scanner.nextLine().trim()).equalsIgnoreCase("Yes")) {
+                Seller seller = new Seller(username, password, firstName, lastName, email, phoneNumber, 0, companyName, false);
+                RegisterController.getInstance().createNewUserAccount(seller);
+                break;
+            } else if (command.equalsIgnoreCase("No")) {
+                break;
+            } else {
+                super.showMessage("invalid command");
+                super.showMessage("You sure you want to register?(Yes/No)");
+            }
+        }
+    }
+
+    private void registerAsManager() {
+        String username, password, firstName, lastName, email, phoneNumber, credit;
+        username = getUserNamer();
+        password = getPassword();
+        firstName = getFirstName();
+        lastName = getLastName();
+        email = getEmail();
+        phoneNumber = getPhoneNumber();
+        credit = getCredit();
+        String command;
+        super.showMessage("You sure you want to register?(Yes/No)");
+        while (true) {
+            if ((command = scanner.nextLine().trim()).equalsIgnoreCase("Yes")) {
+                Manager manager = new Manager(username, password, firstName, lastName, email, phoneNumber, Double.parseDouble(credit));
+                RegisterController.getInstance().createNewUserAccount(manager);
+                break;
+            } else if (command.equalsIgnoreCase("No")) {
+                break;
+            } else {
+                super.showMessage("invalid command");
+                super.showMessage("You sure you want to register?(Yes/No)");
+            }
+        }
+        return;
+    }
+
+    private void registerAsCustomer() {
+        String username, password, firstName, lastName, email, phoneNumber, credit;
+        username = getUserNamer();
+        password = getPassword();
+        firstName = getFirstName();
+        lastName = getLastName();
+        email = getEmail();
+        phoneNumber = getPhoneNumber();
+        credit = getCredit();
+        String command;
+        super.showMessage("You sure you want to register?(Yes/No)");
+        while (true) {
+            if ((command = scanner.nextLine().trim()).equalsIgnoreCase("Yes")) {
+                Customer customer = new Customer(username, password, firstName, lastName, email, phoneNumber, Double.parseDouble(credit));
+                RegisterController.getInstance().createNewUserAccount(customer);
+                break;
+            } else if (command.equalsIgnoreCase("No")) {
+                break;
+            } else {
+                super.showMessage("invalid command");
+                super.showMessage("You sure you want to register?(Yes/No)");
+            }
+        }
+        return;
+    }
+
     @Override
     public void showMessage(String message) {
         System.out.println(message);
@@ -85,12 +134,13 @@ public class RegisterMenu extends Menu {
         menu.execute();
     }
 
+
     private String getCredit() {
         String credit;
         while (true) {
             System.out.println("Enter beginning credit");
             credit = scanner.nextLine().trim();
-            if (Pattern.matches("\\d+\\.?\\d+", credit)||Pattern.matches("\\d+", credit)) {
+            if (Pattern.matches("\\d+\\.?\\d+", credit) || Pattern.matches("\\d+", credit)) {
                 break;
             } else {
                 System.out.println("credit is Invalid");
