@@ -10,11 +10,11 @@ public class Manager extends UserAccount {
     @Override
     public String viewPersonalInfo() {
         String personalInfo = "";
-        personalInfo += "User name: " + this.username + "\n";
-        personalInfo += "First Name: " + this.firstName + "\n";
-        personalInfo += "Last name: " + this.lastName + "\n";
-        personalInfo += "Email: " + this.email + "\n";
-        personalInfo += "PhoneNumber: " + this.phoneNumber;
+        personalInfo += "\u001B[34mUser name: \u001B[0m" + this.username + "\n";
+        personalInfo += "\u001B[34mFirst Name: \u001B[0m" + this.firstName + "\n";
+        personalInfo += "\u001B[34mLast name: \u001B[0m" + this.lastName + "\n";
+        personalInfo += "\u001B[34mEmail: \u001B[0m" + this.email + "\n";
+        personalInfo += "\u001B[34mPhoneNumber: \u001B[0m" + this.phoneNumber;
         return personalInfo;
     }
 }

@@ -29,12 +29,12 @@ public class Customer extends UserAccount {
     @Override
     public String viewPersonalInfo() {
         String personalInfo = "";
-        personalInfo += "Username: " + this.username + "\n";
-        personalInfo += "First name: " + this.firstName + "\n";
-        personalInfo += "Last name: " + this.lastName + "\n";
-        personalInfo += "Email: " + this.email + "\n";
-        personalInfo += "Phone Number: " + this.phoneNumber + "\n";
-        personalInfo += "Credit: " + this.credit;
+        personalInfo += "\u001B[34mUsername: \u001B[0m" + this.username + "\n";
+        personalInfo += "\u001B[34mFirst name: \u001B[0m" + this.firstName + "\n";
+        personalInfo += "\u001B[34mLast name: \u001B[0m" + this.lastName + "\n";
+        personalInfo += "\u001B[34mEmail: \u001B[0m" + this.email + "\n";
+        personalInfo += "\u001B[34mPhone Number: \u001B[0m" + this.phoneNumber + "\n";
+        personalInfo += "\u001B[34mCredit: \u001B[0m" + this.credit;
         return personalInfo;
     }
 

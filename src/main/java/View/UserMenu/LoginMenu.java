@@ -34,7 +34,7 @@ public class LoginMenu extends Menu {
                 Matcher matcher = pattern.matcher(command);
                 matcher.find();
                 userName = matcher.group(2);
-                System.out.println("Enter passWord");
+                System.out.println("Enter password");
                 password = scanner.nextLine().trim();
                 LoginController.getInstance().login(userName, password);
             } else if (command.equalsIgnoreCase("help")) {
