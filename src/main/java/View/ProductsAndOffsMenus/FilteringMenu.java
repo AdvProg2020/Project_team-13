@@ -3,6 +3,7 @@ package View.ProductsAndOffsMenus;
 import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
 import Controller.Client.ProductController;
+import Controller.Server.CategoryCenter;
 import Controller.Server.ProductCenter;
 import Models.Product.Category;
 import Models.Product.Product;
@@ -32,13 +33,27 @@ public class FilteringMenu extends Menu {
         String command;
         while (!(command = scanner.nextLine().trim()).equalsIgnoreCase("back")) {
             if (command.equalsIgnoreCase("filter")) {
-                filter();
+                if (CategoryController.getInstance().getAllCategories() != null &&
+                        !CategoryController.getInstance().getAllCategories().isEmpty()) {
+                    filter();
+                }else {
+                    printError("there is no category to filter!!");
+                }
             } else if (command.equalsIgnoreCase("disable filters")) {
-                disableFilters();
+                if (CategoryController.getInstance().getAllCategories() != null &&
+                        !CategoryController.getInstance().getAllCategories().isEmpty()) {
+                    disableFilters();
+                } else {
+                    printError("there is no filters!");
+                }
             } else if (command.equalsIgnoreCase("current filters")) {
-                showCurrentFilters();
+                if (CategoryController.getInstance().getAllCategories() != null &&
+                        !CategoryController.getInstance().getAllCategories().isEmpty()) {
+                    showCurrentFilters();
+                }
             } else if (command.equalsIgnoreCase("show available filters")) {
-                String allFilters = "1.Filter by price range\n2.Filter by brand\n3.Filter by seller\n4.Filter by product status\n5.Filter by name\n6.Filter By Category Features";
+                String allFilters = "\u001B[34m1.Filter by price range\n2.Filter by brand\n3.Filter by seller\n" +
+                        "4.Filter by product status\n5.Filter by name\n6.Filter By Category Features\u001B[0m";
                 System.out.println(allFilters);
             } else if (command.equalsIgnoreCase("help")) {
                 help();
@@ -113,6 +128,7 @@ public class FilteringMenu extends Menu {
 
     private void filter() {
         if (ProductController.getInstance().getCurrentCategory() == null) {
+            System.out.println("\u001B[34m" + CategoryController.getInstance().getCategoriesStringForm() + "\u001B[0m");
             System.out.println("First you need to pick a category to filter.please enter a category");
             Category category = getCategoryName("category name", "");
             ProductController.getInstance().setCurrentCategory(category);

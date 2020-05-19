@@ -16,6 +16,17 @@ public class CategoryController {
         this.allCategories = new ArrayList<>();
     }
 
+    public String getCategoriesStringForm() {
+        updateAllCategories();
+        String categoriesStringForm = "";
+        if (allCategories != null && !allCategories.isEmpty()) {
+            for (Category category : allCategories) {
+                categoriesStringForm += category.getName() + "\n";
+            }
+            return categoriesStringForm.substring(0, categoriesStringForm.length() - 1);
+        }else return "";
+    }
+
     public static CategoryController getInstance() {
         if (categoryController == null) {
             categoryController = new CategoryController();

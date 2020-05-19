@@ -21,22 +21,21 @@ public class UserMenu extends Menu {
         userMenuOptions += "3. Help\n";
         userMenuOptions += "4. Back\n";
         System.out.println(userMenuOptions);
-
     }
 
     @Override
     public void execute() {
-        if(ClientController.getInstance().getCurrentUser()!=null) {
-            if(ClientController.getInstance().getCurrentUser().getType().equalsIgnoreCase("@Seller")) {
-                Menu menu=new SellerMenu(parentMenu).setScanner(scanner);
+        if (ClientController.getInstance().getCurrentUser() != null) {
+            if (ClientController.getInstance().getCurrentUser().getType().equalsIgnoreCase("@Seller")) {
+                Menu menu = new SellerMenu(parentMenu).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
-            }else if(ClientController.getInstance().getCurrentUser().getType().equalsIgnoreCase("@Customer")) {
-                Menu menu=new CustomerMenu(parentMenu).setScanner(scanner);
+            } else if (ClientController.getInstance().getCurrentUser().getType().equalsIgnoreCase("@Customer")) {
+                Menu menu = new CustomerMenu(parentMenu).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
-            }else if(ClientController.getInstance().getCurrentUser().getType().equalsIgnoreCase("@Manager")) {
-                Menu menu=new ManagerMenu(parentMenu).setScanner(scanner);
+            } else if (ClientController.getInstance().getCurrentUser().getType().equalsIgnoreCase("@Manager")) {
+                Menu menu = new ManagerMenu(parentMenu).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             }
@@ -54,13 +53,11 @@ public class UserMenu extends Menu {
                 menu.execute();
             } else if (command.equalsIgnoreCase("help")) {
                 help();
-            }else {
+            } else {
                 System.out.println("Invalid Command");
             }
         }
-        back();
     }
-
 
 
 }
