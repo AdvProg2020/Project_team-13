@@ -26,39 +26,42 @@ public class UserMenu extends Menu {
 
     @Override
     public void execute() {
-        if(ClientController.getInstance().getCurrentUser()!=null) {
-            if(ClientController.getInstance().getCurrentUser().getType().equalsIgnoreCase("@Seller")) {
-                Menu menu=new SellerMenu(parentMenu).setScanner(scanner);
+        if (ClientController.getInstance().getCurrentUser() == null) {
+            String command;
+            while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
+                if (command.equalsIgnoreCase("Register")) {
+                    Menu menu = new RegisterMenu(this).setScanner(this.scanner);
+                    ClientController.getInstance().setCurrentMenu(menu);
+                    menu.execute();
+                } else if (command.equalsIgnoreCase("Login")) {
+                    Menu menu = new LoginMenu(this).setScanner(this.scanner);
+                    ClientController.getInstance().setCurrentMenu(menu);
+                    menu.execute();
+                } else if (command.equalsIgnoreCase("help")) {
+                    help();
+                } else {
+                    printError("Invalid Command");
+                }
+            }
+        } else if (ClientController.getInstance().getCurrentUser() != null && parentMenu instanceof MainMenu) {
+            if (ClientController.getInstance().getCurrentUser().getType().equalsIgnoreCase("@Seller")) {
+                Menu menu = new SellerMenu(parentMenu).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
-            }else if(ClientController.getInstance().getCurrentUser().getType().equalsIgnoreCase("@Customer")) {
-                Menu menu=new CustomerMenu(parentMenu).setScanner(scanner);
+            } else if (ClientController.getInstance().getCurrentUser().getType().equalsIgnoreCase("@Customer")) {
+                Menu menu = new CustomerMenu(parentMenu).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
-            }else if(ClientController.getInstance().getCurrentUser().getType().equalsIgnoreCase("@Manager")) {
-                Menu menu=new ManagerMenu(parentMenu).setScanner(scanner);
+            } else if (ClientController.getInstance().getCurrentUser().getType().equalsIgnoreCase("@Manager")) {
+                Menu menu = new ManagerMenu(parentMenu).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             }
             return;
         }
-        String command;
-        while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
-            if (command.equalsIgnoreCase("Register")) {
-                Menu menu = new RegisterMenu(this).setScanner(this.scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
-                menu.execute();
-            } else if (command.equalsIgnoreCase("Login")) {
-                Menu menu = new LoginMenu(this).setScanner(this.scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
-                menu.execute();
-            } else if (command.equalsIgnoreCase("help")) {
-                help();
-            }else {
-                System.out.println("Invalid Command");
-            }
+        if(!(parentMenu instanceof MainMenu)){
+            back();
         }
-        back();
     }
 
 
