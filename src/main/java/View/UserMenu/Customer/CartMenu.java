@@ -94,7 +94,7 @@ public class CartMenu extends Menu {
                 System.out.println("You Logged out!!");
                 parentMenu.execute();
             } else {
-                System.out.println("Invalid Command");
+                System.err.println("invalid command");
             }
         }
         back();

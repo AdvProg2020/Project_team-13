@@ -23,8 +23,8 @@ public class ViewAndEditInformationForSeller extends Menu {
         managerMenuOptions += "6.Edit Company Name\n";
         managerMenuOptions += "7.LogOut\n";
         managerMenuOptions += "8.Help\n";
-        managerMenuOptions += "9.Back";
-        managerMenuOptions += "10.Logout";
+        managerMenuOptions += "9.Back\n";
+        managerMenuOptions += "10.Logout\n";
         System.out.println(managerMenuOptions);
     }
 
@@ -62,7 +62,7 @@ public class ViewAndEditInformationForSeller extends Menu {
                 System.out.println("You Logged out!!");
                 parentMenu.getParentMenu().execute();
             }else {
-                System.out.println("Invalid Command");
+                System.err.println("invalid command");
             }
         }
         back();

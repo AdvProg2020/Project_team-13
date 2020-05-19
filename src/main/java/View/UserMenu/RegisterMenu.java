@@ -45,7 +45,7 @@ public class RegisterMenu extends Menu {
             } else if (command.equalsIgnoreCase("back")) {
                 back();
                 break;
-            } else System.out.println("Invalid command");
+            } else System.err.println("invalid command");
         }
     }
 

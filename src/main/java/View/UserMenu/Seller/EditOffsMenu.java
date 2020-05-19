@@ -100,7 +100,7 @@ public class EditOffsMenu extends Menu {
                 OffsController.getInstance().editOff(offer);
                 break;
             } else if (!command.equalsIgnoreCase("back")) {
-                System.out.println("invalid command");
+                System.err.println("invalid command");
             }else if (command.equalsIgnoreCase("logout")) {
                 ClientController.getInstance().setCurrentUser(null);
                 System.out.println("You Logged out!!");
@@ -257,7 +257,7 @@ public class EditOffsMenu extends Menu {
                     System.out.println("The Product Isn't In The List");
                 }
             } else if (!command.equalsIgnoreCase("back")) {
-                System.out.println("invalid command");
+                System.err.println("invalid command");
             }
         } while (!(command.equalsIgnoreCase("back")));
     }
@@ -280,7 +280,7 @@ public class EditOffsMenu extends Menu {
                     System.out.println("The product added.");
                 }
             } else if (!command.equalsIgnoreCase("back")) {
-                System.out.println("invalid command");
+                System.err.println("invalid command");
             }
         } while (!(command.equalsIgnoreCase("back")));
     }
@@ -301,7 +301,7 @@ public class EditOffsMenu extends Menu {
             } else if (command.equals("Remove Product")) {
                 removeProduct();
             } else if (!command.equalsIgnoreCase("back")) {
-                System.out.println("invalid command");
+                System.err.println("invalid command");
             }
         } while (!(command.equalsIgnoreCase("back")));
         setBack(true);

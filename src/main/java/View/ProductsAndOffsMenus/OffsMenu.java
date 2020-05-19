@@ -31,7 +31,7 @@ public class OffsMenu extends Menu {
         offsMenuHelp += "4.show products\n";
         offsMenuHelp += "5.help\n";
         offsMenuHelp += "6.back\n";
-        offsMenuHelp += "7.logout";
+        offsMenuHelp += "7.logout\n";
         offsMenuHelp += "8.Login/Register";
         System.out.println(offsMenuHelp);
     }
@@ -82,7 +82,7 @@ public class OffsMenu extends Menu {
                 }
 
             } else {
-                System.out.println("invalid command");
+                System.err.println("invalid command");
             }
         }
         back();

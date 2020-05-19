@@ -22,13 +22,14 @@ public class ManageCategoryMenu extends Menu {
         manageCategoryMenu += "2.Edit [category]\n";
         manageCategoryMenu += "3.Remove [category]\n";
         manageCategoryMenu += "4.Help\n";
-        manageCategoryMenu += "5.Back";
-        manageCategoryMenu += "6.Logout";
+        manageCategoryMenu += "5.Back\n";
+        manageCategoryMenu += "6.Logout\n";
         System.out.println(manageCategoryMenu);
     }
 
     @Override
     public void execute() {
+
         CategoryController.getInstance().printAllCategories();
         String command;
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
@@ -45,7 +46,7 @@ public class ManageCategoryMenu extends Menu {
                 System.out.println("You Logged out!!");
                 parentMenu.getParentMenu().execute();
             } else {
-                System.out.println("command is invalid.");
+                System.err.println("command is invalid.");
             }
         }
         back();
