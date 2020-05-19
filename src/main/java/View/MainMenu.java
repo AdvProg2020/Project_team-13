@@ -28,12 +28,7 @@ public class MainMenu extends Menu {
     @Override
     public void execute() {
         ClientController.getInstance().setCurrentMenu(this);
-        if (ClientController.getInstance().getCurrentUser() != null) {
-            Menu menu = new UserMenu(this).setScanner(this.scanner);
-            ClientController.getInstance().setCurrentMenu(menu);
-            menu.execute();
-            return;
-        }
+
         while (true) {
             String command = scanner.nextLine().trim();
             if (command.equalsIgnoreCase("products")) {

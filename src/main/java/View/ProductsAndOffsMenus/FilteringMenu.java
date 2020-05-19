@@ -128,7 +128,6 @@ public class FilteringMenu extends Menu {
 
     private void filter() {
         if (ProductController.getInstance().getCurrentCategory() == null) {
-            System.out.println("\u001B[34m" + CategoryController.getInstance().getCategoriesStringForm() + "\u001B[0m");
             System.out.println("First you need to pick a category to filter.please enter a category");
             Category category = getCategoryName("category name", "");
             ProductController.getInstance().setCurrentCategory(category);

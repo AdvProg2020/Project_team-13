@@ -29,7 +29,7 @@ public class UserMenu extends Menu {
             String command;
             while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
                 if (command.equalsIgnoreCase("Register")) {
-                    Menu menu = new RegisterMenu(this).setScanner(this.scanner);
+                    Menu menu = new RegisterMenu(parentMenu).setScanner(this.scanner);
                     ClientController.getInstance().setCurrentMenu(menu);
                     menu.execute();
                 } else if (command.equalsIgnoreCase("Login")) {

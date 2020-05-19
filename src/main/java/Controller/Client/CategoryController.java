@@ -16,6 +16,8 @@ public class CategoryController {
         this.allCategories = new ArrayList<>();
     }
 
+
+
     public void getCategoriesStringForm() {
         updateAllCategories();
         String categoriesStringForm = "";

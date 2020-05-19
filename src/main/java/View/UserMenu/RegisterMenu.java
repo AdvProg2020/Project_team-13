@@ -47,6 +47,7 @@ public class RegisterMenu extends Menu {
                 break;
             } else System.err.println("invalid command");
         }
+        back();
     }
 
     private void registerAsSeller() {
@@ -58,7 +59,7 @@ public class RegisterMenu extends Menu {
         email = getEmail();
         phoneNumber = getPhoneNumber();
         companyName = getCompanyName();
-        super.showMessage("You sure you want to register?(Yes/No)");
+        super.showMessage("Are you sure you want to register?(Yes/No)");
         String command;
         while (true) {
             if ((command = scanner.nextLine().trim()).equalsIgnoreCase("Yes")) {
@@ -69,7 +70,7 @@ public class RegisterMenu extends Menu {
                 break;
             } else {
                 super.showMessage("invalid command");
-                super.showMessage("You sure you want to register?(Yes/No)");
+                super.showMessage("Are you sure you want to register?(Yes/No)");
             }
         }
     }
@@ -84,7 +85,7 @@ public class RegisterMenu extends Menu {
         phoneNumber = getPhoneNumber();
         credit = getCredit();
         String command;
-        super.showMessage("You sure you want to register?(Yes/No)");
+        super.showMessage("Are you sure you want to register?(Yes/No)");
         while (true) {
             if ((command = scanner.nextLine().trim()).equalsIgnoreCase("Yes")) {
                 Manager manager = new Manager(username, password, firstName, lastName, email, phoneNumber, Double.parseDouble(credit));
@@ -126,13 +127,6 @@ public class RegisterMenu extends Menu {
         return;
     }
 
-    @Override
-    public void showMessage(String message) {
-        System.out.println(message);
-        Menu menu = new LoginMenu(parentMenu).setScanner(this.scanner);
-        ClientController.getInstance().setCurrentMenu(menu);
-        menu.execute();
-    }
 
 
     private String getCredit() {
