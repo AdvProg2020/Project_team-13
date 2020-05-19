@@ -1,6 +1,13 @@
 package ManagerRegistrationTest;
 
+import Controller.Server.DataBase;
+import Controller.Server.UserCenter;
+import Models.Product.Product;
+import Models.UserAccount.Seller;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
 
 class DataBaseTest {
 
@@ -9,10 +16,8 @@ class DataBaseTest {
 
     }
 
-    @Test
-    void updateAllManagers() {
 
-    }
+
 
     @Test
     void setAllUsersListFromDateBase() {

@@ -90,7 +90,7 @@ public class RegisterMenu extends Menu {
         while (true) {
             System.out.println("Enter beginning credit");
             credit = scanner.nextLine().trim();
-            if (Pattern.matches("\\d+\\.?\\d+", credit)) {
+            if (Pattern.matches("\\d+\\.?\\d+", credit)||Pattern.matches("\\d+", credit)) {
                 break;
             } else {
                 System.out.println("credit is Invalid");

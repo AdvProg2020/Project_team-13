@@ -38,7 +38,7 @@ public class MessageController {
 
     public void processMessage(String message) {
         if (message.startsWith("@Error@")) {
-            message = message.substring(7, message.length());
+            message = message.substring(7);
             ClientController.getInstance().getCurrentMenu().printError(message);
         } else if (message.startsWith("@Successful@")) {
             message = message.substring(12, message.length());

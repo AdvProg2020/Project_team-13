@@ -63,14 +63,13 @@ public class DiscountCodeCenter {
         Random random = new Random();
         String username = UserCenter.getIncstance().getAllCustomer().get(random.nextInt(UserCenter.getIncstance().getAllCustomer().size())).getUsername();
         Date endDate = new Date();
-        endDate.setYear(60);
+        endDate.setYear(Calendar.getInstance().getTime().getYear() + 1);
         ArrayList<String> alluser = new ArrayList<>();
         alluser.add(username);
         HashMap<String, Integer> maxusingTime = new HashMap<String, Integer>();
         maxusingTime.put(username, 1);
         DiscountCode discountCodeForGift = new DiscountCode(new Date(), endDate, alluser, 90, 20000, maxusingTime, maxusingTime);
         DiscountCodeCenter.getIncstance().createDiscountCodeForGift(discountCodeForGift);
-
     }
 
     public ArrayList<DiscountCode> getAllDiscountCodes() {
@@ -165,7 +164,7 @@ public class DiscountCodeCenter {
                 break;
             }
         }
-        if ((calendar.get(Calendar.DAY_OF_MONTH) == 18 && calendar.get(Calendar.MONTH) == 4) || calendar.getTime().getDay() == calendar.getTime().getMonth()) {
+        if ((calendar.get(Calendar.DAY_OF_MONTH) == 28 && calendar.get(Calendar.MONTH) == 9) || calendar.getTime().getDay() == calendar.getTime().getMonth()+1) {
             makeDiscountCodeForRandomCustomer();
         }
     }

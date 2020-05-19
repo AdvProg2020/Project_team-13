@@ -9,12 +9,12 @@ import org.junit.jupiter.api.Test;
 class RegisterControllerTest {
     private RegisterController registerController=new RegisterController();
 
-    @Test
-    void createNewUserAccount() {
-        /// must Database Added.
-        UserAccount userAccount=new Manager("WolfOfWallStreet", "12234","majid","kori","majid.kori@gmail.com", "09182831", 12);
-        ClientControllerTest clientControllerTest=new ClientControllerTest();
-        String message="@Register@"+new Gson().toJson(userAccount);
-        clientControllerTest.sendMessageToServer(message);
-    }
+//    @Test
+//    void createNewUserAccount() {
+//        /// must Database Added.
+//        UserAccount userAccount=new Manager("WolfOfWallStreet", "12234","majid","kori","majid.kori@gmail.com", "09182831", 12);
+//        ClientControllerTest clientControllerTest=new ClientControllerTest();
+//        String message="@Register@"+new Gson().toJson(userAccount);
+//        clientControllerTest.sendMessageToServer(message);
+//    }
 }

@@ -1,1 +1,1 @@
-[{"username":"TheBigManager","password":"987654321","firstName":"hero","lastName":"miro","email":"hero.miro@yahoo.com","phoneNumber":"09123698865","type":"@Manager","credit":2000.0},{"username":"boss","password":"123456789","firstName":"Anonymous","lastName":"person","email":"null@empty.com","phoneNumber":"09090909090","type":"@Manager","credit":9.999999999999E12}]
+[{"username":"boss","password":"123456789","firstName":"karim","lastName":"bagheri","email":"aliii@aliii.com","phoneNumber":"09330410360","type":"@Manager","credit":0.0,"historyOfTransaction":[]}]
