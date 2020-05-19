@@ -66,7 +66,7 @@ public class AddOffsMenu extends Menu {
             if (command.matches("\\d{1,2}(\\.\\d+)?%")) {
                 return Double.parseDouble(command.substring(0, command.length() - 1));
             } else if (!command.equalsIgnoreCase("back")) {
-                System.out.println("invalid command");
+                System.err.println("invalid command");
             }
         } while (!(command.equalsIgnoreCase("back")));
         setBack(true);
@@ -86,7 +86,7 @@ public class AddOffsMenu extends Menu {
             if (command.matches("\\d{1,2}(\\.\\d+)?%")) {
                 return Double.parseDouble(command.substring(0, command.length() - 1));
             } else if (!command.equalsIgnoreCase("back")) {
-                System.out.println("invalid command");
+                System.err.println("invalid command");
             }
         } while (!(command.equalsIgnoreCase("back")));
         setBack(true);
@@ -132,7 +132,7 @@ public class AddOffsMenu extends Menu {
             } else if (command.equalsIgnoreCase("View selected products")) {
                 System.out.println("\u001B[34m" + ProductController.getInstance().getTheProductDetails(selectedProducts) + "\u001B[0m");
             } else {
-                System.out.println("invalid command");
+                System.err.println("invalid command");
             }
         }
     }
@@ -152,7 +152,7 @@ public class AddOffsMenu extends Menu {
                     return startDate;
                 }
             } else if (!command.equalsIgnoreCase("back")) {
-                System.out.println("invalid command");
+                System.err.println("invalid command");
             }
         } while (!(command.equalsIgnoreCase("back")));
         setBack(true);
@@ -174,7 +174,7 @@ public class AddOffsMenu extends Menu {
                     return endDate;
                 }
             } else if (!command.equalsIgnoreCase("back")) {
-                System.out.println("invalid command");
+                System.err.println("invalid command");
             }
         } while (!(command.equalsIgnoreCase("back")));
         setBack(true);

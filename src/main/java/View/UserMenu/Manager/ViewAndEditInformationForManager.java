@@ -61,7 +61,7 @@ public class ViewAndEditInformationForManager extends Menu {
             } else if (command.equalsIgnoreCase("help")) {
                 help();
             } else {
-                System.out.println("Invalid Command");
+                System.err.println("invalid command");
             }
         }
         back();

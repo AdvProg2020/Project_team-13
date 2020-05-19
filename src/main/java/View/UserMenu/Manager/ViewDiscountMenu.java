@@ -46,7 +46,7 @@ public class ViewDiscountMenu extends Menu {
                 System.out.println("You Logged out!!");
                 parentMenu.getParentMenu().execute();
             } else {
-                System.out.println("Invalid Command");
+                System.err.println("invalid command");
             }
         }
         back();

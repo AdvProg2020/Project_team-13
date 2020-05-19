@@ -82,7 +82,7 @@ public class OffsMenu extends Menu {
                 }
 
             } else {
-                System.out.println("invalid command");
+                System.err.println("invalid command");
             }
         }
         back();

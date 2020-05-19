@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Client.ClientController;
+import Controller.Server.UserCenter;
 import Models.Product.Product;
 import View.ProductsAndOffsMenus.OffsMenu;
 import View.ProductsAndOffsMenus.ProductsMenu;
@@ -19,7 +20,7 @@ public class MainMenu extends Menu {
         mainMenuOptions += "2.products\n";
         mainMenuOptions += "3.offs\n";
         mainMenuOptions += "4.help\n";
-        mainMenuOptions += "5.logout";
+        mainMenuOptions += "5.logout\n";
         System.out.println(mainMenuOptions);
 
     }
