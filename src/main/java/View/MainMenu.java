@@ -19,7 +19,8 @@ public class MainMenu extends Menu {
         mainMenuOptions += "1.EnterUserMenu\n";
         mainMenuOptions += "2.products\n";
         mainMenuOptions += "3.offs\n";
-        mainMenuOptions += "4.help";
+        mainMenuOptions += "4.help\n";
+        mainMenuOptions += "5.logout\n";
         System.out.println(mainMenuOptions);
 
     }
@@ -27,7 +28,12 @@ public class MainMenu extends Menu {
     @Override
     public void execute() {
         ClientController.getInstance().setCurrentMenu(this);
-
+        if (ClientController.getInstance().getCurrentUser() != null) {
+            Menu menu = new UserMenu(this).setScanner(this.scanner);
+            ClientController.getInstance().setCurrentMenu(menu);
+            menu.execute();
+            return;
+        }
         while (true) {
             String command = scanner.nextLine().trim();
             if (command.equalsIgnoreCase("products")) {
@@ -44,8 +50,16 @@ public class MainMenu extends Menu {
                 menu.execute();
             } else if (command.equalsIgnoreCase("help")) {
                 help();
-            } else {
-                System.err.println("invalid command");
+            } else if (command.equalsIgnoreCase("logout")) {
+                if (ClientController.getInstance().getCurrentUser() != null) {
+                    ClientController.getInstance().setCurrentUser(null);
+                    System.out.println("You Logged out!!");
+                    parentMenu.getParentMenu().execute();
+                } else {
+                    printError("you are not signed yet!!");
+                }
+            }  else {
+                System.out.println("Invalid Command");
             }
         }
 

@@ -57,6 +57,7 @@ public class ManagerMenu extends Menu {
                 help();
             } else if (command.equalsIgnoreCase("logout")) {
                 ClientController.getInstance().setCurrentUser(null);
+                System.out.println("You Logged out!!");
                 parentMenu.execute();
             } else if (command.equalsIgnoreCase("manage categories")) {
                 Menu menu = new ManageCategoryMenu(this).setScanner(scanner);
