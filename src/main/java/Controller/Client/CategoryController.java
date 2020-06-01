@@ -73,7 +73,7 @@ public class CategoryController {
     public boolean isThereCategoryWithThisName(String name) {
         if (allCategories != null && !allCategories.isEmpty()) {
             for (Category category : allCategories) {
-                if (category.getName().equalsIgnoreCase(name)) {
+                if (category.getName().equals(name)) {
                     return true;
                 }
             }

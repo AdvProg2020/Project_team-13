@@ -282,15 +282,15 @@ public class Product {
 
     public String productInfoFor() {
         return "Product{" +
-                "productId='" + productId + '\'' +
-                ", productStatus=" + productStatus +
-                ", productName='" + productName + '\'' +
-                ", productCompany='" + productCompany + '\'' +
-                ", productCost=" + productCost +
-                ", costAfterOff=" + costAfterOff +
-                ", productsCategory='" + productsCategory + '\'' +
-                ", description='" + description + '\'' +
-                ", numberOfAvailableProducts=" + numberOfAvailableProducts;
+                "productId='" + productId + "\n" +
+                "productStatus= " + productStatus +"\n"+
+                "productName= " + productName + "\n" +
+                "productCompany= " + productCompany + "\n" +
+                "productCost= " + productCost + "\n" +
+                "costAfterOff= " + costAfterOff +"\n" +
+                "productsCategory= " + productsCategory + "\n" +
+                "description= " + description + "\n" +
+                "numberOfAvailableProducts= " + numberOfAvailableProducts;
     }
 
     public void showDigest() {

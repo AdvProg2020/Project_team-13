@@ -1,0 +1,1 @@
+[{"type":"addOff","status":"onReview","requestId":"@r100006","details":"{\"amount\":32.0,\"seller\":\"caly\",\"productsId\":[\"@p1001\"],\"startTime\":\"Dec 12, 2022, 12:00:00 AM\",\"endTime\":\"Dec 12, 2023, 12:00:00 AM\",\"offerStatus\":\"onReviewForCreate\"}"}]

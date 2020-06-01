@@ -90,9 +90,11 @@ public class CategoryCenter {
                 features.add(feature);
             }
 
-            for (Product product : category.getAllProducts()) {
-                product.getFeaturesOfCategoryThatHas().put(features.get(features.size() - 1), "");
-                ProductCenter.getInstance().getProductWithId(product.getProductId()).getFeaturesOfCategoryThatHas().put(features.get(features.size() - 1), "");
+            if (category.getAllProducts() != null && !category.getAllProducts().isEmpty()) {
+                for (Product product : category.getAllProducts()) {
+                    product.getFeaturesOfCategoryThatHas().put(features.get(features.size() - 1), "");
+                    ProductCenter.getInstance().getProductWithId(product.getProductId()).getFeaturesOfCategoryThatHas().put(features.get(features.size() - 1), "");
+                }
             }
         }
         DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
@@ -101,6 +103,7 @@ public class CategoryCenter {
     public void removeProductFromCategory(Product product) {
         for (Category category : allCategories) {
             if (category.getName().equals(product.getProductsCategory())) {
+                System.out.println("1111111111");
                 for (Product product1 : category.getAllProducts()) {
                     if (product1.getProductId().equals(product.getProductId())) {
                         category.getAllProducts().remove(product1);

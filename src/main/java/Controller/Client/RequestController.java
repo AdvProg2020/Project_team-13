@@ -45,23 +45,23 @@ public class RequestController {
         String viewDetail = "";
         for (Request request : allRequests) {
             if (request.getRequestId().equals(requestId)) {
-                switch (request.getType()){
+                switch (request.getType()) {
                     case addOff:
                     case editOff:
-                        viewDetail=requestId+" "+request.getType()+" "+new Gson().fromJson(request.getDetails(), Offer.class).toString();
+                        viewDetail = "requestId: " + requestId + "\nrequestType: " + request.getType() + "\n" + new Gson().fromJson(request.getDetails(), Offer.class).toString();
                         break;
                     case sellerRegister:
-                        viewDetail=requestId+ " "+request.getType()+ " "+ new Gson().fromJson(request.getDetails(), Seller.class).viewPersonalInfo();
+                        viewDetail = "requestId: " + requestId + "\nrequestType: " + request.getType() + "\n" + new Gson().fromJson(request.getDetails(), Seller.class).viewPersonalInfo();
                         break;
                     case addProduct:
                     case EditProduct:
-                        viewDetail=requestId+" "+request.getType()+" "+new Gson().fromJson(request.getDetails(), Product.class).toString();
+                        viewDetail = "requestId: " + requestId + "\nrequestType: " + request.getType() + "\n" + new Gson().fromJson(request.getDetails(), Product.class).productInfoFor();
                         break;
                     case scoring:
-                        viewDetail=requestId+" "+request.getType()+" "+new Gson().fromJson(request.getDetails(), Score.class).toString();
+                        viewDetail =  "requestId: " +requestId + "\nrequestType: " + request.getType() + "\n" + new Gson().fromJson(request.getDetails(), Score.class).toString();
                         break;
                     case commenting:
-                        viewDetail=requestId+" "+request.getType()+" "+new Gson().fromJson(request.getDetails(), Comment.class).toString();
+                        viewDetail = "requestId: " + requestId + "\nrequestType: " + request.getType() + "\n" + new Gson().fromJson(request.getDetails(), Comment.class).toString();
                         break;
                     default:
                         break;
