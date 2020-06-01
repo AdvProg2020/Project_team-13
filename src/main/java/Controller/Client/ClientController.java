@@ -5,7 +5,7 @@ import Models.DiscountCode;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
-import View.Menu;
+import View2.Menu;
 
 public class ClientController {
     private static ClientController clientController;

@@ -2,12 +2,10 @@ package Controller.Client;
 
 import Models.Product.Cart;
 import Models.UserAccount.Customer;
-import View.MainMenu;
-import View.Menu;
-import View.UserMenu.Customer.CustomerMenu;
+import View2.MainMenu;
+import View2.Menu;
+import View2.UserMenu.Customer.CustomerMenu;
 import com.google.gson.Gson;
-
-import java.util.Scanner;
 
 public class CartController {
     private Cart currentCart;
