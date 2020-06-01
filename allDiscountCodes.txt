@@ -1,0 +1,1 @@
+[{"discountCodeID":"aaaaaac","startTime":"May 21, 2020, 8:00:00 AM","endTime":"Jun 21, 2020, 8:00:00 AM","allUserAccountsThatHaveDiscount":["customer1","aliiiiii"],"discountPercent":55,"maxDiscountAmount":6.0E8,"maxUsingTime":{"aliiiiii":3,"customer1":3},"remainingTimesForEachCustomer":{"aliiiiii":3,"customer1":3}}]

@@ -47,9 +47,8 @@ public class CreateDiscountCodeMenu extends Menu {
     private void getUsersThatHaveDiscountCode() {
         String username="";
         String count;
-        while (!username.equals("end!")) {
-            System.out.println("Enter a Customer's Username or enter end!");
-            username = scanner.nextLine().trim();
+        System.out.println("Enter a Customer's Username or enter end!");
+        while (!(username = scanner.nextLine().trim()).equals("end!")) {
             if(ManagerController.getInstance().isThereCustomerWithThisUsername(username)){
                 System.out.println("Enter the number of times that customer can use it");
                 count = scanner.nextLine().trim();
@@ -58,8 +57,10 @@ public class CreateDiscountCodeMenu extends Menu {
                     remainingTimesForEachCustomer.put(username, Integer.parseInt(count));
                     maxUsingTime.put(username,Integer.parseInt(count));
                 }else printError("count is Invalid");
+                System.out.println("Enter a Customer's Username or enter end!");
             }else{
                 printError("there is no user with this username");
+                System.out.println("Enter a Customer's Username or enter end!");
             }
         }
 
