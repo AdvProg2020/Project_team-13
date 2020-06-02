@@ -178,12 +178,12 @@ public class Seller extends UserAccount {
     @Override
     public String viewPersonalInfo() {
         String personalInfo = "";
-        personalInfo += "\u001B[34mUser name:" + this.username + "\n";
-        personalInfo += "\u001B[34mFirst name: " + this.firstName + "\n";
-        personalInfo += "\u001B[34mLast name: " + this.lastName + "\n";
-        personalInfo += "\u001B[34mEmail: " + this.email + "\n";
-        personalInfo += "\u001B[34mPhoneNumber: " + this.phoneNumber + "\n";
-        personalInfo += "\u001B[34mCompany name: " + this.companyName;
+        personalInfo += "\u001B[34mUser name: \u001B[0m" + this.username + "\n";
+        personalInfo += "\u001B[34mFirst name: \u001B[0m" + this.firstName + "\n";
+        personalInfo += "\u001B[34mLast name: \u001B[0m" + this.lastName + "\n";
+        personalInfo += "\u001B[34mEmail: \u001B[0m" + this.email + "\n";
+        personalInfo += "\u001B[34mPhoneNumber: \u001B[0m" + this.phoneNumber + "\n";
+        personalInfo += "\u001B[34mCompany name: \u001B[0m" + this.companyName;
         return personalInfo;
     }
 

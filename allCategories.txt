@@ -1,0 +1,1 @@
+[{"name":"Phone","features":{"Color":["Red","Blue","Black","White","Green"],"Ram":["8","16","32","64"]}}]

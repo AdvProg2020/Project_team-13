@@ -76,10 +76,9 @@ public class EditDiscountCodeMenu extends Menu {
         String username = "";
         String count;
         System.out.println("Enter a Customer's Username or enter end!");
-        username= scanner.nextLine().trim();
-        while (!username.equals("end!")) {
-            if (ManagerController.getInstance().isThereCustomerWithThisUsername(username)) {
-                if (!allUsers.contains(username)) {
+        while (!(username = scanner.nextLine().trim()).equals("end!")) {
+            if(ManagerController.getInstance().isThereCustomerWithThisUsername(username)){
+                if(!discountCode.getAllUserAccountsThatHaveDiscount().contains(username)) {
                     System.out.println("Enter the number of times that customer can use it");
                     count = scanner.nextLine().trim();
                     if (count.matches("\\d+")) {
@@ -87,13 +86,15 @@ public class EditDiscountCodeMenu extends Menu {
                         remainingTimesForEachCustomer.put(username, Integer.parseInt(count));
                         maxUsingTime.put(username, Integer.parseInt(count));
                     } else printError("count is Invalid");
-                } else {
-                    ClientController.getInstance().getCurrentMenu().printError("this user has this discount code");
+                    System.out.println("Enter a Customer's Username or enter end!");
+                }else{
+                    printError("this user has this discount code");
+                    System.out.println("Enter a Customer's Username or enter end!");
                 }
-            } else {
+            }else{
                 printError("there is no user with this username");
+                System.out.println("Enter a Customer's Username or enter end!");
             }
-            System.out.println("Enter a Customer's Username or enter end!");
         }
         discountCode.setAllUserAccountsThatHaveDiscount(allUsers);
         discountCode.setMaxUsingTime(maxUsingTime);
