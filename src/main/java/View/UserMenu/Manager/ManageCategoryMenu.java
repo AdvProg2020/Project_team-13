@@ -29,7 +29,6 @@ public class ManageCategoryMenu extends Menu {
 
     @Override
     public void execute() {
-
         CategoryController.getInstance().printAllCategories();
         String command;
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
@@ -56,7 +55,6 @@ public class ManageCategoryMenu extends Menu {
         String categoryName = getNameForOperation("category name", name);
         Category category = CategoryController.getInstance().getCategoryWithName(categoryName);
         String command = "";
-        HashMap<String, ArrayList<String>> featuresOfCategory = category.getFeatures();
         while (!(command = scanner.nextLine().trim()).equalsIgnoreCase("back")) {
             String s;
             if (command.equalsIgnoreCase("add feature")) {
@@ -84,7 +82,7 @@ public class ManageCategoryMenu extends Menu {
             i++;
         }
         allFeatures = allFeatures.substring(0, allFeatures.length() - 1);
-        System.out.println(allFeatures);
+        showMessage(allFeatures);
         System.out.println("pick one feature");
         while (true) {
             s = scanner.nextLine().trim();
@@ -124,7 +122,7 @@ public class ManageCategoryMenu extends Menu {
             i++;
         }
         allFeatures = allFeatures.substring(0, allFeatures.length() - 1);
-        System.out.println(allFeatures);
+        showMessage(allFeatures);
         System.out.println("pick one feature to remove");
         while (true) {
             s = scanner.nextLine().trim();
@@ -141,8 +139,18 @@ public class ManageCategoryMenu extends Menu {
     }
 
     private Category addFeatureToCategory(Category category) {
-        HashMap<String, ArrayList<String>> featuresOfCategory = category.getFeatures();
         String s;
+        String allFeatures = "";
+        ArrayList<String> listOfFeatures = new ArrayList<>();
+        int i = 1;
+        for (String feature : category.getFeatures().keySet()) {
+            listOfFeatures.add(feature);
+            allFeatures += i + "." + feature + "\n";
+            i++;
+        }
+        allFeatures = allFeatures.substring(0, allFeatures.length() - 1);
+        showMessage(allFeatures);
+        HashMap<String, ArrayList<String>> featuresOfCategory = category.getFeatures();
         System.out.println("Please enter a feature Name.");
         while (!(s = scanner.nextLine().trim()).equalsIgnoreCase("/done")) {
             if (Pattern.matches("(\\w+ )*\\w+", s) && !featuresOfCategory.containsKey(s)) {

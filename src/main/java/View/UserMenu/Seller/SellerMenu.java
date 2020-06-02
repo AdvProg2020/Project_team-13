@@ -30,7 +30,6 @@ public class SellerMenu extends Menu {
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equals("manage products") && isAccepted) {
-                ProductController.getInstance().getAllProductsFromServer();
                 Menu menu = new ManageProductMenu(this).setScanner(scanner);
                 ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
@@ -88,7 +87,6 @@ public class SellerMenu extends Menu {
     @Override
     public void printError(String error) {
         System.out.println(error);
-
     }
 
 }

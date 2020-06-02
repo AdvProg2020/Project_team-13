@@ -44,9 +44,9 @@ public class OffsController {
                 str += offer.toStringForSummery();
                 str += "\n\n";
             }
-            System.out.println(str);
+            ClientController.getInstance().getCurrentMenu().showMessage(str);
         } else {
-            System.out.println("There is no Offer for this seller");
+            ClientController.getInstance().getCurrentMenu().printError("There is no Offer for this seller");
         }
     }
 
@@ -105,7 +105,7 @@ public class OffsController {
         } else return "there is no offs";
     }
 
-    public boolean getTheProductById(String productId){
+    public boolean getTheProductById(String productId) {
         for (Offer off : allOffs) {
             for (String product : off.getProducts()) {
                 if (product.equals(productId)) {
@@ -116,7 +116,7 @@ public class OffsController {
         return false;
     }
 
-    public boolean isThereAnyProductWithThisId(String productId){
+    public boolean isThereAnyProductWithThisId(String productId) {
         return getTheProductById(productId);
     }
 }

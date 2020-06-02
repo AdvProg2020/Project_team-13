@@ -127,8 +127,6 @@ public class RegisterMenu extends Menu {
         return;
     }
 
-
-
     private String getCredit() {
         String credit;
         while (true) {

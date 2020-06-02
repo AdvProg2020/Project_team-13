@@ -64,7 +64,7 @@ public class ManageProductMenu extends Menu {
                 ClientController.getInstance().setCurrentUser(null);
                 System.out.println("You Logged out!!");
                 parentMenu.getParentMenu().execute();
-            }else {
+            } else {
                 System.err.println("invalid command");
             }
         }
@@ -159,30 +159,32 @@ public class ManageProductMenu extends Menu {
         fieldsOfProduct.add(getNumber("Available number of product"));
         HashMap<String, String> productsFeatures = new HashMap<>();
         HashMap<String, ArrayList<String>> categoryFeatures = productsCategory.getFeatures();
-        System.out.println("You need to define category features modes.");
-        for (String feature : categoryFeatures.keySet()) {
-            ArrayList<String> featureModes = categoryFeatures.get(feature);
-            System.out.println("feature: " + feature);
-            System.out.println("Please choose one mode");
-            String modesStringForm = "";
-            int i = 1;
-            for (String featureMode : featureModes) {
-                modesStringForm += i;
-                modesStringForm += ".";
-                modesStringForm += featureMode;
-                modesStringForm += "\n";
-                i++;
-            }
-            modesStringForm = modesStringForm.substring(0, modesStringForm.length() - 1);
-            String modesNumber;
-            System.out.println(modesStringForm);
-            modesNumber = getNumber("number");
-            while (Integer.parseInt(modesNumber) > featureModes.size() || Integer.parseInt(modesNumber) < 1) {
-                System.out.println("Number is invalid.\nYou only have this chooses.");
+        if (categoryFeatures.keySet() != null && !categoryFeatures.isEmpty()) {
+            System.out.println("You need to define category features modes.");
+            for (String feature : categoryFeatures.keySet()) {
+                ArrayList<String> featureModes = categoryFeatures.get(feature);
+                System.out.println("feature: " + feature);
+                System.out.println("Please choose one mode");
+                String modesStringForm = "";
+                int i = 1;
+                for (String featureMode : featureModes) {
+                    modesStringForm += i;
+                    modesStringForm += ".";
+                    modesStringForm += featureMode;
+                    modesStringForm += "\n";
+                    i++;
+                }
+                modesStringForm = modesStringForm.substring(0, modesStringForm.length() - 1);
+                String modesNumber;
                 System.out.println(modesStringForm);
                 modesNumber = getNumber("number");
+                while (Integer.parseInt(modesNumber) > featureModes.size() || Integer.parseInt(modesNumber) < 1) {
+                    System.out.println("Number is invalid.\nYou only have this chooses.");
+                    System.out.println(modesStringForm);
+                    modesNumber = getNumber("number");
+                }
+                productsFeatures.put(feature, featureModes.get(Integer.parseInt(modesNumber) - 1));
             }
-            productsFeatures.put(feature, featureModes.get(Integer.parseInt(modesNumber) - 1));
         }
         ProductController.getInstance().addProduct(fieldsOfProduct, productsFeatures, productsCategory);
     }
