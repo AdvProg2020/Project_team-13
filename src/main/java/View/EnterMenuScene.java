@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
@@ -39,7 +40,10 @@ public class EnterMenuScene {
         centerGridPane.getRowConstraints().add(new RowConstraints(600, Control.USE_COMPUTED_SIZE, 600, Priority.NEVER, VPos.CENTER, false));
             bottomGridPane.setStyle("-fx-background-color: rgba(45, 156, 240, 1);");
         bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
-
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(pageGridPane);
+        scrollPane.fitToWidthProperty().set(true);
+        scene.setRoot(scrollPane);
 
     }
 
