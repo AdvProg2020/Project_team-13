@@ -1,20 +1,9 @@
 package Controller.Client;
 
-import Models.Product.Cart;
-import Models.Product.Category;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
-import View.Menu;
-import View.UserMenu.Customer.CustomerMenu;
-import View.UserMenu.Manager.ManagerMenu;
-import View.UserMenu.Seller.SellerMenu;
-import View.UserMenu.UserMenu;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class MessageController {
 

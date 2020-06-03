@@ -4,14 +4,9 @@ import Controller.Client.ClientController;
 import Controller.Client.RegisterController;
 import Controller.Server.DataBase;
 import Models.UserAccount.Manager;
-import Models.UserAccount.UserAccount;
-import View.UserMenu.RegisterMenu;
-import org.junit.Assert;
-import org.junit.Before;
+import View2.UserMenu.RegisterMenu;
 import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class RegisterMenuTest {
     @BeforeClass

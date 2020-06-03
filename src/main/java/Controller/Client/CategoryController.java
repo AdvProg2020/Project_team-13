@@ -1,7 +1,6 @@
 package Controller.Client;
 
 import Models.Product.Category;
-import View.Menu;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

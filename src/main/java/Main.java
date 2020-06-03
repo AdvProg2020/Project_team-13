@@ -1,11 +1,19 @@
 import Controller.Server.ServerController;
-import View.MainMenu;
+import View.EnterMenuScene;
+import View2.MainMenu;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 import java.util.Scanner;
 
-public class Main {
+public class Main extends Application {
     public static void main(String[] args) {
-      ServerController.getInstance().runServer();
-      new MainMenu(null).setScanner(new Scanner(System.in)).execute();
+      launch();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        primaryStage.setTitle("Hello World");
+        new EnterMenuScene(primaryStage).execute();
     }
 }
