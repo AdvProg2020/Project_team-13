@@ -7,6 +7,8 @@ public class CustomerRegisterMenu extends EnterMenuScene {
         super(stage);
     }
 
+    
+
 
     @Override
     public void execute() {
