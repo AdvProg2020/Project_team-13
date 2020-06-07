@@ -58,7 +58,6 @@ public class LoginMenu{
         userInfoGridPane.setPrefSize(400, 500);
         userInfoGridPane.setStyle("-fx-background-color: #ECD5DC;");
         centerGridPane.setGridLinesVisible(true);
-        centerGridPane.getColumnConstraints().add(new ColumnConstraints(10, , 20, Priority.ALWAYS, HPos.RIGHT, true));
         centerGridPane.add(userInfoGridPane, 0, 0, 0, 0);
 
     }
