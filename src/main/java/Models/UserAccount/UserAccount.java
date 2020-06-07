@@ -11,6 +11,7 @@ public abstract class UserAccount {
     protected ArrayList<DiscountCode> allDiscountCodes;
     protected double credit;
     protected ArrayList<Log> historyOfTransaction;
+    protected String imagePath="";
 
     public UserAccount(String username, String password, String firstName, String lastName, String email,
                        String phoneNumber, double credit) {
@@ -27,6 +28,14 @@ public abstract class UserAccount {
 
     public String getType() {
         return type;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public String getImagePath() {
+        return imagePath;
     }
 
     public String getUsername() {
