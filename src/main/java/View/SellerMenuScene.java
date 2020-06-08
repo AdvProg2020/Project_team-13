@@ -1,9 +1,8 @@
 package View;
 
-import Controller.Client.ClientController;
 import Models.UserAccount.Customer;
+import Models.UserAccount.Seller;
 import javafx.geometry.HPos;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,16 +21,14 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.File;
 
-
-public class UserMenuScene {
+public class SellerMenuScene {
     Scene scene;
     Stage stage;
     GridPane upGridPane, menuBarGridPane, centerGridPane, bottomGridPane, pageGridPane, userInfoGridPane;
 
-    public UserMenuScene(Stage stage) {
+    public SellerMenuScene(Stage stage) {
         this.stage = stage;
         upGridPane = new GridPane();
         menuBarGridPane = new GridPane();
@@ -59,20 +56,20 @@ public class UserMenuScene {
 
     private void setCenterGridPane() {
         //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
-        Customer customer = new Customer("mamooti", "majidmajid", "Mahmood", "Ahmadi nejad", "Mamooti@yahoo.com", "09123456789", 10000);
-        customer.setImagePath("file:C:\\Users\\USER\\Desktop\\index.jpg");
-        Text personalInfo = new Text(customer.viewPersonalInfo());
+        Seller seller = new Seller("mamooti", "majidmajid", "Mahmood", "Ahmadi nejad", "Mamooti@yahoo.com", "09123456789", 10000,"Apple",true);
+        seller.setImagePath("file:C:\\Users\\USER\\Desktop\\index.jpg");
+        Text personalInfo = new Text(seller.viewPersonalInfo());
         Text pageTitle = new Text("User Menu");
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
         pageTitle.setStyle("-fx-font-weight: bold;");
         pageTitle.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
         userInfoGridPane.setStyle("-fx-background-color: #ECD5DC;");
         ImageView userIcon;
-        if(!customer.getImagePath().equals("")){
-             userIcon = new ImageView(new Image(customer.getImagePath()));
-             if(userIcon.getImage().getHeight()==0){
-                 userIcon.setImage(new Image("file:src/user_icon.png"));
-             }
+        if(!seller.getImagePath().equals("")){
+            userIcon = new ImageView(new Image(seller.getImagePath()));
+            if(userIcon.getImage().getHeight()==0){
+                userIcon.setImage(new Image("file:src/user_icon.png"));
+            }
         }else{
             userIcon = new ImageView(new Image("file:src/user_icon.png"));
         }
@@ -92,7 +89,7 @@ public class UserMenuScene {
             File selectedFile = fileChooser.showOpenDialog(stage);
             if(selectedFile!=null) {
                 userIcon.setImage(new Image("file:" + selectedFile.getAbsolutePath()));
-                customer.setImagePath("file:"+selectedFile.getAbsolutePath());
+                seller.setImagePath("file:"+selectedFile.getAbsolutePath());
             }
         });
         editPhotoButton.setGraphic(editPic);
@@ -107,17 +104,29 @@ public class UserMenuScene {
         GridPane leftMenuGridPane = new GridPane();
         leftMenuGridPane.setMinHeight(400);
         leftMenuGridPane.setStyle("-fx-background-color:rgba(45, 156, 240, 1);");
-        Button discountCodesButton = new Button("Discount Codes");
-        discountCodesButton.setStyle("-fx-font-size:  18;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
-        discountCodesButton.setMinHeight(50);
-        discountCodesButton.setMinWidth(150);
-        Button ordersButton = new Button("Orders");
-        ordersButton.setTextAlignment(TextAlignment.CENTER);
-        ordersButton.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
-        ordersButton.setMinHeight(50);
-        ordersButton.setMinWidth(150);
-        leftMenuGridPane.add(discountCodesButton, 0, 0, 2, 2);
-        leftMenuGridPane.add(ordersButton, 0, 2, 2, 2);
+        Button manageProducts = new Button("Manage Products");
+        manageProducts.setStyle("-fx-font-size:  16;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
+        manageProducts.setMinHeight(50);
+        manageProducts.setMinWidth(150);
+        Button categoriesButton = new Button("Categories");
+        categoriesButton.setTextAlignment(TextAlignment.CENTER);
+        categoriesButton.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
+        categoriesButton.setMinHeight(50);
+        categoriesButton.setMinWidth(150);
+        Button offsButton = new Button("Offs");
+        offsButton.setTextAlignment(TextAlignment.CENTER);
+        offsButton.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
+        offsButton.setMinHeight(50);
+        offsButton.setMinWidth(150);
+        Button salesHistoryButton = new Button("Sales History");
+        salesHistoryButton.setTextAlignment(TextAlignment.CENTER);
+        salesHistoryButton.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
+        salesHistoryButton.setMinHeight(50);
+        salesHistoryButton.setMinWidth(150);
+        leftMenuGridPane.add(manageProducts, 0, 0, 2, 2);
+        leftMenuGridPane.add(categoriesButton, 0, 2, 2, 2);
+        leftMenuGridPane.add(offsButton, 0, 4, 2, 2);
+        leftMenuGridPane.add(salesHistoryButton, 0, 6, 2, 2);
         centerGridPane.add(leftMenuGridPane, 0, 1, 1, 6);
         centerGridPane.add(pageTitle, 0, 0, 1, 1);
         centerGridPane.add(userInfoGridPane, 3, 1, 2, 2);
