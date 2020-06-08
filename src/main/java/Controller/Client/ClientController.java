@@ -7,15 +7,29 @@ import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import View2.Menu;
 
+import java.util.ArrayList;
+
 public class ClientController {
     private static ClientController clientController;
     private Menu currentMenu;
     private UserAccount currentUser;
     private DiscountCode currentDiscountCode;
     private Product currentProduct;
+    private ArrayList<View.Menu> menus= new ArrayList<>();
 
     public DiscountCode getCurrentDiscountCode() {
         return currentDiscountCode;
+    }
+
+    public void addNewMenu(View.Menu menu){
+        menus.add(menu);
+    }
+
+    public void back() {
+        if(menus.size()>1) {
+            menus.remove(menus.size()-1);
+            menus.get(menus.size()-1).execute();
+        }
     }
 
     public Product getCurrentProduct() {

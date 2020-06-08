@@ -1,6 +1,5 @@
 package View;
 
-import Models.UserAccount.Customer;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -8,14 +7,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import java.io.File;
 
 public class LoginMenu{
     private TextField userName;
@@ -57,9 +54,7 @@ public class LoginMenu{
         userInfoGridPane.setHgap(20);
         userInfoGridPane.setPrefSize(400, 500);
         userInfoGridPane.setStyle("-fx-background-color: #ECD5DC;");
-        centerGridPane.setGridLinesVisible(true);
-        centerGridPane.add(userInfoGridPane, 0, 0, 0, 0);
-
+        centerGridPane.add(userInfoGridPane, 0, 1, 1, 1);
     }
 
 
