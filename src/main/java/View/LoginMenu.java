@@ -11,8 +11,18 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
+
+import static javax.swing.text.StyleConstants.Bold;
 
 public class LoginMenu{
     private TextField userName;
@@ -50,11 +60,59 @@ public class LoginMenu{
 
 
     private void setCenterGridPane() {
+        Label userNameLabel = new Label("Username :");
+        Label passWordLabel = new Label("Password :");
+        userNameLabel.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 16));
+        passWordLabel.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 16));
+        Label login = new Label("Login");
+        login.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 23));
+        userName = new TextField();
+        passWord = new TextField();
+        userName.setPromptText("Enter Username...");
+        passWord.setPromptText("Enter Password...");
+        userName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 55px;");
+        passWord.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 55px;");
+        Text alertUserName = new Text();
+        Text alertPassword = new Text();
+        loginButton = new Button("Login");
+        loginButton.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
+        loginButton.setStyle("-fx-background-color: #E85D9E");
+        loginButton.setTextFill(Color.WHITE);
+        loginButton.setMaxSize(400, 50);
+        Text textOr = new Text("OR");
+        textOr.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
+        login.setAlignment(Pos.TOP_CENTER);
+        userInfoGridPane.setAlignment(Pos.CENTER);
+        GridPane.setHalignment(login, HPos.CENTER);
+        GridPane.setValignment(login, VPos.CENTER);
+        GridPane.setHalignment(textOr, HPos.CENTER);
+        GridPane.setValignment(textOr, VPos.CENTER);
+        createNewAccount = new Hyperlink();
+        createNewAccount.setText("Create New Account");
+        createNewAccount.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 16));
+        createNewAccount.setTextFill(Color.BLACK);
+        createNewAccount.setUnderline(true);
         userInfoGridPane.setVgap(20);
         userInfoGridPane.setHgap(20);
-        userInfoGridPane.setPrefSize(400, 500);
-        userInfoGridPane.setStyle("-fx-background-color: #ECD5DC;");
-        centerGridPane.add(userInfoGridPane, 0, 1, 1, 1);
+        userInfoGridPane.setMinWidth(650);
+        userInfoGridPane.setMinHeight(500);
+        userInfoGridPane.add(login, 3, 1);
+        userInfoGridPane.add(userNameLabel, 0, 4);
+        userInfoGridPane.add(passWordLabel, 0, 5);
+        userInfoGridPane.add(userName, 2, 4, 7, 1);
+        userInfoGridPane.add(passWord, 2, 5, 7, 1);
+        userInfoGridPane.add(loginButton, 3, 7);
+        userInfoGridPane.add(textOr, 0, 9, 8, 1);
+        userInfoGridPane.add(createNewAccount, 3, 10);
+        GridPane leftGridPane= new GridPane();
+        GridPane upGridPane= new GridPane();
+        upGridPane.setMinHeight(50);
+        leftGridPane.setMinWidth(130);
+        userInfoGridPane.setStyle("-fx-background-color: #ECA5DC;");
+        centerGridPane.add(userInfoGridPane, 2, 2, 1, 1);
+        centerGridPane.add(upGridPane, 1, 1, 1, 1);
+        centerGridPane.add(leftGridPane, 0, 0, 1, 1);
+
     }
 
 
