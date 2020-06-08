@@ -183,6 +183,7 @@ public class Seller extends UserAccount {
         personalInfo += "Last name: " + this.lastName + "\n";
         personalInfo += "Email: " + this.email + "\n";
         personalInfo += "PhoneNumber: " + this.phoneNumber + "\n";
+        personalInfo += "Credit: " + this.credit + "$\n";
         personalInfo += "Company name: " + this.companyName;
         return personalInfo;
     }

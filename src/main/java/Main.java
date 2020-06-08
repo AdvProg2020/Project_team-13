@@ -1,5 +1,6 @@
 import Controller.Server.ServerController;
 import View.EnterMenuScene;
+import View.ManagerMenuScene;
 import View.SellerMenuScene;
 import View.UserMenuScene;
 import View2.MainMenu;
@@ -16,6 +17,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Hello World");
-        new SellerMenuScene(primaryStage).execute();
+        new ManagerMenuScene(primaryStage).execute();
     }
 }
