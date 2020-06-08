@@ -2,28 +2,31 @@ package View;
 
 import Controller.Client.ClientController;
 import Models.UserAccount.Customer;
+import com.google.gson.Gson;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.io.File;
+import java.lang.reflect.Field;
+import java.util.regex.Pattern;
 
 
 public class UserMenuScene {
@@ -46,14 +49,9 @@ public class UserMenuScene {
         setPageGridPain();
         setUpGridPane();
         setMenuBarGridPane();
-        //   centerGridPane.getRowConstraints().add(new RowConstraints(600, Control.USE_COMPUTED_SIZE, 600, Priority.NEVER, VPos.CENTER, false));
-        //       bottomGridPane.setStyle("-fx-background-color: rgba(45, 156, 240, 1);");
         setCenterGridPane();
-        bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(pageGridPane);
-        scrollPane.fitToWidthProperty().set(true);
-        scene.setRoot(scrollPane);
+        bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, true));
+        scene.setRoot(pageGridPane);
 
     }
 
@@ -85,6 +83,106 @@ public class UserMenuScene {
         editPic.setFitWidth(25);
         editPic.setFitHeight(25);
         Button editInfoButton = new Button("");
+        editInfoButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Stage popupwindow = new Stage();
+                popupwindow.initModality(Modality.APPLICATION_MODAL);
+                popupwindow.setTitle("Edit information.");
+                TextField password, firstName, lastName, email, phoneNumber;
+                Label firstName1, lastName1, email1, phoneNumber1, password1;
+                password = new PasswordField();
+                password.setText(customer.getPassword());
+                firstName = new TextField(customer.getFirstName());
+                lastName = new TextField(customer.getLastName());
+                email = new TextField(customer.getEmail());
+                phoneNumber = new TextField(customer.getPhoneNumber());
+                password.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 120px;");
+                firstName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width:120px;");
+                lastName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 120px;");
+                phoneNumber.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 120px;");
+                email.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 120px;");
+                password.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 14));
+                firstName.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 14));
+                lastName.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 14));
+                phoneNumber.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 14));
+                email.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 14));
+                password1 = new Label("Password");
+                firstName1 = new Label("First Name");
+                lastName1 = new Label("Last Name");
+                email1 = new Label("Email");
+                phoneNumber1 = new Label("Phone Number");
+                password1.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
+                firstName1.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
+                lastName1.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
+                phoneNumber1.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
+                email1.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
+                Text errors=new Text();
+                errors.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
+                errors.setFill(Color.RED);
+                GridPane gridPane = new GridPane();
+                gridPane.add(password, 1, 0);
+                gridPane.add(password1, 0, 0);
+                gridPane.add(firstName, 1, 1);
+                gridPane.add(firstName1, 0, 1);
+                gridPane.add(lastName, 1, 2);
+                gridPane.add(lastName1, 0, 2);
+                gridPane.add(email, 1, 3);
+                gridPane.add(email1, 0, 3);
+                gridPane.add(phoneNumber, 1, 4);
+                gridPane.add(phoneNumber1, 0, 4);
+                Button button2 = new Button("Edit");
+                button2.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        errors.setText("");
+                        if (checkPasswordIsvalid(password.getText().trim())) {
+                            if (checkNameIsvalid(firstName.getText().trim())) {
+                                if (checkNameIsvalid(lastName.getText().trim())) {
+                                    if (checkEmailIsvalid(email.getText().trim())) {
+                                        if (Pattern.matches("\\d+", phoneNumber.getText().trim()) && phoneNumber.getText().trim().length() == 11&&phoneNumber.getText().charAt(0)=='0') {
+                                            customer.setFirstName(firstName.getText().trim());
+                                            customer.setLastName(lastName.getText().trim());
+                                            customer.setEmail(email.getText().trim());
+                                            customer.setPhoneNumber(phoneNumber.getText().trim());
+                                            customer.setPassword(password.getText().trim());
+                                            ClientController.getInstance().sendMessageToServer("@editCustomer@" + new Gson().toJson(customer));
+                                            popupwindow.close();
+                                        } else {
+                                            errors.setText("Phone number is invalid.\nCorrect format:09xxxxxxxxx"); }
+                                    } else {
+                                        errors.setText("Email format is invalid.\nCorrect Format:ali@ali.com");
+                                    }
+                                } else {
+                                    errors.setText("LastName format is invalid\nuse alphabetical characters");
+                                }
+                            } else {
+                                errors.setText("FirstName format is invalid\nuse alphabetical characters");
+                            }
+                        } else {
+                            errors.setText("Password Format is Invalid.\nuse 9-17 alphabetical character.");
+                        }
+                    }
+                });
+                button2.setStyle("-fx-text-fill: white;-fx-background-color:rgba(76, 170, 240, 1);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 28px;-fx-pref-width: 55px;");
+                for (int i = 0; i < 5; i++) {
+                    gridPane.getRowConstraints().add(new RowConstraints(20, Control.USE_COMPUTED_SIZE, 20, Priority.NEVER, VPos.CENTER, true));
+                }
+                gridPane.getRowConstraints().add(new RowConstraints(50, Control.USE_COMPUTED_SIZE, 50, Priority.NEVER, VPos.TOP, true));
+                gridPane.getRowConstraints().add(new RowConstraints(20, Control.USE_COMPUTED_SIZE, 20, Priority.NEVER, VPos.CENTER, true));
+                gridPane.getColumnConstraints().add(new ColumnConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, HPos.CENTER, true));
+                gridPane.getColumnConstraints().add(new ColumnConstraints(135, Control.USE_COMPUTED_SIZE, 135, Priority.NEVER, HPos.CENTER, true));
+                gridPane.add(errors, 0, 5, 2, 2);
+                gridPane.add(button2, 0, 6, 2, 2);
+                gridPane.setVgap(10);
+                gridPane.setHgap(5);
+                gridPane.setStyle("-fx-background-color: #ECD5DC;");
+                gridPane.setAlignment(Pos.CENTER);
+                Scene scene1 = new Scene(gridPane, 350, 300);
+                popupwindow.setScene(scene1);
+                popupwindow.showAndWait();
+            }
+        });
         editInfoButton.setGraphic(editInfoPic);
         Button editPhotoButton = new Button("");
         FileChooser fileChooser = new FileChooser();
@@ -185,5 +283,26 @@ public class UserMenuScene {
         setScene();
         stage.setScene(scene);
         stage.show();
+    }
+
+    private boolean checkPasswordIsvalid(String word) {
+        if (word.length() > 8 && word.length() < 18) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkNameIsvalid(String name) {
+        if (Pattern.matches("(([a-z]|[A-Z])+ )*(([a-z]|[A-Z])+)", name) && !name.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkEmailIsvalid(String email) {
+        if (Pattern.matches("\\w+\\.?\\w*@\\w+\\.\\w+", email)) {
+            return true;
+        }
+        return false;
     }
 }
