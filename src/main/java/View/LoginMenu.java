@@ -55,10 +55,19 @@ public class LoginMenu{
     private void setCenterGridPane() {
         userInfoGridPane.setVgap(20);
         userInfoGridPane.setHgap(20);
-        userInfoGridPane.setPrefSize(400, 500);
-        userInfoGridPane.setStyle("-fx-background-color: #ECD5DC;");
-        centerGridPane.setGridLinesVisible(true);
-        centerGridPane.add(userInfoGridPane, 0, 0, 0, 0);
+        userInfoGridPane.setMinWidth(400);
+        userInfoGridPane.setMinHeight(400);
+        TextField username=new TextField();
+        GridPane leftGridPane= new GridPane();
+        GridPane upGridPane= new GridPane();
+        upGridPane.setMinHeight(100);
+        leftGridPane.setMinWidth(100);
+
+        userInfoGridPane.add(username,0,0);
+        userInfoGridPane.setStyle("-fx-background-color: #ECA5DC;");
+        centerGridPane.add(userInfoGridPane, 2, 2, 1, 1);
+        centerGridPane.add(upGridPane, 1, 1, 1, 1);
+        centerGridPane.add(leftGridPane, 0, 0, 1, 1);
 
     }
 
