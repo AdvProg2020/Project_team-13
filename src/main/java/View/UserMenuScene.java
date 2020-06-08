@@ -19,7 +19,11 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import javax.swing.*;
+import java.io.File;
 
 
 public class UserMenuScene {
@@ -74,6 +78,11 @@ public class UserMenuScene {
         Button editInfoButton = new Button("");
         editInfoButton.setGraphic(editInfoPic);
         Button editPhotoButton = new Button("");
+        FileChooser fileChooser = new FileChooser();
+        editPhotoButton.setOnAction(e -> {
+            File selectedFile = fileChooser.showOpenDialog(stage);
+            userIcon.setImage(new Image("file:"+selectedFile.getAbsolutePath()));
+        });
         editPhotoButton.setGraphic(editPic);
         userInfoGridPane.setVgap(20);
         userInfoGridPane.setHgap(20);
