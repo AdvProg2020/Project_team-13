@@ -4,5 +4,5 @@ public enum MessageKind {
     ErrorWithBack,
     ErrorWithoutBack,
     MessageWithBack,
-    MessageWithoutBack;
+    MessageWithoutBack
 }
