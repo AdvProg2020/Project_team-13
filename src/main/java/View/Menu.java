@@ -16,10 +16,12 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Popup;
+import sun.plugin2.message.Message;
 
 import java.util.regex.Pattern;
 
@@ -97,7 +99,7 @@ public class Menu {
                         }
                     });
                     gridPane.add(button, 0, 0);
-                    gridPane.add(new Text(""),1,0);
+                    gridPane.add(new Text(""), 1, 0);
                     ImageView seller = new ImageView(new Image("file:src/seller.png"));
                     ImageView customer = new ImageView(new Image("file:src/customer.png"));
                     seller.setFitWidth(100);
@@ -120,12 +122,12 @@ public class Menu {
                     photoGridPane.getColumnConstraints().add(new ColumnConstraints(90, Control.USE_COMPUTED_SIZE, 200, Priority.ALWAYS, HPos.CENTER, false));
                     photoGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, true));
                     photoGridPane.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.CENTER, true));
-                    Label customer1=new Label("Customer");
-                    Label seller1=new Label("Seller");
+                    Label customer1 = new Label("Customer");
+                    Label seller1 = new Label("Seller");
                     customer1.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
                     seller1.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
-                    photoGridPane.add(seller1,0,1);
-                    photoGridPane.add(customer1,1,1);
+                    photoGridPane.add(seller1, 0, 1);
+                    photoGridPane.add(customer1, 1, 1);
                     Scene scene1 = new Scene(gridPane, 320, 240);
                     popupwindow.initModality(Modality.APPLICATION_MODAL);
                     popupwindow.initStyle(StageStyle.UNDECORATED);
@@ -192,5 +194,140 @@ public class Menu {
         setScene();
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void showMessage(String message, MessageKind messageKind) {
+        Stage popupwindow = new Stage();
+        GridPane gridPane = new GridPane();
+        scene.setFill(Color.GRAY);
+        popupwindow.setTitle("Edit information.");
+//            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//                @Override
+//                public void handle(MouseEvent event) {
+//                    popupwindow.hide();
+//                    scene.setFill(null);
+//                }
+//            });
+        gridPane.add(new Text(""), 0, 0);
+        ImageView right = new ImageView(new Image("file:src/Right.png"));
+        ImageView wrong = new ImageView(new Image("file:src/Wrong.png"));
+        right.setFitWidth(75);
+        wrong.setFitWidth(75);
+        right.setFitHeight(75);
+        wrong.setFitHeight(75);
+        GridPane photoGridPane = new GridPane();
+        photoGridPane.setVgap(20);
+        photoGridPane.setHgap(20);
+        gridPane.getRowConstraints().add(new RowConstraints(40, Control.USE_COMPUTED_SIZE, 40, Priority.NEVER, VPos.CENTER, true));
+        gridPane.getColumnConstraints().add(new ColumnConstraints(230, Control.USE_COMPUTED_SIZE, 230, Priority.NEVER, HPos.CENTER, true));
+        photoGridPane.getColumnConstraints().add(new ColumnConstraints(230, Control.USE_COMPUTED_SIZE, 230, Priority.ALWAYS, HPos.CENTER, true));
+        photoGridPane.getRowConstraints().add(new RowConstraints(90, Control.USE_COMPUTED_SIZE, 90, Priority.NEVER, VPos.BOTTOM, true));
+        photoGridPane.getRowConstraints().add(new RowConstraints(50, Control.USE_COMPUTED_SIZE, 50, Priority.NEVER, VPos.TOP, true));
+        photoGridPane.getRowConstraints().add(new RowConstraints(70, Control.USE_COMPUTED_SIZE, 70, Priority.NEVER, VPos.CENTER, true));
+        photoGridPane.getRowConstraints().add(new RowConstraints(50, Control.USE_COMPUTED_SIZE, 50, Priority.NEVER, VPos.TOP, true));
+        if (messageKind.equals(MessageKind.ErrorWithBack)) {
+            photoGridPane.add(wrong,0,0);
+            Text button=new Text("Go Back");
+            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    popupwindow.hide();
+                    scene.setFill(null);
+                    ClientController.getInstance().back();
+                }
+            });
+            button.setFill(Color.WHITE);
+            button.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
+            button.setTextAlignment(TextAlignment.CENTER);
+            gridPane.add(button,0,0);
+            gridPane.setStyle("-fx-background-color: Red");
+            Label error = new Label("Error");
+            Label message1 = new Label(message);
+            message1.setFont(Font.loadFont("file:src/Bangers.ttf", 12));
+            message1.setTextFill(Color.BLACK);
+            error.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
+            error.setTextFill(Color.RED);
+            photoGridPane.add(message1, 0, 2);
+            photoGridPane.add(error, 0, 1);
+            photoGridPane.add(gridPane,0,3);
+        } else if(messageKind.equals(MessageKind.ErrorWithoutBack)) {
+            photoGridPane.add(wrong,0,0);
+            Text button=new Text("Done");
+            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    popupwindow.hide();
+                    scene.setFill(null);
+                }
+            });
+            button.setFill(Color.WHITE);
+            button.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
+            button.setTextAlignment(TextAlignment.CENTER);
+            gridPane.add(button,0,0);
+            gridPane.setStyle("-fx-background-color: Red");
+            Label error = new Label("Error");
+            Label message1 = new Label(message);
+            message1.setFont(Font.loadFont("file:src/Bangers.ttf", 12));
+            message1.setTextFill(Color.BLACK);
+            error.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
+            error.setTextFill(Color.RED);
+            photoGridPane.add(message1, 0, 2);
+            photoGridPane.add(error, 0, 1);
+            photoGridPane.add(gridPane,0,3);
+        } else if(messageKind.equals(MessageKind.MessageWithoutBack)) {
+            photoGridPane.add(right,0,0);
+            Text button=new Text("Done");
+            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    popupwindow.hide();
+                    scene.setFill(null);
+                }
+            });
+            button.setFill(Color.WHITE);
+            button.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
+            button.setTextAlignment(TextAlignment.CENTER);
+            gridPane.add(button,0,0);
+            gridPane.setStyle("-fx-background-color: #02bf4f");
+            Label error = new Label("Message");
+            Label message1 = new Label(message);
+            message1.setFont(Font.loadFont("file:src/Bangers.ttf", 12));
+            message1.setTextFill(Color.BLACK);
+            error.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
+            error.setTextFill(Color.web("#02bf4f"));
+            photoGridPane.add(message1, 0, 2);
+            photoGridPane.add(error, 0, 1);
+            photoGridPane.add(gridPane,0,3);
+        } else if(messageKind.equals(MessageKind.MessageWithBack)) {
+            photoGridPane.add(right,0,0);
+            Text button=new Text("Go Back");
+            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    popupwindow.hide();
+                    ClientController.getInstance().back();
+                    scene.setFill(null);
+                }
+            });
+            button.setFill(Color.WHITE);
+            button.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
+            button.setTextAlignment(TextAlignment.CENTER);
+            gridPane.add(button,0,0);
+            gridPane.setStyle("-fx-background-color: #02bf4f");
+            Label error = new Label("Message");
+            Label message1 = new Label(message);
+            message1.setFont(Font.loadFont("file:src/Bangers.ttf", 12));
+            message1.setTextFill(Color.BLACK);
+            error.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
+            error.setTextFill(Color.web("#02bf4f"));
+            photoGridPane.add(message1, 0, 2);
+            photoGridPane.add(error, 0, 1);
+            photoGridPane.add(gridPane,0,3);
+        }
+        Scene scene1 = new Scene(photoGridPane, 230, 310);
+        popupwindow.initModality(Modality.APPLICATION_MODAL);
+        popupwindow.initStyle(StageStyle.UNDECORATED);
+        popupwindow.setScene(scene1);
+        popupwindow.showAndWait();
     }
 }
