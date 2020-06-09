@@ -57,7 +57,7 @@ public class Menu {
         scene.setRoot(pageGridPane);
     }
 
-    protected final void setMenuBarGridPane() {
+    protected void setMenuBarGridPane() {
         if (ClientController.getInstance().getCurrentUser() == null) {
             Menu menu = this;
             menuBarGridPane.setStyle("-fx-background-color:rgba(76, 170, 240, 1)");
@@ -121,6 +121,13 @@ public class Menu {
                     gridPane.add(new Text(""), 1, 0);
                     ImageView seller = new ImageView(new Image("file:src/seller.png"));
                     ImageView customer = new ImageView(new Image("file:src/customer.png"));
+                    customer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            popupwindow.hide();
+                            new RegisterMenu(stage).execute();
+                        }
+                    });
                     seller.setFitWidth(100);
                     customer.setFitWidth(100);
                     seller.setFitHeight(110);
@@ -142,6 +149,13 @@ public class Menu {
                     photoGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, true));
                     photoGridPane.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.CENTER, true));
                     Label customer1 = new Label("Customer");
+                    customer1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            popupwindow.hide();
+                            new RegisterMenu(stage).execute();
+                        }
+                    });
                     Label seller1 = new Label("Seller");
                     customer1.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
                     seller1.setFont(Font.loadFont("file:src/Bangers.ttf", 24));

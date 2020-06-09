@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -18,7 +19,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.util.regex.Pattern;
@@ -28,10 +31,8 @@ public class RegisterMenu  extends Menu {
     private PasswordField passWord;
     private Button loginButton;
     private Hyperlink createNewAccount;
-    Scene scene;
-    Stage stage;
     String imagePath="";
-    GridPane upGridPane, menuBarGridPane, centerGridPane, bottomGridPane, pageGridPane, userInfoGridPane;
+    GridPane userInfoGridPane;
 
     public RegisterMenu(Stage stage) {
         super(stage);
@@ -42,6 +43,7 @@ public class RegisterMenu  extends Menu {
         pageGridPane = new GridPane();
         userInfoGridPane = new GridPane();
         scene = new Scene(pageGridPane, 850, 600);
+        setScene();
     }
 
     public void setScene() {
@@ -56,6 +58,46 @@ public class RegisterMenu  extends Menu {
         scrollPane.setContent(pageGridPane);
         scrollPane.fitToWidthProperty().set(true);
         scene.setRoot(scrollPane);
+    }
+
+    protected void setMenuBarGridPane() {
+            Menu menu = this;
+            menuBarGridPane.setStyle("-fx-background-color:rgba(76, 170, 240, 1)");
+            GridPane leftGridPane = new GridPane();
+            Label home = new Label("Home");
+            home.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (!(menu instanceof MainMenu)) {
+                        if (ClientController.getInstance().getMainMenu() != null) {
+                            ClientController.getInstance().addNewMenu(ClientController.getInstance().getMainMenu());
+                            ClientController.getInstance().getMainMenu().execute();
+                        }
+                    }
+                }
+            });
+            Label products = new Label("Products");
+            products.setStyle("-fx-background-color: rgba(45, 156, 240, 0.24);-fx-text-fill: White");
+            home.setStyle("-fx-background-color:rgba(45, 156, 240, 0.31);-fx-text-fill: White;-fx-font-weight: bold;");
+            ImageView back = new ImageView(new Image("file:src/back.png"));
+            back.setFitWidth(40);
+            back.setFitHeight(25);
+            back.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    ClientController.getInstance().back();
+                }
+            });
+            leftGridPane.add(back, 0, 0);
+            leftGridPane.add(home, 1, 0);
+            leftGridPane.add(products, 2, 0);
+            leftGridPane.setHgap(5);
+            products.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
+            home.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
+            menuBarGridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_PREF_SIZE, Double.POSITIVE_INFINITY, Priority.ALWAYS, HPos.LEFT, true));
+            menuBarGridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_PREF_SIZE, Double.POSITIVE_INFINITY, Priority.ALWAYS, HPos.RIGHT, false));
+            menuBarGridPane.add(leftGridPane, 0, 0);
+            menuBarGridPane.getRowConstraints().add(new RowConstraints(40, Control.USE_COMPUTED_SIZE, 40, Priority.NEVER, VPos.CENTER, false));
     }
 
 
@@ -201,7 +243,6 @@ public class RegisterMenu  extends Menu {
     }
 
     public void execute() {
-        setScene();
         stage.setScene(scene);
         stage.show();
     }
