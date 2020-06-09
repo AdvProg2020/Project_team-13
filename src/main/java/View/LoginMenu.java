@@ -49,6 +49,7 @@ public class LoginMenu extends Menu{
         setUpGridPane();
         setMenuBarGridPane();
         setCenterGridPane();
+
         scene.setRoot(pageGridPane);
     }
 
@@ -118,11 +119,13 @@ public class LoginMenu extends Menu{
         GridPane leftGridPane= new GridPane();
         GridPane upGridPane= new GridPane();
         upGridPane.setMinHeight(55);
-        leftGridPane.setMinWidth(170);
+        leftGridPane.setMinWidth(85);
         userInfoGridPane.setStyle("-fx-background-color: #ECA5DC;");
-        centerGridPane.add(userInfoGridPane, 2, 2, 1, 1);
-        centerGridPane.add(upGridPane, 1, 1, 1, 1);
-        centerGridPane.add(leftGridPane, 0, 0, 1, 1);
+        centerGridPane.add(userInfoGridPane, 1, 1);
+        centerGridPane.add(leftGridPane,0,0,1,2);
+        centerGridPane.add(upGridPane, 1, 0);
+        centerGridPane.getColumnConstraints().add(new ColumnConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, HPos.LEFT, true));
+        userInfoGridPane.setAlignment(Pos.CENTER);
         loginButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -147,7 +150,7 @@ public class LoginMenu extends Menu{
         pageGridPane.getRowConstraints().add(new RowConstraints(40, Control.USE_COMPUTED_SIZE, 40, Priority.ALWAYS, VPos.TOP, true));
         pageGridPane.getRowConstraints().add(new RowConstraints(80, Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.ALWAYS, VPos.TOP, true));
         pageGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.BOTTOM, false));
-        pageGridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_PREF_SIZE, Double.POSITIVE_INFINITY, Priority.ALWAYS, HPos.RIGHT, true));
+        pageGridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_PREF_SIZE, Double.POSITIVE_INFINITY, Priority.ALWAYS, HPos.CENTER, true));
         pageGridPane.add(upGridPane, 0, 0);
         pageGridPane.add(menuBarGridPane, 0, 1);
         pageGridPane.add(centerGridPane, 0, 2);
