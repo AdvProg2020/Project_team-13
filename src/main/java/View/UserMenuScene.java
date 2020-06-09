@@ -57,6 +57,7 @@ public class UserMenuScene extends Menu{
         userInfoGridPane.setStyle("-fx-background-color: #ECD5DC;");
         ImageView userIcon;
         if(!customer.getImagePath().equals("")){
+            System.out.println(customer.getImagePath());
              userIcon = new ImageView(new Image(customer.getImagePath()));
              if(userIcon.getImage().getHeight()==0){
                  userIcon.setImage(new Image("file:src/user_icon.png"));
