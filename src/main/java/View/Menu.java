@@ -57,7 +57,7 @@ public class Menu {
         centerGridPane.add(personalInfo, 0, 0);
     }
 
-    protected void setMenuBarGridPane() {
+    protected final void setMenuBarGridPane() {
         if (ClientController.getInstance().getCurrentUser() == null) {
             menuBarGridPane.setStyle("-fx-background-color:rgba(76, 170, 240, 1)");
             GridPane leftGridPane = new GridPane();
@@ -201,13 +201,6 @@ public class Menu {
         GridPane gridPane = new GridPane();
         scene.setFill(Color.GRAY);
         popupwindow.setTitle("Edit information.");
-//            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//                @Override
-//                public void handle(MouseEvent event) {
-//                    popupwindow.hide();
-//                    scene.setFill(null);
-//                }
-//            });
         gridPane.add(new Text(""), 0, 0);
         ImageView right = new ImageView(new Image("file:src/Right.png"));
         ImageView wrong = new ImageView(new Image("file:src/Wrong.png"));
