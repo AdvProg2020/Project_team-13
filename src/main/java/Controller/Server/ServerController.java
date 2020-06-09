@@ -1,8 +1,6 @@
 package Controller.Server;
 
 import Controller.Client.ClientController;
-import Controller.Client.DiscountController;
-import Models.DiscountCode;
 
 public class ServerController {
     private static ServerController serverController;

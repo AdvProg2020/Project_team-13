@@ -324,7 +324,7 @@ public class UserCenter {
     public void editCustomer(Customer customer) {
         int index = allCustomer.indexOf(findCustomerWithUsername(customer.getUsername()));
         allCustomer.remove(findCustomerWithUsername(customer.getUsername()));
-        allCustomer.add(index, customer);
+        allCustomer.set(index, customer);
         DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
         ServerController.getInstance().sendMessageToClient("@Successful@user successfully edited");
     }
