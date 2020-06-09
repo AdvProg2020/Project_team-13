@@ -5,6 +5,7 @@ import Models.DiscountCode;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
+import View2.MainMenu;
 import View2.Menu;
 
 import java.util.ArrayList;
@@ -30,6 +31,15 @@ public class ClientController {
             menus.remove(menus.size()-1);
             menus.get(menus.size()-1).execute();
         }
+    }
+
+    public View.Menu getMainMenu() {
+        for (View.Menu menu : menus) {
+            if(menu instanceof View.MainMenu) {
+                return menu;
+            }
+        }
+        return null;
     }
 
     public Product getCurrentProduct() {

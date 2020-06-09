@@ -42,29 +42,49 @@ public class Menu {
     }
 
     public void setScene() {
+        this.stage = stage;
+        upGridPane = new GridPane();
+        menuBarGridPane = new GridPane();
+        centerGridPane = new GridPane();
+        bottomGridPane = new GridPane();
+        pageGridPane = new GridPane();
+        scene = new Scene(pageGridPane, 850, 600);
         setPageGridPain();
         setUpGridPane();
         setMenuBarGridPane();
         bottomGridPane.setStyle("-fx-background-color: rgba(45, 156, 240, 1);");
         bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(pageGridPane);
-        scrollPane.fitToWidthProperty().set(true);
-        scene.setRoot(scrollPane);
+        scene.setRoot(pageGridPane);
     }
 
     protected final void setMenuBarGridPane() {
         if (ClientController.getInstance().getCurrentUser() == null) {
+            Menu menu=this;
             menuBarGridPane.setStyle("-fx-background-color:rgba(76, 170, 240, 1)");
             GridPane leftGridPane = new GridPane();
             Label home = new Label("Home");
+            home.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if(!(menu instanceof MainMenu)) {
+                       if( ClientController.getInstance().getMainMenu()!=null)
+                           ClientController.getInstance().getMainMenu().execute();
+                    }
+                }
+            });
             Label products = new Label("Products");
             products.setStyle("-fx-background-color: rgba(45, 156, 240, 0.24);-fx-text-fill: White");
             home.setStyle("-fx-background-color:rgba(45, 156, 240, 0.31);-fx-text-fill: White;-fx-font-weight: bold;");
-            ImageView image = new ImageView(new Image("file:src/back.png"));
-            image.setFitWidth(40);
-            image.setFitHeight(25);
-            leftGridPane.add(image, 0, 0);
+            ImageView back = new ImageView(new Image("file:src/back.png"));
+            back.setFitWidth(40);
+            back.setFitHeight(25);
+            back.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    ClientController.getInstance().back();
+                }
+            });
+            leftGridPane.add(back, 0, 0);
             leftGridPane.add(home, 1, 0);
             leftGridPane.add(products, 2, 0);
             leftGridPane.setHgap(5);
@@ -73,6 +93,7 @@ public class Menu {
             login.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
+                    if(!(menu instanceof LoginMenu))
                     new LoginMenu(stage).execute();
                 }
             });
@@ -172,22 +193,9 @@ public class Menu {
         pageGridPane.add(menuBarGridPane, 0, 1);
         pageGridPane.add(centerGridPane, 0, 2);
         pageGridPane.add(bottomGridPane, 0, 3);
-        Stage popupwindow = new Stage();
-        popupwindow.initModality(Modality.APPLICATION_MODAL);
-        popupwindow.setTitle("This is a pop up window");
-        Label label1 = new Label("Pop up window now displayed");
-        Button button1 = new Button("Close this pop up window");
-        button1.setOnAction(e -> popupwindow.close());
-        VBox layout = new VBox(10);
-        layout.getChildren().addAll(label1, button1);
-        layout.setAlignment(Pos.CENTER);
-        Scene scene1 = new Scene(layout, 300, 250);
-        popupwindow.setScene(scene1);
-        popupwindow.showAndWait();
     }
 
     public void execute() {
-        setScene();
         stage.setScene(scene);
         stage.show();
     }
@@ -215,8 +223,8 @@ public class Menu {
         photoGridPane.getRowConstraints().add(new RowConstraints(70, Control.USE_COMPUTED_SIZE, 70, Priority.NEVER, VPos.CENTER, true));
         photoGridPane.getRowConstraints().add(new RowConstraints(50, Control.USE_COMPUTED_SIZE, 50, Priority.NEVER, VPos.TOP, true));
         if (messageKind.equals(MessageKind.ErrorWithBack)) {
-            photoGridPane.add(wrong,0,0);
-            Text button=new Text("Go Back");
+            photoGridPane.add(wrong, 0, 0);
+            Text button = new Text("Go Back");
             button.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -228,7 +236,7 @@ public class Menu {
             button.setFill(Color.WHITE);
             button.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
             button.setTextAlignment(TextAlignment.CENTER);
-            gridPane.add(button,0,0);
+            gridPane.add(button, 0, 0);
             gridPane.setStyle("-fx-background-color: Red");
             Label error = new Label("Error");
             Label message1 = new Label(message);
@@ -238,10 +246,10 @@ public class Menu {
             error.setTextFill(Color.RED);
             photoGridPane.add(message1, 0, 2);
             photoGridPane.add(error, 0, 1);
-            photoGridPane.add(gridPane,0,3);
-        } else if(messageKind.equals(MessageKind.ErrorWithoutBack)) {
-            photoGridPane.add(wrong,0,0);
-            Text button=new Text("Done");
+            photoGridPane.add(gridPane, 0, 3);
+        } else if (messageKind.equals(MessageKind.ErrorWithoutBack)) {
+            photoGridPane.add(wrong, 0, 0);
+            Text button = new Text("Done");
             button.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -252,7 +260,7 @@ public class Menu {
             button.setFill(Color.WHITE);
             button.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
             button.setTextAlignment(TextAlignment.CENTER);
-            gridPane.add(button,0,0);
+            gridPane.add(button, 0, 0);
             gridPane.setStyle("-fx-background-color: Red");
             Label error = new Label("Error");
             Label message1 = new Label(message);
@@ -262,10 +270,10 @@ public class Menu {
             error.setTextFill(Color.RED);
             photoGridPane.add(message1, 0, 2);
             photoGridPane.add(error, 0, 1);
-            photoGridPane.add(gridPane,0,3);
-        } else if(messageKind.equals(MessageKind.MessageWithoutBack)) {
-            photoGridPane.add(right,0,0);
-            Text button=new Text("Done");
+            photoGridPane.add(gridPane, 0, 3);
+        } else if (messageKind.equals(MessageKind.MessageWithoutBack)) {
+            photoGridPane.add(right, 0, 0);
+            Text button = new Text("Done");
             button.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -276,7 +284,7 @@ public class Menu {
             button.setFill(Color.WHITE);
             button.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
             button.setTextAlignment(TextAlignment.CENTER);
-            gridPane.add(button,0,0);
+            gridPane.add(button, 0, 0);
             gridPane.setStyle("-fx-background-color: #02bf4f");
             Label error = new Label("Message");
             Label message1 = new Label(message);
@@ -286,10 +294,10 @@ public class Menu {
             error.setTextFill(Color.web("#02bf4f"));
             photoGridPane.add(message1, 0, 2);
             photoGridPane.add(error, 0, 1);
-            photoGridPane.add(gridPane,0,3);
-        } else if(messageKind.equals(MessageKind.MessageWithBack)) {
-            photoGridPane.add(right,0,0);
-            Text button=new Text("Go Back");
+            photoGridPane.add(gridPane, 0, 3);
+        } else if (messageKind.equals(MessageKind.MessageWithBack)) {
+            photoGridPane.add(right, 0, 0);
+            Text button = new Text("Go Back");
             button.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -301,7 +309,7 @@ public class Menu {
             button.setFill(Color.WHITE);
             button.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
             button.setTextAlignment(TextAlignment.CENTER);
-            gridPane.add(button,0,0);
+            gridPane.add(button, 0, 0);
             gridPane.setStyle("-fx-background-color: #02bf4f");
             Label error = new Label("Message");
             Label message1 = new Label(message);
@@ -311,7 +319,7 @@ public class Menu {
             error.setTextFill(Color.web("#02bf4f"));
             photoGridPane.add(message1, 0, 2);
             photoGridPane.add(error, 0, 1);
-            photoGridPane.add(gridPane,0,3);
+            photoGridPane.add(gridPane, 0, 3);
         }
         Scene scene1 = new Scene(photoGridPane, 230, 310);
         popupwindow.initModality(Modality.APPLICATION_MODAL);

@@ -29,6 +29,7 @@ public class EnterMenuScene extends Menu {
         bottomGridPane = new GridPane();
         pageGridPane = new GridPane();
         scene = new Scene(pageGridPane, 850, 600);
+        setScene();
     }
 
     public void setScene() {
@@ -80,7 +81,6 @@ public class EnterMenuScene extends Menu {
     }
 
     public void execute() {
-        setScene();
         stage.setScene(scene);
         stage.show();
     }

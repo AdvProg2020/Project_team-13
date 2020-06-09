@@ -34,6 +34,7 @@ public class ManagerMenuScene extends Menu {
     public ManagerMenuScene(Stage stage) {
         super(stage);
         userInfoGridPane = new GridPane();
+        setScene();
     }
 
     public void setScene() {
@@ -257,7 +258,6 @@ public class ManagerMenuScene extends Menu {
     }
 
     public void execute() {
-        setScene();
         stage.setScene(scene);
         stage.show();
     }

@@ -41,9 +41,17 @@ public class LoginMenu extends Menu{
         pageGridPane = new GridPane();
         userInfoGridPane = new GridPane();
         scene = new Scene(pageGridPane, 850, 600);
+        setScene();
     }
 
     public void setScene() {
+        upGridPane = new GridPane();
+        menuBarGridPane = new GridPane();
+        centerGridPane = new GridPane();
+        bottomGridPane = new GridPane();
+        pageGridPane = new GridPane();
+        userInfoGridPane = new GridPane();
+        scene = new Scene(pageGridPane, 850, 600);
         setPageGridPain();
         setUpGridPane();
         setMenuBarGridPane();
@@ -128,7 +136,6 @@ public class LoginMenu extends Menu{
 
 
     public void execute() {
-        setScene();
         stage.setScene(scene);
         stage.show();
     }
