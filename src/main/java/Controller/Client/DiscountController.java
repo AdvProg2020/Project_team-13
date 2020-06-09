@@ -1,6 +1,7 @@
 package Controller.Client;
 
 import Models.DiscountCode;
+import View.MessageKind;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -44,7 +45,7 @@ public class DiscountController {
             ClientController.getInstance().sendMessageToServer("@removeDiscountCode@" + code);
             allDiscountCodes.remove(discountCode);
         } else {
-            ClientController.getInstance().getCurrentMenu().printError("there is no discount code with this code");
+            ClientController.getInstance().getCurrentMenu().showMessage("there is no discount code with this code", MessageKind.ErrorWithoutBack);
         }
     }
 
@@ -55,9 +56,9 @@ public class DiscountController {
     public void viewDiscountCode(String code) {
         DiscountCode discountCode = findDiscountCodeWithThisId(code);
         if (discountCode != null) {
-            ClientController.getInstance().getCurrentMenu().showMessage(discountCode.view());
+        //    ClientController.getInstance().getCurrentMenu().showMessage(discountCode.view());
         } else {
-            ClientController.getInstance().getCurrentMenu().printError("there is no discount code with this code");
+            ClientController.getInstance().getCurrentMenu().showMessage("there is no discount code with this code", MessageKind.ErrorWithoutBack);
         }
     }
 
@@ -72,6 +73,6 @@ public class DiscountController {
                     + "\u001B[34mStart Time: \u001B[0m" + discountCode.getStartTime() + "\n"
                     + "\u001B[34mEnd Time: \u001B[0m" + discountCode.getEndTime() + "\u001B[0m\n";
         }
-        ClientController.getInstance().getCurrentMenu().showMessage(showAllDiscountCodes);
+       // ClientController.getInstance().getCurrentMenu().showMessage(showAllDiscountCodes);
     }
 }

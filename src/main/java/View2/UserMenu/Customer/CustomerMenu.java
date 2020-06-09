@@ -35,17 +35,17 @@ public class CustomerMenu extends Menu {
                 ((Customer)ClientController.getInstance().getCurrentUser()).printAllDiscountCodes();
             }else if (command.equalsIgnoreCase("view personal info")) {
                 Menu menu = new ViewAndEditInformationForCustomer(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+          //      ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             }else if (command.equalsIgnoreCase("view Cart")) {
                 Menu menu = new CartMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+           //     ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             }else if (command.equalsIgnoreCase("view balance")) {
                 showMessage(String.valueOf(ClientController.getInstance().getCurrentUser().getCredit()));
             }else if (command.equalsIgnoreCase("view orders")) {
                 Menu menu = new OrdersMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+         //       ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
                 showMessage(((Customer)ClientController.getInstance().getCurrentUser()).viewOrders());
             }  else if (command.equalsIgnoreCase("help")) {

@@ -21,9 +21,9 @@ public class CartController {
         System.out.println(json);
         ClientController.getInstance().setCurrentUser(new Gson().fromJson(json, Customer.class));
         setCurrentCart(new Cart());
-        Menu menu= new CustomerMenu(new MainMenu(null).setScanner(ClientController.getInstance().getCurrentMenu().getScanner())).setScanner(ClientController.getInstance().getCurrentMenu().getScanner());
-        ClientController.getInstance().setCurrentMenu(menu);
-        menu.execute();
+     //   Menu menu= new CustomerMenu(new MainMenu(null).setScanner(ClientController.getInstance().getCurrentMenu().getScanner())).setScanner(ClientController.getInstance().getCurrentMenu().getScanner());
+     //   ClientController.getInstance().setCurrentMenu(menu);
+      //  menu.execute();
     }
     public void setCurrentCart(Cart currentCart) {
         this.currentCart = currentCart;

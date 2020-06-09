@@ -25,21 +25,21 @@ public class MainMenu extends Menu {
 
     @Override
     public void execute() {
-        ClientController.getInstance().setCurrentMenu(this);
+       // ClientController.getInstance().setCurrentMenu(this);
 
         while (true) {
             String command = scanner.nextLine().trim();
             if (command.equalsIgnoreCase("products")) {
                 Menu menu = new ProductsMenu(this).setScanner(this.scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+              //  ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("offs")) {
                 Menu menu = new OffsMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+           //     ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("EnterUserMenu")) {
                 Menu menu = new UserMenu(this).setScanner(this.scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+          //      ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("help")) {
                 help();

@@ -32,11 +32,11 @@ public class OrdersMenu extends Menu {
                 ((Customer)ClientController.getInstance().getCurrentUser()).printAllDiscountCodes();
             }else if (command.equalsIgnoreCase("view personal info")) {
                 Menu menu = new ViewAndEditInformationForCustomer(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+              //  ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             }else if (command.equalsIgnoreCase("view Cart")) {
                 Menu menu = new CartMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+            //    ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             }else if (command.matches("rate @p\\d+ \\d")) {
                 ProductController.getInstance().rating(command.split("\\s")[1],Integer.parseInt(command.split("\\s")[2]));

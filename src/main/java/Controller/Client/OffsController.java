@@ -4,6 +4,7 @@ import Models.Offer;
 import Models.OfferStatus;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
+import View.MessageKind;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -44,9 +45,9 @@ public class OffsController {
                 str += offer.toStringForSummery();
                 str += "\n\n";
             }
-            ClientController.getInstance().getCurrentMenu().showMessage(str);
+        //    ClientController.getInstance().getCurrentMenu().showMessage(str);
         } else {
-            ClientController.getInstance().getCurrentMenu().printError("There is no Offer for this seller");
+            ClientController.getInstance().getCurrentMenu().showMessage("there is no offer for this seller", MessageKind.ErrorWithoutBack);
         }
     }
 

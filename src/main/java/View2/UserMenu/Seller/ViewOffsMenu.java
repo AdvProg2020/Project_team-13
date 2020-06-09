@@ -47,11 +47,11 @@ public class ViewOffsMenu extends Menu {
             } else if (command.matches("edit @o\\d+")) {
                 commandForEdit = command;
                 Menu menu = new EditOffsMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+          //      ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("add off")) {
                 Menu menu = new AddOffsMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+          //      ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("help")) {
                 help();

@@ -19,17 +19,17 @@ public class SellerMenu extends Menu {
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.equals("view personal info") && isAccepted) {
                 Menu menu = new ViewAndEditInformationForSeller(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+
                 menu.execute();
             } else if (command.equals("manage products") && isAccepted) {
                 Menu menu = new ManageProductMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+
                 menu.execute();
             }else if (command.equals("show categories")&& isAccepted) {
                 CategoryController.getInstance().printAllCategories();
             }else if(command.equals("view offs")) {
                 Menu menu=new ViewOffsMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+
                 menu.execute();
             }else if(command.equals("view sales history")) {
                 showMessage(((Seller)ClientController.getInstance().getCurrentUser()).viewSalesHistory());

@@ -5,14 +5,13 @@ import Models.DiscountCode;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
-import View2.MainMenu;
-import View2.Menu;
+import View.Menu;
 
 import java.util.ArrayList;
 
 public class ClientController {
     private static ClientController clientController;
-    private Menu currentMenu;
+    private View.Menu currentMenu;
     private UserAccount currentUser;
     private DiscountCode currentDiscountCode;
     private Product currentProduct;
@@ -73,12 +72,10 @@ public class ClientController {
         this.currentUser = currentUser;
     }
 
-    public void setCurrentMenu(Menu menu) {
-        this.currentMenu = menu;
-    }
+
 
     public Menu getCurrentMenu() {
-        return currentMenu;
+        return menus.get(menus.size()-1);
     }
 
     public void sendMessageToServer(String message) {

@@ -45,7 +45,7 @@ public class CartMenu extends Menu {
                     ClientController.getInstance().setCurrentProduct(cart.findProductWithID(command.split("\\s")[2]));
                     if(ClientController.getInstance().getCurrentProduct()!=null) {
                         Menu menu = new ProductMenu(this).setScanner(scanner);
-                        ClientController.getInstance().setCurrentMenu(menu);
+                     //   ClientController.getInstance().setCurrentMenu(menu);
                         menu.execute();
                     }else {
                         printError("there is no product with this ID in your Cart");
@@ -75,12 +75,12 @@ public class CartMenu extends Menu {
                 if(cart.getTotalPrice()>0) {
                     if (ClientController.getInstance().getCurrentUser() != null) {
                         Menu menu = new CustomerInfoForPurchaseMenu(this).setScanner(scanner);
-                        ClientController.getInstance().setCurrentMenu(menu);
+                    //    ClientController.getInstance().setCurrentMenu(menu);
                         menu.execute();
                     } else {
                         printError("you should Login or Register before purchase");
                         Menu menu = new UserMenu(this).setScanner(scanner);
-                        ClientController.getInstance().setCurrentMenu(menu);
+                  //      ClientController.getInstance().setCurrentMenu(menu);
                         menu.execute();
                     }
                 }else{

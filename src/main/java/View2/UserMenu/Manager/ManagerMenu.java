@@ -36,16 +36,15 @@ public class ManagerMenu extends Menu {
             if (command.equalsIgnoreCase("manage requests")) {
                 Menu menu = new ManageRequestMenu(this).setScanner(this.scanner);
                 RequestController.getInstance().getAllRequestsFromServer();
-                ClientController.getInstance().setCurrentMenu(menu);
+          //      ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("manage users")) {
                 Menu menu = new ManageUsersMenu(this).setScanner(this.scanner);
                 ManagerController.getInstance().getAllUserFromServer();
-                ClientController.getInstance().setCurrentMenu(menu);
+
                 menu.execute();
             } else if (command.equalsIgnoreCase("create manager profile")) {
                 Menu menu = new CreateManagerMenu(this).setScanner(this.scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("help")) {
                 help();
@@ -55,23 +54,23 @@ public class ManagerMenu extends Menu {
                 parentMenu.execute();
             } else if (command.equalsIgnoreCase("manage categories")) {
                 Menu menu = new ManageCategoryMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+
                 menu.execute();
             }else if (command.equalsIgnoreCase("create discount code")) {
                 Menu menu = new CreateDiscountCodeMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+
                 menu.execute();
             }else if (command.equalsIgnoreCase("view discount codes")) {
                 Menu menu = new ViewDiscountMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+
                 menu.execute();
             }else if (command.equalsIgnoreCase("view personal info")) {
                 Menu menu = new ViewAndEditInformationForManager(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+
                 menu.execute();
             } else if (command.equalsIgnoreCase("manage all products")) {
                 Menu menu = new ManageProductsMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+
                 menu.execute();
             } else {
                 System.err.println("invalid command");

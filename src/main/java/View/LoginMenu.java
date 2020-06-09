@@ -1,5 +1,8 @@
 package View;
 
+import Controller.Client.ClientController;
+import Controller.Client.LoginController;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -7,17 +10,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -86,6 +86,12 @@ public class LoginMenu extends Menu{
         loginButton.setStyle("-fx-background-color: #E85D9E");
         loginButton.setTextFill(Color.WHITE);
         loginButton.setMaxSize(400, 50);
+        loginButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                LoginController.getInstance().login(userName.getText().trim(), passWord.getText().trim());
+            }
+        });
         Text textOr = new Text("OR");
         textOr.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
         login.setAlignment(Pos.TOP_CENTER);
@@ -133,6 +139,8 @@ public class LoginMenu extends Menu{
         pageGridPane.add(centerGridPane, 0, 2);
         pageGridPane.add(bottomGridPane, 0, 3);
     }
+
+
 
 
     public void execute() {

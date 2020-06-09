@@ -302,7 +302,7 @@ public class Product {
         digest += productsCategory + "%\n";
         digest += sellerUsername + "\n";
         digest += getAverageScore() + "\n";
-        ClientController.getInstance().getCurrentMenu().showMessage(digest);
+     //   ClientController.getInstance().getCurrentMenu().showMessage(digest);
     }
 
     public void showAttributes() {
@@ -318,7 +318,7 @@ public class Product {
         attributes += getProductCost() + "\n";
         attributes += getCostAfterOff() + "\n";
         attributes += getDescription();
-        ClientController.getInstance().getCurrentMenu().showMessage(attributes);
+      //  ClientController.getInstance().getCurrentMenu().showMessage(attributes);
     }
 
     public void setFeaturesOfCategoryThatHas(HashMap<String, String> featuresOfCategoryThatHas) {

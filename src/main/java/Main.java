@@ -1,6 +1,11 @@
 import Controller.Server.ServerController;
 import View.*;
 
+import View.EnterMenuScene;
+import View.LoginMenu;
+import View.RegisterMenu;
+import View.UserMenuScene;
+import View2.MainMenu;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

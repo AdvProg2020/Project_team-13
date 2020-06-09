@@ -1,6 +1,7 @@
 package Controller.Client;
 
 import Models.Product.Category;
+import View.MessageKind;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -24,8 +25,8 @@ public class CategoryController {
             for (Category category : allCategories) {
                 categoriesStringForm += category.getName() + "\n";
             }
-            ClientController.getInstance().getCurrentMenu().showMessage(categoriesStringForm);
-        } else ClientController.getInstance().getCurrentMenu().printError(categoriesStringForm);
+       //     ClientController.getInstance().getCurrentMenu().showMessage(categoriesStringForm);
+        }// else ClientController.getInstance().getCurrentMenu().printError(categoriesStringForm);
     }
 
     public static CategoryController getInstance() {
@@ -51,9 +52,9 @@ public class CategoryController {
             if (allCategories.length() != 0 && !allCategories.isEmpty()) {
                 allCategories = allCategories.substring(0, allCategories.length() - 1);
             }
-            ClientController.getInstance().getCurrentMenu().showMessage(allCategories);
+       //     ClientController.getInstance().getCurrentMenu().showMessage(allCategories);
         } else {
-            ClientController.getInstance().getCurrentMenu().showMessage("there is no category");
+            ClientController.getInstance().getCurrentMenu().showMessage("there is no category", MessageKind.ErrorWithoutBack);
         }
     }
 

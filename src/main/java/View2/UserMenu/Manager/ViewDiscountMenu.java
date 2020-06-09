@@ -2,6 +2,7 @@ package View2.UserMenu.Manager;
 
 import Controller.Client.ClientController;
 import Controller.Client.DiscountController;
+import View.MessageKind;
 import View2.Menu;
 
 public class ViewDiscountMenu extends Menu {
@@ -34,10 +35,10 @@ public class ViewDiscountMenu extends Menu {
                 ClientController.getInstance().setCurrentDiscountCode(DiscountController.getInstance().findDiscountCodeWithThisId(command.split("\\s")[3]));
                 if (ClientController.getInstance().getCurrentDiscountCode() != null) {
                     Menu menu = new EditDiscountCodeMenu(this).setScanner(this.scanner);
-                    ClientController.getInstance().setCurrentMenu(menu);
+
                     menu.execute();
                 } else {
-                    ClientController.getInstance().getCurrentMenu().printError("there is no discount code with this code");
+                    ClientController.getInstance().getCurrentMenu().showMessage("there is no discount code with this code", MessageKind.ErrorWithoutBack);
                 }
             } else if (command.equalsIgnoreCase("help")) {
                 help();

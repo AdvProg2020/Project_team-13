@@ -111,6 +111,6 @@ public class Customer extends UserAccount {
         for (DiscountCode discountCode : allDiscountCodes) {
             showAllDiscountCodes += discountCode.getDiscountCodeID() + " " + discountCode.getDiscountPercent() + "% " + discountCode.getMaxDiscountAmount() + " (" + discountCode.getStartTime() + ") TO (" + discountCode.getEndTime() + ")\n";
         }
-        ClientController.getInstance().getCurrentMenu().showMessage(showAllDiscountCodes);
+     //   ClientController.getInstance().getCurrentMenu().showMessage(showAllDiscountCodes);
     }
 }

@@ -46,18 +46,18 @@ public class OffsMenu extends Menu {
                 ClientController.getInstance().setCurrentProduct(ProductController.getInstance().findProductAfterFilterInOffer(command.split("\\s")[2]));
                 if (ClientController.getInstance().getCurrentProduct() != null) {
                     Menu menu = new ProductMenu(this).setScanner(scanner);
-                    ClientController.getInstance().setCurrentMenu(menu);
+            //        ClientController.getInstance().setCurrentMenu(menu);
                     menu.execute();
                 } else {
                     printError("there is no product with this ID in your Cart");
                 }
             } else if (command.equalsIgnoreCase("filtering")) {
                 Menu menu = new FilteringMenu(parentMenu).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+         //       ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("sorting")) {
                 Menu menu = new SortingMenu(parentMenu).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+         //       ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("show products")) {
                 ProductController.getInstance().showOffedProductsAfterFilterAndSort();
@@ -76,7 +76,7 @@ public class OffsMenu extends Menu {
                     System.out.println("you already logged in");
                 } else {
                     Menu menu = new UserMenu(this).setScanner(scanner);
-                    ClientController.getInstance().setCurrentMenu(menu);
+                //    ClientController.getInstance().setCurrentMenu(menu);
                     menu.execute();
                 }
 
