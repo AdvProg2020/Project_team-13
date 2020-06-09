@@ -1,1 +1,1 @@
-[{"totalBuyAmount":0.0,"username":"ali","password":"123456789","firstName":"oadkfj","lastName":"sdjkfnkjs","email":"hmoha@skdfk.com","phoneNumber":"09330410360","type":"@Customer","allDiscountCodes":[],"credit":123.0,"historyOfTransaction":[],"imagePath":""}]
+[{"totalBuyAmount":0.0,"username":"aads","password":"asdasdasdasd","firstName":"asdfasdf","lastName":"asdfsd","email":"asddf@gmail.com","phoneNumber":"09330410360","type":"@Customer","allDiscountCodes":[],"credit":1234.0,"historyOfTransaction":[],"imagePath":""}]

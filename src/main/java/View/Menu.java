@@ -2,6 +2,7 @@ package View;
 
 import Controller.Client.ClientController;
 import Models.UserAccount.Customer;
+import View2.UserMenu.Customer.CustomerMenu;
 import com.sun.javafx.scene.layout.region.LayeredBackgroundPositionConverter;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -217,6 +218,7 @@ public class Menu {
     }
 
     public void showMessage(String message, MessageKind messageKind) {
+
         Stage popupwindow = new Stage();
         GridPane gridPane = new GridPane();
         scene.setFill(Color.GRAY);
@@ -341,6 +343,6 @@ public class Menu {
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.initStyle(StageStyle.UNDECORATED);
         popupwindow.setScene(scene1);
-        popupwindow.showAndWait();
+        popupwindow.show();
     }
 }
