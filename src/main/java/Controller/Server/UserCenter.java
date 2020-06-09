@@ -102,7 +102,7 @@ public class UserCenter {
                 allCustomer.add(customer);
                 String arrayData = gson.toJson(allCustomer);
                 DataBase.getInstance().updateAllCustomers(arrayData);
-                ServerController.getInstance().sendMessageToClient("@Successful@Register Successful");
+                ServerController.getInstance().sendMessageToClient("@Successfulrc@" + new Gson().toJson(customer));
             } else {
                 ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username");
             }

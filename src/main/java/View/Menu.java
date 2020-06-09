@@ -23,6 +23,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Popup;
+import sun.font.FontFamily;
 import sun.plugin2.message.Message;
 
 import java.io.File;
@@ -33,6 +34,7 @@ public class Menu {
     protected Stage stage;
     protected GridPane upGridPane, menuBarGridPane, centerGridPane, bottomGridPane, pageGridPane;
     private AudioClip errorSound = new AudioClip(new File("src/error.mp3").toURI().toString());
+
     public Menu(Stage stage) {
         this.stage = stage;
         upGridPane = new GridPane();
@@ -58,6 +60,7 @@ public class Menu {
         bottomGridPane.setStyle("-fx-background-color: rgba(45, 156, 240, 1);");
         bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
         scene.setRoot(pageGridPane);
+
     }
 
     protected void setMenuBarGridPane() {
@@ -144,9 +147,9 @@ public class Menu {
                     gridPane.add(photoGridPane, 1, 1);
                     photoGridPane.setAlignment(Pos.CENTER);
                     gridPane.getRowConstraints().add(new RowConstraints(20, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.CENTER, true));
-                    gridPane.getRowConstraints().add(new RowConstraints(200, Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, VPos.TOP, true));
+                    gridPane.getRowConstraints().add(new RowConstraints(200, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, true));
                     gridPane.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.ALWAYS, HPos.CENTER, true));
-                    gridPane.getColumnConstraints().add(new ColumnConstraints(250, Control.USE_COMPUTED_SIZE, 400, Priority.NEVER, HPos.CENTER, true));
+                    gridPane.getColumnConstraints().add(new ColumnConstraints(250, Control.USE_COMPUTED_SIZE, 250, Priority.NEVER, HPos.CENTER, true));
                     photoGridPane.getColumnConstraints().add(new ColumnConstraints(90, Control.USE_COMPUTED_SIZE, 200, Priority.ALWAYS, HPos.CENTER, false));
                     photoGridPane.getColumnConstraints().add(new ColumnConstraints(90, Control.USE_COMPUTED_SIZE, 200, Priority.ALWAYS, HPos.CENTER, false));
                     photoGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, true));
@@ -197,7 +200,8 @@ public class Menu {
     protected void setUpGridPane() {
         Label label = new Label("        Pms.com");
         label.setStyle("-fx-font-weight: bold;");
-        label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
+        Font font = Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28);
+        label.setFont(font);
         upGridPane.getRowConstraints().add(new RowConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.ALWAYS, VPos.CENTER, true));
         upGridPane.add(label, 0, 0);
     }
@@ -220,7 +224,6 @@ public class Menu {
     }
 
     public void showMessage(String message, MessageKind messageKind) {
-
         Stage popupwindow = new Stage();
         GridPane gridPane = new GridPane();
         scene.setFill(Color.GRAY);
@@ -232,6 +235,7 @@ public class Menu {
         wrong.setFitWidth(75);
         right.setFitHeight(75);
         wrong.setFitHeight(75);
+        ImageView content;
         GridPane photoGridPane = new GridPane();
         photoGridPane.setVgap(20);
         photoGridPane.setHgap(20);
@@ -252,6 +256,9 @@ public class Menu {
                     popupwindow.hide();
                     scene.setFill(null);
                     ClientController.getInstance().back();
+                    if (message.startsWith("Register Successful")) {
+                        new UserMenuScene(stage).execute();
+                    }
                 }
             });
             button.setFill(Color.WHITE);
@@ -277,6 +284,9 @@ public class Menu {
                 public void handle(MouseEvent event) {
                     popupwindow.hide();
                     scene.setFill(null);
+                    if (message.startsWith("Register Successful")) {
+                        new UserMenuScene(stage).execute();
+                    }
                 }
             });
             button.setFill(Color.WHITE);
@@ -301,6 +311,9 @@ public class Menu {
                 public void handle(MouseEvent event) {
                     popupwindow.hide();
                     scene.setFill(null);
+                    if (message.startsWith("Register Successful")) {
+                        new UserMenuScene(stage).execute();
+                    }
                 }
             });
             button.setFill(Color.WHITE);
@@ -326,6 +339,9 @@ public class Menu {
                     popupwindow.hide();
                     ClientController.getInstance().back();
                     scene.setFill(null);
+                    if (message.startsWith("Register Successful")) {
+                        new UserMenuScene(stage).execute();
+                    }
                 }
             });
             button.setFill(Color.WHITE);
@@ -347,8 +363,8 @@ public class Menu {
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.initStyle(StageStyle.UNDECORATED);
         popupwindow.setScene(scene1);
-        System.out.println(popupwindow==null);
-        System.out.println(stage==null);
+        System.out.println(popupwindow == null);
+        System.out.println(stage == null);
         popupwindow.show();
     }
 }

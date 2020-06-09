@@ -33,7 +33,7 @@ public class RequestCenter {
     }
 
     public String makeRequestID() {
-        lastRequestID = "@r" + (Integer.parseInt(lastRequestID.substring(2, 8)) + 1);
+        lastRequestID = "@r" + (Integer.parseInt(lastRequestID.substring(2, 7)) + 1);
         DataBase.getInstance().replaceRequestId(lastRequestID);
         return lastRequestID;
     }

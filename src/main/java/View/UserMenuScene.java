@@ -35,7 +35,6 @@ public class UserMenuScene extends Menu{
     public UserMenuScene(Stage stage) {
         super(stage);
         userInfoGridPane = new GridPane();
-        scene = new Scene(pageGridPane, 850, 600);
         setScene();
     }
 
@@ -46,12 +45,11 @@ public class UserMenuScene extends Menu{
         setCenterGridPane();
         bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, true));
         scene.setRoot(pageGridPane);
-
     }
 
     private void setCenterGridPane() {
         //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
-        Customer customer = new Customer("mamooti", "majidmajid", "Mahmood", "Ahmadi nejad", "Mamooti@yahoo.com", "09123456789", 10000);
+        Customer customer = (Customer) ClientController.getInstance().getCurrentUser();
         customer.setImagePath("file:C:\\Users\\USER\\Desktop\\index.jpg");
         Text personalInfo = new Text(customer.viewPersonalInfo());
         Text pageTitle = new Text("User Menu");
