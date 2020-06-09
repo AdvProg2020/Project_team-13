@@ -148,7 +148,10 @@ public class UserCenter {
                     }
                     case "@Seller": {
                         String user = gson.toJson((Seller) userAccount);
+                        if(((Seller) userAccount).isAccepted())
                         ServerController.getInstance().sendMessageToClient("@Login as Seller@" + user);
+                        else
+                            ServerController.getInstance().sendMessageToClient("@Error@" + "Seller registration request hasn't been accepted");
                         break;
                     }
                     case "@Manager": {
