@@ -46,9 +46,7 @@ public class ManagerMenuScene extends Menu {
     }
 
     private void setCenterGridPane() {
-        //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
-        Manager manager = new Manager("mamooti", "majidmajid", "Mahmood", "Ahmadi nejad", "Mamooti@yahoo.com", "09123456789", 10000);
-        manager.setImagePath("file:C:\\Users\\USER\\Desktop\\index.jpg");
+        Manager manager = (Manager) ClientController.getInstance().getCurrentUser();
         Text personalInfo = new Text(manager.viewPersonalInfo());
         Text pageTitle = new Text("User Menu");
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));

@@ -60,7 +60,7 @@ public class SellerMenuScene extends Menu{
 
     private void setCenterGridPane() {
         //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
-        Seller seller = new Seller("mamooti", "majidmajid", "Mahmood", "Ahmadi nejad", "Mamooti@yahoo.com", "09123456789", 10000, "Apple", true);
+        Seller seller =(Seller) ClientController.getInstance().getCurrentUser();
         seller.setImagePath("file:C:\\Users\\USER\\Desktop\\index.jpg");
         Text personalInfo = new Text(seller.viewPersonalInfo());
         Text pageTitle = new Text("User Menu");

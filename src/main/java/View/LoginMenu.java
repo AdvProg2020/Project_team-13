@@ -17,10 +17,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.File;
-
-import static javax.swing.text.StyleConstants.Bold;
-
 public class LoginMenu extends Menu{
     private TextField userName;
     private PasswordField passWord;
@@ -110,7 +106,6 @@ public class LoginMenu extends Menu{
         userInfoGridPane.add(login, 0, 0,2,1);
         userInfoGridPane.setMinWidth(650);
         userInfoGridPane.setMinHeight(500);
-        userInfoGridPane.add(login, 0, 0, 2, 1);
         userInfoGridPane.add(userNameLabel, 0, 1);
         userInfoGridPane.add(passWordLabel, 0, 2);
         userInfoGridPane.add(userName, 1, 1);
