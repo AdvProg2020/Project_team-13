@@ -24,14 +24,14 @@ import java.io.File;
 
 import static javax.swing.text.StyleConstants.Bold;
 
-public class LoginMenu extends Menu{
+public class LoginMenu extends Menu {
     private TextField userName;
     private TextField passWord;
     private Button loginButton;
     private Hyperlink createNewAccount;
-    GridPane  userInfoGridPane;
+    GridPane userInfoGridPane;
 
-    public LoginMenu(Stage stage)  {
+    public LoginMenu(Stage stage) {
         super(stage);
         this.stage = stage;
         upGridPane = new GridPane();
@@ -74,7 +74,7 @@ public class LoginMenu extends Menu{
         Label login = new Label("Login");
         login.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 23));
         userName = new TextField();
-        passWord = new TextField();
+        passWord = new PasswordField();
         userName.setPromptText("Enter Username...");
         passWord.setPromptText("Enter Password...");
         userName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 55px;");
@@ -89,7 +89,11 @@ public class LoginMenu extends Menu{
         loginButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                LoginController.getInstance().login(userName.getText().trim(), passWord.getText().trim());
+                if (!userName.getText().trim().isEmpty() && !passWord.getText().trim().isEmpty())
+                    LoginController.getInstance().login(userName.getText().trim(), passWord.getText().trim());
+                else {
+
+                }
             }
         });
         Text textOr = new Text("OR");
@@ -109,16 +113,16 @@ public class LoginMenu extends Menu{
         userInfoGridPane.setHgap(20);
         userInfoGridPane.setMinWidth(650);
         userInfoGridPane.setMinHeight(500);
-        userInfoGridPane.add(login, 0, 0,2,1);
+        userInfoGridPane.add(login, 0, 0, 2, 1);
         userInfoGridPane.add(userNameLabel, 0, 1);
         userInfoGridPane.add(passWordLabel, 0, 2);
         userInfoGridPane.add(userName, 1, 1);
-        userInfoGridPane.add(passWord, 1, 2 );
-        userInfoGridPane.add(loginButton, 0, 3,2,1);
+        userInfoGridPane.add(passWord, 1, 2);
+        userInfoGridPane.add(loginButton, 0, 3, 2, 1);
         userInfoGridPane.add(textOr, 0, 4, 2, 1);
-        userInfoGridPane.add(createNewAccount, 0,5,2,1);
-        GridPane leftGridPane= new GridPane();
-        GridPane upGridPane= new GridPane();
+        userInfoGridPane.add(createNewAccount, 0, 5, 2, 1);
+        GridPane leftGridPane = new GridPane();
+        GridPane upGridPane = new GridPane();
         upGridPane.setMinHeight(50);
         leftGridPane.setMinWidth(130);
         userInfoGridPane.setStyle("-fx-background-color: #ECA5DC;");
@@ -139,8 +143,6 @@ public class LoginMenu extends Menu{
         pageGridPane.add(centerGridPane, 0, 2);
         pageGridPane.add(bottomGridPane, 0, 3);
     }
-
-
 
 
     public void execute() {
