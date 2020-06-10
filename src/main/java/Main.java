@@ -19,6 +19,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Hello World");
-        new MainMenu(primaryStage).execute();
+        new RegisterMenu(primaryStage).execute();
     }
 }

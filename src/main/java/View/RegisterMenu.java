@@ -28,8 +28,6 @@ public class RegisterMenu  extends Menu {
     private PasswordField passWord;
     private Button loginButton;
     private Hyperlink createNewAccount;
-    Scene scene;
-    Stage stage;
     String imagePath="";
     GridPane upGridPane, menuBarGridPane, centerGridPane, bottomGridPane, pageGridPane, userInfoGridPane;
 
@@ -41,7 +39,8 @@ public class RegisterMenu  extends Menu {
         bottomGridPane = new GridPane();
         pageGridPane = new GridPane();
         userInfoGridPane = new GridPane();
-        scene = new Scene(pageGridPane, 850, 600);
+       // scene = new Scene(pageGridPane, 850, 600);
+        setScene();
     }
 
     public void setScene() {
@@ -200,11 +199,6 @@ public class RegisterMenu  extends Menu {
         });
     }
 
-    public void execute() {
-        setScene();
-        stage.setScene(scene);
-        stage.show();
-    }
     private boolean checkPasswordIsvalid(String word) {
         if (word.length() > 8 && word.length() < 18) {
             return true;
