@@ -2,7 +2,7 @@ package View;
 
 import javafx.stage.Stage;
 
-public class ManagerRegisterMenu extends EnterMenuScene{
+public class ManagerRegisterMenu extends Menu{
 
     public ManagerRegisterMenu(Stage stage) {
         super(stage);
