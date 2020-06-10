@@ -209,6 +209,7 @@ public class RegisterMenu  extends Menu {
                                     if(checkUsernameIsvalid(userName.getText())) {
                                         if(checkCreditIsvalid(credit.getText())) {
                                             Customer customer = new Customer(userName.getText(), passWord.getText(), firstName.getText(), lastName.getText(), email.getText(), phoneNumber.getText(), Double.parseDouble(credit.getText()));
+                                            ClientController.getInstance().setCurrentUser(customer);
                                             RegisterController.getInstance().createNewUserAccount(customer);
                                         }else{
                                             credit.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
