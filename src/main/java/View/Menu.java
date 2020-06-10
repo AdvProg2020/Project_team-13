@@ -59,16 +59,18 @@ public class Menu {
 
     protected final void setMenuBarGridPane() {
         if (ClientController.getInstance().getCurrentUser() == null) {
-            Menu menu=this;
+            Menu menu = this;
             menuBarGridPane.setStyle("-fx-background-color:rgba(76, 170, 240, 1)");
             GridPane leftGridPane = new GridPane();
             Label home = new Label("Home");
             home.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    if(!(menu instanceof MainMenu)) {
-                       if( ClientController.getInstance().getMainMenu()!=null)
-                           ClientController.getInstance().getMainMenu().execute();
+                    if (!(menu instanceof MainMenu)) {
+                        if (ClientController.getInstance().getMainMenu() != null) {
+                            ClientController.getInstance().addNewMenu(ClientController.getInstance().getMainMenu());
+                            ClientController.getInstance().getMainMenu().execute();
+                        }
                     }
                 }
             });
@@ -93,8 +95,8 @@ public class Menu {
             login.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    if(!(menu instanceof LoginMenu))
-                    new LoginMenu(stage).execute();
+                    if (!(menu instanceof LoginMenu))
+                        new LoginMenu(stage).execute();
                 }
             });
             Label register = new Label("Register");
