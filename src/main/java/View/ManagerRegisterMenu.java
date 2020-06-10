@@ -124,7 +124,6 @@ public class ManagerRegisterMenu extends Menu{
         Text passwordText=new Text("Password");
         Text phonenumberText=new Text("Phone Number");
         Text emailText=new Text("Email");
-        Text creditText=new Text("Credit");
         Text firstNameText=new Text("First Name");
         Text lastNameText=new Text("Last Name");
         title.setStyle("-fx-font-weight: bold;");

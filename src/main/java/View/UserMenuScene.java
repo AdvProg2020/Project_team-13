@@ -50,7 +50,6 @@ public class UserMenuScene extends Menu{
     private void setCenterGridPane() {
         //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
         Customer customer = (Customer) ClientController.getInstance().getCurrentUser();
-        customer.setImagePath("file:C:\\Users\\USER\\Desktop\\index.jpg");
         Text personalInfo = new Text(customer.viewPersonalInfo());
         Text pageTitle = new Text("User Menu");
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));

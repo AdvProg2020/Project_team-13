@@ -113,7 +113,6 @@ public class RegisterMenu  extends Menu {
         phoneNumber=new TextField();
         email=new TextField();
         credit=new TextField();
-
         GridPane leftGridPane= new GridPane();
         GridPane upGridPane= new GridPane();
         upGridPane.setMinHeight(50);
