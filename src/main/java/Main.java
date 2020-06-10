@@ -1,4 +1,5 @@
 import View.MainMenu;
+import View.RegisterMenu;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
