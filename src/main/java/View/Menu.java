@@ -343,6 +343,8 @@ public class Menu {
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.initStyle(StageStyle.UNDECORATED);
         popupwindow.setScene(scene1);
+        System.out.println(popupwindow==null);
+        System.out.println(stage==null);
         popupwindow.show();
     }
 }
