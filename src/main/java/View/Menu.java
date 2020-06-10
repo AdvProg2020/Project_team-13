@@ -2,6 +2,8 @@ package View;
 
 import Controller.Client.ClientController;
 import Models.UserAccount.Customer;
+import Models.UserAccount.Manager;
+import Models.UserAccount.Seller;
 import View2.UserMenu.Customer.CustomerMenu;
 import com.sun.javafx.scene.layout.region.LayeredBackgroundPositionConverter;
 import javafx.event.EventHandler;
@@ -134,6 +136,13 @@ public class Menu {
                             new RegisterMenu(stage).execute();
                         }
                     });
+                    seller.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            popupwindow.hide();
+                            new SellerRegisterMenu(stage).execute();
+                        }
+                    });
                     seller.setFitWidth(100);
                     customer.setFitWidth(100);
                     seller.setFitHeight(110);
@@ -162,9 +171,17 @@ public class Menu {
                             new RegisterMenu(stage).execute();
                         }
                     });
+
                     Label seller1 = new Label("Seller");
                     customer1.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
                     seller1.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
+                    seller1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            popupwindow.hide();
+                            new SellerRegisterMenu(stage).execute();
+                        }
+                    });
                     photoGridPane.add(seller1, 0, 1);
                     photoGridPane.add(customer1, 1, 1);
                     Scene scene1 = new Scene(gridPane, 320, 240);
@@ -258,6 +275,14 @@ public class Menu {
                     ClientController.getInstance().back();
                     if (message.startsWith("Register Successful")) {
                         new UserMenuScene(stage).execute();
+                    } else if(message.startsWith("Login successful")) {
+                        if(ClientController.getInstance().getCurrentUser() instanceof Customer) {
+                            new UserMenuScene(stage).execute();
+                        } else if(ClientController.getInstance().getCurrentUser() instanceof Seller) {
+                            new SellerMenuScene(stage).execute();
+                        } else if(ClientController.getInstance().getCurrentUser() instanceof Manager) {
+                            new ManagerMenuScene(stage).execute();
+                        }
                     }
                 }
             });
@@ -286,6 +311,14 @@ public class Menu {
                     scene.setFill(null);
                     if (message.startsWith("Register Successful")) {
                         new UserMenuScene(stage).execute();
+                    } else if(message.startsWith("Login successful")) {
+                        if(ClientController.getInstance().getCurrentUser() instanceof Customer) {
+                            new UserMenuScene(stage).execute();
+                        } else if(ClientController.getInstance().getCurrentUser() instanceof Seller) {
+                            new SellerMenuScene(stage).execute();
+                        } else if(ClientController.getInstance().getCurrentUser() instanceof Manager) {
+                            new ManagerMenuScene(stage).execute();
+                        }
                     }
                 }
             });
@@ -313,6 +346,14 @@ public class Menu {
                     scene.setFill(null);
                     if (message.startsWith("Register Successful")) {
                         new UserMenuScene(stage).execute();
+                    }  else if(message.startsWith("Login successful")) {
+                        if(ClientController.getInstance().getCurrentUser() instanceof Customer) {
+                            new UserMenuScene(stage).execute();
+                        } else if(ClientController.getInstance().getCurrentUser() instanceof Seller) {
+                            new SellerMenuScene(stage).execute();
+                        } else if(ClientController.getInstance().getCurrentUser() instanceof Manager) {
+                            new ManagerMenuScene(stage).execute();
+                        }
                     }
                 }
             });
@@ -341,6 +382,14 @@ public class Menu {
                     scene.setFill(null);
                     if (message.startsWith("Register Successful")) {
                         new UserMenuScene(stage).execute();
+                    }  else if(message.startsWith("Login successful")) {
+                        if(ClientController.getInstance().getCurrentUser() instanceof Customer) {
+                            new UserMenuScene(stage).execute();
+                        } else if(ClientController.getInstance().getCurrentUser() instanceof Seller) {
+                            new SellerMenuScene(stage).execute();
+                        } else if(ClientController.getInstance().getCurrentUser() instanceof Manager) {
+                            new ManagerMenuScene(stage).execute();
+                        }
                     }
                 }
             });

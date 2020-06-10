@@ -32,12 +32,12 @@ public class MessageController {
             ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.ErrorWithoutBack);
         } else if (message.startsWith("@Successfulrc@")) {
             message = message.substring(14, message.length());
-            ClientController.getInstance().setCurrentUser(new Gson().fromJson(message,Customer.class));
+            ClientController.getInstance().setCurrentUser(new Gson().fromJson(message, Customer.class));
             ClientController.getInstance().getCurrentMenu().showMessage("Register Successful", MessageKind.MessageWithoutBack);
-        }else if (message.startsWith("@Successful@")) {
+        } else if (message.startsWith("@Successful@")) {
             message = message.substring(12, message.length());
             ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.MessageWithoutBack);
-        }else if (message.startsWith("@payed@")) {
+        } else if (message.startsWith("@payed@")) {
             message = message.substring(7, message.length());
             CartController.getInstance().payed(message);
             ClientController.getInstance().getCurrentMenu().showMessage("Successfully purchase", MessageKind.MessageWithoutBack);

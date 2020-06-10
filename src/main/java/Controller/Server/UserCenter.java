@@ -148,7 +148,10 @@ public class UserCenter {
                     }
                     case "@Seller": {
                         String user = gson.toJson((Seller) userAccount);
+                        if(((Seller) userAccount).isAccepted())
                         ServerController.getInstance().sendMessageToClient("@Login as Seller@" + user);
+                        else
+                            ServerController.getInstance().sendMessageToClient("@Error@" + "Seller registration request hasn't been accepted");
                         break;
                     }
                     case "@Manager": {
@@ -321,7 +324,7 @@ public class UserCenter {
     public void editCustomer(Customer customer) {
         int index = allCustomer.indexOf(findCustomerWithUsername(customer.getUsername()));
         allCustomer.remove(findCustomerWithUsername(customer.getUsername()));
-        allCustomer.add(index, customer);
+        allCustomer.set(index, customer);
         DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
         ServerController.getInstance().sendMessageToClient("@Successful@user successfully edited");
     }
