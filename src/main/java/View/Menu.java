@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -24,13 +25,14 @@ import javafx.stage.StageStyle;
 import javafx.stage.Popup;
 import sun.plugin2.message.Message;
 
+import java.io.File;
 import java.util.regex.Pattern;
 
 public class Menu {
     protected Scene scene;
     protected Stage stage;
     protected GridPane upGridPane, menuBarGridPane, centerGridPane, bottomGridPane, pageGridPane;
-
+    private AudioClip errorSound = new AudioClip(new File("src/error.mp3").toURI().toString());
     public Menu(Stage stage) {
         this.stage = stage;
         upGridPane = new GridPane();
@@ -241,6 +243,7 @@ public class Menu {
         photoGridPane.getRowConstraints().add(new RowConstraints(70, Control.USE_COMPUTED_SIZE, 70, Priority.NEVER, VPos.CENTER, true));
         photoGridPane.getRowConstraints().add(new RowConstraints(50, Control.USE_COMPUTED_SIZE, 50, Priority.NEVER, VPos.TOP, true));
         if (messageKind.equals(MessageKind.ErrorWithBack)) {
+            errorSound.play();
             photoGridPane.add(wrong, 0, 0);
             Text button = new Text("Go Back");
             button.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -266,6 +269,7 @@ public class Menu {
             photoGridPane.add(error, 0, 1);
             photoGridPane.add(gridPane, 0, 3);
         } else if (messageKind.equals(MessageKind.ErrorWithoutBack)) {
+            errorSound.play();
             photoGridPane.add(wrong, 0, 0);
             Text button = new Text("Done");
             button.setOnMouseClicked(new EventHandler<MouseEvent>() {
