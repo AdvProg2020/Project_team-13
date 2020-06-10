@@ -201,6 +201,7 @@ public class ManagerRegisterMenu extends Menu{
                                 if (Pattern.matches("\\d+", phoneNumber.getText().trim()) && phoneNumber.getText().trim().length() == 11&&phoneNumber.getText().charAt(0)=='0') {
                                     if(checkUsernameIsvalid(userName.getText())) {
                                             Manager manager = new Manager(userName.getText(), passWord.getText(), firstName.getText(), lastName.getText(), email.getText(), phoneNumber.getText(), 0);
+                                            manager.setImagePath(imagePath);
                                             RegisterController.getInstance().createNewUserAccount(manager);
                                     }else{
                                         userName.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");

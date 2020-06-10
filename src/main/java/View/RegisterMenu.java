@@ -208,6 +208,7 @@ public class RegisterMenu  extends Menu {
                                     if(checkUsernameIsvalid(userName.getText())) {
                                         if(checkCreditIsvalid(credit.getText())) {
                                             Customer customer = new Customer(userName.getText(), passWord.getText(), firstName.getText(), lastName.getText(), email.getText(), phoneNumber.getText(), Double.parseDouble(credit.getText()));
+                                            customer.setImagePath(imagePath);
                                             ClientController.getInstance().setCurrentUser(customer);
                                             RegisterController.getInstance().createNewUserAccount(customer);
                                         }else{
