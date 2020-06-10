@@ -1,1 +1,1 @@
-[{"totalBuyAmount":0.0,"username":"Jafar79","password":"majidmajid","firstName":"Jafar","lastName":"Jahani","email":"Jafar@jefri.com","phoneNumber":"09123425577","type":"@Customer","allDiscountCodes":[],"credit":15000.0,"historyOfTransaction":[],"imagePath":""}]
+[{"totalBuyAmount":0.0,"username":"Jafar79","password":"asdfadsfa","firstName":"asdf","lastName":"sdfg","email":"email@gmail.com","phoneNumber":"09124567895","type":"@Customer","allDiscountCodes":[],"credit":456456.0,"historyOfTransaction":[],"imagePath":""}]

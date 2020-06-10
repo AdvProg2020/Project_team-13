@@ -29,7 +29,7 @@ public class RegisterMenu  extends Menu {
     private Button loginButton;
     private Hyperlink createNewAccount;
     String imagePath="";
-    GridPane upGridPane, menuBarGridPane, centerGridPane, bottomGridPane, pageGridPane, userInfoGridPane;
+    GridPane  userInfoGridPane;
 
     public RegisterMenu(Stage stage) {
         super(stage);
