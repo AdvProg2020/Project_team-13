@@ -16,7 +16,7 @@ class RegisterMenuTest {
 
     @Test
     void execute() {
-        ClientController.getInstance().setCurrentMenu(new RegisterMenu(null));
+     //   ClientController.getInstance().setCurrentMenu(new RegisterMenu(null));
         RegisterController.getInstance().createNewUserAccount(new Manager("Sinamaz","sotyt", "Sina","Mazaheri","sinamazaheri@gmail.com","0912214453",12));
         //ve
     }

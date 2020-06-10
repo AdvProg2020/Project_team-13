@@ -3,6 +3,7 @@ package Controller.Client;
 import Models.*;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
+import View.MessageKind;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -38,7 +39,7 @@ public class RequestController {
                 showAllRequests += request.getRequestId() + " " + request.getType() + "\n";
             }
         }
-        ClientController.getInstance().getCurrentMenu().showMessage(showAllRequests);
+     //   ClientController.getInstance().getCurrentMenu().showMessage(showAllRequests);
     }
 
     public void viewRequestDetail(String requestId) {
@@ -66,11 +67,11 @@ public class RequestController {
                     default:
                         break;
                 }
-                ClientController.getInstance().getCurrentMenu().showMessage(viewDetail);
+         //       ClientController.getInstance().getCurrentMenu().showMessage(viewDetail);
                 return;
             }
         }
-        ClientController.getInstance().getCurrentMenu().printError("there is no request with this id");
+        ClientController.getInstance().getCurrentMenu().showMessage("there is no request with this id", MessageKind.ErrorWithoutBack);
     }
 
     public void acceptRequest(String requestId) {
@@ -81,7 +82,7 @@ public class RequestController {
                 return;
             }
         }
-        ClientController.getInstance().getCurrentMenu().printError("there is no request with this id");
+        ClientController.getInstance().getCurrentMenu().showMessage("there is no request with this id", MessageKind.ErrorWithoutBack);
     }
 
     public void declineRequest(String requestId) {
@@ -92,7 +93,7 @@ public class RequestController {
                 return;
             }
         }
-        ClientController.getInstance().getCurrentMenu().showMessage("There Is No Request With This Id");
+        ClientController.getInstance().getCurrentMenu().showMessage("there is no request with this id", MessageKind.ErrorWithoutBack);
     }
 
 }

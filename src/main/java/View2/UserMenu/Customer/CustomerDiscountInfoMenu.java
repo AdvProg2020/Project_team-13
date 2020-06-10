@@ -24,12 +24,12 @@ public class CustomerDiscountInfoMenu extends Menu {
             if (haveDiscount.equals("YES")) {
                 CartController.getInstance().getCurrentCart().setDiscountCode(getDiscountCode());
                 Menu menu = new PaymentMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+          //      ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (haveDiscount.equals("no")) {
                 ClientController.getInstance().setCurrentDiscountCode(null);
                 Menu menu = new PaymentMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+        //        ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             }else {
                 printError("Invaild command");

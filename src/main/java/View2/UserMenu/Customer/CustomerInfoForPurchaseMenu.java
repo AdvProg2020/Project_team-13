@@ -22,7 +22,7 @@ public class CustomerInfoForPurchaseMenu extends Menu {
         CartController.getInstance().getCurrentCart().setReceivingInformation(recevingInfo);
         CartController.getInstance().getCurrentCart().setCustomerID(ClientController.getInstance().getCurrentUser().getUsername());
         Menu menu = new CustomerDiscountInfoMenu(this).setScanner(scanner);
-        ClientController.getInstance().setCurrentMenu(menu);
+     //   ClientController.getInstance().setCurrentMenu(menu);
         menu.execute();
 
 

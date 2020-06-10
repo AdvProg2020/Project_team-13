@@ -3,6 +3,7 @@ package Controller.Client;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
+import View.MessageKind;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -58,7 +59,7 @@ public class ManagerController {
         for (Seller seller : allSellers) {
             showAllSellers += seller.getUsername() + " " + seller.getType() + "\n";
         }
-        ClientController.getInstance().getCurrentMenu().showMessage(showAllSellers);
+      //  ClientController.getInstance().getCurrentMenu().showMessage(showAllSellers);
     }
 
     public void printAllCustomers() {
@@ -66,7 +67,7 @@ public class ManagerController {
         for (Customer customer : allCustomers) {
             showAllCustomers += customer.getUsername() + " " + customer.getType() + "\n";
         }
-        ClientController.getInstance().getCurrentMenu().showMessage(showAllCustomers);
+     //   ClientController.getInstance().getCurrentMenu().showMessage(showAllCustomers);
     }
 
     public void printAllManagers() {
@@ -74,7 +75,7 @@ public class ManagerController {
         for (Manager manager : allManagers) {
             showAllManagers += manager.getUsername() + " " + manager.getType() + "\n";
         }
-        ClientController.getInstance().getCurrentMenu().showMessage(showAllManagers);
+     //   ClientController.getInstance().getCurrentMenu().showMessage(showAllManagers);
     }
 
     public void viewUser(String username) {
@@ -82,29 +83,29 @@ public class ManagerController {
         for (Customer customer : allCustomers) {
             if (customer.getUsername().equals(username)) {
                 viewDetail = username + " " + customer.getType() + " " + customer.viewPersonalInfo();
-                ClientController.getInstance().getCurrentMenu().showMessage(viewDetail);
+        //        ClientController.getInstance().getCurrentMenu().showMessage(viewDetail);
                 return;
             }
         }
         for (Seller seller : allSellers) {
             if (seller.getUsername().equals(username)) {
                 viewDetail = username + " " + seller.getType() + " " + seller.viewPersonalInfo();
-                ClientController.getInstance().getCurrentMenu().showMessage(viewDetail);
+            //    ClientController.getInstance().getCurrentMenu().showMessage(viewDetail);
                 return;
             }
         }
         for (Manager manager : allManagers) {
             if (manager.getUsername().equals(username)) {
                 viewDetail = username + " " + manager.getType() + " " + manager.viewPersonalInfo();
-                ClientController.getInstance().getCurrentMenu().showMessage(viewDetail);
+           //     ClientController.getInstance().getCurrentMenu().showMessage(viewDetail);
                 return;
             }
         }
-        ClientController.getInstance().getCurrentMenu().printError("there is no user with this username");
+        ClientController.getInstance().getCurrentMenu().showMessage("there is no user with this username", MessageKind.ErrorWithoutBack);
     }
     public void deleteUser(String username) {
         if(ClientController.getInstance().getCurrentUser().getUsername().equals(username)){
-            ClientController.getInstance().getCurrentMenu().printError("you cannot delete yourself");
+            ClientController.getInstance().getCurrentMenu().showMessage("you can't delete yourself", MessageKind.ErrorWithoutBack);
             return;
         }
         for (Customer customer : allCustomers) {
@@ -128,7 +129,7 @@ public class ManagerController {
                 return;
             }
         }
-        ClientController.getInstance().getCurrentMenu().printError("there is no user with this username");
+        ClientController.getInstance().getCurrentMenu().showMessage("there is no user with this user", MessageKind.ErrorWithoutBack);
     }
     public boolean isThereCustomerWithThisUsername(String username){
         for (Customer customer : allCustomers) {

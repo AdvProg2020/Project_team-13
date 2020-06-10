@@ -25,7 +25,7 @@ public abstract class Menu {
     }
 
     public void back() {
-        ClientController.getInstance().setCurrentMenu(parentMenu);
+      //  ClientController.getInstance().setCurrentMenu(parentMenu);
         parentMenu.execute();
     }
 

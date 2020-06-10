@@ -32,11 +32,11 @@ public class ProductsMenu extends Menu {
                 CategoryController.getInstance().printAllCategories();
             } else if (command.equalsIgnoreCase("filtering")) {
                 Menu menu = new FilteringMenu(parentMenu).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+           //     ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("sorting")) {
                 Menu menu = new SortingMenu(parentMenu).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+         ///       ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("show products")) {
                 ProductController.getInstance().showProductsAfterFilterAndSort();
@@ -44,14 +44,14 @@ public class ProductsMenu extends Menu {
                 ClientController.getInstance().setCurrentProduct(ProductController.getInstance().findProductAfterFilter(command.split("\\s")[2]));
                 if (ClientController.getInstance().getCurrentProduct() != null) {
                     Menu menu = new ProductMenu(this).setScanner(scanner);
-                    ClientController.getInstance().setCurrentMenu(menu);
+             //       ClientController.getInstance().setCurrentMenu(menu);
                     menu.execute();
                 } else {
                     printError("there is no product with this ID");
                 }
             } else if (command.equalsIgnoreCase("view Cart")) {
                 Menu menu = new CartMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+             //   ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("help")) {
                 help();
@@ -68,7 +68,7 @@ public class ProductsMenu extends Menu {
                     System.out.println("you already logged in");
                 } else {
                     Menu menu = new UserMenu(this).setScanner(scanner);
-                    ClientController.getInstance().setCurrentMenu(menu);
+                 //   ClientController.getInstance().setCurrentMenu(menu);
                     menu.execute();
                 }
             } else {

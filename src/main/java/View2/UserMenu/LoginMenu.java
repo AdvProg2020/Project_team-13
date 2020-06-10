@@ -54,7 +54,7 @@ public class LoginMenu extends Menu {
     @Override
     public void showMessage(String message) {
         super.showMessage(message);
-        ClientController.getInstance().setCurrentMenu(parentMenu);
+   //     ClientController.getInstance().setCurrentMenu(parentMenu);
         parentMenu.execute();
     }
 }

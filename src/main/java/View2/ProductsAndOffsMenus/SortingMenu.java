@@ -50,7 +50,7 @@ public class SortingMenu extends Menu {
                     System.out.println("you already logged in");
                 } else {
                     Menu menu = new UserMenu(this).setScanner(scanner);
-                    ClientController.getInstance().setCurrentMenu(menu);
+             //       ClientController.getInstance().setCurrentMenu(menu);
                     menu.execute();
                 }
 

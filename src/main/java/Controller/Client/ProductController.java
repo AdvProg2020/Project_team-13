@@ -8,6 +8,7 @@ import Models.Request;
 import Models.Score;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
+import View.MessageKind;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -150,7 +151,7 @@ public class ProductController {
     public void printAllProducts() {
         getAllProductsFromServer();
         for (Product product : allProducts) {
-            ClientController.getInstance().getCurrentMenu().showMessage(product.viewProduct());
+      //      ClientController.getInstance().getCurrentMenu().showMessage(product.viewProduct());
         }
     }
 
@@ -166,7 +167,7 @@ public class ProductController {
                         + "Product Status: " + product.getProductStatus().toString() + "\n";
             }
             if (allProducts != null && !allProducts.isEmpty()) {
-                ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
+      //          ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
             }
         }
 
@@ -485,7 +486,7 @@ public class ProductController {
                     + "Product Status: " + product.getProductStatus().toString() + "\n";
         }
         if (allProducts != null && !allProducts.isEmpty()) {
-            ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
+      //      ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
         }
 
     }
@@ -497,13 +498,13 @@ public class ProductController {
             product.addScore(score);
             ClientController.getInstance().sendMessageToServer("@rate@" + new Gson().toJson(score));
         } else {
-            ClientController.getInstance().getCurrentMenu().printError("there is no product with this ID");
+            ClientController.getInstance().getCurrentMenu().showMessage("there is no products with this id", MessageKind.ErrorWithoutBack);
         }
     }
 
     public void compareWithProduct(String productId) {
         if (getProductWithId(productId) == null) {
-            System.out.println("There Is No Product With This Id.");
+            ClientController.getInstance().getCurrentMenu().showMessage("there is no product with this id", MessageKind.ErrorWithoutBack);
         } else {
             Product product = ClientController.getInstance().getCurrentProduct();
             Product compareProduct = getProductWithId(productId);
@@ -516,7 +517,7 @@ public class ProductController {
             attributes += "Product Costs:\t" + compareProduct.getProductCost() + "\t\t" + product.getProductCost() + "\n";
             attributes += "Product Costs After Off:\t" + compareProduct.getCostAfterOff() + "\t\t" + product.getCostAfterOff() + "\n";
             attributes += "Product Descriptions:\t" + compareProduct.getDescription() + "\t\t" + product.getDescription() + "\n";
-            ClientController.getInstance().getCurrentMenu().showMessage(attributes);
+        //    ClientController.getInstance().getCurrentMenu().showMessage(attributes);
         }
     }
 }

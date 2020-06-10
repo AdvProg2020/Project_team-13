@@ -3,6 +3,7 @@ package Models.Product;
 import Controller.Client.ClientController;
 import Models.DiscountCode;
 import Models.UserAccount.Customer;
+import View.MessageKind;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,9 +32,9 @@ public class Cart {
         if(findProductWithID(product.getProductId())==null) {
             countOfEachProduct.put(product.getProductId(), 1);
             allproduct.add(product);
-            ClientController.getInstance().getCurrentMenu().showMessage("product successfully added to cart");
+            ClientController.getInstance().getCurrentMenu().showMessage("Product successfully added to cart", MessageKind.MessageWithoutBack);
         }else{
-            ClientController.getInstance().getCurrentMenu().printError("This product has already been added to the cart");
+            ClientController.getInstance().getCurrentMenu().showMessage("This product has already been added to the cart", MessageKind.ErrorWithoutBack);
         }
     }
 
@@ -65,16 +66,17 @@ public class Cart {
         if(findProductWithID(productID).getNumberOfAvailableProducts()-(count+countOfEachProduct.get(productID))>=0) {
             if (countOfEachProduct.get(productID) + count > 0) {
                 countOfEachProduct.replace(productID, countOfEachProduct.get(productID) + count);
-                ClientController.getInstance().getCurrentMenu().showMessage("The new number of this product is " + countOfEachProduct.get(productID));
+                ClientController.getInstance().getCurrentMenu().showMessage("The new number of this product is " + countOfEachProduct.get(productID), MessageKind.MessageWithoutBack);
+
             } else if (countOfEachProduct.get(productID) + count == 0) {
                 countOfEachProduct.remove(productID);
                 allproduct.remove(findProductWithID(productID));
-                ClientController.getInstance().getCurrentMenu().showMessage("this product removed from your cart");
+                ClientController.getInstance().getCurrentMenu().showMessage("this product removed from your cart", MessageKind.MessageWithoutBack);
             } else if (countOfEachProduct.get(productID) + count < 0) {
-                ClientController.getInstance().getCurrentMenu().printError("You only have " + countOfEachProduct.get(productID) + " of this products in your cart");
+                ClientController.getInstance().getCurrentMenu().showMessage("You only have " + countOfEachProduct.get(productID) + " of this products in your cart", MessageKind.ErrorWithoutBack);
             }
         }else{
-            ClientController.getInstance().getCurrentMenu().printError("there are no more than "+findProductWithID(productID).getNumberOfAvailableProducts()+" of this product in the store");
+            ClientController.getInstance().getCurrentMenu().showMessage("there are no more than "+findProductWithID(productID).getNumberOfAvailableProducts()+" of this product in the store", MessageKind.ErrorWithoutBack);
         }
     }
 
@@ -100,7 +102,7 @@ public class Cart {
         for (Product product : allproduct) {
             show += product.getProductId()+" "+ product.getProductName()+" "+countOfEachProduct.get(product.getProductId())+" "+product.getProductCost()+"\n";
         }
-        ClientController.getInstance().getCurrentMenu().showMessage(show);
+      //  ClientController.getInstance().getCurrentMenu().showMessage(show);
     }
 
     public void setReceivingInformation(String receivingInformation) {

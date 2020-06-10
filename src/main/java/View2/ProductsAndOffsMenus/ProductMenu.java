@@ -37,7 +37,7 @@ public class ProductMenu extends Menu {
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.equalsIgnoreCase("digest")) {
                 Menu menu = new Digest(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+         //       ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("attributes")) {
                 product.showAttributes();
@@ -59,18 +59,18 @@ public class ProductMenu extends Menu {
                 }
             } else if (command.equalsIgnoreCase("comments")) {
                 Menu menu = new CommentMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+           //     ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("login")) {
                 Menu menu = new UserMenu(this).setScanner(scanner);
-                ClientController.getInstance().setCurrentMenu(menu);
+          //      ClientController.getInstance().setCurrentMenu(menu);
                 menu.execute();
             } else if (command.equalsIgnoreCase("Login/Register")) {
                 if (ClientController.getInstance().getCurrentUser() != null) {
                     System.out.println("you already logged in");
                 } else {
                     Menu menu = new UserMenu(this).setScanner(scanner);
-                    ClientController.getInstance().setCurrentMenu(menu);
+                //    ClientController.getInstance().setCurrentMenu(menu);
                     menu.execute();
                 }
 
