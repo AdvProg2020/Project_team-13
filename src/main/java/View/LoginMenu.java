@@ -62,7 +62,6 @@ public class LoginMenu{
         GridPane upGridPane= new GridPane();
         upGridPane.setMinHeight(100);
         leftGridPane.setMinWidth(100);
-
         userInfoGridPane.add(username,0,0);
         userInfoGridPane.setStyle("-fx-background-color: #ECA5DC;");
         centerGridPane.add(userInfoGridPane, 2, 2, 1, 1);

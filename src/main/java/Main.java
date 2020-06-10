@@ -1,6 +1,7 @@
 import Controller.Server.ServerController;
 import View.EnterMenuScene;
 import View.LoginMenu;
+import View.RegisterMenu;
 import View.UserMenuScene;
 import View2.MainMenu;
 import javafx.application.Application;
@@ -16,6 +17,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Hello World");
-        new LoginMenu(primaryStage).execute();
+        new RegisterMenu(primaryStage).execute();
     }
 }
