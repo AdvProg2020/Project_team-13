@@ -1,7 +1,5 @@
 package Controller.Client;
 
-import Models.Log;
-
 public class LoginController {
 
     private static LoginController loginController;
@@ -19,5 +17,7 @@ public class LoginController {
     public void login(String userName,String password) {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("Login",userName+"/"+password));
     }
+
+
 }
 
