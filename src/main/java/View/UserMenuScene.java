@@ -35,7 +35,6 @@ public class UserMenuScene extends Menu{
     public UserMenuScene(Stage stage) {
         super(stage);
         userInfoGridPane = new GridPane();
-        scene = new Scene(pageGridPane, 850, 600);
         setScene();
     }
 
