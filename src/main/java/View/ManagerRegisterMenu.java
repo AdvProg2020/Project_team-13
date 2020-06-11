@@ -52,10 +52,7 @@ public class ManagerRegisterMenu extends Menu{
 //               bottomGridPane.setStyle("-fx-background-color: rgba(45, 156, 240, 1);");
         setCenterGridPane();
 //        bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(pageGridPane);
-        scrollPane.fitToWidthProperty().set(true);
-        scene.setRoot(scrollPane);
+        scene.setRoot(pageGridPane);
     }
 
     protected void setMenuBarGridPane() {

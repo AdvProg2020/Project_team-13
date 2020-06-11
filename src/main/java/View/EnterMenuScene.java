@@ -38,10 +38,7 @@ public class EnterMenuScene extends Menu {
         setMenuBarGridPane();
         bottomGridPane.setStyle("-fx-background-color: rgba(45, 156, 240, 1);");
         bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(pageGridPane);
-        scrollPane.fitToWidthProperty().set(true);
-        scene.setRoot(scrollPane);
+        scene.setRoot(pageGridPane);
         Customer customer = new Customer("mamooti", "majidmajid", "Mahmood", "Ahmadi nejad", "Mamooti@yahoo.com", "09123456789", 10000);
         Text personalInfo = new Text(customer.viewPersonalInfo());
         System.out.println(personalInfo.getText());

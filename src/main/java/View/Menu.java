@@ -5,11 +5,14 @@ import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
 import View2.UserMenu.Customer.CustomerMenu;
+import View2.UserMenu.Manager.ManagerMenu;
 import com.sun.javafx.scene.layout.region.LayeredBackgroundPositionConverter;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -71,23 +74,61 @@ public class Menu {
             menuBarGridPane.setStyle("-fx-background-color:rgba(76, 170, 240, 1)");
             GridPane leftGridPane = new GridPane();
             Label home = new Label("Home");
+            home.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            home.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
             home.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     if (!(menu instanceof MainMenu)) {
-                        if (ClientController.getInstance().getMainMenu() != null) {
-                            ClientController.getInstance().addNewMenu(ClientController.getInstance().getMainMenu());
-                            ClientController.getInstance().getMainMenu().execute();
-                        }
+                        ClientController.getInstance().getMainMenu().execute();
+
                     }
                 }
             });
             Label products = new Label("Products");
+            products.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            products.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
             products.setStyle("-fx-background-color: rgba(45, 156, 240, 0.24);-fx-text-fill: White");
             home.setStyle("-fx-background-color:rgba(45, 156, 240, 0.31);-fx-text-fill: White;-fx-font-weight: bold;");
             ImageView back = new ImageView(new Image("file:src/back.png"));
             back.setFitWidth(40);
             back.setFitHeight(25);
+            back.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            back.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+
             back.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -100,14 +141,43 @@ public class Menu {
             leftGridPane.setHgap(5);
             GridPane rightGridPane = new GridPane();
             Label login = new Label("Login");
+            login.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            login.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
             login.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    if (!(menu instanceof LoginMenu))
-                        new LoginMenu(stage).execute();
+                    if (ClientController.getInstance().getCurrentUser() == null) {
+                        if (!(menu instanceof LoginMenu))
+                            new LoginMenu(stage).execute();
+                    }
                 }
             });
             Label register = new Label("Register");
+
+            register.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            register.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
             register.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -194,6 +264,19 @@ public class Menu {
             register.setStyle("-fx-background-color: rgba(45, 156, 240, 0.31);-fx-text-fill: White;-fx-font-weight: bold;");
             login.setStyle("-fx-background-color: rgba(45, 156, 240, 0.31);-fx-text-fill: White;-fx-font-weight: bold;");
             ImageView image1 = new ImageView(new Image("file:src/cart.png"));
+            image1.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            image1.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
             image1.setFitWidth(30);
             image1.setFitHeight(30);
             rightGridPane.add(image1, 2, 0);
@@ -210,8 +293,187 @@ public class Menu {
             menuBarGridPane.add(rightGridPane, 1, 0);
             menuBarGridPane.getRowConstraints().add(new RowConstraints(40, Control.USE_COMPUTED_SIZE, 40, Priority.NEVER, VPos.CENTER, false));
         } else {
+            Menu menu = this;
+            menuBarGridPane.setStyle("-fx-background-color:rgba(76, 170, 240, 1)");
+            GridPane leftGridPane = new GridPane();
+            Label home = new Label("Home");
+            home.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
 
+                }
+            });
+            home.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            home.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (!(menu instanceof MainMenu)) {
+                        ClientController.getInstance().getMainMenu().execute();
+                    }
+                }
+            });
+            Label products = new Label("Products");
+            products.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            products.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            products.setStyle("-fx-background-color: rgba(45, 156, 240, 0.24);-fx-text-fill: White");
+            home.setStyle("-fx-background-color:rgba(45, 156, 240, 0.31);-fx-text-fill: White;-fx-font-weight: bold;");
+            ImageView back = new ImageView(new Image("file:src/back.png"));
+            back.setFitWidth(40);
+            back.setFitHeight(25);
+            back.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            back.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            back.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    ClientController.getInstance().back();
+                }
+            });
+            leftGridPane.add(back, 0, 0);
+            leftGridPane.add(home, 1, 0);
+            leftGridPane.add(products, 2, 0);
+            leftGridPane.setHgap(5);
+            GridPane rightGridPane = new GridPane();
+            Label logout = new Label("Logout");
+            logout.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            logout.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            logout.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    ClientController.getInstance().setCurrentUser(null);
+                    ClientController.getInstance().resetMenuArray();
+                }
+            });
+            Label userName = new Label(ClientController.getInstance().getCurrentUser().getUsername().trim());
+            Image image = new Image(ClientController.getInstance().getCurrentUser().getImagePath());
+            System.out.println("bbbb");
+            System.out.println(image);
+            System.out.println("bbbb");
+            ImageView userImage = new ImageView(image);
+            userName.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            userName.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            userImage.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            userImage.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            userName.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                }
+            });
+//            EventHandler eventHandler = new EventHandler() {
+//                @Override
+//                public void handle(Event event) {
+//                    if (!(menu instanceof UserMenuScene) && !(menu instanceof ManagerMenuScene) && !(menu instanceof SellerMenuScene)) {
+//                        if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
+//                            new SellerMenuScene(stage).execute();
+//                        } else if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
+//                            new UserMenuScene(stage).execute();
+//                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
+//                            new ManagerMenuScene(stage).execute();
+//                        }
+//                    }
+//                }
+//            };
+//            userImage.setOnMouseClicked(eventHandler);
+//            userName.setOnMouseClicked(eventHandler);
+            userName.setStyle("-fx-background-color: rgba(45, 156, 240, 0.31);-fx-text-fill: White;-fx-font-weight: bold;");
+            logout.setStyle("-fx-background-color: rgba(45, 156, 240, 0.31);-fx-text-fill: White;-fx-font-weight: bold;");
+            ImageView image1 = new ImageView(new Image("file:src/cart.png"));
+            image1.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            image1.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            image1.setFitWidth(30);
+            image1.setFitHeight(30);
+            userImage.setFitHeight(30);
+            userImage.setFitWidth(30);
+            rightGridPane.add(userImage, 0, 0);
+            rightGridPane.add(image1, 3, 0);
+            rightGridPane.add(logout, 2, 0);
+            rightGridPane.add(userName, 1, 0);
+            rightGridPane.setHgap(10);
+            logout.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
+            userName.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
+            products.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
+            home.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
+            menuBarGridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_PREF_SIZE, Double.POSITIVE_INFINITY, Priority.ALWAYS, HPos.LEFT, true));
+            menuBarGridPane.getColumnConstraints().add(new ColumnConstraints(300, Control.USE_PREF_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.RIGHT, false));
+            menuBarGridPane.add(leftGridPane, 0, 0);
+            menuBarGridPane.add(rightGridPane, 1, 0);
+            menuBarGridPane.getRowConstraints().add(new RowConstraints(40, Control.USE_COMPUTED_SIZE, 40, Priority.NEVER, VPos.CENTER, false));
         }
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 
     protected void setUpGridPane() {
@@ -275,12 +537,12 @@ public class Menu {
                     ClientController.getInstance().back();
                     if (message.startsWith("Register Successful")) {
                         new UserMenuScene(stage).execute();
-                    } else if(message.startsWith("Login successful")) {
-                        if(ClientController.getInstance().getCurrentUser() instanceof Customer) {
+                    } else if (message.startsWith("Login successful")) {
+                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
                             new UserMenuScene(stage).execute();
-                        } else if(ClientController.getInstance().getCurrentUser() instanceof Seller) {
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
                             new SellerMenuScene(stage).execute();
-                        } else if(ClientController.getInstance().getCurrentUser() instanceof Manager) {
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
                             new ManagerMenuScene(stage).execute();
                         }
                     }
@@ -311,12 +573,12 @@ public class Menu {
                     scene.setFill(null);
                     if (message.startsWith("Register Successful")) {
                         new UserMenuScene(stage).execute();
-                    } else if(message.startsWith("Login successful")) {
-                        if(ClientController.getInstance().getCurrentUser() instanceof Customer) {
+                    } else if (message.startsWith("Login successful")) {
+                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
                             new UserMenuScene(stage).execute();
-                        } else if(ClientController.getInstance().getCurrentUser() instanceof Seller) {
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
                             new SellerMenuScene(stage).execute();
-                        } else if(ClientController.getInstance().getCurrentUser() instanceof Manager) {
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
                             new ManagerMenuScene(stage).execute();
                         }
                     }
@@ -346,12 +608,12 @@ public class Menu {
                     scene.setFill(null);
                     if (message.startsWith("Register Successful")) {
                         new UserMenuScene(stage).execute();
-                    }  else if(message.startsWith("Login successful")) {
-                        if(ClientController.getInstance().getCurrentUser() instanceof Customer) {
+                    } else if (message.startsWith("Login successful")) {
+                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
                             new UserMenuScene(stage).execute();
-                        } else if(ClientController.getInstance().getCurrentUser() instanceof Seller) {
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
                             new SellerMenuScene(stage).execute();
-                        } else if(ClientController.getInstance().getCurrentUser() instanceof Manager) {
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
                             new ManagerMenuScene(stage).execute();
                         }
                     }
@@ -382,12 +644,12 @@ public class Menu {
                     scene.setFill(null);
                     if (message.startsWith("Register Successful")) {
                         new UserMenuScene(stage).execute();
-                    }  else if(message.startsWith("Login successful")) {
-                        if(ClientController.getInstance().getCurrentUser() instanceof Customer) {
+                    } else if (message.startsWith("Login successful")) {
+                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
                             new UserMenuScene(stage).execute();
-                        } else if(ClientController.getInstance().getCurrentUser() instanceof Seller) {
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
                             new SellerMenuScene(stage).execute();
-                        } else if(ClientController.getInstance().getCurrentUser() instanceof Manager) {
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
                             new ManagerMenuScene(stage).execute();
                         }
                     }

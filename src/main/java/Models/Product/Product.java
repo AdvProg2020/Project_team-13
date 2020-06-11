@@ -27,6 +27,12 @@ public class Product {
     private HashMap<String, String> featuresOfCategoryThatHas;
     private ArrayList<Customer> allBuyers = new ArrayList<>();
     private Offer offer;
+    private String imagePath;
+
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 
     public Product(String productCompany, String productId, String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, HashMap<String, String> featuresOfCategoryThatHas) {
         this.productCompany = productCompany;
@@ -319,6 +325,13 @@ public class Product {
         attributes += getCostAfterOff() + "\n";
         attributes += getDescription();
       //  ClientController.getInstance().getCurrentMenu().showMessage(attributes);
+    }
+
+    public String getImagePath() {
+        if(imagePath==null||imagePath.isEmpty()||imagePath.length()<4) {
+            return "file:src/product_icon.png";
+        }
+        return imagePath;
     }
 
     public void setFeaturesOfCategoryThatHas(HashMap<String, String> featuresOfCategoryThatHas) {
