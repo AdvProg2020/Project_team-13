@@ -32,7 +32,6 @@ public class Product {
     private Offer offer;
     private String imagePath = "";
 
-
     public Product(String productCompany, String productId, String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, HashMap<String, String> featuresOfCategoryThatHas) {
         this.productCompany = productCompany;
         this.productId = productId;
@@ -68,9 +67,24 @@ public class Product {
     public void setCostAfterOff(double costAfterOff) {
         this.costAfterOff = costAfterOff;
     }
+    public boolean didUserBuyThis(String username){
+        for (Customer buyer : allBuyers) {
+            if(buyer.getUsername().equals(username)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<Comment> getCommentList() {
+        if(commentList==null){
+            commentList=new ArrayList<>();
+        }
+        return commentList;
+    }
 
     public String getImagePath() {
-        if (imagePath.isEmpty()||imagePath.length()<5) {
+        if (imagePath.equals("") || imagePath.length() < 5) {
             return "file:src/product_icon.png";
         }
         return imagePath;
@@ -85,10 +99,22 @@ public class Product {
     }
 
     public ArrayList<Score> getAllScores() {
-        if(allScores==null) {
-            allScores=new ArrayList<>();
+        if (allScores == null) {
+            allScores = new ArrayList<>();
         }
         return allScores;
+    }
+
+    public int getPointThatBeforeRated(String username) {
+        if (allScores == null) {
+            allScores = new ArrayList<>();
+        }
+        for (Score score : allScores) {
+            if (score.getCustomerID().equals(username)) {
+                return score.getRate();
+            }
+        }
+        return 0;
     }
 
     public void addScore(Score score) {
@@ -137,10 +163,6 @@ public class Product {
     }
 
 
-    public ArrayList<Comment> getCommentList() {
-        return commentList;
-    }
-
     public void setCommentList(ArrayList<Comment> commentList) {
         this.commentList = commentList;
     }
@@ -160,16 +182,6 @@ public class Product {
 
     }
 
-    public ArrayList<String> getComments() {
-        if (commentList != null) {
-            ArrayList<String> allCommentsInStringForm = new ArrayList<>();
-            for (Comment comment : commentList) {
-                allCommentsInStringForm.add(comment.toString());
-            }
-            return allCommentsInStringForm;
-        }
-        return null;
-    }
 
     public String getProductId() {
         return productId;
