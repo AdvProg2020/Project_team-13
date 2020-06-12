@@ -73,17 +73,10 @@ public class ManageProducts extends Menu {
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
         pageTitle.setStyle("-fx-font-weight: bold;");
         pageTitle.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
-
-        Seller seller = new Seller("username", "password", "firstname",
-                "lastName", "email", "phone number", 123,
-                "ali", true);
+        Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
         ArrayList<GridPane> gridPanes = new ArrayList<>();
-        HashMap<String, String> hashMap = new HashMap<>();
-        for (int i = 0; i < 10; i++) {
-            hashMap.put(Integer.toString(i), Integer.toString(i * i + i + 1));
-        }
-        for (int kk = 0; kk < 48; kk++) {
-            Product product = new Product("aa", "aaaa" + Integer.toString(kk), "aa" + (char) (kk + 97), seller, 123, "lai", "svdfv", 123, hashMap);
+        for (int kk = 0; kk < seller.getAllProducts().size(); kk++) {
+            Product product = seller.getAllProducts().get(kk);
             seller.addProduct(product);
             GridPane gridPane = new GridPane();
             ImageView imageView = new ImageView(new Image(product.getImagePath()));
@@ -219,12 +212,30 @@ public class ManageProducts extends Menu {
         GridPane leftMenuGridPane = new GridPane();
         leftMenuGridPane.setMinHeight(400);
         leftMenuGridPane.setStyle("-fx-background-color:rgba(45, 156, 240, 1);");
-        Button categoriesButton = new Button("Add product");
-        categoriesButton.setTextAlignment(TextAlignment.CENTER);
-        categoriesButton.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
-        categoriesButton.setMinHeight(50);
-        categoriesButton.setMinWidth(150);
-        leftMenuGridPane.add(categoriesButton, 0, 2, 2, 2);
+        Button addProduct = new Button("Add product");
+        addProduct.setTextAlignment(TextAlignment.CENTER);
+        addProduct.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
+        addProduct.setMinHeight(50);
+        addProduct.setMinWidth(150);
+        addProduct.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+            }
+        });
+        addProduct.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
+        addProduct.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                new AddProductScene(stage).execute();
+            }
+        });
+        leftMenuGridPane.add(addProduct, 0, 2, 2, 2);
         centerGridPane.add(leftMenuGridPane, 0, 1, 1, 6);
         centerGridPane.add(pageTitle, 0, 0, 1, 1);
         if (productsPages.size() > 0) {
