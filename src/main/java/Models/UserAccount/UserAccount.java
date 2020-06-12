@@ -3,6 +3,7 @@ package Models.UserAccount;
 import Models.DiscountCode;
 import Models.Log;
 
+import javax.swing.text.html.ImageView;
 import java.util.ArrayList;
 
 public abstract class UserAccount {
@@ -12,6 +13,7 @@ public abstract class UserAccount {
     protected double credit;
     protected ArrayList<Log> historyOfTransaction;
     protected String imagePath="";
+    protected ImageView imageView;
 
     public UserAccount(String username, String password, String firstName, String lastName, String email,
                        String phoneNumber, double credit) {
@@ -35,6 +37,11 @@ public abstract class UserAccount {
     }
 
     public String getImagePath() {
+        if(imagePath==null||imagePath.isEmpty()||imagePath.length()<4) {
+            System.out.println("file:src/user_icon.png");
+            return "file:src/user_icon.png";
+        }
+        System.out.println(imagePath);
         return imagePath;
     }
 
@@ -53,6 +60,7 @@ public abstract class UserAccount {
     public String getLastName() {
         return lastName;
     }
+
 
 
     public void setCredit(double credit) {
