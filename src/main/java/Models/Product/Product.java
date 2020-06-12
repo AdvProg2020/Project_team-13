@@ -30,7 +30,7 @@ public class Product {
     private HashMap<String, String> featuresOfCategoryThatHas;
     private ArrayList<Customer> allBuyers = new ArrayList<>();
     private Offer offer;
-    private String imagePath="";
+    private String imagePath = "";
 
     public Product(String productCompany, String productId, String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, HashMap<String, String> featuresOfCategoryThatHas) {
         this.productCompany = productCompany;
@@ -68,7 +68,7 @@ public class Product {
         this.costAfterOff = costAfterOff;
     }
     public String getImagePath() {
-        if(imagePath.isEmpty()) {
+        if (imagePath.isEmpty()||imagePath.length()<5) {
             return "file:src/product_icon.png";
         }
         return imagePath;
@@ -82,19 +82,22 @@ public class Product {
     }
 
     public ArrayList<Score> getAllScores() {
+        if(allScores==null) {
+            allScores=new ArrayList<>();
+        }
         return allScores;
     }
 
     public void addScore(Score score) {
-        if(allScores==null){
-            allScores=new ArrayList<>();
+        if (allScores == null) {
+            allScores = new ArrayList<>();
         }
         allScores.add(score);
     }
 
     public void addComment(Comment comment) {
-        if(commentList==null){
-            commentList=new ArrayList<>();
+        if (commentList == null) {
+            commentList = new ArrayList<>();
         }
         this.commentList.add(comment);
     }
@@ -209,8 +212,8 @@ public class Product {
         this.productStatus = productStatus;
     }
 
-    public void addScore(String customerID,int rate){
-        allScores.add(new Score(customerID,productId,rate));
+    public void addScore(String customerID, int rate) {
+        allScores.add(new Score(customerID, productId, rate));
     }
     public void setProductName(String productName) {
         this.productName = productName;

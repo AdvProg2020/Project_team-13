@@ -6,8 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="Project_team-13" />
         <module name="Project_team" />
-        <module name="project13" />
         <module name="1313" />
         <module name="پروژه" />
         <module name="Project" />
@@ -15,7 +15,7 @@
         <module name="torokhodadorostsho" />
         <module name="Project_team-Graphic" />
         <module name="Project_Team_13" />
-        <module name="Project_team-13" />
+        <module name="project13" />
         <module name="peymanProject" />
       </profile>
     </annotationProcessing>
