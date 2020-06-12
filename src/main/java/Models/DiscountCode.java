@@ -69,7 +69,7 @@ public class DiscountCode {
     }
 
     public int getDiscountPercent() {
-        return discountPercent;
+        return  discountPercent;
     }
 
     public void usedOneTime(String username) {
