@@ -62,15 +62,15 @@ public class CommentMenu extends Menu {
         title = scanner.nextLine().trim();
         System.out.println("Enter Content");
         content = scanner.nextLine().trim();
-        Comment comment=new Comment("",CommentStatus.unChecked,true,"","");
+     //   Comment comment=new Comment("",CommentStatus.unChecked,true,"","");
         if (ClientController.getInstance().getCurrentUser() != null && ClientController.getInstance().getCurrentUser().getType().equals("@Customer")) {
             if (((Customer) (ClientController.getInstance().getCurrentUser())).findProductWithId(ClientController.getInstance().getCurrentProduct().getProductId()) != null) {
-                comment = new Comment(ClientController.getInstance().getCurrentProduct().getProductId(), CommentStatus.unChecked, true, title, content);
+       //         comment = new Comment(ClientController.getInstance().getCurrentProduct().getProductId(), CommentStatus.unChecked, true, title, content);
             }
         } else {
-            comment = new Comment(ClientController.getInstance().getCurrentProduct().getProductId(), CommentStatus.unChecked, false, title, content);
+       //     comment = new Comment(ClientController.getInstance().getCurrentProduct().getProductId(), CommentStatus.unChecked, false, title, content);
         }
 
-        return comment;
+        return null;
     }
 }

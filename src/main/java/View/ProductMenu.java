@@ -2,10 +2,14 @@ package View;
 
 import Controller.Client.CartController;
 import Controller.Client.ClientController;
+import Controller.Client.ProductController;
+import Models.Comment;
+import Models.CommentStatus;
 import Models.Offer;
 import Models.Product.Product;
 import Models.Score;
 import Models.UserAccount.Seller;
+import com.sun.scenario.animation.shared.ClipEnvelope;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -135,7 +139,8 @@ public class ProductMenu extends Menu {
         centerGridPane.add(productInfoGridPane, 0, 3, 5, 5);
         Circle redCircle = new Circle();
         GridPane offGridPane = new GridPane();
-        submitScore(product.getPointThatBeforeRated(ClientController.getInstance().getCurrentUser().getUsername()),false);
+        if (ClientController.getInstance().getCurrentUser() != null)
+            submitScore(product.getPointThatBeforeRated(ClientController.getInstance().getCurrentUser().getUsername()), false);
         redCircle.setFill(Color.rgb(222, 0, 0));
         redCircle.setRadius(30);
         Text offPercent = new Text();
@@ -165,6 +170,18 @@ public class ProductMenu extends Menu {
         showCommentsButton.setMinWidth(100);
         showCommentsButton.setTextFill(Color.WHITE);
         rateGridPane.add(showCommentsButton, 10, 0, 5, 1);
+        commentIcon.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+            }
+        });
+        commentIcon.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
         addToCartButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
@@ -260,8 +277,6 @@ public class ProductMenu extends Menu {
             public void handle(MouseEvent event) {
                 Stage popupwindow = new Stage();
                 GridPane gridPane = new GridPane();
-                scene.setFill(Color.GRAY);
-                popupwindow.setTitle("Edit information.");
                 gridPane.setStyle("-fx-background-color: Blue");
                 Button button = new Button("X");
                 button.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 25px; -fx-padding: 3,3,3,3;-fx-font-weight: bold;-fx-text-fill: Red");
@@ -274,64 +289,91 @@ public class ProductMenu extends Menu {
                 });
                 gridPane.add(button, 0, 0);
                 gridPane.add(new Text(""), 1, 0);
-                ImageView seller = new ImageView(new Image("file:src/seller.png"));
-                ImageView customer = new ImageView(new Image("file:src/customer.png"));
-                customer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                gridPane.setStyle("-fx-background-color: rgba(234,178,198,0.85);");
+                GridPane commentPane = new GridPane();
+                gridPane.add(commentPane, 1, 1);
+                commentPane.add(commentGridPane, 0, 0);
+                product.addComment(new Comment(product.getProductId(), CommentStatus.unChecked, product.didUserBuyThis("janati"), "Offf", "Kheyli Khari", "janati", "file:C:\\Users\\USER\\Desktop\\aj.jpg"));
+                product.addComment(new Comment(product.getProductId(), CommentStatus.unChecked, product.didUserBuyThis("zarrabi"), "Distraction", "don't make Distraction!\nposho boro biroon", "zarrabi", "file:C:\\Users\\USER\\Desktop\\hz.jpg"));
+                commentPane.setVgap(5);
+                for (int i = 0; i < product.getCommentList().size(); i++) {
+                    Comment comment = product.getCommentList().get(i);
+                    ImageView userImage = new ImageView(new Image(comment.getuserImagePath()));
+                    userImage.setFitWidth(50);
+                    userImage.setFitHeight(50);
+                    Text commentText = new Text();
+                    commentText.setStyle("-fx-font-size: 15 ");
+                    if (comment.isDidCustomerBuyProduct())
+                        commentText.setText(comment.getUsername() + "/bought\n" + comment.getTitle() + "\n" + comment.getContent());
+                    else
+                        commentText.setText(comment.getUsername() + "/not bought\n" + comment.getTitle() + "\n" + comment.getContent());
+                    GridPane commentPaneGrid = new GridPane();
+                    commentPaneGrid.setStyle("-fx-background-color: rgb(189,189,189);-fx-background-color: #ECD5DC;-fx-background-radius: 20px;");
+                    commentPaneGrid.setHgap(10);
+                    commentPaneGrid.setVgap(5);
+                    commentPaneGrid.add(userImage, 1, 1);
+                    commentPaneGrid.setMinWidth(450);
+                    commentPaneGrid.add(commentText, 2, 0, 1, 2);
+                    commentPane.add(commentPaneGrid, 0, i + 1);
+                }
+                Scene scene1 = new Scene(gridPane, 500, 400);
+                popupwindow.initModality(Modality.APPLICATION_MODAL);
+                popupwindow.initStyle(StageStyle.UNDECORATED);
+                popupwindow.setScene(scene1);
+                popupwindow.showAndWait();
+            }
+        });
+        commentIcon.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Stage popupwindow = new Stage();
+                GridPane gridPane = new GridPane();
+                gridPane.setStyle("-fx-background-color: Blue");
+                Button button = new Button("X");
+                button.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 25px; -fx-padding: 3,3,3,3;-fx-font-weight: bold;-fx-text-fill: Red");
+                button.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
                         popupwindow.hide();
-                        new RegisterMenu(stage).execute();
+                        scene.setFill(null);
                     }
                 });
-                seller.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        popupwindow.hide();
-                        new SellerRegisterMenu(stage).execute();
-                    }
-                });
-                seller.setFitWidth(100);
-                customer.setFitWidth(100);
-                seller.setFitHeight(110);
-                customer.setFitHeight(110);
-                gridPane.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);");
-                GridPane photoGridPane = new GridPane();
-                photoGridPane.setVgap(20);
-                photoGridPane.setHgap(20);
-                photoGridPane.add(seller, 0, 0);
-                photoGridPane.add(customer, 1, 0);
-                gridPane.add(photoGridPane, 1, 1);
-                photoGridPane.setAlignment(Pos.CENTER);
-                gridPane.getRowConstraints().add(new RowConstraints(20, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.CENTER, true));
-                gridPane.getRowConstraints().add(new RowConstraints(200, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, true));
-                gridPane.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.ALWAYS, HPos.CENTER, true));
-                gridPane.getColumnConstraints().add(new ColumnConstraints(250, Control.USE_COMPUTED_SIZE, 250, Priority.NEVER, HPos.CENTER, true));
-                photoGridPane.getColumnConstraints().add(new ColumnConstraints(90, Control.USE_COMPUTED_SIZE, 200, Priority.ALWAYS, HPos.CENTER, false));
-                photoGridPane.getColumnConstraints().add(new ColumnConstraints(90, Control.USE_COMPUTED_SIZE, 200, Priority.ALWAYS, HPos.CENTER, false));
-                photoGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, true));
-                photoGridPane.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.CENTER, true));
-                Label customer1 = new Label("Customer");
-                customer1.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        popupwindow.hide();
-                        new RegisterMenu(stage).execute();
-                    }
-                });
+                gridPane.add(button, 0, 0);
+                gridPane.add(new Text(""), 1, 0);
+                gridPane.setStyle("-fx-background-color: rgba(255,145,200,0.85);");
+                GridPane commentPane = new GridPane();
+                gridPane.add(commentPane, 1, 1);
+                Text titleText = new Text("Title:");
+                Text contentText = new Text("Content:");
+                TextField getTitle = new TextField();
+                TextArea getContent = new TextArea();
+                getTitle.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                getContent.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;");
+                getContent.setMinHeight(100);
+                getContent.setMaxWidth(300);
 
-                Label seller1 = new Label("Seller");
-                customer1.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
-                seller1.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
-                seller1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                Button addCommentButton = new Button("Add Comment");
+                addCommentButton.setStyle("-fx-background-color: #E85D9E;");
+                addCommentButton.setMinWidth(100);
+                commentPane.setVgap(10);
+                commentPane.setHgap(10);
+                addCommentButton.setTextFill(Color.WHITE);
+                commentPane.add(titleText, 0, 0);
+                commentPane.add(contentText, 0, 1);
+                commentPane.add(getTitle, 1, 0);
+                commentPane.add(getContent, 1, 1, 1, 5);
+                commentPane.add(addCommentButton, 1, 6);
+                addCommentButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
+                        if (ClientController.getInstance().getCurrentUser() != null)
+                            ProductController.getInstance().addComment(new Comment(product.getProductId(), CommentStatus.unChecked, product.didUserBuyThis(ClientController.getInstance().getCurrentUser().getUsername()), getTitle.getText(), getContent.getText(), ClientController.getInstance().getCurrentUser().getUsername(), ClientController.getInstance().getCurrentUser().getImagePath()));
+                        else
+                            ProductController.getInstance().addComment(new Comment(product.getProductId(), CommentStatus.unChecked, product.didUserBuyThis(""), getTitle.getText(), getContent.getText(), "guest", ""));
                         popupwindow.hide();
-                        new SellerRegisterMenu(stage).execute();
                     }
                 });
-                photoGridPane.add(seller1, 0, 1);
-                photoGridPane.add(customer1, 1, 1);
-                Scene scene1 = new Scene(gridPane, 320, 240);
+                Scene scene1 = new Scene(gridPane, 400, 300);
                 popupwindow.initModality(Modality.APPLICATION_MODAL);
                 popupwindow.initStyle(StageStyle.UNDECORATED);
                 popupwindow.setScene(scene1);
@@ -341,31 +383,31 @@ public class ProductMenu extends Menu {
         star1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                submitScore(1,true);
+                submitScore(1, true);
             }
         });
         star2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                submitScore(2,true);
+                submitScore(2, true);
             }
         });
         star3.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                submitScore(3,true);
+                submitScore(3, true);
             }
         });
         star4.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-               submitScore(4,true);
+                submitScore(4, true);
             }
         });
         star5.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                submitScore(5,true);
+                submitScore(5, true);
             }
         });
 
@@ -422,8 +464,8 @@ public class ProductMenu extends Menu {
         return value;
     }
 
-    private void submitScore(int rate,boolean add) {
-        if (!isScored) {
+    private void submitScore(int rate, boolean add) {
+        if (!isScored && ClientController.getInstance().getCurrentUser() != null && product.didUserBuyThis(ClientController.getInstance().getCurrentUser().getUsername())) {
             if (rate >= 1)
                 star1.setImage(goldStar);
             if (rate >= 2)
@@ -434,8 +476,8 @@ public class ProductMenu extends Menu {
                 star4.setImage(goldStar);
             if (rate >= 5)
                 star5.setImage(goldStar);
-            if(rate>0) {
-                if(add) {
+            if (rate > 0) {
+                if (add) {
                     product.addScore(new Score(ClientController.getInstance().getCurrentUser().getUsername(), product.getProductId(), rate));
                     setLengthOfStarBars();
                 }

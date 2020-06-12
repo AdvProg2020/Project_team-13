@@ -1,13 +1,16 @@
 package View;
 
 import Controller.Client.ClientController;
+import Models.Product.Category;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -210,15 +213,40 @@ public class SellerMenuScene extends Menu{
         leftMenuGridPane.setMinHeight(400);
         leftMenuGridPane.setStyle("-fx-background-color:rgba(45, 156, 240, 1);");
         Button manageProducts = new Button("Manage Products");
+        manageProducts.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                new ManageProducts(stage).execute();
+            }
+        });
+        manageProducts.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+            }
+        });
+        manageProducts.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
         manageProducts.setStyle("-fx-font-size:  16;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         manageProducts.setMinHeight(50);
         manageProducts.setMinWidth(150);
-        Button categoriesButton = new Button("Categories");
-        categoriesButton.setTextAlignment(TextAlignment.CENTER);
-        categoriesButton.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
-        categoriesButton.setMinHeight(50);
-        categoriesButton.setMinWidth(150);
         Button offsButton = new Button("Offs");
+        offsButton.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+            }
+        });
+        offsButton.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
         offsButton.setTextAlignment(TextAlignment.CENTER);
         offsButton.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         offsButton.setMinHeight(50);
@@ -228,9 +256,20 @@ public class SellerMenuScene extends Menu{
         salesHistoryButton.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         salesHistoryButton.setMinHeight(50);
         salesHistoryButton.setMinWidth(150);
+        salesHistoryButton.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+            }
+        });
+        salesHistoryButton.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
         leftMenuGridPane.add(manageProducts, 0, 0, 2, 2);
-        leftMenuGridPane.add(categoriesButton, 0, 2, 2, 2);
-        leftMenuGridPane.add(offsButton, 0, 4, 2, 2);
+        leftMenuGridPane.add(offsButton, 0, 2, 2, 2);
         leftMenuGridPane.add(salesHistoryButton, 0, 6, 2, 2);
         centerGridPane.add(leftMenuGridPane, 0, 1, 1, 6);
         centerGridPane.add(pageTitle, 0, 0, 1, 1);

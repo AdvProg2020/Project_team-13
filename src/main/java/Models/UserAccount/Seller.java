@@ -233,7 +233,7 @@ public class Seller extends UserAccount {
         productInfo += product.getDescription() + "\n";
         productInfo += product.getAverageScore() + "\n";
         productInfo += product.getCostAfterOff() + "\n";
-        productInfo += product.getComments() + "\n";
+
         productInfo += product.getFeaturesOfCategoryThatHas() + "\n";
         return productInfo;
 
