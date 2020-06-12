@@ -460,7 +460,7 @@ public class Menu {
                 rightGridPane.add(image1, 3, 0);
                 rightGridPane.add(logout, 2, 0);
                 rightGridPane.add(userName, 1, 0);
-            }else {
+            } else {
                 rightGridPane.add(userImage, 0, 0);
                 rightGridPane.add(logout, 2, 0);
                 rightGridPane.add(userName, 1, 0);

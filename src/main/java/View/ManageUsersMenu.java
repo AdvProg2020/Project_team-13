@@ -214,6 +214,29 @@ public class ManageUsersMenu extends Menu {
         GridPane leftMenuGridPane = new GridPane();
         leftMenuGridPane.setMinHeight(400);
         leftMenuGridPane.setStyle("-fx-background-color:rgba(45, 156, 240, 1);");
+        Button createNewManager = new Button("Create Manager");
+        createNewManager.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
+        createNewManager.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
+        createNewManager.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+            }
+        });
+        createNewManager.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
+        createNewManager.setOnMouseClicked(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                new ManagerRegisterMenu(stage).execute();
+            }
+        });
+        leftMenuGridPane.add(createNewManager,0,0,1,2);
         centerGridPane.add(leftMenuGridPane, 0, 1, 1, 6);
         centerGridPane.add(pageTitle, 0, 0, 1, 1);
         if (productsPages.size() > 0) {
