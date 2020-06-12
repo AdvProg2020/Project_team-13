@@ -7,7 +7,10 @@ import Models.Score;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 
+import javax.swing.text.html.HTML;
+import javax.swing.text.html.HTMLWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Product {
@@ -27,12 +30,10 @@ public class Product {
     private HashMap<String, String> featuresOfCategoryThatHas;
     private ArrayList<Customer> allBuyers = new ArrayList<>();
     private Offer offer;
-    private String imagePath;
+    private String imagePath="";
 
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
+
 
     public Product(String productCompany, String productId, String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, HashMap<String, String> featuresOfCategoryThatHas) {
         this.productCompany = productCompany;
@@ -69,13 +70,22 @@ public class Product {
     public void setCostAfterOff(double costAfterOff) {
         this.costAfterOff = costAfterOff;
     }
-
+    public String getImagePath() {
+        if(imagePath.isEmpty()) {
+            return "file:src/product_icon.png";
+        }
+        return imagePath;
+    }
     public void setAllBuyers(ArrayList<Customer> allBuyers) {
         this.allBuyers = allBuyers;
     }
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public ArrayList<Score> getAllScores() {
+        return allScores;
     }
 
     public void addScore(Score score) {
@@ -311,27 +321,28 @@ public class Product {
      //   ClientController.getInstance().getCurrentMenu().showMessage(digest);
     }
 
-    public void showAttributes() {
-        String attributes = "";
-        attributes += getProductId() + "\n";
-        attributes += getProductName() + "\n";
-        attributes += getProductsCategory() + "\n";
-        for (String feature : featuresOfCategoryThatHas.keySet()) {
-            attributes += feature + ": " + featuresOfCategoryThatHas.get(feature) + "\n";
-        }
-        attributes += getSeller() + "\n";
-        attributes += getProductCompany() + "\n";
-        attributes += getProductCost() + "\n";
-        attributes += getCostAfterOff() + "\n";
-        attributes += getDescription();
-      //  ClientController.getInstance().getCurrentMenu().showMessage(attributes);
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
-    public String getImagePath() {
-        if(imagePath==null||imagePath.isEmpty()||imagePath.length()<4) {
-            return "file:src/product_icon.png";
+    public String showAttributes() {
+        String attributes = "";
+        attributes += "<html style=\"background-color: #ECD5DC;\">Company: "+ getProductCompany() + "<br>";
+        attributes +="Seller: "+ getSeller() + "<br>";
+        if(getOffer()!=null) {
+            attributes += "Cost: <del>"+getProductCost()+ "</del>$<font color='red'> "+costAfterOff + "$</font></html><br>";
+            attributes += "Offs remaning time: <html><font color='red'>"+new Date(getOffer().getEndTime().getTime()- new Date().getTime()).getDay() + "</font><br>";
+        }else {
+            attributes += "Cost: "+getProductCost()+ "$<br>";
+
         }
-        return imagePath;
+        attributes +="Category: "+ getProductsCategory() + "<br>";
+        for (String feature : featuresOfCategoryThatHas.keySet()) {
+            attributes += feature + ": " + featuresOfCategoryThatHas.get(feature) + "<br>";
+        }
+        attributes += "ِDescriptions: "+getDescription()+"<br></html>";
+        return attributes;
+      //  ClientController.getInstance().getCurrentMenu().showMessage(attributes);
     }
 
     public void setFeaturesOfCategoryThatHas(HashMap<String, String> featuresOfCategoryThatHas) {
