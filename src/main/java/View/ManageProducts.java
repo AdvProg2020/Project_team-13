@@ -82,7 +82,7 @@ public class ManageProducts extends Menu {
         for (int i = 0; i < 10; i++) {
             hashMap.put(Integer.toString(i), Integer.toString(i * i + i + 1));
         }
-        for (int kk = 0; kk < 0; kk++) {
+        for (int kk = 0; kk < 48; kk++) {
             Product product = new Product("aa", "aaaa" + Integer.toString(kk), "aa" + (char) (kk + 97), seller, 123, "lai", "svdfv", 123, hashMap);
             seller.addProduct(product);
             GridPane gridPane = new GridPane();
@@ -141,6 +141,7 @@ public class ManageProducts extends Menu {
                     for (int i = 0; i < gridPanes.size(); i++) {
                         if (gridPanes.get(i).equals(gridPane)) {
                             ClientController.getInstance().setCurrentProduct(seller.getAllProducts().get(i));
+                            new ProductMenu(stage).execute();
                         }
                     }
                 }

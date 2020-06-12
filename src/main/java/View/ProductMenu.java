@@ -56,22 +56,22 @@ public class ProductMenu extends Menu{
     }
     private void setCenterGridPane() {
 
-      //  Product product= ClientController.getInstance().getCurrentProduct();
+      product= ClientController.getInstance().getCurrentProduct();
         HashMap<String,String> features=new HashMap<>();
         features.put("Color","Yellow");
         features.put("Mass","5 kg");
-        product=new Product("Mive-TareBar","@p10003","Banana",new Seller("Mamooti","123456","Mahmood","ahmadi","mamooti@gmail.com","09124569966",1000,"dolat",true),600,"Fruits","eat the banana and fell the power",50,features);
+//        product=new Product("Mive-TareBar","@p10003","Banana",new Seller("Mamooti","123456","Mahmood","ahmadi","mamooti@gmail.com","09124569966",1000,"dolat",true),600,"Fruits","eat the banana and fell the power",50,features);
         Date date=new Date();
         date.setMonth(8);
         product.setImagePath("file:C:\\Users\\USER\\Desktop\\moz.jpg");
-        Offer offer=new Offer(35,"Mamooti",null,new Date(),date);
-        product.setOffer(offer);
-        product.addScore(new Score("mamal",product.getProductId(),1));
-        product.addScore(new Score("mamal",product.getProductId(),1));
-        product.addScore(new Score("mamal",product.getProductId(),3));
-        product.addScore(new Score("mamal",product.getProductId(),5));
-        product.addScore(new Score("mamal",product.getProductId(),2));
-        product.addScore(new Score("mamal",product.getProductId(),3));
+//        Offer offer=new Offer(35,"Mamooti",null,new Date(),date);
+//        product.setOffer(offer);
+//        product.addScore(new Score("mamal",product.getProductId(),1));
+//        product.addScore(new Score("mamal",product.getProductId(),1));
+//        product.addScore(new Score("mamal",product.getProductId(),3));
+//        product.addScore(new Score("mamal",product.getProductId(),5));
+//        product.addScore(new Score("mamal",product.getProductId(),2));
+//        product.addScore(new Score("mamal",product.getProductId(),3));
 
         ImageView productImage=new ImageView(new Image(product.getImagePath()));
         productImage.setFitHeight(200);
