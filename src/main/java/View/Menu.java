@@ -62,7 +62,7 @@ public class Menu {
         setPageGridPain();
         setUpGridPane();
         setMenuBarGridPane();
-        bottomGridPane.setStyle("-fx-background-color: rgba(45, 156, 240, 1);");
+        bottomGridPane.setStyle("-fx-background-color: rgb(45,156,240);");
         bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
         scene.setRoot(pageGridPane);
 
@@ -71,7 +71,7 @@ public class Menu {
     protected void setMenuBarGridPane() {
         if (ClientController.getInstance().getCurrentUser() == null) {
             Menu menu = this;
-            menuBarGridPane.setStyle("-fx-background-color:rgba(76, 170, 240, 1)");
+            menuBarGridPane.setStyle("-fx-background-color:rgb(76,170,240)");
             GridPane leftGridPane = new GridPane();
             Label home = new Label("Home");
             home.setOnMouseEntered(new EventHandler() {

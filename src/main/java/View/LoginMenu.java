@@ -5,7 +5,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
@@ -26,30 +25,15 @@ public class LoginMenu extends Menu{
 
     public LoginMenu(Stage stage) {
         super(stage);
-        this.stage = stage;
-        upGridPane = new GridPane();
-        menuBarGridPane = new GridPane();
-        centerGridPane = new GridPane();
-        bottomGridPane = new GridPane();
-        pageGridPane = new GridPane();
-        userInfoGridPane = new GridPane();
-        scene = new Scene(pageGridPane, 850, 600);
         setScene();
     }
 
     public void setScene() {
-        upGridPane = new GridPane();
-        menuBarGridPane = new GridPane();
-        centerGridPane = new GridPane();
-        bottomGridPane = new GridPane();
-        pageGridPane = new GridPane();
         userInfoGridPane = new GridPane();
-        scene = new Scene(pageGridPane, 850, 600);
         setPageGridPain();
         setUpGridPane();
         setMenuBarGridPane();
         setCenterGridPane();
-
         scene.setRoot(pageGridPane);
     }
 
@@ -73,16 +57,6 @@ public class LoginMenu extends Menu{
         loginButton.setStyle("-fx-background-color: #E85D9E");
         loginButton.setTextFill(Color.WHITE);
         loginButton.setMaxSize(400, 50);
-        loginButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (!userName.getText().trim().isEmpty() && !passWord.getText().trim().isEmpty())
-                    LoginController.getInstance().login(userName.getText().trim(), passWord.getText().trim());
-                else {
-
-                }
-            }
-        });
         login.setAlignment(Pos.TOP_CENTER);
         Text textOr = new Text("OR");
         textOr.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
@@ -99,14 +73,12 @@ public class LoginMenu extends Menu{
         createNewAccount.setUnderline(true);
         userInfoGridPane.setVgap(20);
         userInfoGridPane.setHgap(20);
-        userInfoGridPane.setMinWidth(500);
-        userInfoGridPane.setMinHeight(450);
         userInfoGridPane.getColumnConstraints().add(new ColumnConstraints(300, Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
         GridPane.setHalignment(createNewAccount, HPos.CENTER);
         GridPane.setHalignment(alertText, HPos.CENTER);
         userInfoGridPane.add(login, 0, 0,2,1);
-        userInfoGridPane.setMinWidth(650);
-        userInfoGridPane.setMinHeight(500);
+        userInfoGridPane.setMinWidth(500);
+        userInfoGridPane.setMinHeight(450);
         userInfoGridPane.add(userNameLabel, 0, 1);
         userInfoGridPane.add(passWordLabel, 0, 2);
         userInfoGridPane.add(userName, 1, 1);
@@ -118,13 +90,13 @@ public class LoginMenu extends Menu{
         GridPane.setValignment(textOr, VPos.CENTER);
         GridPane leftGridPane= new GridPane();
         GridPane upGridPane= new GridPane();
-        upGridPane.setMinHeight(55);
-        leftGridPane.setMinWidth(85);
+        upGridPane.setMinHeight(40);
+        leftGridPane.setMinWidth(165);
+        leftGridPane.setGridLinesVisible(true);
         userInfoGridPane.setStyle("-fx-background-color: #ECA5DC;");
         centerGridPane.add(userInfoGridPane, 1, 1);
-        centerGridPane.add(leftGridPane,0,0,1,2);
+        centerGridPane.add(leftGridPane,0,0);
         centerGridPane.add(upGridPane, 1, 0);
-        centerGridPane.getColumnConstraints().add(new ColumnConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, HPos.LEFT, true));
         userInfoGridPane.setAlignment(Pos.CENTER);
         loginButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
