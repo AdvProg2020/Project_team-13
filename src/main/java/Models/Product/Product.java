@@ -32,9 +32,6 @@ public class Product {
     private Offer offer;
     private String imagePath="";
 
-
-
-
     public Product(String productCompany, String productId, String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, HashMap<String, String> featuresOfCategoryThatHas) {
         this.productCompany = productCompany;
         this.productId = productId;

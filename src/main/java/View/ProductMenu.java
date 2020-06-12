@@ -10,14 +10,13 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Control;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -28,7 +27,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import javax.swing.*;
 import java.util.Date;
@@ -55,7 +56,6 @@ public class ProductMenu extends Menu{
         scene.setRoot(pageGridPane);
     }
     private void setCenterGridPane() {
-
       //  Product product= ClientController.getInstance().getCurrentProduct();
         HashMap<String,String> features=new HashMap<>();
         features.put("Color","Yellow");
@@ -264,6 +264,89 @@ public class ProductMenu extends Menu{
             @Override
             public void handle(MouseEvent event) {
                 CartController.getInstance().getCurrentCart().addProduct(product);
+            }
+        });
+        showCommentsButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Stage popupwindow = new Stage();
+                GridPane gridPane = new GridPane();
+                scene.setFill(Color.GRAY);
+                popupwindow.setTitle("Edit information.");
+                gridPane.setStyle("-fx-background-color: Blue");
+                Button button = new Button("X");
+                button.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 25px; -fx-padding: 3,3,3,3;-fx-font-weight: bold;-fx-text-fill: Red");
+                button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        popupwindow.hide();
+                        scene.setFill(null);
+                    }
+                });
+                gridPane.add(button, 0, 0);
+                gridPane.add(new Text(""), 1, 0);
+                ImageView seller = new ImageView(new Image("file:src/seller.png"));
+                ImageView customer = new ImageView(new Image("file:src/customer.png"));
+                customer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        popupwindow.hide();
+                        new RegisterMenu(stage).execute();
+                    }
+                });
+                seller.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        popupwindow.hide();
+                        new SellerRegisterMenu(stage).execute();
+                    }
+                });
+                seller.setFitWidth(100);
+                customer.setFitWidth(100);
+                seller.setFitHeight(110);
+                customer.setFitHeight(110);
+                gridPane.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);");
+                GridPane photoGridPane = new GridPane();
+                photoGridPane.setVgap(20);
+                photoGridPane.setHgap(20);
+                photoGridPane.add(seller, 0, 0);
+                photoGridPane.add(customer, 1, 0);
+                gridPane.add(photoGridPane, 1, 1);
+                photoGridPane.setAlignment(Pos.CENTER);
+                gridPane.getRowConstraints().add(new RowConstraints(20, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.CENTER, true));
+                gridPane.getRowConstraints().add(new RowConstraints(200, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, true));
+                gridPane.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.ALWAYS, HPos.CENTER, true));
+                gridPane.getColumnConstraints().add(new ColumnConstraints(250, Control.USE_COMPUTED_SIZE, 250, Priority.NEVER, HPos.CENTER, true));
+                photoGridPane.getColumnConstraints().add(new ColumnConstraints(90, Control.USE_COMPUTED_SIZE, 200, Priority.ALWAYS, HPos.CENTER, false));
+                photoGridPane.getColumnConstraints().add(new ColumnConstraints(90, Control.USE_COMPUTED_SIZE, 200, Priority.ALWAYS, HPos.CENTER, false));
+                photoGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, true));
+                photoGridPane.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.CENTER, true));
+                Label customer1 = new Label("Customer");
+                customer1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        popupwindow.hide();
+                        new RegisterMenu(stage).execute();
+                    }
+                });
+
+                Label seller1 = new Label("Seller");
+                customer1.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
+                seller1.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
+                seller1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        popupwindow.hide();
+                        new SellerRegisterMenu(stage).execute();
+                    }
+                });
+                photoGridPane.add(seller1, 0, 1);
+                photoGridPane.add(customer1, 1, 1);
+                Scene scene1 = new Scene(gridPane, 320, 240);
+                popupwindow.initModality(Modality.APPLICATION_MODAL);
+                popupwindow.initStyle(StageStyle.UNDECORATED);
+                popupwindow.setScene(scene1);
+                popupwindow.showAndWait();
             }
         });
         star1.setOnMouseClicked(new EventHandler<MouseEvent>() {
