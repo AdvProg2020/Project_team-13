@@ -31,12 +31,9 @@ public class Product {
     private ArrayList<Customer> allBuyers = new ArrayList<>();
     private Offer offer;
     private String imagePath="";
-    private String imagePath;
 
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
+
 
     public Product(String productCompany, String productId, String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, HashMap<String, String> featuresOfCategoryThatHas) {
         this.productCompany = productCompany;
