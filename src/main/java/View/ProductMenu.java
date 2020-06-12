@@ -69,30 +69,15 @@ public class ProductMenu extends Menu {
         HashMap<String, String> features = new HashMap<>();
         features.put("Color", "Yellow");
         features.put("Mass", "5 kg");
-//        product=new Product("Mive-TareBar","@p10003","Banana",new Seller("Mamooti","123456","Mahmood","ahmadi","mamooti@gmail.com","09124569966",1000,"dolat",true),600,"Fruits","eat the banana and fell the power",50,features);
         Date date = new Date();
         date.setMonth(8);
-        //     product.setImagePath("file:C:\\Users\\USER\\Desktop\\moz.jpg");
-//        Offer offer=new Offer(35,"Mamooti",null,new Date(),date);
-//        product.setOffer(offer);
-//        product.addScore(new Score("mamal",product.getProductId(),1));
-//        product.addScore(new Score("mamal",product.getProductId(),1));
-//        product.addScore(new Score("mamal",product.getProductId(),3));
-//        product.addScore(new Score("mamal",product.getProductId(),5));
-//        product.addScore(new Score("mamal",product.getProductId(),2));
-//        product.addScore(new Score("mamal",product.getProductId(),3));
-
         ImageView productImage = new ImageView(new Image(product.getImagePath()));
         productImage.setFitHeight(200);
         productImage.setFitWidth(200);
         productInfoGridPane.setVgap(10);
         productInfoGridPane.setHgap(20);
         productInfoGridPane.setMinWidth(850);
-        //  productInfoGridPane.setMinHeight(500);
         productInfoGridPane.setStyle("-fx-background-color: #ECD5DC");
-        //      productInfoGridPane.setGridLinesVisible(true);
-        //       centerGridPane.setGridLinesVisible(true);
-
         HBox hbox = new HBox();
         HBox hbox2 = new HBox();
         hbox.setMinWidth(100);
@@ -126,7 +111,6 @@ public class ProductMenu extends Menu {
         userIcon.setFitHeight(20);
         userIcon.setFitWidth(20);
         numberOfScores.setStyle("-fx-font-size: 20");
-        //   rateGridPane.setGridLinesVisible(true);
         rateGridPane.add(avarageScore, 0, 1, 9, 3);
         rateGridPane.add(userIcon, 0, 4, 2, 1);
         rateGridPane.add(numberOfScores, 2, 4, 3, 1);
@@ -151,7 +135,7 @@ public class ProductMenu extends Menu {
         centerGridPane.add(productInfoGridPane, 0, 3, 5, 5);
         Circle redCircle = new Circle();
         GridPane offGridPane = new GridPane();
-        submitScore(product.getPointThatBeforeRated("mamal"),false);
+        submitScore(product.getPointThatBeforeRated(ClientController.getInstance().getCurrentUser().getUsername()),false);
         redCircle.setFill(Color.rgb(222, 0, 0));
         redCircle.setRadius(30);
         Text offPercent = new Text();
@@ -452,7 +436,7 @@ public class ProductMenu extends Menu {
                 star5.setImage(goldStar);
             if(rate>0) {
                 if(add) {
-                    product.addScore(new Score("mamal", product.getProductId(), rate));
+                    product.addScore(new Score(ClientController.getInstance().getCurrentUser().getUsername(), product.getProductId(), rate));
                     setLengthOfStarBars();
                 }
                 isScored = true;
