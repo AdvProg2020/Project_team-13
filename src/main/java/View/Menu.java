@@ -241,7 +241,6 @@ public class Menu {
                             new RegisterMenu(stage).execute();
                         }
                     });
-
                     Label seller1 = new Label("Seller");
                     customer1.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
                     seller1.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
@@ -456,10 +455,16 @@ public class Menu {
             image1.setFitHeight(30);
             userImage.setFitHeight(30);
             userImage.setFitWidth(30);
-            rightGridPane.add(userImage, 0, 0);
-            rightGridPane.add(image1, 3, 0);
-            rightGridPane.add(logout, 2, 0);
-            rightGridPane.add(userName, 1, 0);
+            if (!(ClientController.getInstance().getCurrentUser() instanceof Seller) && !(ClientController.getInstance().getCurrentUser() instanceof Manager)) {
+                rightGridPane.add(userImage, 0, 0);
+                rightGridPane.add(image1, 3, 0);
+                rightGridPane.add(logout, 2, 0);
+                rightGridPane.add(userName, 1, 0);
+            }else {
+                rightGridPane.add(userImage, 0, 0);
+                rightGridPane.add(logout, 2, 0);
+                rightGridPane.add(userName, 1, 0);
+            }
             rightGridPane.setHgap(10);
             logout.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
             userName.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
@@ -554,6 +559,25 @@ public class Menu {
             button.setTextAlignment(TextAlignment.CENTER);
             gridPane.add(button, 0, 0);
             gridPane.setStyle("-fx-background-color: Red");
+            gridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    popupwindow.hide();
+                    scene.setFill(null);
+                    ClientController.getInstance().back();
+                    if (message.startsWith("Register Successful")) {
+                        new UserMenuScene(stage).execute();
+                    } else if (message.startsWith("Login successful")) {
+                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
+                            new UserMenuScene(stage).execute();
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
+                            new SellerMenuScene(stage).execute();
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
+                            new ManagerMenuScene(stage).execute();
+                        }
+                    }
+                }
+            });
             Label error = new Label("Error");
             Label message1 = new Label(message);
             message1.setFont(Font.loadFont("file:src/Bangers.ttf", 12));
@@ -590,6 +614,25 @@ public class Menu {
             button.setTextAlignment(TextAlignment.CENTER);
             gridPane.add(button, 0, 0);
             gridPane.setStyle("-fx-background-color: Red");
+            gridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    popupwindow.hide();
+                    scene.setFill(null);
+                    ClientController.getInstance().back();
+                    if (message.startsWith("Register Successful")) {
+                        new UserMenuScene(stage).execute();
+                    } else if (message.startsWith("Login successful")) {
+                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
+                            new UserMenuScene(stage).execute();
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
+                            new SellerMenuScene(stage).execute();
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
+                            new ManagerMenuScene(stage).execute();
+                        }
+                    }
+                }
+            });
             Label error = new Label("Error");
             Label message1 = new Label(message);
             message1.setFont(Font.loadFont("file:src/Bangers.ttf", 12));
@@ -625,6 +668,24 @@ public class Menu {
             button.setTextAlignment(TextAlignment.CENTER);
             gridPane.add(button, 0, 0);
             gridPane.setStyle("-fx-background-color: #02bf4f");
+            gridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    popupwindow.hide();
+                    scene.setFill(null);
+                    if (message.startsWith("Register Successful")) {
+                        new UserMenuScene(stage).execute();
+                    } else if (message.startsWith("Login successful")) {
+                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
+                            new UserMenuScene(stage).execute();
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
+                            new SellerMenuScene(stage).execute();
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
+                            new ManagerMenuScene(stage).execute();
+                        }
+                    }
+                }
+            });
             Label error = new Label("Message");
             Label message1 = new Label(message);
             message1.setFont(Font.loadFont("file:src/Bangers.ttf", 12));
@@ -661,6 +722,24 @@ public class Menu {
             button.setTextAlignment(TextAlignment.CENTER);
             gridPane.add(button, 0, 0);
             gridPane.setStyle("-fx-background-color: #02bf4f");
+            gridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    popupwindow.hide();
+                    scene.setFill(null);
+                    if (message.startsWith("Register Successful")) {
+                        new UserMenuScene(stage).execute();
+                    } else if (message.startsWith("Login successful")) {
+                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
+                            new UserMenuScene(stage).execute();
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
+                            new SellerMenuScene(stage).execute();
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
+                            new ManagerMenuScene(stage).execute();
+                        }
+                    }
+                }
+            });
             Label error = new Label("Message");
             Label message1 = new Label(message);
             message1.setFont(Font.loadFont("file:src/Bangers.ttf", 12));
@@ -679,4 +758,5 @@ public class Menu {
         System.out.println(stage == null);
         popupwindow.show();
     }
+
 }
