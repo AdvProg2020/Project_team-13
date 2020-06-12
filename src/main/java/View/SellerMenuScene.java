@@ -34,28 +34,16 @@ public class SellerMenuScene extends Menu{
     public SellerMenuScene(Stage stage) {
         super(stage);
         this.stage = stage;
-        upGridPane = new GridPane();
-        menuBarGridPane = new GridPane();
-        centerGridPane = new GridPane();
-        bottomGridPane = new GridPane();
-        pageGridPane = new GridPane();
         userInfoGridPane = new GridPane();
-        scene = new Scene(pageGridPane, 850, 600);
+        setScene();
     }
 
     public void setScene() {
         setPageGridPain();
         setUpGridPane();
         setMenuBarGridPane();
-        //   centerGridPane.getRowConstraints().add(new RowConstraints(600, Control.USE_COMPUTED_SIZE, 600, Priority.NEVER, VPos.CENTER, false));
-        //       bottomGridPane.setStyle("-fx-background-color: rgba(45, 156, 240, 1);");
         setCenterGridPane();
         bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(pageGridPane);
-        scrollPane.fitToWidthProperty().set(true);
-        scene.setRoot(scrollPane);
-
     }
 
     private void setCenterGridPane() {
@@ -271,7 +259,6 @@ public class SellerMenuScene extends Menu{
     }
 
     public void execute() {
-        setScene();
         stage.setScene(scene);
         stage.show();
     }

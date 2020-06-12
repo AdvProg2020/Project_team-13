@@ -5,7 +5,9 @@ import Models.DiscountCode;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
+import View.MainMenu;
 import View.Menu;
+import sun.applet.Main;
 
 import java.util.ArrayList;
 
@@ -15,31 +17,32 @@ public class ClientController {
     private UserAccount currentUser;
     private DiscountCode currentDiscountCode;
     private Product currentProduct;
-    private ArrayList<View.Menu> menus= new ArrayList<>();
+    private ArrayList<View.Menu> menus = new ArrayList<>();
 
     public DiscountCode getCurrentDiscountCode() {
         return currentDiscountCode;
     }
 
-    public void addNewMenu(View.Menu menu){
+    public void addNewMenu(View.Menu menu) {
         menus.add(menu);
     }
 
+    public void resetMenuArray() {
+        Menu menu = menus.get(0);
+        menus.clear();
+        new MainMenu(menu.getStage()).execute();
+    }
+
     public void back() {
-        if(menus.size()>1) {
+        if (menus.size() > 1) {
             System.out.println(menus.size());
-            menus.remove(menus.size()-1);
-            menus.get(menus.size()-1).execute();
+            menus.remove(menus.size() - 1);
+            menus.get(menus.size() - 1).execute();
         }
     }
 
     public View.Menu getMainMenu() {
-        for (View.Menu menu : menus) {
-            if(menu instanceof View.MainMenu) {
-                return menu;
-            }
-        }
-        return null;
+        return new MainMenu(menus.get(0).getStage());
     }
 
     public Product getCurrentProduct() {
@@ -74,9 +77,8 @@ public class ClientController {
     }
 
 
-
     public Menu getCurrentMenu() {
-        return menus.get(menus.size()-1);
+        return menus.get(menus.size() - 1);
     }
 
     public void sendMessageToServer(String message) {
@@ -87,8 +89,8 @@ public class ClientController {
         MessageController.getInstance().processMessage(message);
     }
 
-    public Seller getSeller(){
-        if(currentUser.getType().equals("@Seller")) {
+    public Seller getSeller() {
+        if (currentUser.getType().equals("@Seller")) {
             return (Seller) currentUser;
         }
         return null;
