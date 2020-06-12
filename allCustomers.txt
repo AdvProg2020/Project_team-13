@@ -1,1 +1,1 @@
-[{"totalBuyAmount":0.0,"username":"pey13","password":"123456789","firstName":"peyman","lastName":"teymoori","email":"peyman@gmail.com","phoneNumber":"09365235632","type":"@Customer","allDiscountCodes":[],"credit":150000.0,"historyOfTransaction":[],"imagePath":""}]
+[]

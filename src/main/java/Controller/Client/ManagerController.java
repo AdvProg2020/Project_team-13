@@ -19,6 +19,8 @@ public class ManagerController {
     private ManagerController() {
     }
 
+
+
     public static ManagerController getInstance() {
         if (managerController == null) {
             managerController = new ManagerController();
@@ -28,6 +30,18 @@ public class ManagerController {
 
     public void getAllUserFromServer() {
         ClientController.getInstance().sendMessageToServer("@getAllUsers@");
+    }
+
+    public ArrayList<Seller> getAllSellers() {
+        return allSellers;
+    }
+
+    public ArrayList<Customer> getAllCustomers() {
+        return allCustomers;
+    }
+
+    public ArrayList<Manager> getAllManagers() {
+        return allManagers;
     }
 
     public void setAllSellers(String json) {
@@ -104,11 +118,13 @@ public class ManagerController {
         ClientController.getInstance().getCurrentMenu().showMessage("there is no user with this username", MessageKind.ErrorWithoutBack);
     }
     public void deleteUser(String username) {
+        System.out.println("11");
         if(ClientController.getInstance().getCurrentUser().getUsername().equals(username)){
             ClientController.getInstance().getCurrentMenu().showMessage("you can't delete yourself", MessageKind.ErrorWithoutBack);
             return;
         }
         for (Customer customer : allCustomers) {
+            System.out.println("22");
             if (customer.getUsername().equals(username)) {
                 ClientController.getInstance().sendMessageToServer("@deleteCustomer@"+username);
                 allCustomers.remove(customer);
@@ -116,6 +132,7 @@ public class ManagerController {
             }
         }
         for (Seller seller : allSellers) {
+            System.out.println("33");
             if (seller.getUsername().equals(username)) {
                 ClientController.getInstance().sendMessageToServer("@deleteSeller@"+username);
                 allSellers.remove(seller);
@@ -123,6 +140,7 @@ public class ManagerController {
             }
         }
         for (Manager manager : allManagers) {
+            System.out.println("44");
             if (manager.getUsername().equals(username)) {
                 ClientController.getInstance().sendMessageToServer("@deleteManager@"+username);
                 allManagers.remove(manager);
@@ -131,6 +149,8 @@ public class ManagerController {
         }
         ClientController.getInstance().getCurrentMenu().showMessage("there is no user with this user", MessageKind.ErrorWithoutBack);
     }
+
+
     public boolean isThereCustomerWithThisUsername(String username){
         for (Customer customer : allCustomers) {
             if(customer.getUsername().equals(username)){

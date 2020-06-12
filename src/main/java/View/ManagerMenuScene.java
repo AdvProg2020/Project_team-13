@@ -1,13 +1,14 @@
 package View;
 
 import Controller.Client.ClientController;
-import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import com.google.gson.Gson;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -199,6 +200,25 @@ public class ManagerMenuScene extends Menu {
         requestsButton.setMinHeight(50);
         requestsButton.setMinWidth(150);
         Button manageUsersButton = new Button("Manage Users");
+        manageUsersButton.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+            }
+        });
+        manageUsersButton.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
+        manageUsersButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                new ManageUsersMenu(stage).execute();
+            }
+        });
         manageUsersButton.setTextAlignment(TextAlignment.CENTER);
         manageUsersButton.setStyle("-fx-font-size: 14 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         manageUsersButton.setMinHeight(50);

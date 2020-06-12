@@ -53,6 +53,8 @@ public class ClientController {
         this.currentProduct = currentProduct;
     }
 
+
+
     public void setCurrentDiscountCode(DiscountCode currentDiscountCode) {
         this.currentDiscountCode = currentDiscountCode;
     }

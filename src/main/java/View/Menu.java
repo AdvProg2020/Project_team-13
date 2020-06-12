@@ -417,24 +417,25 @@ public class Menu {
             userName.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
+
                 }
             });
-//            EventHandler eventHandler = new EventHandler() {
-//                @Override
-//                public void handle(Event event) {
-//                    if (!(menu instanceof UserMenuScene) && !(menu instanceof ManagerMenuScene) && !(menu instanceof SellerMenuScene)) {
-//                        if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
-//                            new SellerMenuScene(stage).execute();
-//                        } else if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
-//                            new UserMenuScene(stage).execute();
-//                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
-//                            new ManagerMenuScene(stage).execute();
-//                        }
-//                    }
-//                }
-//            };
-//            userImage.setOnMouseClicked(eventHandler);
-//            userName.setOnMouseClicked(eventHandler);
+            EventHandler eventHandler = new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    if (!(menu instanceof UserMenuScene) && !(menu instanceof ManagerMenuScene) && !(menu instanceof SellerMenuScene)) {
+                        if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
+                            new SellerMenuScene(stage).execute();
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
+                            new UserMenuScene(stage).execute();
+                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
+                            new ManagerMenuScene(stage).execute();
+                        }
+                    }
+                }
+            };
+            userImage.setOnMouseClicked(eventHandler);
+            userName.setOnMouseClicked(eventHandler);
             userName.setStyle("-fx-background-color: rgba(45, 156, 240, 0.31);-fx-text-fill: White;-fx-font-weight: bold;");
             logout.setStyle("-fx-background-color: rgba(45, 156, 240, 0.31);-fx-text-fill: White;-fx-font-weight: bold;");
             ImageView image1 = new ImageView(new Image("file:src/cart.png"));
