@@ -6,7 +6,6 @@ import Models.UserAccount.Seller;
 import View.MessageKind;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -39,64 +38,57 @@ public class RequestController {
                 showAllRequests += request.getRequestId() + " " + request.getType() + "\n";
             }
         }
-     //   ClientController.getInstance().getCurrentMenu().showMessage(showAllRequests);
+        //   ClientController.getInstance().getCurrentMenu().showMessage(showAllRequests);
     }
 
-    public void viewRequestDetail(String requestId) {
-        String viewDetail = "";
+    public String viewRequestDetail(String requestId) {
+        Request selectedRequest = null;
         for (Request request : allRequests) {
             if (request.getRequestId().equals(requestId)) {
-                switch (request.getType()) {
-                    case addOff:
-                    case editOff:
-                        viewDetail = "requestId: " + requestId + "\nrequestType: " + request.getType() + "\n" + new Gson().fromJson(request.getDetails(), Offer.class).toString();
-                        break;
-                    case sellerRegister:
-                        viewDetail = "requestId: " + requestId + "\nrequestType: " + request.getType() + "\n" + new Gson().fromJson(request.getDetails(), Seller.class).viewPersonalInfo();
-                        break;
-                    case addProduct:
-                    case EditProduct:
-                        viewDetail = "requestId: " + requestId + "\nrequestType: " + request.getType() + "\n" + new Gson().fromJson(request.getDetails(), Product.class).productInfoFor();
-                        break;
-                    case scoring:
-                        viewDetail =  "requestId: " +requestId + "\nrequestType: " + request.getType() + "\n" + new Gson().fromJson(request.getDetails(), Score.class).toString();
-                        break;
-                    case commenting:
-                        viewDetail = "requestId: " + requestId + "\nrequestType: " + request.getType() + "\n" + new Gson().fromJson(request.getDetails(), Comment.class).toString();
-                        break;
-                    default:
-                        break;
+                selectedRequest = request;
+            }
+        }
+        switch (selectedRequest.getType()) {
+            case addOff:
+            case editOff:
+                return "requestId: " + requestId + "\nrequestType: " + selectedRequest.getType() + "\n" + new Gson().fromJson(selectedRequest.getDetails(), Offer.class).toString();
+            case sellerRegister:
+                return "requestId: " + requestId + "\nrequestType: " + selectedRequest.getType() + "\n" + new Gson().fromJson(selectedRequest.getDetails(), Seller.class).viewPersonalInfo();
+            case addProduct:
+            case EditProduct:
+                return "requestId: " + requestId + "\nrequestType: " + selectedRequest.getType() + "\n" + new Gson().fromJson(selectedRequest.getDetails(), Product.class).productInfoFor();
+            case scoring:
+                return "requestId: " + requestId + "\nrequestType: " + selectedRequest.getType() + "\n" + new Gson().fromJson(selectedRequest.getDetails(), Score.class).toString();
+            case commenting:
+                return "requestId: " + requestId + "\nrequestType: " + selectedRequest.getType() + "\n" + new Gson().fromJson(selectedRequest.getDetails(), Comment.class).toString();
+            default:
+                return null;
+        }
+    }
+
+        public void acceptRequest(String requestId){
+            for (Request request : allRequests) {
+                if (request.getRequestId().equals(requestId)) {
+                    ClientController.getInstance().sendMessageToServer("@acceptRequest@" + requestId);
+                    allRequests.remove(request);
+                    return;
                 }
-         //       ClientController.getInstance().getCurrentMenu().showMessage(viewDetail);
-                return;
             }
+            ClientController.getInstance().getCurrentMenu().showMessage("there is no request with this id", MessageKind.ErrorWithoutBack);
         }
-        ClientController.getInstance().getCurrentMenu().showMessage("there is no request with this id", MessageKind.ErrorWithoutBack);
-    }
 
-    public void acceptRequest(String requestId) {
-        for (Request request : allRequests) {
-            if (request.getRequestId().equals(requestId)) {
-                ClientController.getInstance().sendMessageToServer("@acceptRequest@" + requestId);
-                allRequests.remove(request);
-                return;
+        public void declineRequest(String requestId){
+            for (Request request : allRequests) {
+                if (request.getRequestId().equals(requestId)) {
+                    ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("declineRequest", requestId));
+                    allRequests.remove(request);
+                    return;
+                }
             }
+            ClientController.getInstance().getCurrentMenu().showMessage("there is no request with this id", MessageKind.ErrorWithoutBack);
         }
-        ClientController.getInstance().getCurrentMenu().showMessage("there is no request with this id", MessageKind.ErrorWithoutBack);
-    }
 
-    public void declineRequest(String requestId) {
-        for (Request request : allRequests) {
-            if (request.getRequestId().equals(requestId)) {
-                ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("declineRequest", requestId));
-                allRequests.remove(request);
-                return;
-            }
+        public ArrayList<Request> getAllRequests(){
+            return allRequests;
         }
-        ClientController.getInstance().getCurrentMenu().showMessage("there is no request with this id", MessageKind.ErrorWithoutBack);
-    }
-
-    public ArrayList<Request> getAllRequests() {
-        return allRequests;
-    }
 }
