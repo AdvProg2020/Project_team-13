@@ -56,6 +56,12 @@ public class ProductController {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("AddProduct", product0));
     }
 
+    public void addProduct(Product product) {
+        Gson gson = new Gson();
+        String product0 = gson.toJson(product);
+        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("AddProduct", product0));
+    }
+
     public String getPriceFiltersInStringForm() {
         if (isPriceFilterActive) {
             return ("Price Filter: maximum price= " + max + " minimum price=" + min + "\n");
@@ -151,7 +157,7 @@ public class ProductController {
     public void printAllProducts() {
         getAllProductsFromServer();
         for (Product product : allProducts) {
-      //      ClientController.getInstance().getCurrentMenu().showMessage(product.viewProduct());
+            //      ClientController.getInstance().getCurrentMenu().showMessage(product.viewProduct());
         }
     }
 
@@ -167,7 +173,7 @@ public class ProductController {
                         + "Product Status: " + product.getProductStatus().toString() + "\n";
             }
             if (allProducts != null && !allProducts.isEmpty()) {
-      //          ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
+                //          ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
             }
         }
 
@@ -486,7 +492,7 @@ public class ProductController {
                     + "Product Status: " + product.getProductStatus().toString() + "\n";
         }
         if (allProducts != null && !allProducts.isEmpty()) {
-      //      ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
+            //      ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
         }
 
     }
@@ -517,7 +523,7 @@ public class ProductController {
             attributes += "Product Costs:\t" + compareProduct.getProductCost() + "\t\t" + product.getProductCost() + "\n";
             attributes += "Product Costs After Off:\t" + compareProduct.getCostAfterOff() + "\t\t" + product.getCostAfterOff() + "\n";
             attributes += "Product Descriptions:\t" + compareProduct.getDescription() + "\t\t" + product.getDescription() + "\n";
-        //    ClientController.getInstance().getCurrentMenu().showMessage(attributes);
+            //    ClientController.getInstance().getCurrentMenu().showMessage(attributes);
         }
     }
 }

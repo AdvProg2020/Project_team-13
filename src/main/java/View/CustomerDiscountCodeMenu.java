@@ -3,18 +3,22 @@ package View;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
-public class CustomerDiscountCodeMenu extends Menu {
+public class CustomerDiscountCodeMenu extends Menu{
     private BorderPane borderPane;
     private Button[] viewDetails;
+    private Pagination pagination;
+    private GridPane infoGridPane;
+    private HBox hBox;
 
     public CustomerDiscountCodeMenu(Stage stage) {
         super(stage);
@@ -24,31 +28,52 @@ public class CustomerDiscountCodeMenu extends Menu {
 
     @Override
     public void setScene() {
-        borderPane = new BorderPane();
-        viewDetails = new Button[7];
         pageGridPane.getChildren().remove(centerGridPane);
         pageGridPane.getChildren().remove(bottomGridPane);
+        pagination = new Pagination();
+        pagination.setPageCount(4);
+        pagination.setTranslateX(50);
+        pagination.setTranslateY(50);
+        pagination.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
+        pagination.setPageFactory(new Callback<Integer, Node>() {
+            @Override
+            public Node call(Integer param) {
+                return createPage(param);
+            }
+        });
+        setTheBeginning();
+        Label discountCodes = new Label("Discount Codes");
+        discountCodes.setTranslateX(20);
+        discountCodes.setTranslateY(20);
+        discountCodes.setFont(Font.loadFont("file:src/Bangers.ttf", 20));
+        hBox = new HBox();
+        hBox.setAlignment(Pos.BASELINE_LEFT);
+        hBox.getChildren().add(discountCodes);
+        borderPane.setTop(hBox);
+        borderPane.setCenter(pagination);
+        pageGridPane.add(borderPane, 0, 2);
+    }
+
+    private Node createPage(Integer param) {
+        setTheBeginning();
+        if(param.equals(0)){
+            return setTheCenterInfo( "@d12421",  "22%",  "21%",  "2/3/2020",  "5/3/2020");
+        }
+        return setTheCenterInfo( "@d134431",  "2",  "12",  "234",  "236");
+    }
+
+    private void setTheBeginning() {
+        borderPane = new BorderPane();
+        viewDetails = new Button[7];
         for (int i = 0; i < 7; i++) {
             viewDetails[i] = new Button("View Details");
             viewDetails[i].setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
             viewDetails[i].setStyle("-fx-background-color: rgba(128,128,128,0.82)");
         }
-        this.setTheCenterInfo();
     }
 
-    private void setTheCenterInfo() {
-        Pagination pagination = new Pagination();
-        pagination.setPageCount(4);
-        Label discountCodes = new Label("Discount Codes");
-        discountCodes.setTranslateX(70);
-        discountCodes.setTranslateY(40);
-        discountCodes.setFont(Font.loadFont("file:src/Bangers.ttf", 20));
-        HBox hBox = new HBox();
-        hBox.setAlignment(Pos.BASELINE_LEFT);
-        hBox.getChildren().add(discountCodes);
-        GridPane infoGridPane = new GridPane();
-//        infoGridPane.getColumnConstraints().add(new ColumnConstraints());
-//        infoGridPane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+    private GridPane setTheCenterInfo(String ids, String discountCodePercents, String maxDiscountCodePercents, String StartDate, String EndDate) {
+        infoGridPane = new GridPane();
         Label id = new Label("ID");
         Label discountCodePercent = new Label("Percent");
         Label maxDiscountCodePercent = new Label("MaxAmount");
@@ -64,32 +89,25 @@ public class CustomerDiscountCodeMenu extends Menu {
             infoGridPane.getColumnConstraints().add(new ColumnConstraints(120, Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
         }
         for (int i = 1; i <= 4; i++) {
-            setTheRows(infoGridPane, i);
+            setTheRows(i, ids, discountCodePercents,maxDiscountCodePercents, StartDate, EndDate);
         }
-        infoGridPane.setTranslateX(80);
-        infoGridPane.setTranslateY(60);
+        infoGridPane.setTranslateX(20);
+        infoGridPane.setTranslateY(1);
         infoGridPane.add(id, 0, 0);
         infoGridPane.add(discountCodePercent, 1, 0);
         infoGridPane.add(maxDiscountCodePercent, 2, 0);
         infoGridPane.add(startTime, 3, 0);
         infoGridPane.add(endTime, 4, 0);
-        Border border = new Border(new BorderStroke(Color.web("#808080"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.FULL));
-        pagination.setTranslateX(4);
-        pagination.setTranslateY(70);
-        borderPane.setBottom(pagination);
-        borderPane.setBorder(border);
-        borderPane.setTop(hBox);
-        borderPane.setCenter(infoGridPane);
-        pageGridPane.add(borderPane,  0, 2);
+        return infoGridPane;
     }
 
-    private void setTheRows(GridPane infoGridPane, int row) {
+    private void setTheRows(int row, String id, String discountCodePercent, String maxDiscountCodePercent, String StartDate, String EndDate) {
         Pane[] allPanes = new Pane[5];
         for (int i = 0; i < 5; i++) {
             allPanes[i] = new Pane();
             allPanes[i].setStyle("-fx-background-color: #e6e6e6");
         }
-        Label[] allLabels = labelMaker("@d102333", "12%", "40%", "20/2/2020", "14/3/2020");
+        Label[] allLabels = labelMaker(id, discountCodePercent, maxDiscountCodePercent, StartDate, EndDate);
         for (int i = 0; i < 5; i++) {
            allLabels[i].setAlignment(Pos.CENTER);
            allPanes[i].getChildren().add(allLabels[i]);
@@ -131,6 +149,5 @@ public class CustomerDiscountCodeMenu extends Menu {
         }
         return allLabels;
     }
-
 
 }
