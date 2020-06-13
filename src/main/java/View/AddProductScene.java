@@ -87,7 +87,7 @@ public class AddProductScene extends Menu {
         ImageView userImage = new ImageView(new Image("file:src/product_icon.png"));
         userImage.setFitHeight(100);
         userImage.setFitWidth(100);
-        Text productName = new Text("Product Name");
+        Text productName1 = new Text("Product Name");
         Text companyName = new Text("Company Name");
         Text categoryText = new Text("Category");
         Text descriptionText = new Text("Description");
@@ -247,7 +247,7 @@ public class AddProductScene extends Menu {
         cost.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         availableNumbers.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         userInfoGridPane.add(userImage, 13, 1, 5, 5);
-        userInfoGridPane.add(productName, 5, 9, 3, 1);
+        userInfoGridPane.add(productName1, 5, 9, 3, 1);
         userInfoGridPane.add(companyName, 5, 10, 3, 1);
         userInfoGridPane.add(descriptionText, 5, 11, 3, 1);
         userInfoGridPane.add(costText, 5, 12, 3, 1);
