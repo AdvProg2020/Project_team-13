@@ -7,16 +7,30 @@ public class Comment {
     private String productId;
     private CommentStatus commentStatus;
     private boolean didCustomerBuyProduct;
-    private String title,content;
+    private String title,content,username,userImagePath="";
 
-    public Comment(String productId, CommentStatus commentStatus, boolean didCustomerBuyProduct, String title, String content) {
+    public Comment(String productId, CommentStatus commentStatus, boolean didCustomerBuyProduct, String title, String content, String username, String userImagePath) {
         this.productId = productId;
         this.commentStatus = commentStatus;
         this.didCustomerBuyProduct = didCustomerBuyProduct;
         this.title = title;
         this.content = content;
+        this.username = username;
+        this.userImagePath = userImagePath;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getuserImagePath() {
+        if(userImagePath==null||userImagePath.isEmpty()||userImagePath.length()<4) {
+            System.out.println("file:src/user_icon.png");
+            return "file:src/user_icon.png";
+        }
+        System.out.println(userImagePath);
+        return userImagePath;
+    }
     public String getProductId() {
         return productId;
     }

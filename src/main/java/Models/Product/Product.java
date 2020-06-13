@@ -67,6 +67,21 @@ public class Product {
     public void setCostAfterOff(double costAfterOff) {
         this.costAfterOff = costAfterOff;
     }
+    public boolean didUserBuyThis(String username){
+        for (Customer buyer : allBuyers) {
+            if(buyer.getUsername().equals(username)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<Comment> getCommentList() {
+        if(commentList==null){
+            commentList=new ArrayList<>();
+        }
+        return commentList;
+    }
 
     public String getImagePath() {
         if (imagePath.equals("") || imagePath.length() < 5) {
@@ -148,10 +163,6 @@ public class Product {
     }
 
 
-    public ArrayList<Comment> getCommentList() {
-        return commentList;
-    }
-
     public void setCommentList(ArrayList<Comment> commentList) {
         this.commentList = commentList;
     }
@@ -171,16 +182,6 @@ public class Product {
 
     }
 
-    public ArrayList<String> getComments() {
-        if (commentList != null) {
-            ArrayList<String> allCommentsInStringForm = new ArrayList<>();
-            for (Comment comment : commentList) {
-                allCommentsInStringForm.add(comment.toString());
-            }
-            return allCommentsInStringForm;
-        }
-        return null;
-    }
 
     public String getProductId() {
         return productId;
