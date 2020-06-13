@@ -29,13 +29,13 @@ import java.io.File;
 import java.util.regex.Pattern;
 
 
-public class UserMenuScene extends Menu{
+public class UserMenuScene extends Menu {
     GridPane userInfoGridPane;
 
     public UserMenuScene(Stage stage) {
         super(stage);
         userInfoGridPane = new GridPane();
-        if(ClientController.getInstance().getMediaPlayer()!=null)
+        if (ClientController.getInstance().getMediaPlayer() != null)
             ClientController.getInstance().getMediaPlayer().stop();
         ClientController.getInstance().setMediaPlayer(new MediaPlayer(usersSong));
         ClientController.getInstance().getMediaPlayer().setVolume(0.5);
@@ -63,13 +63,13 @@ public class UserMenuScene extends Menu{
         pageTitle.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
         userInfoGridPane.setStyle("-fx-background-color: #ECD5DC;");
         ImageView userIcon;
-        if(!customer.getImagePath().equals("")){
+        if (!customer.getImagePath().equals("")) {
             System.out.println(customer.getImagePath());
-             userIcon = new ImageView(new Image(customer.getImagePath()));
-             if(userIcon.getImage().getHeight()==0){
-                 userIcon.setImage(new Image("file:src/user_icon.png"));
-             }
-        }else{
+            userIcon = new ImageView(new Image(customer.getImagePath()));
+            if (userIcon.getImage().getHeight() == 0) {
+                userIcon.setImage(new Image("file:src/user_icon.png"));
+            }
+        } else {
             userIcon = new ImageView(new Image("file:src/user_icon.png"));
         }
         userIcon.setFitHeight(100);
@@ -115,7 +115,7 @@ public class UserMenuScene extends Menu{
                 lastName1.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
                 phoneNumber1.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
                 email1.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
-                Text errors=new Text();
+                Text errors = new Text();
                 errors.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
                 errors.setFill(Color.RED);
                 GridPane gridPane = new GridPane();
@@ -138,7 +138,7 @@ public class UserMenuScene extends Menu{
                             if (checkNameIsvalid(firstName.getText().trim())) {
                                 if (checkNameIsvalid(lastName.getText().trim())) {
                                     if (checkEmailIsvalid(email.getText().trim())) {
-                                        if (Pattern.matches("\\d+", phoneNumber.getText().trim()) && phoneNumber.getText().trim().length() == 11&&phoneNumber.getText().charAt(0)=='0') {
+                                        if (Pattern.matches("\\d+", phoneNumber.getText().trim()) && phoneNumber.getText().trim().length() == 11 && phoneNumber.getText().charAt(0) == '0') {
                                             customer.setFirstName(firstName.getText().trim());
                                             customer.setLastName(lastName.getText().trim());
                                             customer.setEmail(email.getText().trim());
@@ -147,7 +147,8 @@ public class UserMenuScene extends Menu{
                                             ClientController.getInstance().sendMessageToServer("@editCustomer@" + new Gson().toJson(customer));
                                             popupwindow.close();
                                         } else {
-                                            errors.setText("Phone number is invalid.\nCorrect format:09xxxxxxxxx"); }
+                                            errors.setText("Phone number is invalid.\nCorrect format:09xxxxxxxxx");
+                                        }
                                     } else {
                                         errors.setText("Email format is invalid.\nCorrect Format:ali@ali.com");
                                     }
@@ -186,9 +187,9 @@ public class UserMenuScene extends Menu{
         FileChooser fileChooser = new FileChooser();
         editPhotoButton.setOnAction(e -> {
             File selectedFile = fileChooser.showOpenDialog(stage);
-            if(selectedFile!=null) {
+            if (selectedFile != null) {
                 userIcon.setImage(new Image("file:" + selectedFile.getAbsolutePath()));
-                customer.setImagePath("file:"+selectedFile.getAbsolutePath());
+                customer.setImagePath("file:" + selectedFile.getAbsolutePath());
             }
         });
         editPhotoButton.setGraphic(editPic);

@@ -1,6 +1,8 @@
 package View;
 
+import Controller.Client.CartController;
 import Controller.Client.ClientController;
+import Models.Product.Cart;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import javafx.event.Event;
@@ -31,6 +33,8 @@ import java.util.regex.Pattern;
 
 public class CartMenu extends Menu {
     GridPane productsPages;
+    Text totalPriceAmount;
+
 
     public CartMenu(Stage stage) {
         super(stage);
@@ -69,56 +73,72 @@ public class CartMenu extends Menu {
                 "    -fx-border-radius: 20px;";
         //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
         Text personalInfo = new Text("ali");
-        Text pageTitle = new Text("User Menu");
+        Text pageTitle = new Text("Cart");
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
         pageTitle.setStyle("-fx-font-weight: bold;");
         pageTitle.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
-        Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
         ArrayList<GridPane> gridPanes = new ArrayList<>();
-        for (int kk = 0; kk < seller.getAllProducts().size(); kk++) {
-            Product product = seller.getAllProducts().get(kk);
+        Seller seller = new Seller("username", "password", "firstname",
+                "lastName", "email", "phone number", 123,
+                "ali", true);
+        HashMap<String, String> hashMap = new HashMap<>();
+        for (int i = 0; i < 10; i++) {
+            hashMap.put(Integer.toString(i), Integer.toString(i * i + i + 1));
+        }
+        for (int kk = 0; kk < 48; kk++) {
+//          Product product = CartController.getInstance().getCurrentCart().getAllproduct().get(kk);
+            Product product = new Product("aa", "aaaa" + Integer.toString(kk), "aa" + (char) (kk + 97), seller, 123, "lai", "svdfv", 123, hashMap);
+            product.setImagePath("file:E:\\downloads\\photo\\product.png");
+            seller.addProduct(product);
             GridPane gridPane = new GridPane();
             ImageView imageView = new ImageView(new Image(product.getImagePath()));
             Text text = new Text("   " + product.getProductName() + "\n" + "   " + product.getCostAfterOff() + " $");
-            Label label = new Label("   " + Double.toString(product.getAverageScore()));
-            ImageView star = new ImageView(new Image("file:src/star.png"));
+            Label label = new Label("   Total price:");
+            Label totalPrice = new Label("4");
             imageView.setFitHeight(150);
             imageView.setFitWidth(150);
-            star.setFitWidth(20);
-            star.setFitHeight(20);
             GridPane scoreGridPane = new GridPane();
-            scoreGridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
-            scoreGridPane.getColumnConstraints().add(new ColumnConstraints(15, Control.USE_COMPUTED_SIZE, 20, Priority.NEVER, HPos.LEFT, false));
             scoreGridPane.setHgap(2);
             scoreGridPane.add(label, 0, 0);
-            scoreGridPane.add(star, 1, 0);
-            ImageView editInfoPic = new ImageView(new Image("file:src/edit3.png"));
-            ImageView deleteProduct = new ImageView(new Image("file:src/trash1.png"));
-            editInfoPic.setFitWidth(25);
-            editInfoPic.setFitHeight(25);
-            deleteProduct.setFitWidth(25);
-            deleteProduct.setFitHeight(25);
+            scoreGridPane.add(totalPrice, 1, 0);
+            Label countText = new Label("   Count: ");
+            Label count = new Label("4");
+            imageView.setFitHeight(150);
+            imageView.setFitWidth(150);
+            GridPane countPane = new GridPane();
+            countPane.setHgap(2);
+            countPane.add(countText, 0, 0);
+            countPane.add(count, 1, 0);
+            ImageView positive = new ImageView(new Image("file:src/positive.png"));
+            ImageView negative = new ImageView(new Image("file:src/negative.png"));
+            positive.setFitWidth(25);
+            positive.setFitHeight(25);
+            negative.setFitWidth(25);
+            negative.setFitHeight(25);
             gridPane.add(imageView, 0, 0, 2, 1);
             gridPane.add(text, 0, 1, 1, 1);
-            gridPane.add(scoreGridPane, 0, 2, 1, 1);
-            gridPane.add(editInfoPic, 0, 3);
+            gridPane.add(scoreGridPane, 0, 2, 2, 1);
+            gridPane.add(positive, 0, 3);
             GridPane options = new GridPane();
-            options.getColumnConstraints().add(new ColumnConstraints(117, Control.USE_COMPUTED_SIZE, 117, Priority.NEVER, HPos.RIGHT, false));
-            options.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
-            options.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, false));
+            options.getColumnConstraints().add(new ColumnConstraints(117, Control.USE_COMPUTED_SIZE, 117, Priority.NEVER, HPos.LEFT, false));
+//            options.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
+//            options.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, false));
             options.setHgap(2);
-            options.add(editInfoPic, 0, 0);
-            options.add(deleteProduct, 1, 0);
+            options.add(countPane, 0, 0);
+            options.add(positive, 1, 0);
+            options.add(negative, 2, 0);
             gridPane.add(options, 0, 3, 2, 1);
             gridPanes.add(gridPane);
             gridPane.setStyle("-fx-background-color: #ECD5DC;-fx-background-radius: 20px;");
-            text.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
-            label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
+            countText.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 12));
+            count.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 12));
+            text.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 12));
+            label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 12));
+            totalPrice.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 12));
             gridPane.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
                     scene.setCursor(Cursor.HAND); //Change cursor to hand
-
                 }
             });
             gridPane.setOnMouseExited(new EventHandler() {
@@ -132,8 +152,8 @@ public class CartMenu extends Menu {
                 public void handle(MouseEvent event) {
                     for (int i = 0; i < gridPanes.size(); i++) {
                         if (gridPanes.get(i).equals(gridPane)) {
-                            ClientController.getInstance().setCurrentProduct(seller.getAllProducts().get(i));
-                            new ProductMenu(stage).execute();
+//                            ClientController.getInstance().setCurrentProduct(product);
+//                            new ProductMenu(stage).execute();
                         }
                     }
                 }
@@ -155,11 +175,15 @@ public class CartMenu extends Menu {
             productsPages.get(j).setHgap(10);
             productsPages.get(j).setMinWidth(600);
             productsPages.get(j).setMaxHeight(300);
-            for (int i = j * 12; i < (j ) * 12 + (j==((gridPanes.size() / 12) + (gridPanes.size() % 12 == 0 ? 0 : 1)-1)?gridPanes.size() % 12:12); i++) {
+            for (int i = j * 12; i < (j) * 12 + (j == ((gridPanes.size() / 12) + (gridPanes.size() % 12 == 0 ? 0 : 1) - 1) ? gridPanes.size() % 12 : 12); i++) {
                 productsPages.get(j).add(gridPanes.get(i), 2 * ((i % 12) % 4) + 1, ((i % 12) / 4), 1, 1);
             }
         }
         ArrayList<Button> buttons = new ArrayList<>();
+        Button purchase = new Button("Purchase");
+        Label totalPrice = new Label("Total Price: ");
+//        totalPriceAmount = new Text(Double.toString(CartController.getInstance().getCurrentCart().getTotalPrice()));
+        totalPriceAmount = new Text("656566$");
         for (int i = 0; i < productsPages.size(); i++) {
             buttons.add(new Button(Integer.toString(i + 1)));
             buttons.get(i).setStyle(buttomStyle);
@@ -191,8 +215,14 @@ public class CartMenu extends Menu {
                     for (int i = 0; i < buttons.size(); i++) {
                         buttons1.add(buttons.get(i), i + 1, 0);
                     }
+                    GridPane gridPane11 = new GridPane();
+                    gridPane11.add(totalPrice, 0, 0);
+                    gridPane11.add(totalPriceAmount, 1, 0);
+                    gridPane11.add(purchase, 2, 0);
+                    gridPane11.setStyle("-fx-background-color: #E6E6E6");
                     buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
                     productsPages.get(j[0]).add(buttons1, 1, 5, 7, 1);
+                    productsPages.get(j[0]).add(gridPane11, 1, 6, 7, 2);
                     centerGridPane.add(productsPages.get(j[0]), 1, 1, 2, 2);
                 }
             });
@@ -203,37 +233,17 @@ public class CartMenu extends Menu {
             buttons1.add(buttons.get(i), i + 1, 0);
         }
         buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
-
-
         if (productsPages.size() > 0) {
             productsPages.get(0).add(buttons1, 1, 5, 7, 1);
         }
         GridPane leftMenuGridPane = new GridPane();
         leftMenuGridPane.setMinHeight(400);
         leftMenuGridPane.setStyle("-fx-background-color:rgba(45, 156, 240, 1);");
-        Button addProduct = new Button("Add product");
+        Button addProduct = new Button("");
         addProduct.setTextAlignment(TextAlignment.CENTER);
         addProduct.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         addProduct.setMinHeight(50);
         addProduct.setMinWidth(150);
-        addProduct.setOnMouseEntered(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
-            }
-        });
-        addProduct.setOnMouseExited(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
-            }
-        });
-        addProduct.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                new AddProductScene(stage).execute();
-            }
-        });
         leftMenuGridPane.add(addProduct, 0, 2, 2, 2);
         centerGridPane.add(leftMenuGridPane, 0, 1, 1, 6);
         centerGridPane.add(pageTitle, 0, 0, 1, 1);

@@ -283,9 +283,11 @@ public class AddProductScene extends Menu {
                             if (checkNameIsvalid(AddProductScene.this.productName.getText())) {
                                 if (checkCreditIsvalid(cost.getText())) {
                                     if (categoryFeaturesForProduct.size() == CategoryController.getInstance().getCategoryWithName(selectedCategory.getText()).getFeatures().size()) {
-                                        ProductController.getInstance().addProduct(new Product(companyName.getText().trim(),"",productName.getText().trim(),
-                                                (Seller)ClientController.getInstance().getCurrentUser(),Double.parseDouble(cost.getText().trim()),categoryText.getText().trim(),description.getText().trim(),Integer.parseInt(availableNumbers.getText().trim()),categoryFeaturesForProduct));
-                                    }else {
+                                        Product product = new Product(companyName.getText().trim(), "", productName.getText().trim(),
+                                                (Seller) ClientController.getInstance().getCurrentUser(), Double.parseDouble(cost.getText().trim()), categoryText.getText().trim(), description.getText().trim(), Integer.parseInt(availableNumbers.getText().trim()), categoryFeaturesForProduct);
+                                        product.setImagePath(imagePath);
+                                        ProductController.getInstance().addProduct(product);
+                                    } else {
                                         errorText.setText("You need to choose a mode for each feature of category.");
                                     }
                                 } else {
