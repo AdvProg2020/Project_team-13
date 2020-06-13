@@ -79,7 +79,7 @@ public class ProductMenu extends Menu {
     private void setCenterGridPane() {
 
         product = ClientController.getInstance().getCurrentProduct();
-       ImageView productImage = new ImageView(new Image(product.getImagePath()));
+        ImageView productImage = new ImageView(new Image(product.getImagePath()));
         ImageView productZoomedImage = new ImageView(new Image(product.getImagePath()));
         productZoomedImage.setTranslateX(250);
         productZoomedImage.setTranslateY(0);
@@ -183,7 +183,7 @@ public class ProductMenu extends Menu {
             }
             Product productSim = CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts().get(kk);
             GridPane gridPane = new GridPane();
-            ImageView imageView = new ImageView(new Image(product.getImagePath()));
+            ImageView imageView = new ImageView(new Image(productSim.getImagePath()));
             Text text = new Text("   " + productSim.getProductName() + "\n" + "   " + productSim.getCostAfterOff() + " $");
             Label label = new Label("   " + Double.toString(productSim.getAverageScore()));
             ImageView star = new ImageView(new Image("file:src/star.png"));
