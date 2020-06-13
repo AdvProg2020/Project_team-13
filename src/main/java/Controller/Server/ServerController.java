@@ -9,7 +9,7 @@ public class ServerController {
 
     }
 
-    public void runServer() {
+    public void runServer(){
         getAllInformationForStart();
     }
 

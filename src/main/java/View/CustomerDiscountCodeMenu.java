@@ -86,7 +86,8 @@ public class CustomerDiscountCodeMenu extends Menu{
         endTime.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         infoGridPane.setVgap(30);
         for (int i = 0; i < 5; i++) {
-            infoGridPane.getColumnConstraints().add(new ColumnConstraints(120, Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+            infoGridPane.getColumnConstraints().add(new ColumnConstraints(120,
+                    Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
         }
         for (int i = 1; i <= 4; i++) {
             setTheRows(i, ids, discountCodePercents,maxDiscountCodePercents, StartDate, EndDate);

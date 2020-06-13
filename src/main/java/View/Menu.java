@@ -4,9 +4,6 @@ import Controller.Client.ClientController;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
-import View2.UserMenu.Customer.CustomerMenu;
-import View2.UserMenu.Manager.ManagerMenu;
-import com.sun.javafx.scene.layout.region.LayeredBackgroundPositionConverter;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -29,12 +26,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.Popup;
-import sun.font.FontFamily;
-import sun.plugin2.message.Message;
-
 import java.io.File;
-import java.util.regex.Pattern;
 
 public class Menu {
     protected Scene scene;

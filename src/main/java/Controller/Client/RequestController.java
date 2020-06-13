@@ -96,4 +96,7 @@ public class RequestController {
         ClientController.getInstance().getCurrentMenu().showMessage("there is no request with this id", MessageKind.ErrorWithoutBack);
     }
 
+    public ArrayList<Request> getAllRequests() {
+        return allRequests;
+    }
 }
