@@ -1,8 +1,12 @@
 package View;
 
 import Controller.Client.ClientController;
+import Controller.Client.ProductController;
+import Controller.Server.ServerController;
+import Controller.Server.UserCenter;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
+import com.google.gson.Gson;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -52,6 +56,7 @@ public class ManageProducts extends Menu {
     }
 
     private void setCenterGridPane() {
+        centerGridPane.getChildren().clear();
         String buttomStyle = "  -fx-background-color: \n" +
                 "        #090a0c,\n" +
                 "        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),\n" +
@@ -94,6 +99,28 @@ public class ManageProducts extends Menu {
             scoreGridPane.add(star, 1, 0);
             ImageView editInfoPic = new ImageView(new Image("file:src/edit3.png"));
             ImageView deleteProduct = new ImageView(new Image("file:src/trash1.png"));
+            deleteProduct.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            deleteProduct.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            deleteProduct.setOnMouseClicked(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    Gson gson = new Gson();
+                    String sellerObject = gson.toJson(seller);
+                    ProductController.getInstance().removeProductForManager(product.getProductId());
+                    setCenterGridPane();
+                }
+            });
             editInfoPic.setFitWidth(25);
             editInfoPic.setFitHeight(25);
             deleteProduct.setFitWidth(25);
@@ -101,7 +128,6 @@ public class ManageProducts extends Menu {
             gridPane.add(imageView, 0, 0, 2, 1);
             gridPane.add(text, 0, 1, 1, 1);
             gridPane.add(scoreGridPane, 0, 2, 1, 1);
-            gridPane.add(editInfoPic, 0, 3);
             GridPane options = new GridPane();
             options.getColumnConstraints().add(new ColumnConstraints(117, Control.USE_COMPUTED_SIZE, 117, Priority.NEVER, HPos.RIGHT, false));
             options.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
@@ -114,20 +140,68 @@ public class ManageProducts extends Menu {
             gridPane.setStyle("-fx-background-color: #ECD5DC;-fx-background-radius: 20px;");
             text.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
             label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
-            gridPane.setOnMouseEntered(new EventHandler() {
+            scoreGridPane.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
                     scene.setCursor(Cursor.HAND); //Change cursor to hand
 
                 }
             });
-            gridPane.setOnMouseExited(new EventHandler() {
+            scoreGridPane.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
                     scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
                 }
             });
-            gridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            scoreGridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    for (int i = 0; i < gridPanes.size(); i++) {
+                        if (gridPanes.get(i).equals(gridPane)) {
+                            ClientController.getInstance().setCurrentProduct(seller.getAllProducts().get(i));
+                            new ProductMenu(stage).execute();
+                        }
+                    }
+                }
+            });
+            text.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            text.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            text.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    for (int i = 0; i < gridPanes.size(); i++) {
+                        if (gridPanes.get(i).equals(gridPane)) {
+                            ClientController.getInstance().setCurrentProduct(seller.getAllProducts().get(i));
+                            new ProductMenu(stage).execute();
+                        }
+                    }
+                }
+            });
+            imageView.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            imageView.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     for (int i = 0; i < gridPanes.size(); i++) {

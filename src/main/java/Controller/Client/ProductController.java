@@ -1,5 +1,6 @@
 package Controller.Client;
 
+import Controller.Server.ServerController;
 import Models.Comment;
 import Models.Product.Category;
 import Models.Product.Product;
@@ -404,6 +405,9 @@ public class ProductController {
 
     public void removeProductForManager(String productId) {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("removeProductForManager", productId));
+        if(ClientController.getInstance().getCurrentUser() instanceof Seller) {
+            ((Seller)ClientController.getInstance().getCurrentUser()).removeProduct(productId);
+        }
     }
 
     public ArrayList<String> getAllBrands() {
