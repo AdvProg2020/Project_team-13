@@ -1,13 +1,8 @@
 package View;
 
 import Controller.Client.ClientController;
-import Controller.Client.ManagerController;
 import Models.Product.Product;
-import Models.UserAccount.Customer;
-import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
-import Models.UserAccount.UserAccount;
-import View2.UserMenu.Manager.ManagerMenu;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -31,12 +26,13 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
-public class ManageUsersMenu extends Menu {
+public class CartMenu extends Menu {
     GridPane productsPages;
 
-    public ManageUsersMenu(Stage stage) {
+    public CartMenu(Stage stage) {
         super(stage);
         this.stage = stage;
         productsPages = new GridPane();
@@ -73,74 +69,75 @@ public class ManageUsersMenu extends Menu {
                 "    -fx-border-radius: 20px;";
         //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
         Text personalInfo = new Text("ali");
-        Text pageTitle = new Text("Users Menu");
+        Text pageTitle = new Text("User Menu");
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
         pageTitle.setStyle("-fx-font-weight: bold;");
         pageTitle.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
+        Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
         ArrayList<GridPane> gridPanes = new ArrayList<>();
-        ManagerController.getInstance().getAllUserFromServer();
-        ArrayList<UserAccount> allUser = new ArrayList<>();
-        for (Seller seller1 : ManagerController.getInstance().getAllSellers()) {
-            allUser.add(seller1);
-        }
-        for (Customer seller1 : ManagerController.getInstance().getAllCustomers()) {
-            allUser.add(seller1);
-        }
-        for (Manager seller1 : ManagerController.getInstance().getAllManagers()) {
-            if (!seller1.getUsername().equals(ClientController.getInstance().getCurrentUser().getUsername()))
-                allUser.add(seller1);
-        }
-        for (int kk = 0; kk < allUser.size(); kk++) {
-            UserAccount user = allUser.get(kk);
+        for (int kk = 0; kk < seller.getAllProducts().size(); kk++) {
+            Product product = seller.getAllProducts().get(kk);
             GridPane gridPane = new GridPane();
-            ImageView imageView = new ImageView(new Image(user.getImagePath()));
-            Text text = new Text("   " + user.getUsername() + "\n" + "   " + user.getFirstName() + "\n" + "   " + user.getLastName());
-            Label label = new Label("   " + Double.toString(user.getCredit()) + "$");
-            imageView.setFitHeight(125);
-            imageView.setFitWidth(125);
-            GridPane photoPane = new GridPane();
-            photoPane.add(imageView, 0, 1);
-            photoPane.getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.NEVER, HPos.CENTER, true));
+            ImageView imageView = new ImageView(new Image(product.getImagePath()));
+            Text text = new Text("   " + product.getProductName() + "\n" + "   " + product.getCostAfterOff() + " $");
+            Label label = new Label("   " + Double.toString(product.getAverageScore()));
+            ImageView star = new ImageView(new Image("file:src/star.png"));
+            imageView.setFitHeight(150);
+            imageView.setFitWidth(150);
+            star.setFitWidth(20);
+            star.setFitHeight(20);
+            GridPane scoreGridPane = new GridPane();
+            scoreGridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
+            scoreGridPane.getColumnConstraints().add(new ColumnConstraints(15, Control.USE_COMPUTED_SIZE, 20, Priority.NEVER, HPos.LEFT, false));
+            scoreGridPane.setHgap(2);
+            scoreGridPane.add(label, 0, 0);
+            scoreGridPane.add(star, 1, 0);
+            ImageView editInfoPic = new ImageView(new Image("file:src/edit3.png"));
             ImageView deleteProduct = new ImageView(new Image("file:src/trash1.png"));
-            deleteProduct.setOnMouseEntered(new EventHandler() {
+            editInfoPic.setFitWidth(25);
+            editInfoPic.setFitHeight(25);
+            deleteProduct.setFitWidth(25);
+            deleteProduct.setFitHeight(25);
+            gridPane.add(imageView, 0, 0, 2, 1);
+            gridPane.add(text, 0, 1, 1, 1);
+            gridPane.add(scoreGridPane, 0, 2, 1, 1);
+            gridPane.add(editInfoPic, 0, 3);
+            GridPane options = new GridPane();
+            options.getColumnConstraints().add(new ColumnConstraints(117, Control.USE_COMPUTED_SIZE, 117, Priority.NEVER, HPos.RIGHT, false));
+            options.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
+            options.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, false));
+            options.setHgap(2);
+            options.add(editInfoPic, 0, 0);
+            options.add(deleteProduct, 1, 0);
+            gridPane.add(options, 0, 3, 2, 1);
+            gridPanes.add(gridPane);
+            gridPane.setStyle("-fx-background-color: #ECD5DC;-fx-background-radius: 20px;");
+            text.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
+            label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
+            gridPane.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
                     scene.setCursor(Cursor.HAND); //Change cursor to hand
 
                 }
             });
-            deleteProduct.setOnMouseExited(new EventHandler() {
+            gridPane.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
                     scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
                 }
             });
-            deleteProduct.setOnMouseClicked(event -> {
-                System.out.println("1111111111111111111");
-                        ManagerController.getInstance().deleteUser(user.getUsername());
-                        System.out.println("aaaaaaaaa");
-                        System.out.println(user.getUsername());
+            gridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    for (int i = 0; i < gridPanes.size(); i++) {
+                        if (gridPanes.get(i).equals(gridPane)) {
+                            ClientController.getInstance().setCurrentProduct(seller.getAllProducts().get(i));
+                            new ProductMenu(stage).execute();
+                        }
+                    }
+                }
             });
-            photoPane.getRowConstraints().add(new RowConstraints(10, Control.USE_COMPUTED_SIZE, 10, Priority.NEVER, VPos.TOP, false));
-
-            deleteProduct.setFitWidth(25);
-            deleteProduct.setFitHeight(25);
-            GridPane gridPane1 = new GridPane();
-            gridPane.add(photoPane, 0, 0, 2, 1);
-            gridPane.add(text, 0, 1, 1, 1);
-            gridPane.add(label, 0, 2, 1, 1);
-            GridPane options = new GridPane();
-            options.getColumnConstraints().add(new ColumnConstraints(120, Control.USE_COMPUTED_SIZE, 120, Priority.NEVER, HPos.RIGHT, false));
-            options.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
-            options.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, false));
-            options.setHgap(2);
-            gridPane1.add(gridPane, 0, 0);
-            gridPane1.add(options, 0, 1);
-            options.add(deleteProduct, 1, 0);
-            gridPane1.setStyle("-fx-background-color: #ECD5DC;-fx-background-radius: 20px;");
-            text.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
-            label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
-            gridPanes.add(gridPane1);
         }
         System.out.println(gridPanes.size());
         ArrayList<GridPane> productsPages = new ArrayList<>();
@@ -158,7 +155,7 @@ public class ManageUsersMenu extends Menu {
             productsPages.get(j).setHgap(10);
             productsPages.get(j).setMinWidth(600);
             productsPages.get(j).setMaxHeight(300);
-            for (int i = j * 12; i < (j) * 12 + (j == ((gridPanes.size() / 12) + (gridPanes.size() % 12 == 0 ? 0 : 1) - 1) ? gridPanes.size() % 12 : 12); i++) {
+            for (int i = j * 12; i < (j ) * 12 + (j==((gridPanes.size() / 12) + (gridPanes.size() % 12 == 0 ? 0 : 1)-1)?gridPanes.size() % 12:12); i++) {
                 productsPages.get(j).add(gridPanes.get(i), 2 * ((i % 12) % 4) + 1, ((i % 12) / 4), 1, 1);
             }
         }
@@ -214,36 +211,37 @@ public class ManageUsersMenu extends Menu {
         GridPane leftMenuGridPane = new GridPane();
         leftMenuGridPane.setMinHeight(400);
         leftMenuGridPane.setStyle("-fx-background-color:rgba(45, 156, 240, 1);");
-        Button createNewManager = new Button("Create Manager");
-        createNewManager.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
-        createNewManager.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
-        createNewManager.setOnMouseEntered(new EventHandler() {
+        Button addProduct = new Button("Add product");
+        addProduct.setTextAlignment(TextAlignment.CENTER);
+        addProduct.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
+        addProduct.setMinHeight(50);
+        addProduct.setMinWidth(150);
+        addProduct.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
                 scene.setCursor(Cursor.HAND); //Change cursor to hand
-
             }
         });
-        createNewManager.setOnMouseExited(new EventHandler() {
+        addProduct.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
                 scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
             }
         });
-        createNewManager.setOnMouseClicked(new EventHandler() {
+        addProduct.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(Event event) {
-                new ManagerRegisterMenu(stage).execute();
+            public void handle(MouseEvent event) {
+                new AddProductScene(stage).execute();
             }
         });
-        leftMenuGridPane.add(createNewManager,0,0,1,2);
+        leftMenuGridPane.add(addProduct, 0, 2, 2, 2);
         centerGridPane.add(leftMenuGridPane, 0, 1, 1, 6);
         centerGridPane.add(pageTitle, 0, 0, 1, 1);
         if (productsPages.size() > 0) {
             centerGridPane.add(productsPages.get(0), 1, 1, 2, 2);
         } else {
             ImageView imageView = new ImageView(new Image("file:src/empty.png"));
-            Text text = new Text("There is no user to manage.");
+            Text text = new Text("You don't have any product to sell.");
             GridPane gridPane = new GridPane();
             imageView.setFitWidth(150);
             imageView.setFitHeight(150);
