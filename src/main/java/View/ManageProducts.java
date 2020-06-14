@@ -69,7 +69,7 @@ public class ManageProducts extends Menu {
                 "    -fx-border-radius: 20px;";
         //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
         Text personalInfo = new Text("ali");
-        Text pageTitle = new Text("User Menu");
+        Text pageTitle = new Text("Manage Products");
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
         pageTitle.setStyle("-fx-font-weight: bold;");
         pageTitle.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
