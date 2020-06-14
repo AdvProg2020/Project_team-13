@@ -1,3 +1,4 @@
+import Controller.Server.CategoryCenter;
 import Controller.Server.ServerController;
 import View.*;
 import javafx.application.Application;
@@ -12,6 +13,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         new ServerController().runServer();
         primaryStage.setTitle("Hello World");
-        new CartMenu(primaryStage).execute();
+        new MainMenu(primaryStage).execute();
     }
 }
