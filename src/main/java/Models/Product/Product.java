@@ -3,8 +3,10 @@ package Models.Product;
 import Models.Comment;
 import Models.Offer;
 import Models.Score;
-import Models.UserAccount.Seller;
 import Models.UserAccount.Customer;
+import Models.UserAccount.Seller;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -80,10 +82,18 @@ public class Product {
     }
 
     public String getImagePath() {
-        if (imagePath.equals("") || imagePath.length() < 5) {
-            return "file:src/product_icon.png";
+        if (imagePath != null) {
+            if (imagePath.equals("") || imagePath.length() < 5) {
+                return "file:src/product_icon.png";
+            } else {
+                File file = new File(imagePath);
+                if (file == null || !file.exists()) {
+                    return "file:src/product_icon.png";
+                }
+            }
+            return imagePath;
         }
-        return imagePath;
+        return "file:src/product_icon.png";
     }
 
     public void setAllBuyers(ArrayList<Customer> allBuyers) {

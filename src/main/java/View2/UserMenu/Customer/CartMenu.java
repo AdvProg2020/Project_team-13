@@ -30,12 +30,11 @@ public class CartMenu extends Menu {
 
     @Override
     public void execute() {
-        Cart cart= CartController.getInstance().getCurrentCart();
-        if(cart==null){
+        Cart cart = CartController.getInstance().getCurrentCart();
+        if (cart == null) {
             CartController.getInstance().setCurrentCart(new Cart());
-            cart= CartController.getInstance().getCurrentCart();
+            cart = CartController.getInstance().getCurrentCart();
         }
-
         String command;
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.equalsIgnoreCase("Show Products")) {
@@ -43,11 +42,11 @@ public class CartMenu extends Menu {
             } else if (command.matches("view product \\S+")) {
                 if (command.matches("view product @p\\d+")) {
                     ClientController.getInstance().setCurrentProduct(cart.findProductWithID(command.split("\\s")[2]));
-                    if(ClientController.getInstance().getCurrentProduct()!=null) {
+                    if (ClientController.getInstance().getCurrentProduct() != null) {
                         Menu menu = new ProductMenu(this).setScanner(scanner);
-                     //   ClientController.getInstance().setCurrentMenu(menu);
+                        //   ClientController.getInstance().setCurrentMenu(menu);
                         menu.execute();
-                    }else {
+                    } else {
                         printError("there is no product with this ID in your Cart");
                     }
                 } else {
@@ -56,34 +55,34 @@ public class CartMenu extends Menu {
             } else if (command.matches("increase \\S+")) {
                 if (command.matches("increase @p\\d+")) {
                     System.out.println("How many do you want to increase it?");
-                    int count=scanner.nextInt();
-                    cart.changeCountOfProduct(command.split("\\s")[1],count);
-                }else{
+                    int count = scanner.nextInt();
+                    cart.changeCountOfProduct(command.split("\\s")[1], count);
+                } else {
                     printError("this ID isn't a productID");
                 }
-            }else if (command.matches("decrease \\S+")) {
+            } else if (command.matches("decrease \\S+")) {
                 if (command.matches("decrease @p\\d+")) {
                     System.out.println("How many do you want to decrease it?");
-                    int count=scanner.nextInt();
-                    cart.changeCountOfProduct(command.split("\\s")[1],-count);
-                }else{
+                    int count = scanner.nextInt();
+                    cart.changeCountOfProduct(command.split("\\s")[1], -count);
+                } else {
                     printError("this ID isn't a productID");
                 }
-            }else if (command.equalsIgnoreCase("show total price")) {
+            } else if (command.equalsIgnoreCase("show total price")) {
                 System.out.println(cart.getTotalPrice());
-            }else if (command.equalsIgnoreCase("purchase")) {
-                if(cart.getTotalPrice()>0) {
+            } else if (command.equalsIgnoreCase("purchase")) {
+                if (cart.getTotalPrice() > 0) {
                     if (ClientController.getInstance().getCurrentUser() != null) {
                         Menu menu = new CustomerInfoForPurchaseMenu(this).setScanner(scanner);
-                    //    ClientController.getInstance().setCurrentMenu(menu);
+                        //ClientController.getInstance().setCurrentMenu(menu);
                         menu.execute();
                     } else {
                         printError("you should Login or Register before purchase");
                         Menu menu = new UserMenu(this).setScanner(scanner);
-                  //      ClientController.getInstance().setCurrentMenu(menu);
+                        //ClientController.getInstance().setCurrentMenu(menu);
                         menu.execute();
                     }
-                }else{
+                } else {
                     printError("you haven't any product in your cart");
                 }
             } else if (command.equalsIgnoreCase("help")) {

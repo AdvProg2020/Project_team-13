@@ -102,7 +102,6 @@ public class CategoryCenter {
     }
 
     public void removeProductFromCategory(Product product) {
-        updateAllCategories();
         for (Category category : allCategories) {
             if (category.getName().trim().equals(product.getProductsCategory().trim())) {
                 for (Product product1 : category.getAllProducts()) {

@@ -13,13 +13,6 @@ public class CategoryController {
     private static CategoryController categoryController;
     private Category currentCategory;
 
-    public Category getCurrentCategory() {
-        return currentCategory;
-    }
-
-    public void setCurrentCategory(Category currentCategory) {
-        this.currentCategory = currentCategory;
-    }
 
     private CategoryController() {
         this.allCategories = new ArrayList<>();
@@ -43,6 +36,14 @@ public class CategoryController {
             categoryController = new CategoryController();
         }
         return categoryController;
+    }
+
+    public Category getCurrentCategory() {
+        return currentCategory;
+    }
+
+    public void setCurrentCategory(Category currentCategory) {
+        this.currentCategory = currentCategory;
     }
 
     public void printAllCategories() {

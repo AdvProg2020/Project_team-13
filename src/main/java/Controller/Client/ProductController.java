@@ -158,26 +158,17 @@ public class ProductController {
         }
     }
 
-    public void showProductsAfterFilterAndSort() {
+    public ArrayList<Product> showProductsAfterFilterAndSort() {
         filterProducts();
         sortProducts();
         ArrayList<Product> allProducts = new ArrayList<>(allProductsAfterSort);
-        String productsInViewFormat = "";
-        if (allProductsAfterFilter != null && !allProductsAfterFilter.isEmpty()) {
-            for (Product product : allProducts) {
-                productsInViewFormat += "ProductID: " + product.getProductId() + "\t" + "Product name: " + product.getProductName() + "\t"
-                        + "ProductCost: " + product.getProductCost() + "\t"
-                        + "Product Status: " + product.getProductStatus().toString() + "\n";
-            }
-            if (allProducts != null && !allProducts.isEmpty()) {
-                //          ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
-            }
-        }
+
+        return allProducts;
 
     }
 
     public void filterProducts() {
-        allProductsAfterFilter = allProducts;
+        allProductsAfterFilter = new ArrayList<>(allProducts);
         filterByCategory();
         filterByCategoryFeatures();
         filterByPrice();
@@ -301,12 +292,12 @@ public class ProductController {
     }
 
     public void setCurrentCategory(Category currentCategory) {
+        categoryFeaturesToFilter = new HashMap<>();
         this.currentCategory = currentCategory;
     }
 
     public void setAllBrandsToFilter(ArrayList<String> allBrandsToFilter) {
         this.allBrandsToFilter = allBrandsToFilter;
-
     }
 
     public void setAllSellersToFilter(ArrayList<String> allSellersToFilter) {
@@ -347,8 +338,8 @@ public class ProductController {
     }
 
     public void sortProducts() {
+        allProductsAfterSort = new ArrayList<>(allProductsAfterFilter);
         if (allProductsAfterFilter != null) {
-            allProductsAfterSort = new ArrayList<>(allProductsAfterFilter);
             if (isSortActivated) {
                 if (currentSort.equals("newest")) {
                     if (!kindOfSort) {
@@ -459,7 +450,7 @@ public class ProductController {
     }
 
     public Product findProductAfterFilterInOffer(String productID) {
-        allProductsAfterFilter = allProducts;
+        allProductsAfterFilter = new ArrayList<>(allProducts);
         filterProducts();
         for (Product product : allProductsAfterFilter) {
             if (product.getProductId().equals(productID) && product.getOffer() != null) {

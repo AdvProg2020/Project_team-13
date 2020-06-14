@@ -118,7 +118,7 @@ public class AddProductScene extends Menu {
         HashMap<String, String> categoryFeaturesForProduct = new HashMap<>();
         ArrayList<MenuItem> menuItemArrayList = new ArrayList<>();
         for (String s : getCategoryName()) {
-            MenuItem menuItem = new MenuItem(s);
+            MenuItem menuItem = new MenuItem("       " + s);
             menuItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -212,7 +212,7 @@ public class AddProductScene extends Menu {
                     featuresGridPane.getColumnConstraints().add(new ColumnConstraints(90, Control.USE_COMPUTED_SIZE, 90, Priority.ALWAYS, HPos.LEFT, false));
                     featuresGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, true));
                     featuresGridPane.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.CENTER, true));
-                    Scene scene1 = new Scene(gridPane, 320, 240);
+                    Scene scene1 = new Scene(gridPane, 320, 20 + categoryFeatures.size() * 150);
                     popupwindow.initModality(Modality.APPLICATION_MODAL);
                     popupwindow.initStyle(StageStyle.UNDECORATED);
                     popupwindow.setScene(scene1);

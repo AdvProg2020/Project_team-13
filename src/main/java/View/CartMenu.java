@@ -1,5 +1,6 @@
 package View;
 
+import Controller.Client.CartController;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import javafx.event.Event;
@@ -53,6 +54,7 @@ public class CartMenu extends Menu {
     }
 
     private void setCenterGridPane() {
+        centerGridPane.getChildren().clear();
         String buttomStyle = "  -fx-background-color: \n" +
                 "        #090a0c,\n" +
                 "        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),\n" +
@@ -78,20 +80,13 @@ public class CartMenu extends Menu {
         Seller seller = new Seller("username", "password", "firstname",
                 "lastName", "email", "phone number", 123,
                 "ali", true);
-        HashMap<String, String> hashMap = new HashMap<>();
-        for (int i = 0; i < 10; i++) {
-            hashMap.put(Integer.toString(i), Integer.toString(i * i + i + 1));
-        }
-        for (int kk = 0; kk < 48; kk++) {
-//          Product product = CartController.getInstance().getCurrentCart().getAllproduct().get(kk);
-            Product product = new Product("aa", "aaaa" + Integer.toString(kk), "aa" + (char) (kk + 97), seller, 123, "lai", "svdfv", 123, hashMap);
-            product.setImagePath("file:E:\\downloads\\photo\\product.png");
-            seller.addProduct(product);
+        for (int kk = 0; kk < CartController.getInstance().getCurrentCart().getAllproduct().size(); kk++) {
+            Product product = CartController.getInstance().getCurrentCart().getAllproduct().get(kk);
             GridPane gridPane = new GridPane();
             ImageView imageView = new ImageView(new Image(product.getImagePath()));
             Text text = new Text("   " + product.getProductName() + "\n" + "   " + product.getCostAfterOff() + " $");
             Label label = new Label("   Total price:");
-            Label totalPrice = new Label("4");
+            Label totalPrice = new Label(Double.toString(CartController.getInstance().getTotalPriceOfProduct(product)));
             imageView.setFitHeight(150);
             imageView.setFitWidth(150);
             GridPane scoreGridPane = new GridPane();
@@ -99,7 +94,7 @@ public class CartMenu extends Menu {
             scoreGridPane.add(label, 0, 0);
             scoreGridPane.add(totalPrice, 1, 0);
             Label countText = new Label("   Count: ");
-            Label count = new Label("4");
+            Label count = new Label(Double.toString(CartController.getInstance().getCurrentCart().getCountOfEachProduct().get(product.getProductId())));
             imageView.setFitHeight(150);
             imageView.setFitWidth(150);
             GridPane countPane = new GridPane();
@@ -108,6 +103,44 @@ public class CartMenu extends Menu {
             countPane.add(count, 1, 0);
             ImageView positive = new ImageView(new Image("file:src/positive.png"));
             ImageView negative = new ImageView(new Image("file:src/negative.png"));
+            positive.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                }
+            });
+            positive.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            positive.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    CartController.getInstance().changeCountOfProduct(product, true);
+                    setCenterGridPane();
+                }
+            });
+            negative.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                }
+            });
+            negative.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            negative.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    CartController.getInstance().changeCountOfProduct(product, false);
+                    setCenterGridPane();
+                }
+            });
             positive.setFitWidth(25);
             positive.setFitHeight(25);
             negative.setFitWidth(25);
@@ -180,7 +213,7 @@ public class CartMenu extends Menu {
         Button purchase = new Button("Purchase");
         Label totalPrice = new Label("Total Price: ");
 //        totalPriceAmount = new Text(Double.toString(CartController.getInstance().getCurrentCart().getTotalPrice()));
-        totalPriceAmount = new Text("656566$");
+        totalPriceAmount = new Text(Double.toString(CartController.getInstance().getCurrentCart().getTotalPrice()));
         for (int i = 0; i < productsPages.size(); i++) {
             buttons.add(new Button(Integer.toString(i + 1)));
             buttons.get(i).setStyle(buttomStyle);
@@ -188,7 +221,6 @@ public class CartMenu extends Menu {
                 @Override
                 public void handle(Event event) {
                     scene.setCursor(Cursor.HAND); //Change cursor to hand
-
                 }
             });
             buttons.get(i).setOnMouseExited(new EventHandler() {
