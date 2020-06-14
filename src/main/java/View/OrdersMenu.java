@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class SalesHistoryMenu extends Menu {
+public class  OrdersMenu extends Menu {
     private Map<String, Button> viewDetails;
     private BorderPane borderPane;
     private GridPane gridPane;
@@ -28,7 +28,7 @@ public class SalesHistoryMenu extends Menu {
     private List<GridPane> allGridPanes;
     private Customer customer;
 
-    public SalesHistoryMenu(Stage stage) {
+    public OrdersMenu(Stage stage) {
         super(stage);
         super.setScene();
         viewDetails = new HashMap<>();
@@ -54,8 +54,8 @@ public class SalesHistoryMenu extends Menu {
         if (!customer.getHistoryOfTransaction().isEmpty()) {
             pageGridPane.getChildren().remove(centerGridPane);
             pageGridPane.getChildren().remove(bottomGridPane);
-            setPages(customer.getHistoryOfTransaction().size()%4 == 0 ?
-                    customer.getHistoryOfTransaction().size()/4 : (customer.getHistoryOfTransaction().size()/4) + 1);
+            setPages(customer.getHistoryOfTransaction().size() % 4 == 0 ?
+                    customer.getHistoryOfTransaction().size() / 4 : (customer.getHistoryOfTransaction().size() / 4) + 1);
             allGridPanes = new ArrayList<>();
             for (int i = 0; i < pages; i++) {
                 allGridPanes.add(null);
@@ -175,16 +175,16 @@ public class SalesHistoryMenu extends Menu {
         }
         Label[] allLabels = labelMaker(id, price, date, status);
         for (int i = 0; i < 5; i++) {
-            if(i == 0){
+            if (i == 0) {
                 allLabels[i].setTranslateX(10);
             }
-            if(i == 1){
+            if (i == 1) {
                 allLabels[i].setTranslateX(15);
             }
-            if (i == 2){
+            if (i == 2) {
                 allLabels[i].setTranslateX(20);
             }
-            if (i == 3){
+            if (i == 3) {
                 allLabels[i].setTranslateX(20);
             }
             allLabels[i].setAlignment(Pos.CENTER);
@@ -210,3 +210,4 @@ public class SalesHistoryMenu extends Menu {
         }
         return allLabels;
     }
+}
