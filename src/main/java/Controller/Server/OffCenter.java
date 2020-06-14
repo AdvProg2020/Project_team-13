@@ -91,6 +91,7 @@ public class OffCenter {
             UserCenter.getIncstance().updateProductOfferInSeller(ProductCenter.getInstance().getProductWithId(product));
         }
         DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
+        ServerController.getInstance().sendMessageToClient("@Successful@add Offs request sent to Manager");
     }
 
     public void editOffer(Offer newOffer) {
