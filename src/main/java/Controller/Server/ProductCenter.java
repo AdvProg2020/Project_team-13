@@ -185,6 +185,7 @@ public class ProductCenter {
         getProductWithId(product.getProductId()).setProductStatus(ProductStatus.editing);
         DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));
         RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("EditProduct", new Gson().toJson(product)));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful" ,"Product edit request has been send to the manager."));
     }
 
     public void editProduct(Product product) {

@@ -50,7 +50,9 @@ public class Category {
         if (allProducts != null) {
             for (Product product1 : this.allProducts) {
                 if (product1.getProductId().equals(product.getProductId())) {
-                    allProducts.set(allProducts.indexOf(product1), product);
+                    allProducts.remove(product1);
+                    allProducts.add(product);
+                    break;
                 }
             }
         }

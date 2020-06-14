@@ -1,11 +1,13 @@
 package View;
 import Controller.Client.RequestController;
 import Models.Request;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
@@ -16,6 +18,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,28 +107,31 @@ public class ManageRequestMenu extends Menu{
         for (int i = 0; i < RequestController.getInstance().getAllRequests().size(); i++) {
             Button button = new Button("View Details");
             button.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 19));
-//            button.setOnAction(new EventHandler<ActionEvent>() {
-//                @Override
-//                public void handle(ActionEvent event) {
-//                    addCommentButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//                        @Override
-//                        public void handle(MouseEvent event) {
-//                            if (ClientController.getInstance().getCurrentUser() != null)
-//                                ProductController.getInstance().addComment(new Comment(product.getProductId(), CommentStatus.unChecked, product.didUserBuyThis(ClientController.getInstance().getCurrentUser().getUsername()), getTitle.getText(), getContent.getText(), ClientController.getInstance().getCurrentUser().getUsername(), ClientController.getInstance().getCurrentUser().getImagePath()));
-//                            else
-//                                ProductController.getInstance().addComment(new Comment(product.getProductId(), CommentStatus.unChecked, product.didUserBuyThis(""), getTitle.getText(), getContent.getText(), "guest", ""));
-//                            popupwindow.hide();
-//                        }
-//                    });
-//                    Scene scene1 = new Scene(gridPane, 400, 300);
-//                    popupwindow.initModality(Modality.APPLICATION_MODAL);
-//                    popupwindow.initStyle(StageStyle.UNDECORATED);
-//                    popupwindow.setScene(scene1);
-//                    popupwindow.showAndWait();
-//                }
-//            });
-//                }
-//            });
+            button.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event){
+                  VBox vBox = new VBox();
+                  vBox.setAlignment(Pos.CENTER);
+                  vBox.setStyle("-fx-background-color: #afafaf");
+                  String[] details = RequestController.getInstance().viewRequestDetail(getTheIdForDetail(viewDetails, button)).split("\n");
+                  Label[] label = new Label[details.length];
+                    Label label1 = new Label("Details :\n\n");
+                    label1.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 30));
+                  vBox.getChildren().add(label1);
+                    for (int j = 0; j < label.length; j++) {
+                        label[j] = new Label(details[j]);
+                        label[j].setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 19));
+                        vBox.getChildren().add(label[j]);
+                  }
+                  Scene scene = new Scene(vBox, 300, 500);
+                  Stage stage = new Stage();
+                  stage.setWidth(400);
+                  stage.setHeight(600);
+                  stage.setScene(scene);
+                  stage.setTitle("Details");
+                  stage.show();
+                }
+            });
             viewDetails.put(allRequests.get(i).getRequestId(), button);
         }
         for (int i = 0; i < RequestController.getInstance().getAllRequests().size(); i++) {
@@ -133,14 +139,8 @@ public class ManageRequestMenu extends Menu{
             acceptImage.setFitHeight(50);
             acceptImage.setFitWidth(50);
             acceptImage.setOnMouseClicked(event -> {
-                String requestIdForThis = null;
-                for (String requestId : accepts.keySet()) {
-                    if(accepts.get(requestId).equals(acceptImage)){
-                        requestIdForThis = requestId;
-                        break;
-                    }
-                }
-               RequestController.getInstance().acceptRequest(requestIdForThis);
+                String requestIdForThis = getString(acceptImage, accepts);
+                RequestController.getInstance().acceptRequest(requestIdForThis);
             });
             acceptImage.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
             acceptImage.setOnMouseExited((EventHandler<Event>) event -> scene.setCursor(Cursor.DEFAULT));
@@ -152,23 +152,36 @@ public class ManageRequestMenu extends Menu{
             declineImage.setFitHeight(50);
             declines.put(allRequests.get(i).getRequestId(), declineImage);
             declineImage.setOnMouseClicked(event -> {
-                String requestIdForThis = null;
-                for (String requestId : declines.keySet()) {
-                    if(declines.get(requestId).equals(declineImage)){
-                       requestIdForThis = requestId;
-                       break;
-                    }
-                }
-               RequestController.getInstance().declineRequest(requestIdForThis);
+                String requestIdForThis = getString(declineImage, declines);
+
+                RequestController.getInstance().declineRequest(requestIdForThis);
             });
             declineImage.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
             declineImage.setOnMouseExited((EventHandler<Event>) event -> scene.setCursor(Cursor.DEFAULT));
         }
     }
 
+    private String getString(ImageView acceptImage, Map<String, ImageView> accepts) {
+        String requestIdForThis = null;
+        for (String requestId : accepts.keySet()) {
+            if (accepts.get(requestId).equals(acceptImage)) {
+                requestIdForThis = requestId;
+                break;
+            }
+        }
+        return requestIdForThis;
+    }
 
-    private void setAcceptedOrDeclined(){
 
+    private String getTheIdForDetail(Map<String, Button> viewDetails, Button button){
+        String requestIdForThis = null;
+        for (String requestId : viewDetails.keySet()) {
+            if (viewDetails.get(requestId).equals(button)) {
+                requestIdForThis = requestId;
+                break;
+            }
+        }
+        return requestIdForThis;
     }
 
     private void setTheCenterInfo(int counter, Integer pages) {

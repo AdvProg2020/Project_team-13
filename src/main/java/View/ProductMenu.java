@@ -77,7 +77,6 @@ public class ProductMenu extends Menu {
     }
 
     private void setCenterGridPane() {
-
         product = ClientController.getInstance().getCurrentProduct();
         ImageView productImage = new ImageView(new Image(product.getImagePath()));
         ImageView productZoomedImage = new ImageView(new Image(product.getImagePath()));
@@ -179,9 +178,6 @@ public class ProductMenu extends Menu {
         ArrayList<GridPane> gridPanes = new ArrayList<>();
         CategoryController.getInstance().updateAllCategories();
         for (int kk = 0; kk < 3; kk++) {
-            System.out.println(product.getProductsCategory());
-            System.out.println(CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()));
-            System.out.println(CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts());
             if(kk==CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts().size()){
                 break;
             }
