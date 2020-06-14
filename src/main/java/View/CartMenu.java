@@ -220,6 +220,8 @@ public class CartMenu extends Menu {
                     gridPane11.add(totalPriceAmount, 1, 0);
                     gridPane11.add(purchase, 2, 0);
                     gridPane11.setStyle("-fx-background-color: #E6E6E6");
+                    gridPane11.setMinWidth(660);
+                    gridPane11.setMinHeight(75);
                     buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
                     productsPages.get(j[0]).add(buttons1, 1, 5, 7, 1);
                     productsPages.get(j[0]).add(gridPane11, 1, 6, 7, 2);
@@ -234,7 +236,18 @@ public class CartMenu extends Menu {
         }
         buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
         if (productsPages.size() > 0) {
+            GridPane gridPane11 = new GridPane();
+            gridPane11.add(totalPrice, 0, 0);
+            gridPane11.add(totalPriceAmount, 1, 0);
+            gridPane11.add(purchase, 2, 0);
+            gridPane11.setStyle("-fx-background-color: #E6E6E6");
+            gridPane11.setMinWidth(660);
+            gridPane11.setMinHeight(75);
+            gridPane11.getColumnConstraints().add(new ColumnConstraints(75, Control.USE_COMPUTED_SIZE, 75, Priority.NEVER, HPos.LEFT, false));
+            gridPane11.getColumnConstraints().add(new ColumnConstraints(250, Control.USE_COMPUTED_SIZE, 250, Priority.NEVER, HPos.LEFT, false));
+            gridPane11.getColumnConstraints().add(new ColumnConstraints(275, Control.USE_COMPUTED_SIZE, 275, Priority.NEVER, HPos.RIGHT, false));
             productsPages.get(0).add(buttons1, 1, 5, 7, 1);
+            productsPages.get(0).add(gridPane11, 1, 6, 7, 1);
         }
         GridPane leftMenuGridPane = new GridPane();
         leftMenuGridPane.setMinHeight(400);
