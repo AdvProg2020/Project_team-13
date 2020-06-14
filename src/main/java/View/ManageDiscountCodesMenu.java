@@ -30,6 +30,7 @@ public class ManageDiscountCodesMenu extends Menu{
     private int discountCodeCounter;
     private List<GridPane> allGridPanes;
     private Pagination pagination;
+    private Button addDiscountCode;
 
     public ManageDiscountCodesMenu(Stage stage, int pages) {
         super(stage);
@@ -56,6 +57,16 @@ public class ManageDiscountCodesMenu extends Menu{
 
     public void setScene(int pageNumber) {
         DiscountController.getInstance().getAllDiscountCodesFromServer();
+        addDiscountCode = new Button("Add DiscountCode");
+        addDiscountCode.setStyle("-fx-background-color: #808080");
+        addDiscountCode.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 15));
+        addDiscountCode.setMaxHeight(20);
+        addDiscountCode.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // Handle Add Discount Code Menu
+            }
+        });
         if (!DiscountController.getInstance().getAllDiscountCodes().isEmpty()) {
             pageGridPane.getChildren().remove(centerGridPane);
             pageGridPane.getChildren().remove(bottomGridPane);
@@ -78,9 +89,14 @@ public class ManageDiscountCodesMenu extends Menu{
             HBox hBox = new HBox();
             hBox.setAlignment(Pos.BASELINE_LEFT);
             hBox.getChildren().add(ManageRequests);
+            hBox.getChildren().add(addDiscountCode);
+            addDiscountCode.setTranslateX(45);
+            addDiscountCode.setTranslateY(18);
             borderPane.setTop(hBox);
             borderPane.setCenter(pagination);
         }else{
+            HBox hBox = new HBox();
+            hBox.getChildren().add(addDiscountCode);
             pageGridPane.getChildren().remove(centerGridPane);
             pageGridPane.getChildren().remove(bottomGridPane);
             borderPane = new BorderPane();

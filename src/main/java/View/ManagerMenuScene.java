@@ -271,7 +271,7 @@ public class ManagerMenuScene extends Menu {
         requestsButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                new ManageRequestMenu(stage).execute();
+                new ManageRequestMenu(stage, 0).execute();
             }
         });
         Button manageCategoriesButton = new Button("Manage Categories");
