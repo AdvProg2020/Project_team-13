@@ -4,7 +4,7 @@ import Models.Comment;
 import Models.Offer;
 import Models.Score;
 import Models.UserAccount.Seller;
-
+import Models.UserAccount.Customer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;

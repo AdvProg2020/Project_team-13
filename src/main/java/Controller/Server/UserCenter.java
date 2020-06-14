@@ -3,6 +3,7 @@ package Controller.Server;
 import Models.Offer;
 import Models.Product.Product;
 import Models.Request;
+import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;

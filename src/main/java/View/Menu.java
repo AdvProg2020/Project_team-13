@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Client.ClientController;
+import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
 import javafx.event.Event;
@@ -26,7 +27,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import java.io.File;
 
-public class Menu {
+public abstract class Menu {
     protected Scene scene;
     protected Stage stage;
     protected GridPane upGridPane, menuBarGridPane, centerGridPane, bottomGridPane, pageGridPane;
@@ -43,6 +44,19 @@ public class Menu {
         pageGridPane = new GridPane();
         scene = new Scene(pageGridPane, 850, 600);
         ClientController.getInstance().addNewMenu(this);
+    }
+
+
+    public Scene getScene() {
+        return scene;
+    }
+
+    public void setScene(Scene scene) {
+        this.scene = scene;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     public void setScene() {
@@ -752,5 +766,4 @@ public class Menu {
         System.out.println(stage == null);
         popupwindow.show();
     }
-
 }

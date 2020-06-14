@@ -23,16 +23,17 @@ public class SalesHistoryMenu extends Menu {
     private Map<String, Button> viewDetails;
     private BorderPane borderPane;
     private GridPane gridPane;
-    private int pages;
+    private int page;
     private int logCounter;
     private List<GridPane> allGridPanes;
     private Seller seller;
+    private Pagination pagination;
 
-    public SalesHistoryMenu(Stage stage) {
+    public SalesHistoryMenu(Stage stage, int pages) {
         super(stage);
         super.setScene();
         viewDetails = new HashMap<>();
-        this.setScene();
+        this.setScene(pages);
     }
 
     public void setSeller(Seller seller) {
@@ -40,7 +41,7 @@ public class SalesHistoryMenu extends Menu {
     }
 
     public void setPages(int pages) {
-        this.pages = pages;
+        this.page = pages;
     }
 
 
@@ -48,8 +49,8 @@ public class SalesHistoryMenu extends Menu {
         this.logCounter = logCounter;
     }
 
-    @Override
-    public void setScene() {
+
+    public void setScene(int pages) {
         setSeller((Seller)ClientController.getInstance().getCurrentUser());
         if (!seller.getHistoryOfTransaction().isEmpty()) {
             pageGridPane.getChildren().remove(centerGridPane);
@@ -60,7 +61,7 @@ public class SalesHistoryMenu extends Menu {
             for (int i = 0; i < pages; i++) {
                 allGridPanes.add(null);
             }
-            Pagination pagination = new Pagination(pages, 0);
+            pagination = new Pagination(page, pages);
             pagination.setTranslateX(50);
             pagination.setTranslateY(50);
             pagination.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
@@ -88,7 +89,7 @@ public class SalesHistoryMenu extends Menu {
     }
 
     private GridPane createPage(Integer param) {
-        if (param.equals(pages - 1)) {
+        if (param.equals(page - 1)) {
             setTheCenterInfo(seller.getHistoryOfTransaction().size() - (param * 4), param);
         } else {
             setTheCenterInfo(4, param);
