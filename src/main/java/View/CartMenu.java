@@ -1,8 +1,5 @@
 package View;
 
-import Controller.Client.CartController;
-import Controller.Client.ClientController;
-import Models.Product.Cart;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import javafx.event.Event;
@@ -240,12 +237,34 @@ public class CartMenu extends Menu {
             gridPane11.add(totalPrice, 0, 0);
             gridPane11.add(totalPriceAmount, 1, 0);
             gridPane11.add(purchase, 2, 0);
+            gridPane11.getColumnConstraints().add(new ColumnConstraints(75, Control.USE_COMPUTED_SIZE, 75, Priority.NEVER, HPos.LEFT, false));
+            gridPane11.getColumnConstraints().add(new ColumnConstraints(250, Control.USE_COMPUTED_SIZE, 250, Priority.NEVER, HPos.LEFT, false));
+            gridPane11.getColumnConstraints().add(new ColumnConstraints(275, Control.USE_COMPUTED_SIZE, 275, Priority.NEVER, HPos.RIGHT, false));
+            gridPane11.getRowConstraints().add(new RowConstraints(75, Control.USE_COMPUTED_SIZE, 75, Priority.NEVER, VPos.CENTER, false));
+            totalPrice.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 12));
+            totalPriceAmount.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 12));
+            purchase.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 12));
+            String string = "  -fx-background-color: \n" +
+                    "        #090a0c,\n" +
+                    "        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),\n" +
+                    "        linear-gradient(#20262b, #191d22),\n" +
+                    "        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));\n" +
+                    "    -fx-background-radius: 5,4,3,5;\n" +
+                    "    -fx-background-insets: 0,1,2,0;\n" +
+                    "    -fx-text-fill: white;\n" +
+                    "    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );\n" +
+                    "    -fx-font-family: \"Arial\";\n" +
+                    "    -fx-text-fill: linear-gradient(white, #d0d0d0);\n" +
+                    "    -fx-font-size: 12px;\n" +
+                    "    -fx-padding: 10 20 10 20;";
+            purchase.setStyle(string);
             gridPane11.setStyle("-fx-background-color: #E6E6E6");
             gridPane11.setMinWidth(660);
             gridPane11.setMinHeight(75);
             gridPane11.getColumnConstraints().add(new ColumnConstraints(75, Control.USE_COMPUTED_SIZE, 75, Priority.NEVER, HPos.LEFT, false));
             gridPane11.getColumnConstraints().add(new ColumnConstraints(250, Control.USE_COMPUTED_SIZE, 250, Priority.NEVER, HPos.LEFT, false));
             gridPane11.getColumnConstraints().add(new ColumnConstraints(275, Control.USE_COMPUTED_SIZE, 275, Priority.NEVER, HPos.RIGHT, false));
+            gridPane11.getRowConstraints().add(new RowConstraints(75, Control.USE_COMPUTED_SIZE, 75, Priority.NEVER, VPos.CENTER, false));
             productsPages.get(0).add(buttons1, 1, 5, 7, 1);
             productsPages.get(0).add(gridPane11, 1, 6, 7, 1);
         }
