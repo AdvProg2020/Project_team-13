@@ -101,18 +101,16 @@ public class CategoryCenter {
     }
 
     public void removeProductFromCategory(Product product) {
+        updateAllCategories();
         for (Category category : allCategories) {
-            if (category.getName().equals(product.getProductsCategory())) {
-                System.out.println("1111111111");
+            if (category.getName().trim().equals(product.getProductsCategory().trim())) {
                 for (Product product1 : category.getAllProducts()) {
                     if (product1.getProductId().equals(product.getProductId())) {
                         category.getAllProducts().remove(product1);
                         break;
-
                     }
                 }
             }
-            break;
         }
         DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
     }
