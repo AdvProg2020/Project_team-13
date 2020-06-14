@@ -120,7 +120,7 @@ public class AddProductScene extends Menu {
         HashMap<String, String> categoryFeaturesForProduct = new HashMap<>();
         ArrayList<MenuItem> menuItemArrayList = new ArrayList<>();
         for (String s : getCategoryName()) {
-            MenuItem menuItem = new MenuItem("     1" + s);
+            MenuItem menuItem = new MenuItem(s);
             menuItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {

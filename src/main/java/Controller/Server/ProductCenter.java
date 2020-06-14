@@ -107,7 +107,7 @@ public class ProductCenter {
     public void createProductRequest(Product product) {
         Gson gson = new Gson();
         RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("AddProduct", gson.toJson(product)));
-        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("productCreating", "ProductCreating Request has been sent."));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("productCreating", "Product Creating Request has been sent."));
     }
 
     public Product getProductWithId(String productId) {

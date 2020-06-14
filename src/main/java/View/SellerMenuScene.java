@@ -59,7 +59,6 @@ public class SellerMenuScene extends Menu{
     private void setCenterGridPane() {
         //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
         Seller seller =(Seller) ClientController.getInstance().getCurrentUser();
-        seller.setImagePath("file:C:\\Users\\USER\\Desktop\\index.jpg");
         Text personalInfo = new Text(seller.viewPersonalInfo());
         Text pageTitle = new Text("User Menu");
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
