@@ -20,6 +20,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -38,6 +39,12 @@ public class SellerMenuScene extends Menu{
         super(stage);
         this.stage = stage;
         userInfoGridPane = new GridPane();
+        if(ClientController.getInstance().getMediaPlayer()!=null)
+            ClientController.getInstance().getMediaPlayer().stop();
+        ClientController.getInstance().setMediaPlayer(new MediaPlayer(usersSong));
+        ClientController.getInstance().getMediaPlayer().setVolume(0.5);
+        ClientController.getInstance().getMediaPlayer().play();
+        ClientController.getInstance().getMediaPlayer().setCycleCount(MediaPlayer.INDEFINITE);
         setScene();
     }
 
@@ -245,6 +252,12 @@ public class SellerMenuScene extends Menu{
             @Override
             public void handle(Event event) {
                 scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
+        offsButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                new CreateOffsMenu(stage).execute();
             }
         });
         offsButton.setTextAlignment(TextAlignment.CENTER);

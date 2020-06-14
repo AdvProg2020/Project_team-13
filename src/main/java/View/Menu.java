@@ -20,6 +20,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -39,7 +41,9 @@ public class Menu {
     protected Stage stage;
     protected GridPane upGridPane, menuBarGridPane, centerGridPane, bottomGridPane, pageGridPane;
     private AudioClip errorSound = new AudioClip(new File("src/error.mp3").toURI().toString());
-
+    protected Media mainSong = new Media(new File("src/DesertOfSadness.mp3").toURI().toString());
+    protected Media productsSong = new Media(new File("src/If_I_Could_Tell_You.mp3").toURI().toString());
+    protected Media usersSong = new Media(new File("src/InTHeMorningLight.mp3").toURI().toString());
     public Menu(Stage stage) {
         this.stage = stage;
         upGridPane = new GridPane();

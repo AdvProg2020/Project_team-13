@@ -7,6 +7,7 @@ import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import View.MainMenu;
 import View.Menu;
+import javafx.scene.media.MediaPlayer;
 import sun.applet.Main;
 
 import java.util.ArrayList;
@@ -18,6 +19,15 @@ public class ClientController {
     private DiscountCode currentDiscountCode;
     private Product currentProduct;
     private ArrayList<View.Menu> menus = new ArrayList<>();
+    private MediaPlayer mediaPlayer;
+
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
+    }
+
+    public void setMediaPlayer(MediaPlayer mediaPlayer) {
+        this.mediaPlayer = mediaPlayer;
+    }
 
     public DiscountCode getCurrentDiscountCode() {
         return currentDiscountCode;

@@ -1,11 +1,13 @@
 package View;
 
 import Controller.Client.CartController;
+import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
 import Controller.Client.ProductController;
 import Models.Comment;
 import Models.CommentStatus;
 import Models.Offer;
+import Models.Product.Category;
 import Models.Product.Product;
 import Models.Score;
 import Models.UserAccount.Seller;
@@ -19,6 +21,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -36,6 +39,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -46,9 +50,11 @@ public class ProductMenu extends Menu {
     ImageView star3 = new ImageView(new Image("file:src/gray_star.png"));
     ImageView star4 = new ImageView(new Image("file:src/gray_star.png"));
     ImageView star5 = new ImageView(new Image("file:src/gray_star.png"));
+    ImageView productZoomedImage ;
+    GridPane commentGridPane = new GridPane();
     private Image goldStar = new Image("file:src/gold_star.png");
     private Rectangle fiveStarBar = new Rectangle(), fourStarBar = new Rectangle(), threeStarBar = new Rectangle(), twoStarBar = new Rectangle(), oneStarBar = new Rectangle();
-    Product product;
+    private Product product;
     Text avarageScore = new Text();
     Text numberOfScores = new Text();
     private GridPane productInfoGridPane = new GridPane();
@@ -64,18 +70,22 @@ public class ProductMenu extends Menu {
         setMenuBarGridPane();
         setCenterGridPane();
         bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, true));
-        scene.setRoot(pageGridPane);
+       ScrollPane scrollPane=new ScrollPane();
+       scrollPane.setFitToWidth(true);
+       scrollPane.setContent(pageGridPane);
+        scene.setRoot(scrollPane);
     }
 
     private void setCenterGridPane() {
 
         product = ClientController.getInstance().getCurrentProduct();
-        HashMap<String, String> features = new HashMap<>();
-        features.put("Color", "Yellow");
-        features.put("Mass", "5 kg");
-        Date date = new Date();
-        date.setMonth(8);
-        ImageView productImage = new ImageView(new Image(product.getImagePath()));
+       ImageView productImage = new ImageView(new Image(product.getImagePath()));
+        ImageView productZoomedImage = new ImageView(new Image(product.getImagePath()));
+        productZoomedImage.setTranslateX(250);
+        productZoomedImage.setTranslateY(0);
+        productZoomedImage.setFitHeight(400);
+        productZoomedImage.setFitWidth(400);
+        productZoomedImage.setVisible(false);
         productImage.setFitHeight(200);
         productImage.setFitWidth(200);
         productInfoGridPane.setVgap(10);
@@ -131,10 +141,123 @@ public class ProductMenu extends Menu {
         addToCartButton.setMinWidth(200);
         addToCartButton.setMinHeight(30);
         addToCartButton.setTextFill(Color.WHITE);
+
+        productImage.setOnMouseEntered(e -> {
+           productZoomedImage.setVisible(true);
+        });
+        productImage.setOnMouseExited(e -> {
+            productZoomedImage.setVisible(false);
+        });
+        GridPane commentPane = new GridPane();
+        commentPane.add(commentGridPane, 0, 0);
+        commentPane.setVgap(5);
+        for (int i = 0; i < product.getCommentList().size(); i++) {
+            Comment comment = product.getCommentList().get(i);
+            ImageView userImage = new ImageView(new Image(comment.getuserImagePath()));
+            userImage.setFitWidth(50);
+            userImage.setFitHeight(50);
+            Text commentText = new Text();
+            commentText.setStyle("-fx-font-size: 15 ");
+            if (comment.isDidCustomerBuyProduct())
+                commentText.setText(comment.getUsername() + "/bought\n" + comment.getTitle() + "\n" + comment.getContent());
+            else
+                commentText.setText(comment.getUsername() + "/not bought\n" + comment.getTitle() + "\n" + comment.getContent());
+            GridPane commentPaneGrid = new GridPane();
+            commentPaneGrid.setStyle("-fx-background-color: rgb(189,189,189);-fx-background-radius: 20px;");
+            commentPaneGrid.setHgap(10);
+            commentPaneGrid.setVgap(5);
+            commentPaneGrid.add(userImage, 1, 1);
+            commentPaneGrid.setMinWidth(550);
+            commentPaneGrid.add(commentText, 2, 0, 1, 2);
+            commentPane.add(commentPaneGrid, 0, i + 1);
+        }
+        GridPane similarProductPane=new GridPane();
+        Text similarProductText=new Text("Similar Products");
+        similarProductText.setFont(Font.loadFont("file:src/FredokaOne-Regular.ttf", 20));
+
+
+        ArrayList<GridPane> gridPanes = new ArrayList<>();
+        for (int kk = 0; kk < 3; kk++) {
+            if(kk==CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts().size()){
+                break;
+            }
+            Product productSim = CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts().get(kk);
+            GridPane gridPane = new GridPane();
+            ImageView imageView = new ImageView(new Image(product.getImagePath()));
+            Text text = new Text("   " + productSim.getProductName() + "\n" + "   " + productSim.getCostAfterOff() + " $");
+            Label label = new Label("   " + Double.toString(productSim.getAverageScore()));
+            ImageView star = new ImageView(new Image("file:src/star.png"));
+            imageView.setFitHeight(125);
+            imageView.setFitWidth(125);
+            star.setFitWidth(20);
+            star.setFitHeight(20);
+            GridPane scoreGridPane = new GridPane();
+            scoreGridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
+            scoreGridPane.getColumnConstraints().add(new ColumnConstraints(15, Control.USE_COMPUTED_SIZE, 20, Priority.NEVER, HPos.LEFT, false));
+            scoreGridPane.setHgap(2);
+            scoreGridPane.add(label, 0, 0);
+            scoreGridPane.add(star, 1, 0);
+            ImageView editInfoPic = new ImageView(new Image("file:src/edit3.png"));
+            ImageView deleteProduct = new ImageView(new Image("file:src/trash1.png"));
+            editInfoPic.setFitWidth(25);
+            editInfoPic.setFitHeight(25);
+            deleteProduct.setFitWidth(25);
+            deleteProduct.setFitHeight(25);
+            gridPane.add(imageView, 0, 0, 2, 1);
+            gridPane.add(text, 0, 1, 1, 1);
+            gridPane.add(scoreGridPane, 0, 2, 1, 1);
+            gridPane.add(editInfoPic, 0, 3);
+            GridPane options = new GridPane();
+            options.getColumnConstraints().add(new ColumnConstraints(117, Control.USE_COMPUTED_SIZE, 117, Priority.NEVER, HPos.RIGHT, false));
+            options.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
+            options.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, false));
+            options.setHgap(2);
+            options.add(editInfoPic, 0, 0);
+            options.add(deleteProduct, 1, 0);
+            gridPane.add(options, 0, 3, 2, 1);
+            gridPanes.add(gridPane);
+            gridPane.setStyle("-fx-background-color: rgb(124,124,213);-fx-background-radius: 20px;");
+            text.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
+            label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
+            gridPane.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            gridPane.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            gridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    for (int i = 0; i < gridPanes.size(); i++) {
+                        if (gridPanes.get(i).equals(gridPane)) {
+                            ClientController.getInstance().setCurrentProduct(((Seller)ClientController.getInstance().getCurrentUser()).getAllProducts().get(i));
+                            new ProductMenu(stage).execute();
+                        }
+                    }
+                }
+            });
+        }
+
+
+        similarProductPane.setVgap(10);
+        similarProductPane.setHgap(10);
+        similarProductPane.add(similarProductText,0,0);
+        similarProductPane.add(gridPanes.get(0),0,1);
+        similarProductPane.add(gridPanes.get(1),1,1);
+        similarProductPane.add(gridPanes.get(2),2,1);
         productInfoGridPane.add(addToCartButton, 1, 14, 12, 5);
         productInfoGridPane.add(productName, 12, 1);
         productInfoGridPane.add(attributes, 12, 2, 5, 12);
         productInfoGridPane.add(rateGridPane, 12, 16, 8, 8);
+        productInfoGridPane.add(commentPane, 12, 22);
+        productInfoGridPane.add(similarProductPane, 12, 23);
         centerGridPane.add(title, 2, 0, 1, 4);
         centerGridPane.add(productInfoGridPane, 0, 3, 5, 5);
         Circle redCircle = new Circle();
@@ -157,7 +280,7 @@ public class ProductMenu extends Menu {
         rateGridPane.add(new Text("3"), 5, 3);
         rateGridPane.add(new Text("2"), 5, 4);
         rateGridPane.add(new Text("1"), 5, 5);
-        GridPane commentGridPane = new GridPane();
+        productInfoGridPane.add(productZoomedImage,0,0,20,20);
         Text addCommentText = new Text("Add Comment");
         addCommentText.setFont(Font.loadFont("file:src/FredokaOne-Regular.ttf", 20));
         commentGridPane.add(addCommentText, 0, 0);
@@ -165,11 +288,6 @@ public class ProductMenu extends Menu {
         commentGridPane.add(commentIcon, 1, 0);
         commentIcon.setFitWidth(20);
         commentIcon.setFitHeight(20);
-        Button showCommentsButton = new Button("Show Comments");
-        showCommentsButton.setStyle("-fx-background-color: #E85D9E;");
-        showCommentsButton.setMinWidth(100);
-        showCommentsButton.setTextFill(Color.WHITE);
-        rateGridPane.add(showCommentsButton, 10, 0, 5, 1);
         commentIcon.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
@@ -194,18 +312,7 @@ public class ProductMenu extends Menu {
                 scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
             }
         });
-        showCommentsButton.setOnMouseEntered(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
-            }
-        });
-        showCommentsButton.setOnMouseExited(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
-            }
-        });
+
         star1.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
@@ -270,57 +377,6 @@ public class ProductMenu extends Menu {
             @Override
             public void handle(MouseEvent event) {
                 CartController.getInstance().getCurrentCart().addProduct(product);
-            }
-        });
-        showCommentsButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                Stage popupwindow = new Stage();
-                GridPane gridPane = new GridPane();
-                gridPane.setStyle("-fx-background-color: Blue");
-                Button button = new Button("X");
-                button.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 25px; -fx-padding: 3,3,3,3;-fx-font-weight: bold;-fx-text-fill: Red");
-                button.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        popupwindow.hide();
-                        scene.setFill(null);
-                    }
-                });
-                gridPane.add(button, 0, 0);
-                gridPane.add(new Text(""), 1, 0);
-                gridPane.setStyle("-fx-background-color: rgba(234,178,198,0.85);");
-                GridPane commentPane = new GridPane();
-                gridPane.add(commentPane, 1, 1);
-                commentPane.add(commentGridPane, 0, 0);
-                product.addComment(new Comment(product.getProductId(), CommentStatus.unChecked, product.didUserBuyThis("janati"), "Offf", "Kheyli Khari", "janati", "file:C:\\Users\\USER\\Desktop\\aj.jpg"));
-                product.addComment(new Comment(product.getProductId(), CommentStatus.unChecked, product.didUserBuyThis("zarrabi"), "Distraction", "don't make Distraction!\nposho boro biroon", "zarrabi", "file:C:\\Users\\USER\\Desktop\\hz.jpg"));
-                commentPane.setVgap(5);
-                for (int i = 0; i < product.getCommentList().size(); i++) {
-                    Comment comment = product.getCommentList().get(i);
-                    ImageView userImage = new ImageView(new Image(comment.getuserImagePath()));
-                    userImage.setFitWidth(50);
-                    userImage.setFitHeight(50);
-                    Text commentText = new Text();
-                    commentText.setStyle("-fx-font-size: 15 ");
-                    if (comment.isDidCustomerBuyProduct())
-                        commentText.setText(comment.getUsername() + "/bought\n" + comment.getTitle() + "\n" + comment.getContent());
-                    else
-                        commentText.setText(comment.getUsername() + "/not bought\n" + comment.getTitle() + "\n" + comment.getContent());
-                    GridPane commentPaneGrid = new GridPane();
-                    commentPaneGrid.setStyle("-fx-background-color: rgb(189,189,189);-fx-background-color: #ECD5DC;-fx-background-radius: 20px;");
-                    commentPaneGrid.setHgap(10);
-                    commentPaneGrid.setVgap(5);
-                    commentPaneGrid.add(userImage, 1, 1);
-                    commentPaneGrid.setMinWidth(450);
-                    commentPaneGrid.add(commentText, 2, 0, 1, 2);
-                    commentPane.add(commentPaneGrid, 0, i + 1);
-                }
-                Scene scene1 = new Scene(gridPane, 500, 400);
-                popupwindow.initModality(Modality.APPLICATION_MODAL);
-                popupwindow.initStyle(StageStyle.UNDECORATED);
-                popupwindow.setScene(scene1);
-                popupwindow.showAndWait();
             }
         });
         commentIcon.setOnMouseClicked(new EventHandler<MouseEvent>() {

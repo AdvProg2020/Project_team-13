@@ -18,6 +18,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -35,6 +36,12 @@ public class ManagerMenuScene extends Menu {
     public ManagerMenuScene(Stage stage) {
         super(stage);
         userInfoGridPane = new GridPane();
+        if(ClientController.getInstance().getMediaPlayer()!=null)
+            ClientController.getInstance().getMediaPlayer().stop();
+        ClientController.getInstance().setMediaPlayer(new MediaPlayer(usersSong));
+        ClientController.getInstance().getMediaPlayer().setVolume(0.5);
+        ClientController.getInstance().getMediaPlayer().play();
+        ClientController.getInstance().getMediaPlayer().setCycleCount(MediaPlayer.INDEFINITE);
         setScene();
     }
 
