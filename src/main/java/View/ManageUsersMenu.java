@@ -2,12 +2,9 @@ package View;
 
 import Controller.Client.ClientController;
 import Controller.Client.ManagerController;
-import Models.Product.Product;
-import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
-import View2.UserMenu.Manager.ManagerMenu;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -27,7 +24,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;

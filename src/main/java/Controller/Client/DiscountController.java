@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class DiscountController {
     private static DiscountController discountController;
@@ -53,13 +54,9 @@ public class DiscountController {
         ClientController.getInstance().sendMessageToServer("@editDiscountCode@" + new Gson().toJson(discountCode));
     }
 
-    public void viewDiscountCode(String code) {
+    public String viewDiscountCode(String code) {
         DiscountCode discountCode = findDiscountCodeWithThisId(code);
-        if (discountCode != null) {
-        //    ClientController.getInstance().getCurrentMenu().showMessage(discountCode.view());
-        } else {
-            ClientController.getInstance().getCurrentMenu().showMessage("there is no discount code with this code", MessageKind.ErrorWithoutBack);
-        }
+        return discountCode.view();
     }
 
     public void printAllDiscountCodes(String json) {
@@ -74,5 +71,9 @@ public class DiscountController {
                     + "\u001B[34mEnd Time: \u001B[0m" + discountCode.getEndTime() + "\u001B[0m\n";
         }
        // ClientController.getInstance().getCurrentMenu().showMessage(showAllDiscountCodes);
+    }
+
+    public ArrayList<DiscountCode> getAllDiscountCodes() {
+        return allDiscountCodes;
     }
 }

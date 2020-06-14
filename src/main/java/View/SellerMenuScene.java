@@ -1,8 +1,6 @@
 package View;
 
 import Controller.Client.ClientController;
-import Models.Product.Category;
-import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 import javafx.event.Event;

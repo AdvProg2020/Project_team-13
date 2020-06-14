@@ -2,7 +2,6 @@ package View;
 
 import Controller.Client.ClientController;
 import Controller.Client.RegisterController;
-import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

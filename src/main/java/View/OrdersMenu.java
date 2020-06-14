@@ -1,19 +1,16 @@
 package View;
-import Controller.Client.RequestController;
-import Models.Request;
+import Controller.Client.ClientController;
+import Models.Log;
+import Models.UserAccount.Customer;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -22,19 +19,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class OrdersMenu extends Menu {
+public class SalesHistoryMenu extends Menu {
     private Map<String, Button> viewDetails;
     private BorderPane borderPane;
     private GridPane gridPane;
     private int pages;
     private int logCounter;
     private List<GridPane> allGridPanes;
+    private Customer customer;
 
-    public OrdersMenu(Stage stage) {
+    public SalesHistoryMenu(Stage stage) {
         super(stage);
         super.setScene();
         viewDetails = new HashMap<>();
         this.setScene();
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public void setPages(int pages) {
@@ -48,19 +50,23 @@ public class OrdersMenu extends Menu {
 
     @Override
     public void setScene() {
-        RequestController.getInstance().getAllRequestsFromServer();
-        if (RequestController.getInstance().getAllRequests().size() != 0) {
-            allGridPanes = new ArrayList<>();
+        setCustomer((Customer) ClientController.getInstance().getCurrentUser());
+        if (!customer.getHistoryOfTransaction().isEmpty()) {
             pageGridPane.getChildren().remove(centerGridPane);
             pageGridPane.getChildren().remove(bottomGridPane);
-//            this.setPages();
+            setPages(customer.getHistoryOfTransaction().size()%4 == 0 ?
+                    customer.getHistoryOfTransaction().size()/4 : (customer.getHistoryOfTransaction().size()/4) + 1);
+            allGridPanes = new ArrayList<>();
+            for (int i = 0; i < pages; i++) {
+                allGridPanes.add(null);
+            }
             Pagination pagination = new Pagination(pages, 0);
             pagination.setTranslateX(50);
             pagination.setTranslateY(50);
             pagination.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
             pagination.setPageFactory(this::createPage);
             setTheBeginning();
-            Label ManageRequests = new Label("Buys History");
+            Label ManageRequests = new Label("Sales History");
             ManageRequests.setTranslateX(20);
             ManageRequests.setTranslateY(20);
             ManageRequests.setFont(Font.loadFont("file:src/Bangers.ttf", 20));
@@ -73,7 +79,7 @@ public class OrdersMenu extends Menu {
             pageGridPane.getChildren().remove(centerGridPane);
             pageGridPane.getChildren().remove(bottomGridPane);
             borderPane = new BorderPane();
-            Label noRequest = new Label("There is No Buy History!!");
+            Label noRequest = new Label("There is No Sell History!!");
             noRequest.setTranslateY(150);
             noRequest.setFont(Font.loadFont("file:src/Bangers.ttf", 50));
             borderPane.setCenter(noRequest);
@@ -83,7 +89,7 @@ public class OrdersMenu extends Menu {
 
     private GridPane createPage(Integer param) {
         if (param.equals(pages - 1)) {
-            setTheCenterInfo(RequestController.getInstance().getAllRequests().size() - (param * 4), param);
+            setTheCenterInfo(customer.getHistoryOfTransaction().size() - (param * 4), param);
         } else {
             setTheCenterInfo(4, param);
         }
@@ -96,17 +102,18 @@ public class OrdersMenu extends Menu {
 
     private void setTheBeginning() {
         borderPane = new BorderPane();
-        ArrayList<Request> allRequests = RequestController.getInstance().getAllRequests();
-        for (int i = 0; i < RequestController.getInstance().getAllRequests().size(); i++) {
+        ArrayList<Log> allBuyLog = customer.getHistoryOfTransaction();
+        for (int i = 0; i < allBuyLog.size(); i++) {
             Button button = new Button("View Details");
             button.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 19));
+            int finalI = i;
             button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
                     VBox vBox = new VBox();
                     vBox.setAlignment(Pos.CENTER);
                     vBox.setStyle("-fx-background-color: #afafaf");
-                    String[] details = RequestController.getInstance().viewRequestDetail(getTheIdForDetail(viewDetails, button)).split("\n");
+                    String[] details = customer.findOrderWithId(allBuyLog.get(finalI).getId()).toString().split("\n");
                     Label[] label = new Label[details.length];
                     Label label1 = new Label("Details :\n\n");
                     label1.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 30));
@@ -125,103 +132,81 @@ public class OrdersMenu extends Menu {
                     stage.show();
                 }
             });
-            viewDetails.put(allRequests.get(i).getRequestId(), button);
+            viewDetails.put(allBuyLog.get(i).getId(), button);
         }
-    }
-
-    private String getString(ImageView acceptImage, Map<String, ImageView> accepts) {
-        String requestIdForThis = null;
-        for (String requestId : accepts.keySet()) {
-            if (accepts.get(requestId).equals(acceptImage)) {
-                requestIdForThis = requestId;
-                break;
-            }
-        }
-        return requestIdForThis;
-    }
-
-
-    private String getTheIdForDetail(Map<String, Button> viewDetails, Button button) {
-        String requestIdForThis = null;
-        for (String requestId : viewDetails.keySet()) {
-            if (viewDetails.get(requestId).equals(button)) {
-                requestIdForThis = requestId;
-                break;
-            }
-        }
-        return requestIdForThis;
     }
 
     private void setTheCenterInfo(int counter, Integer pages) {
         gridPane = new GridPane();
         Label id = new Label("ID");
-        Label type = new Label("Type");
+        Label price = new Label("Price");
+        Label date = new Label("Date");
+        Label status = new Label("Status");
         id.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
-        type.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
+        price.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
+        date.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
+        status.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         gridPane.setVgap(30);
-        for (int i = 0; i < 5; i++) {
-            if (i == 1) {
-                gridPane.getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
-            }
-            gridPane.getColumnConstraints().add(new ColumnConstraints(120,
+        for (int i = 0; i < 6; i++) {
+            gridPane.getColumnConstraints().add(new ColumnConstraints(110,
                     Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
         }
         setLogCounter(4 * pages);
+        ArrayList<Log> allBuyLog = customer.getHistoryOfTransaction();
         for (int i = 1; i <= counter; logCounter++, i++) {
-            setTheRows(i, RequestController.getInstance().getAllRequests().get(logCounter).getRequestId(), String.valueOf(RequestController.getInstance().getAllRequests().get(logCounter).getType()));
+            setTheRows(i, allBuyLog.get(logCounter).getId(), String.valueOf(allBuyLog.get(logCounter).getPrice()),
+                    String.valueOf(allBuyLog.get(logCounter).getDate()), String.valueOf(allBuyLog.get(logCounter).getReceivingStatus()));
         }
         gridPane.setTranslateX(20);
         gridPane.setTranslateY(1);
         gridPane.add(id, 0, 0);
-        gridPane.add(type, 1, 0);
+        gridPane.add(price, 1, 0);
+        gridPane.add(date, 2, 0);
+        gridPane.add(status, 3, 0);
         allGridPanes.add(pages, gridPane);
     }
 
 
-    private void setTheRows(int row, String ids, String types) {
-        Pane[] allPanes = new Pane[2];
-        for (int i = 0; i < 2; i++) {
+    private void setTheRows(int row, String id, String price, String date, String status) {
+        Pane[] allPanes = new Pane[5];
+        for (int i = 0; i < 5; i++) {
             allPanes[i] = new Pane();
             allPanes[i].setStyle("-fx-background-color: #e6e6e6");
         }
-        Label[] allLabels = labelMaker(ids, types);
-        for (int i = 0; i < 2; i++) {
-            allLabels[i].setAlignment(Pos.CENTER);
-            allPanes[i].getChildren().add(allLabels[i]);
-            if (i == 0) {
+        Label[] allLabels = labelMaker(id, price, date, status);
+        for (int i = 0; i < 5; i++) {
+            if(i == 0){
+                allLabels[i].setTranslateX(10);
+            }
+            if(i == 1){
                 allLabels[i].setTranslateX(15);
             }
-            if (i == 1) {
-                allLabels[i].setTranslateX(18);
+            if (i == 2){
+                allLabels[i].setTranslateX(20);
             }
+            if (i == 3){
+                allLabels[i].setTranslateX(20);
+            }
+            allLabels[i].setAlignment(Pos.CENTER);
+            allPanes[i].getChildren().add(allLabels[i]);
             allLabels[i].setTranslateY(8);
             GridPane.setHalignment(allPanes[i], HPos.CENTER);
             gridPane.add(allPanes[i], i, row);
         }
         Pane pane = new Pane();
-        Pane pane1 = new Pane();
-        Pane pane2 = new Pane();
-        Pane pane3 = new Pane();
-        pane3.setStyle("-fx-background-color: #e6e6e6");
+        pane.getChildren().add(viewDetails.get(id));
         pane.setStyle("-fx-background-color: #e6e6e6");
-        pane1.setStyle("-fx-background-color: #e6e6e6");
-        pane2.setStyle("-fx-background-color: #e6e6e6");
-//        pane.getChildren().add(accepts.get(ids));
-//        pane1.getChildren().add(declines.get(ids));
-        pane2.getChildren().add(viewDetails.get(ids));
-        gridPane.add(pane3, 2, row);
-        gridPane.add(pane, 3, row);
-        gridPane.add(pane1, 4, row);
-        gridPane.add(pane2, 5, row);
+        gridPane.add(pane, 4, row);
     }
 
-    private Label[] labelMaker(String id, String type) {
-        Label[] allLabels = new Label[2];
+    private Label[] labelMaker(String id, String price, String date, String status) {
+        Label[] allLabels = new Label[4];
         allLabels[0] = new Label(id);
-        allLabels[1] = new Label(type);
+        allLabels[1] = new Label(price);
+        allLabels[2] = new Label(date);
+        allLabels[3] = new Label(status);
         for (Label label : allLabels) {
             label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         }
         return allLabels;
     }
-}

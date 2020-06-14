@@ -1,21 +1,16 @@
 package Controller.Client;
 
-import Controller.Server.ServerController;
 import Models.Comment;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.Product.ProductStatus;
-import Models.Request;
 import Models.Score;
-import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 import View.MessageKind;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
-import java.security.SecureRandom;
 import java.util.*;
 
 public class ProductController {

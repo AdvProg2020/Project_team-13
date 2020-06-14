@@ -1,14 +1,10 @@
 package Models.Product;
 
-import Controller.Client.ClientController;
 import Models.Comment;
 import Models.Offer;
 import Models.Score;
-import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 
-import javax.swing.text.html.HTML;
-import javax.swing.text.html.HTMLWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;

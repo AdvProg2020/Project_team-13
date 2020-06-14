@@ -5,7 +5,6 @@ import Models.Offer;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.Request;
-import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
@@ -14,7 +13,6 @@ import com.google.gson.reflect.TypeToken;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Formatter;
 import java.util.Scanner;
 
 public class DataBase {

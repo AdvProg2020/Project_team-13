@@ -8,7 +8,6 @@ import Models.UserAccount.UserAccount;
 import View.MainMenu;
 import View.Menu;
 import javafx.scene.media.MediaPlayer;
-import sun.applet.Main;
 
 import java.util.ArrayList;
 

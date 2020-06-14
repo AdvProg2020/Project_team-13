@@ -1,19 +1,14 @@
 package Controller.Server;
 
-import Controller.Client.CategoryController;
 import Models.Offer;
-import Models.Product.Category;
 import Models.Product.Product;
 import Models.Request;
-import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class UserCenter {
     private static UserCenter userCenter;
