@@ -3,7 +3,6 @@ package Models.Product;
 import Models.Comment;
 import Models.Offer;
 import Models.Score;
-import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 
 import java.io.File;
@@ -65,10 +64,9 @@ public class Product {
     public void setCostAfterOff(double costAfterOff) {
         this.costAfterOff = costAfterOff;
     }
-
-    public boolean didUserBuyThis(String username) {
+    public boolean didUserBuyThis(String username){
         for (Customer buyer : allBuyers) {
-            if (buyer.getUsername().equals(username)) {
+            if(buyer.getUsername().equals(username)){
                 return true;
             }
         }
@@ -76,8 +74,8 @@ public class Product {
     }
 
     public ArrayList<Comment> getCommentList() {
-        if (commentList == null) {
-            commentList = new ArrayList<>();
+        if(commentList==null){
+            commentList=new ArrayList<>();
         }
         return commentList;
     }

@@ -1,6 +1,5 @@
 package Models;
 
-import Models.Product.Product;
 import Models.UserAccount.Seller;
 
 import java.util.ArrayList;

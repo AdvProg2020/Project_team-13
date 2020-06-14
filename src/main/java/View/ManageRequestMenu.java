@@ -17,8 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-import java.io.BufferedReader;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,11 +54,14 @@ public class ManageRequestMenu extends Menu{
     public void setScene() {
         RequestController.getInstance().getAllRequestsFromServer();
         if (RequestController.getInstance().getAllRequests().size() != 0) {
-            allGridPanes = new ArrayList<>();
             pageGridPane.getChildren().remove(centerGridPane);
             pageGridPane.getChildren().remove(bottomGridPane);
             this.setPages(RequestController.getInstance().getAllRequests().size()%4 == 0 ?
                     RequestController.getInstance().getAllRequests().size()/4 : (RequestController.getInstance().getAllRequests().size()/4) + 1);
+            allGridPanes = new ArrayList<>();
+            for (int i = 0; i < pages; i++) {
+                allGridPanes.add(null);
+            }
             Pagination pagination = new Pagination(pages, 0);
             pagination.setTranslateX(50);
             pagination.setTranslateY(50);
@@ -90,9 +91,9 @@ public class ManageRequestMenu extends Menu{
 
     private GridPane createPage(Integer param) {
         if(param.equals(pages-1)){
-          setTheCenterInfo(RequestController.getInstance().getAllRequests().size() - (param * 4), param);
+            setTheCenterInfo(RequestController.getInstance().getAllRequests().size() - (param * 4), param);
         }else{
-          setTheCenterInfo(4, param);
+            setTheCenterInfo(4, param);
         }
         return getAllGridPanes().get(param);
     }
@@ -110,26 +111,26 @@ public class ManageRequestMenu extends Menu{
             button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event){
-                  VBox vBox = new VBox();
-                  vBox.setAlignment(Pos.CENTER);
-                  vBox.setStyle("-fx-background-color: #afafaf");
-                  String[] details = RequestController.getInstance().viewRequestDetail(getTheIdForDetail(viewDetails, button)).split("\n");
-                  Label[] label = new Label[details.length];
+                    VBox vBox = new VBox();
+                    vBox.setAlignment(Pos.CENTER);
+                    vBox.setStyle("-fx-background-color: #afafaf");
+                    String[] details = RequestController.getInstance().viewRequestDetail(getTheIdForDetail(viewDetails, button)).split("\n");
+                    Label[] label = new Label[details.length];
                     Label label1 = new Label("Details :\n\n");
                     label1.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 30));
-                  vBox.getChildren().add(label1);
+                    vBox.getChildren().add(label1);
                     for (int j = 0; j < label.length; j++) {
                         label[j] = new Label(details[j]);
                         label[j].setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 19));
                         vBox.getChildren().add(label[j]);
-                  }
-                  Scene scene = new Scene(vBox, 300, 500);
-                  Stage stage = new Stage();
-                  stage.setWidth(400);
-                  stage.setHeight(600);
-                  stage.setScene(scene);
-                  stage.setTitle("Details");
-                  stage.show();
+                    }
+                    Scene scene = new Scene(vBox, 300, 500);
+                    Stage stage = new Stage();
+                    stage.setWidth(400);
+                    stage.setHeight(600);
+                    stage.setScene(scene);
+                    stage.setTitle("Details");
+                    stage.show();
                 }
             });
             viewDetails.put(allRequests.get(i).getRequestId(), button);
@@ -218,14 +219,13 @@ public class ManageRequestMenu extends Menu{
         }
         Label[] allLabels = labelMaker(ids, types);
         for (int i = 0; i < 2; i++) {
-            allLabels[i].setAlignment(Pos.CENTER);
-            allPanes[i].getChildren().add(allLabels[i]);
             if(i==0){
-                allLabels[i].setTranslateX(15);
+                allLabels[i].setTranslateX(20);
             }
             if(i==1){
-                allLabels[i].setTranslateX(18);
+                allLabels[i].setTranslateX(30);
             }
+            allPanes[i].getChildren().add(allLabels[i]);
             allLabels[i].setTranslateY(8);
             GridPane.setHalignment(allPanes[i], HPos.CENTER);
             gridPane.add(allPanes[i], i, row);

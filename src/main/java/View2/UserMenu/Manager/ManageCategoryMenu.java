@@ -181,7 +181,7 @@ public class ManageCategoryMenu extends Menu {
     }
 
     private void addCategory(String name) {
-        HashMap<String, ArrayList<String>> featuresOfCategory = new HashMap();
+        HashMap<String, ArrayList<String>> featuresOfCategory = new  HashMap();
         String categoryName = getName("categories name", name);
         String s;
         System.out.println("You need to define features for you'r category.");

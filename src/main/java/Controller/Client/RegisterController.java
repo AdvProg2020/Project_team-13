@@ -4,8 +4,6 @@ import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import com.google.gson.Gson;
 
-import java.io.IOException;
-
 public class RegisterController {
     private static RegisterController registerController;
 

@@ -2,6 +2,7 @@ package Models.UserAccount;
 
 import Controller.Client.ClientController;
 import Controller.Client.ProductController;
+import Models.DiscountCode;
 import Models.Log;
 import Models.Offer;
 import Models.Product.Product;
@@ -276,5 +277,14 @@ public class Seller extends UserAccount {
 
     public boolean sAnyOffer() {
         return allOffer == null;
+    }
+
+    public Log findOrderWithId(String id) {
+        for (Log log : historyOfTransaction) {
+            if (log.getId().equals(id)) {
+                return log;
+            }
+        }
+        return null;
     }
 }

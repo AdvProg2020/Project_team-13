@@ -14,8 +14,6 @@ public class CategoryController {
     private Category currentCategory;
 
 
-
-
     private CategoryController() {
         this.allCategories = new ArrayList<>();
     }

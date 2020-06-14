@@ -1,6 +1,5 @@
 package Controller.Client;
 
-import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
 import View.MessageKind;

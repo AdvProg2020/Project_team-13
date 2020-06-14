@@ -1,10 +1,8 @@
 package View;
 
 import Controller.Client.ClientController;
-import Controller.Client.DiscountController;
 import Controller.Client.ManagerController;
 import Controller.Client.OffsController;
-import Models.DiscountCode;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import javafx.event.ActionEvent;
@@ -27,8 +25,6 @@ import java.io.File;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.regex.Pattern;
 
 public class CreateOffsMenu extends Menu {
     private TextField maxAmount, firstName;

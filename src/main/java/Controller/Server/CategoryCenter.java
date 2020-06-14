@@ -98,6 +98,7 @@ public class CategoryCenter {
             }
         }
         DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
+        ServerController.getInstance().sendMessageToClient("@Successful@Category successfully edited");
     }
 
     public void removeProductFromCategory(Product product) {
@@ -122,6 +123,7 @@ public class CategoryCenter {
             }
         }
         DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
+        ServerController.getInstance().sendMessageToClient("@Successful@Category successfully edited");
     }
 
     public void deleteCategoryFeature(Category category) {

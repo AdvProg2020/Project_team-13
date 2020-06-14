@@ -3,10 +3,8 @@ package View;
 import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
 import Controller.Client.ProductController;
-import Controller.Client.RegisterController;
 import Models.Product.Category;
 import Models.Product.Product;
-import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -126,12 +124,15 @@ public class AddProductScene extends Menu {
                 public void handle(ActionEvent event) {
                     selectedCategory.setText(s);
                     categoryFeaturesForProduct.clear();
+
                     Category category1 = new Category(null, null);
                     for (Category category : CategoryController.getInstance().getAllCategories()) {
                         if (category.getName().equals(s)) {
                             category1 = category;
                         }
                     }
+
+
                     HashMap<Text, MenuButton> categoryFeatures = new HashMap<>();
                     ArrayList<MenuButton> menuButtons = new ArrayList<>();
                     for (String s1 : category1.getFeatures().keySet()) {

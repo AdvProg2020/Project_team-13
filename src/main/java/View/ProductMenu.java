@@ -6,22 +6,14 @@ import Controller.Client.ClientController;
 import Controller.Client.ProductController;
 import Models.Comment;
 import Models.CommentStatus;
-import Models.Offer;
-import Models.Product.Category;
 import Models.Product.Product;
 import Models.Score;
 import Models.UserAccount.Seller;
-import com.sun.scenario.animation.shared.ClipEnvelope;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -38,10 +30,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 public class ProductMenu extends Menu {
     private boolean isScored = false;

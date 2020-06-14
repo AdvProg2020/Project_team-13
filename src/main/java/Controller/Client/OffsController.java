@@ -1,7 +1,6 @@
 package Controller.Client;
 
 import Models.Offer;
-import Models.OfferStatus;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import View.MessageKind;
@@ -11,7 +10,6 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.SortedMap;
 
 public class OffsController {
     private static OffsController offsController;
