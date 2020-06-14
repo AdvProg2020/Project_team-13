@@ -182,6 +182,9 @@ public class ProductMenu extends Menu {
                 break;
             }
             Product productSim = CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts().get(kk);
+            if(productSim.getProductId().equals(product.getProductId())){
+                continue;
+            }
             GridPane gridPane = new GridPane();
             ImageView imageView = new ImageView(new Image(productSim.getImagePath()));
             Text text = new Text("   " + productSim.getProductName() + "\n" + "   " + productSim.getCostAfterOff() + " $");
@@ -249,10 +252,11 @@ public class ProductMenu extends Menu {
         similarProductPane.setVgap(10);
         similarProductPane.setHgap(10);
         similarProductPane.add(similarProductText,0,0);
+        if(gridPanes.size()>0)
         similarProductPane.add(gridPanes.get(0),0,1);
-        if(CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts().size()>1)
+        if(gridPanes.size()>1)
         similarProductPane.add(gridPanes.get(1),1,1);
-        if(CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts().size()>2)
+        if(gridPanes.size()>2)
         similarProductPane.add(gridPanes.get(2),2,1);
         productInfoGridPane.add(addToCartButton, 1, 14, 12, 5);
         productInfoGridPane.add(productName, 12, 1);
