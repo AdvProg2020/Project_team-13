@@ -226,6 +226,7 @@ public class ManagerMenuScene extends Menu {
                 new ManageUsersMenu(stage).execute();
             }
         });
+
         manageUsersButton.setTextAlignment(TextAlignment.CENTER);
         manageUsersButton.setStyle("-fx-font-size: 14 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         manageUsersButton.setMinHeight(50);
@@ -235,6 +236,25 @@ public class ManagerMenuScene extends Menu {
         createManagerButton.setStyle("-fx-font-size: 14 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         createManagerButton.setMinHeight(50);
         createManagerButton.setMinWidth(150);
+        createManagerButton.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+            }
+        });
+        createManagerButton.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
+        createManagerButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                new CreateManagerProfile(stage).execute();
+            }
+        });
         Button manageCategoriesButton = new Button("Manage Categories");
         manageCategoriesButton.setTextAlignment(TextAlignment.CENTER);
         manageCategoriesButton.setStyle("-fx-font-size: 14 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
