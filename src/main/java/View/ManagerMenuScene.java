@@ -39,7 +39,7 @@ public class ManagerMenuScene extends Menu {
         if(ClientController.getInstance().getMediaPlayer()!=null)
             ClientController.getInstance().getMediaPlayer().stop();
         ClientController.getInstance().setMediaPlayer(new MediaPlayer(usersSong));
-        ClientController.getInstance().getMediaPlayer().setVolume(0.5);
+        ClientController.getInstance().getMediaPlayer().setVolume(0.04);
         ClientController.getInstance().getMediaPlayer().play();
         ClientController.getInstance().getMediaPlayer().setCycleCount(MediaPlayer.INDEFINITE);
         setScene();

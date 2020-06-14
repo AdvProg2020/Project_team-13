@@ -180,6 +180,7 @@ public class ProductMenu extends Menu {
         for (int kk = 0; kk < 3; kk++) {
             System.out.println(product.getProductsCategory());
             System.out.println(CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()));
+            System.out.println(CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts());
             if(kk==CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts().size()){
                 break;
             }
