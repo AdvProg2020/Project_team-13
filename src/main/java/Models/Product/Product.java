@@ -1,14 +1,12 @@
 package Models.Product;
 
-import Controller.Client.ClientController;
 import Models.Comment;
 import Models.Offer;
 import Models.Score;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 
-import javax.swing.text.html.HTML;
-import javax.swing.text.html.HTMLWriter;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -67,9 +65,10 @@ public class Product {
     public void setCostAfterOff(double costAfterOff) {
         this.costAfterOff = costAfterOff;
     }
-    public boolean didUserBuyThis(String username){
+
+    public boolean didUserBuyThis(String username) {
         for (Customer buyer : allBuyers) {
-            if(buyer.getUsername().equals(username)){
+            if (buyer.getUsername().equals(username)) {
                 return true;
             }
         }
@@ -77,17 +76,25 @@ public class Product {
     }
 
     public ArrayList<Comment> getCommentList() {
-        if(commentList==null){
-            commentList=new ArrayList<>();
+        if (commentList == null) {
+            commentList = new ArrayList<>();
         }
         return commentList;
     }
 
     public String getImagePath() {
-        if (imagePath.equals("") || imagePath.length() < 5) {
-            return "file:src/product_icon.png";
+        if (imagePath != null) {
+            if (imagePath.equals("") || imagePath.length() < 5) {
+                return "file:src/product_icon.png";
+            } else {
+                File file = new File(imagePath);
+                if (file == null || !file.exists()) {
+                    return "file:src/product_icon.png";
+                }
+            }
+            return imagePath;
         }
-        return imagePath;
+        return "file:src/product_icon.png";
     }
 
     public void setAllBuyers(ArrayList<Customer> allBuyers) {

@@ -1,9 +1,13 @@
 package View;
 
+import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
+import Controller.Client.ProductController;
+import Models.Product.Category;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -27,6 +31,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Menu {
     protected Scene scene;
@@ -92,7 +98,25 @@ public class Menu {
                     }
                 }
             });
-            Label products = new Label("Products");
+            ArrayList<MenuItem> menuItemArrayList = new ArrayList<>();
+            for (String s : getCategoryName()) {
+                MenuItem menuItem = new MenuItem("       " + s);
+                menuItem.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        ProductController.getInstance().getAllProductsFromServer();
+                        ProductController.getInstance().setCurrentCategory(CategoryController.getInstance().getCategoryWithName(s));
+                        CategoryController.getInstance().setCurrentCategory(CategoryController.getInstance().getCategoryWithName(s));
+                        new ProductsPageScene(stage).execute();
+                    }
+                });
+                menuItemArrayList.add(menuItem);
+            }
+            MenuButton products = new MenuButton("Products");
+            for (MenuItem menuItem : menuItemArrayList) {
+                products.getItems().add(menuItem);
+            }
+            products.setTextFill(Color.WHITE);
             products.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
@@ -106,7 +130,13 @@ public class Menu {
                     scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
                 }
             });
-            products.setStyle("-fx-background-color: rgba(45, 156, 240, 0.24);-fx-text-fill: White");
+            products.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+//                    ClientController.getInstance().back();
+                }
+            });
+            products.setStyle("-fx-background-color: rgba(45, 156, 240, 0.24);-fx-text-fill: White;");
             home.setStyle("-fx-background-color:rgba(45, 156, 240, 0.31);-fx-text-fill: White;-fx-font-weight: bold;");
             ImageView back = new ImageView(new Image("file:src/back.png"));
             back.setFitWidth(40);
@@ -133,6 +163,7 @@ public class Menu {
             });
             leftGridPane.add(back, 0, 0);
             leftGridPane.add(home, 1, 0);
+            products.setTextFill(Color.WHITE);
             leftGridPane.add(products, 2, 0);
             leftGridPane.setHgap(5);
             GridPane rightGridPane = new GridPane();
@@ -272,6 +303,12 @@ public class Menu {
                     scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
                 }
             });
+            image1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    new CartMenu(stage).execute();
+                }
+            });
             image1.setFitWidth(30);
             image1.setFitHeight(30);
             rightGridPane.add(image1, 2, 0);
@@ -313,7 +350,27 @@ public class Menu {
                     }
                 }
             });
-            Label products = new Label("Products");
+
+
+            ArrayList<MenuItem> menuItemArrayList = new ArrayList<>();
+            for (String s : getCategoryName()) {
+                MenuItem menuItem = new MenuItem("       " + s);
+                menuItem.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        ProductController.getInstance().getAllProductsFromServer();
+                        ProductController.getInstance().setCurrentCategory(CategoryController.getInstance().getCategoryWithName(s));
+                        CategoryController.getInstance().setCurrentCategory(CategoryController.getInstance().getCategoryWithName(s));
+                        new ProductsPageScene(stage).execute();
+                    }
+                });
+                menuItemArrayList.add(menuItem);
+            }
+            MenuButton products = new MenuButton("Products");
+            for (MenuItem menuItem : menuItemArrayList) {
+                products.getItems().add(menuItem);
+            }
+            products.setTextFill(Color.WHITE);
             products.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
@@ -447,6 +504,12 @@ public class Menu {
                     scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
                 }
             });
+            image1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    new CartMenu(stage).execute();
+                }
+            });
             image1.setFitWidth(30);
             image1.setFitHeight(30);
             userImage.setFitHeight(30);
@@ -472,6 +535,17 @@ public class Menu {
             menuBarGridPane.add(rightGridPane, 1, 0);
             menuBarGridPane.getRowConstraints().add(new RowConstraints(40, Control.USE_COMPUTED_SIZE, 40, Priority.NEVER, VPos.CENTER, false));
         }
+    }
+
+
+    private ArrayList<String> getCategoryName() {
+        CategoryController.getInstance().updateAllCategories();
+        ArrayList<Category> categories = CategoryController.getInstance().getAllCategories();
+        ArrayList<String> categoriesNames = new ArrayList<>();
+        for (Category category : categories) {
+            categoriesNames.add(category.getName());
+        }
+        return categoriesNames;
     }
 
     public Stage getStage() {

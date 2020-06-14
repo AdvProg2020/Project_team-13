@@ -1,5 +1,6 @@
 import Controller.Server.CategoryCenter;
 import Controller.Server.ServerController;
+import Models.Product.Cart;
 import View.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
