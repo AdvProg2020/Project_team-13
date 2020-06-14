@@ -143,11 +143,9 @@ public class ProductsPageScene extends Menu {
                                 System.out.println("123123123");
                                 HashMap<String, ArrayList<String>> hashMap = ProductController.getInstance().getCategoryFeaturesToFilter();
                                 hashMap.get(s1).remove(menuItem1.getText());
-                                System.out.println(hashMap.get(s1).contains(menuItem1.getText().trim()));
-                                System.out.println("aaaaaaa");
-                                System.out.println(menuItem1.getText());
-                                System.out.println(hashMap.get(s1).contains(menuItem1.getText()));
-                                System.out.println("aaaaaaa");
+                                if(hashMap.get(s1).size()==0) {
+                                    hashMap.remove(s1);
+                                }
                                 ProductController.getInstance().setCategoryFeaturesToFilter(hashMap);
                             }
                             productPartSetter(buttomStyle);
