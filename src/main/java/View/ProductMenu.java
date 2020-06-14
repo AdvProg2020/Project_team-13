@@ -178,6 +178,8 @@ public class ProductMenu extends Menu {
 
         ArrayList<GridPane> gridPanes = new ArrayList<>();
         for (int kk = 0; kk < 3; kk++) {
+            System.out.println(product.getProductsCategory());
+            System.out.println(CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()));
             if(kk==CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts().size()){
                 break;
             }

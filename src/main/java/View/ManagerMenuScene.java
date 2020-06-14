@@ -255,6 +255,25 @@ public class ManagerMenuScene extends Menu {
                 new CreateManagerProfile(stage).execute();
             }
         });
+        createManagerButton.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+            }
+        });
+        requestsButton.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
+        requestsButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                new ManageRequestMenu(stage).execute();
+            }
+        });
         Button manageCategoriesButton = new Button("Manage Categories");
         manageCategoriesButton.setTextAlignment(TextAlignment.CENTER);
         manageCategoriesButton.setStyle("-fx-font-size: 14 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
