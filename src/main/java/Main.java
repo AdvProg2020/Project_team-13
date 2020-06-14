@@ -13,6 +13,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         new ServerController().runServer();
         primaryStage.setTitle("Hello World");
-        new MainMenu(primaryStage).execute();
+        new ManageRequestMenu(primaryStage).execute();
     }
 }
