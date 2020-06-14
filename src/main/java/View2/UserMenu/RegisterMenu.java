@@ -1,6 +1,7 @@
 package View2.UserMenu;
 
 import Controller.Client.RegisterController;
+import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
 import View2.Menu;

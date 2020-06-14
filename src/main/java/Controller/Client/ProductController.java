@@ -5,6 +5,7 @@ import Models.Product.Category;
 import Models.Product.Product;
 import Models.Product.ProductStatus;
 import Models.Score;
+import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 import View.MessageKind;
 import com.google.gson.Gson;

@@ -3,6 +3,7 @@ package Models.Product;
 import Models.Comment;
 import Models.Offer;
 import Models.Score;
+import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 
 import java.io.File;

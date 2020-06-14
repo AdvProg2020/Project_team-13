@@ -5,6 +5,7 @@ import Models.Offer;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.Request;
+import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
