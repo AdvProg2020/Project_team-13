@@ -177,6 +177,7 @@ public class ProductMenu extends Menu {
 
 
         ArrayList<GridPane> gridPanes = new ArrayList<>();
+        CategoryController.getInstance().updateAllCategories();
         for (int kk = 0; kk < 3; kk++) {
             System.out.println(product.getProductsCategory());
             System.out.println(CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()));
@@ -253,7 +254,9 @@ public class ProductMenu extends Menu {
         similarProductPane.setHgap(10);
         similarProductPane.add(similarProductText,0,0);
         similarProductPane.add(gridPanes.get(0),0,1);
+        if(CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts().size()>1)
         similarProductPane.add(gridPanes.get(1),1,1);
+        if(CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts().size()>2)
         similarProductPane.add(gridPanes.get(2),2,1);
         productInfoGridPane.add(addToCartButton, 1, 14, 12, 5);
         productInfoGridPane.add(productName, 12, 1);
