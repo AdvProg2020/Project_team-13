@@ -2,6 +2,7 @@ package View;
 
 import Controller.Client.ClientController;
 import Controller.Client.ManagerController;
+import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
