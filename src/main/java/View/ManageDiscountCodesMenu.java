@@ -1,4 +1,5 @@
 package View;
+import Controller.Client.ClientController;
 import Controller.Client.DiscountController;
 import Models.DiscountCode;
 import javafx.event.ActionEvent;
@@ -164,10 +165,11 @@ public class ManageDiscountCodesMenu extends Menu{
             imageView.setFitHeight(45);
             imageView.setFitWidth(45);
             int finalI = i;
+            int finalI1 = i;
             imageView.setOnMouseClicked(event -> {
-                DiscountController.getInstance().editDiscountCode(allDiscountCodes.get(finalI));
-                new ManageDiscountCodesMenu(this.getStage(), this.pagination.getCurrentPageIndex()).execute();
-            });
+                ClientController.getInstance().setCurrentDiscountCode(allDiscountCodes.get(finalI1));
+                new EditDiscountCode(stage).execute();
+             });
             imageView.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
             imageView.setOnMouseExited((EventHandler<Event>) event -> scene.setCursor(Cursor.DEFAULT));
             edits.put(allDiscountCodes.get(i).getDiscountCodeID(), imageView);
