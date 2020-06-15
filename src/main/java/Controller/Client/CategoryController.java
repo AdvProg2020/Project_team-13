@@ -11,6 +11,15 @@ import java.util.ArrayList;
 public class CategoryController {
     private ArrayList<Category> allCategories;
     private static CategoryController categoryController;
+    private Category currentCategory;
+
+    public Category getCurrentCategory() {
+        return currentCategory;
+    }
+
+    public void setCurrentCategory(Category currentCategory) {
+        this.currentCategory = currentCategory;
+    }
 
     private CategoryController() {
         this.allCategories = new ArrayList<>();
