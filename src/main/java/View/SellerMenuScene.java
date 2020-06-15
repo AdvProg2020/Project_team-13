@@ -262,6 +262,25 @@ public class SellerMenuScene extends Menu{
         offsButton.setMinHeight(50);
         offsButton.setMinWidth(150);
         Button salesHistoryButton = new Button("Sales History");
+        salesHistoryButton.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+            }
+        });
+        salesHistoryButton.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
+        salesHistoryButton.setOnMouseClicked(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                new SalesHistoryMenu(stage).execute();
+            }
+        });
         salesHistoryButton.setTextAlignment(TextAlignment.CENTER);
         salesHistoryButton.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         salesHistoryButton.setMinHeight(50);

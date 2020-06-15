@@ -1,18 +1,24 @@
 package View;
 
 import Controller.Client.CartController;
+import Controller.Client.ClientController;
+import Controller.Client.ProductController;
+import Models.Comment;
+import Models.CommentStatus;
+import Models.DiscountCode;
 import Models.Product.Product;
+import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -20,10 +26,13 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +41,8 @@ import java.util.regex.Pattern;
 public class CartMenu extends Menu {
     GridPane productsPages;
     Text totalPriceAmount;
-
+    DiscountCode discountCode1;
+    Text errorText = new Text();
 
     public CartMenu(Stage stage) {
         super(stage);
@@ -211,6 +221,134 @@ public class CartMenu extends Menu {
         }
         ArrayList<Button> buttons = new ArrayList<>();
         Button purchase = new Button("Purchase");
+        purchase.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+            }
+        });
+        purchase.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
+        purchase.setOnMouseClicked(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                if (ClientController.getInstance().getCurrentUser() != null) {
+                    Stage popupwindow = new Stage();
+                    GridPane gridPane = new GridPane();
+                    gridPane.setStyle("-fx-background-color: Blue");
+                    Button button = new Button("X");
+                    button.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 25px; -fx-padding: 3,3,3,3;-fx-font-weight: bold;-fx-text-fill: Red");
+                    button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            popupwindow.hide();
+                            scene.setFill(null);
+                        }
+                    });
+                    gridPane.add(button, 0, 0);
+                    gridPane.add(new Text(""), 1, 0);
+                    gridPane.setStyle("-fx-background-color: rgba(255,145,200,0.85);");
+                    GridPane commentPane = new GridPane();
+                    gridPane.add(commentPane, 1, 1);
+                    Text titleText = new Text("Phone Number:");
+                    Text contentText = new Text(":");
+                    TextField getTitle = new TextField();
+                    TextArea getContent = new TextArea();
+                    getTitle.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                    getContent.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;");
+                    getContent.setMinHeight(100);
+                    getContent.setMaxWidth(200);
+                    Text discountCodeText = new Text("Discount code");
+                    TextField discountCode = new TextField();
+                    Button checkDiscountCodeButton = new Button("Check it");
+                    checkDiscountCodeButton.setStyle("-fx-background-color: #E85D9E;");
+                    checkDiscountCodeButton.setMinWidth(100);
+                    checkDiscountCodeButton.setTextFill(Color.WHITE);
+                    Button addCommentButton = new Button("Purchase");
+                    addCommentButton.setStyle("-fx-background-color: #E85D9E;");
+                    addCommentButton.setMinWidth(100);
+                    commentPane.setVgap(10);
+                    commentPane.setHgap(10);
+                    checkDiscountCodeButton.setVisible(false);
+                    discountCode.setVisible(false);
+                    discountCodeText.setVisible(false);
+                    addCommentButton.setVisible(false);
+                    getTitle.textProperty().addListener(new ChangeListener<String>() {
+                        @Override
+                        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                            if (!getContent.getText().equals("")) {
+                                checkDiscountCodeButton.setVisible(true);
+                                discountCode.setVisible(true);
+                                discountCodeText.setVisible(true);
+                                addCommentButton.setVisible(true);
+                            }
+                        }
+                    });
+                    getContent.textProperty().addListener(new ChangeListener<String>() {
+                        @Override
+                        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                            if (!getTitle.getText().equals("")) {
+                                checkDiscountCodeButton.setVisible(true);
+                                discountCode.setVisible(true);
+                                discountCodeText.setVisible(true);
+                                addCommentButton.setVisible(true);
+                            }
+                        }
+                    });
+                    errorText.setFill(Color.RED);
+                    addCommentButton.setTextFill(Color.WHITE);
+                    commentPane.add(titleText, 0, 0);
+                    commentPane.add(contentText, 0, 1);
+                    commentPane.add(getTitle, 1, 0);
+                    commentPane.add(getContent, 1, 1, 1, 5);
+                    commentPane.add(discountCodeText, 0, 6);
+                    commentPane.add(discountCode, 1, 6);
+                    commentPane.add(checkDiscountCodeButton, 0, 7);
+                    commentPane.add(errorText, 1, 8);
+                    commentPane.add(addCommentButton, 1, 9);
+                    addCommentButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            if (discountCode1 != null)
+                                CartController.getInstance().getCurrentCart().setDiscountCode(discountCode1);
+                            CartController.getInstance().getCurrentCart().setReceivingInformation(getTitle.getText()+"\n"+getContent.getText());
+                            CartController.getInstance().getCurrentCart().setCustomerID(ClientController.getInstance().getCurrentUser().getUsername());
+                            CartController.getInstance().pay();
+                        }
+                    });
+                    checkDiscountCodeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            if (!discountCode.getText().equals("")) {
+                                discountCode1 = getDiscountCode(discountCode.getText());
+                                if (discountCode != null) {
+                                    discountCode.setStyle("-fx-background-color: #08ff00;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                                } else {
+                                    discountCode.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30;");
+                                    errorText.setText("Discount code is empty");
+                                }
+                            } else {
+                                discountCode.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30;");
+                                errorText.setText("Discount code is empty");
+
+                            }
+                        }
+                    });
+                    Scene scene1 = new Scene(gridPane, 400, 400);
+                    popupwindow.initModality(Modality.APPLICATION_MODAL);
+                    popupwindow.initStyle(StageStyle.UNDECORATED);
+                    popupwindow.setScene(scene1);
+                    popupwindow.showAndWait();
+                } else {
+                    new LoginMenu(stage).execute();
+                }
+            }
+        });
         Label totalPrice = new Label("Total Price: ");
 //        totalPriceAmount = new Text(Double.toString(CartController.getInstance().getCurrentCart().getTotalPrice()));
         totalPriceAmount = new Text(Double.toString(CartController.getInstance().getCurrentCart().getTotalPrice()));
@@ -365,6 +503,16 @@ public class CartMenu extends Menu {
             return true;
         }
         return false;
+    }
+
+    private DiscountCode getDiscountCode(String discountCode) {
+        DiscountCode discount = ((Customer) ClientController.getInstance().getCurrentUser()).findDiscountCodeWithCode(discountCode);
+        if (discount == null) {
+            errorText.setText("you don't have any discount code with this code");
+        } else {
+            return discount;
+        }
+        return null;
     }
 
     private boolean checkEmailIsvalid(String email) {

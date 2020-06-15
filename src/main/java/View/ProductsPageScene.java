@@ -21,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -47,6 +48,12 @@ public class ProductsPageScene extends Menu {
         productsPages = new GridPane();
         leftMenuGridPane = new GridPane();
         centerGridPaneTosh = new GridPane();
+        if(ClientController.getInstance().getMediaPlayer()!=null)
+            ClientController.getInstance().getMediaPlayer().stop();
+        ClientController.getInstance().setMediaPlayer(new MediaPlayer(productsSong));
+        ClientController.getInstance().getMediaPlayer().setVolume(0.04);
+        ClientController.getInstance().getMediaPlayer().play();
+        ClientController.getInstance().getMediaPlayer().setCycleCount(MediaPlayer.INDEFINITE);
         setScene();
     }
 

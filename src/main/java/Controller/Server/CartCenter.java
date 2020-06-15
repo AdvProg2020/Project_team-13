@@ -42,6 +42,8 @@ public class CartCenter {
 
     }
     public void pay(Cart cart){
+        System.out.println();
+        System.out.println(UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID()));
         Customer customer=UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID());
         double price=cart.getTotalPrice(),reducedPrice=0;
         DiscountCode discountCode=cart.getDiscountCode();

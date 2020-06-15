@@ -3,10 +3,12 @@ package View;
 import Controller.Client.ClientController;
 import Models.UserAccount.Customer;
 import com.google.gson.Gson;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -209,6 +211,25 @@ public class UserMenuScene extends Menu {
         discountCodesButton.setMinHeight(50);
         discountCodesButton.setMinWidth(150);
         Button ordersButton = new Button("Orders");
+        ordersButton.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+            }
+        });
+        ordersButton.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
+        ordersButton.setOnMouseClicked(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                new OrdersMenu(stage).execute();
+            }
+        });
         ordersButton.setTextAlignment(TextAlignment.CENTER);
         ordersButton.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         ordersButton.setMinHeight(50);
