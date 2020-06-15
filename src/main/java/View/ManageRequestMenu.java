@@ -1,4 +1,5 @@
 package View;
+import Controller.Client.ClientController;
 import Controller.Client.RequestController;
 import Models.Request;
 import javafx.event.ActionEvent;
@@ -59,7 +60,7 @@ public class ManageRequestMenu extends Menu{
             this.setPages(RequestController.getInstance().getAllRequests().size()%4 == 0 ?
                     RequestController.getInstance().getAllRequests().size()/4 : (RequestController.getInstance().getAllRequests().size()/4) + 1);
             allGridPanes = new ArrayList<>();
-            for (int i = 0; i < pages; i++) {
+            for (int i = 0; i < page; i++) {
                 allGridPanes.add(null);
             }
             pagination = new Pagination(page, pages);
@@ -142,6 +143,7 @@ public class ManageRequestMenu extends Menu{
             acceptImage.setOnMouseClicked(event -> {
                 String requestIdForThis = getString(acceptImage, accepts);
                 RequestController.getInstance().acceptRequest(requestIdForThis);
+                ClientController.getInstance().getMenus().remove(this);
                 new ManageRequestMenu(this.getStage(), this.pagination.getCurrentPageIndex()).execute();
             });
             acceptImage.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
@@ -156,6 +158,7 @@ public class ManageRequestMenu extends Menu{
             declineImage.setOnMouseClicked(event -> {
                 String requestIdForThis = getString(declineImage, declines);
                 RequestController.getInstance().declineRequest(requestIdForThis);
+                ClientController.getInstance().getMenus().remove(this);
                 new ManageRequestMenu(this.getStage(), this.pagination.getCurrentPageIndex()).execute();
             });
             declineImage.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));

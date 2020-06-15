@@ -29,8 +29,6 @@ import java.util.regex.Pattern;
 public class RegisterMenu  extends Menu {
     private TextField userName,firstName,lastName,email,credit,phoneNumber;
     private PasswordField passWord;
-    private Button loginButton;
-    private Hyperlink createNewAccount;
     String imagePath="";
     GridPane userInfoGridPane;
 
@@ -57,8 +55,11 @@ public class RegisterMenu  extends Menu {
         scene.setRoot(pageGridPane);
     }
 
-    protected void setMenuBarGridPane() {
-            Menu menu = this;
+    public void setMenuBarGridPane() {
+        menuBarGridPane.getChildren().clear();
+        menuBarGridPane.getColumnConstraints().clear();
+        menuBarGridPane.getRowConstraints().clear();
+        Menu menu = this;
             menuBarGridPane.setStyle("-fx-background-color:rgba(76, 170, 240, 1)");
             GridPane leftGridPane = new GridPane();
             Label home = new Label("Home");

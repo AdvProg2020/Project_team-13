@@ -58,7 +58,7 @@ public class SalesHistoryMenu extends Menu {
             setPages(seller.getHistoryOfTransaction().size()%4 == 0 ?
                     seller.getHistoryOfTransaction().size()/4 : (seller.getHistoryOfTransaction().size()/4) + 1);
             allGridPanes = new ArrayList<>();
-            for (int i = 0; i < pages; i++) {
+            for (int i = 0; i < page; i++) {
                 allGridPanes.add(null);
             }
             pagination = new Pagination(page, pages);

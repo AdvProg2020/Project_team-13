@@ -70,7 +70,10 @@ public class Menu {
 
     }
 
-    protected void setMenuBarGridPane() {
+    public void setMenuBarGridPane() {
+        menuBarGridPane.getChildren().clear();
+        menuBarGridPane.getColumnConstraints().clear();
+        menuBarGridPane.getRowConstraints().clear();
         if (ClientController.getInstance().getCurrentUser() == null) {
             Menu menu = this;
             menuBarGridPane.setStyle("-fx-background-color:rgb(76,170,240)");
@@ -537,7 +540,6 @@ public class Menu {
         }
     }
 
-
     private ArrayList<String> getCategoryName() {
         CategoryController.getInstance().updateAllCategories();
         ArrayList<Category> categories = CategoryController.getInstance().getAllCategories();
@@ -635,17 +637,6 @@ public class Menu {
                     popupwindow.hide();
                     scene.setFill(null);
                     ClientController.getInstance().back();
-                    if (message.startsWith("Register Successful")) {
-                        new UserMenuScene(stage).execute();
-                    } else if (message.startsWith("Login successful")) {
-                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
-                            new UserMenuScene(stage).execute();
-                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
-                            new SellerMenuScene(stage).execute();
-                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
-                            new ManagerMenuScene(stage).execute();
-                        }
-                    }
                 }
             });
             Label error = new Label("Error");

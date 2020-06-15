@@ -104,6 +104,9 @@ public class ManageDiscountCodesMenu extends Menu{
             Label noRequest = new Label("There is No DiscountCode!!");
             noRequest.setTranslateY(150);
             noRequest.setFont(Font.loadFont("file:src/Bangers.ttf", 50));
+            borderPane.setTop(addDiscountCode);
+            addDiscountCode.setTranslateY(250);
+            addDiscountCode.setTranslateX(350);
             borderPane.setCenter(noRequest);
         }
         pageGridPane.add(borderPane, 0, 2);

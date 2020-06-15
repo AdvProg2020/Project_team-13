@@ -7,18 +7,17 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 
-public class DiscountController {
-    private static DiscountController discountController;
+public class allDiscountCodes {
+    private static Controller.Client.allDiscountCodes discountController;
     private ArrayList<DiscountCode> allDiscountCodes = new ArrayList<>();
 
-    private DiscountController() {
+    private allDiscountCodes() {
     }
 
-    public static DiscountController getInstance() {
+    public static Controller.Client.allDiscountCodes getInstance() {
         if (discountController == null) {
-            discountController = new DiscountController();
+            discountController = new allDiscountCodes();
         }
         return discountController;
     }

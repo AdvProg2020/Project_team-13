@@ -1,6 +1,6 @@
 package View2.UserMenu.Manager;
 
-import Controller.Client.DiscountController;
+import Controller.Client.allDiscountCodes;
 import Controller.Client.ManagerController;
 import Models.DiscountCode;
 import View2.Menu;
@@ -38,7 +38,7 @@ public class CreateDiscountCodeMenu extends Menu {
         endTime = getEndTime(startTime).getTime();
         getUsersThatHaveDiscountCode();
         DiscountCode discountCode = new DiscountCode(startTime, endTime, allUsers, discountPercent, maxDiscountAmount, maxUsingTime, remainingTimesForEachCustomer);
-        DiscountController.getInstance().createDiscountCode(discountCode);
+        allDiscountCodes.getInstance().createDiscountCode(discountCode);
         back();
     }
 

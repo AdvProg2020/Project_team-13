@@ -3,6 +3,7 @@ package View;
 import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
 import Controller.Client.ProductController;
+import Controller.Server.ProductCenter;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
@@ -32,7 +33,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import sun.swing.MenuItemCheckIconFactory;
 
+import javax.swing.text.AbstractDocument;
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -41,6 +44,7 @@ public class ProductsPageScene extends Menu {
     GridPane productsPages;
     Product currentProduct;
     GridPane leftMenuGridPane, centerGridPaneTosh;
+    private boolean offerChecker;
 
     public ProductsPageScene(Stage stage) {
         super(stage);
@@ -150,7 +154,7 @@ public class ProductsPageScene extends Menu {
                                 System.out.println("123123123");
                                 HashMap<String, ArrayList<String>> hashMap = ProductController.getInstance().getCategoryFeaturesToFilter();
                                 hashMap.get(s1).remove(menuItem1.getText());
-                                if(hashMap.get(s1).size()==0) {
+                                if (hashMap.get(s1).size() == 0) {
                                     hashMap.remove(s1);
                                 }
                                 ProductController.getInstance().setCategoryFeaturesToFilter(hashMap);
@@ -199,22 +203,105 @@ public class ProductsPageScene extends Menu {
         featuresGridPane.getColumnConstraints().add(new ColumnConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.ALWAYS, HPos.CENTER, false));
         featuresGridPane.getColumnConstraints().add(new ColumnConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.ALWAYS, HPos.LEFT, false));
         featuresGridPane.setVgap(10);
-        leftMenuGridPane.add(featuresGridPane, 0, 2, 2, 2);
         GridPane gridPane = new GridPane();
         gridPane.getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.ALWAYS, HPos.LEFT, false));
-        gridPane.add(leftMenuGridPane,0,0);
+        CheckBox checkBox = new CheckBox("Offers");
+        checkBox.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (checkBox.isSelected()) {
+                    offerChecker = true;
+                } else {
+                    offerChecker = false;
+                }
+                productPartSetter(buttomStyle);
+            }
+        });
+            MenuButton menuButton = new MenuButton("Brands");
+            ArrayList<MenuItem> menuItemArrayList1 = new ArrayList<>();
+            for (String s2 : ProductController.getInstance().getAllBrands()) {
+                Text text1 = new Text("");
+                MenuItem menuItem1 = new MenuItem(s2);
+                menuItemArrayList1.add(menuItem1);
+                menuItem1.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        if (menuItem1.getText().startsWith("Used: ")) {
+                            if (ProductController.getInstance().getAllBrandsToFilter() == null) {
+                                ProductController.getInstance().setAllBrandsToFilter(new ArrayList<>());
+                            }
+                            menuItem1.setText(menuItem1.getText().substring(6));
+                            System.out.println(menuItem1.getText());
+                            if (ProductController.getInstance().getAllBrandsToFilter().contains(menuItem1.getText())){
+                                System.out.println("123123123");
+                                ArrayList<String> arrayList = ProductController.getInstance().getAllBrandsToFilter();
+                                arrayList.remove(menuItem1.getText());
+                                ProductController.getInstance().setAllBrandsToFilter(arrayList);
+                            }
+                        } else {
+                            if (ProductController.getInstance().getAllBrandsToFilter() == null) {
+                                ProductController.getInstance().setAllBrandsToFilter(new ArrayList<>());
+                            }
+                            if (!ProductController.getInstance().getAllBrandsToFilter().contains(menuItem1.getText())) {
+                                System.out.println("123123123");
+                                ArrayList<String> arrayList = ProductController.getInstance().getAllBrandsToFilter();
+                                arrayList.add(menuItem1.getText());
+                                ProductController.getInstance().setAllBrandsToFilter(arrayList);
+                            }
+                            menuItem1.setText("Used: " + menuItem1.getText());
+                        }
+                    }
+                });
+            for (MenuItem item : menuItemArrayList1) {
+                menuButton.getItems().add(item);
+            }
+        }
+            menuButton.setStyle(menuBarStyle);
+        GridPane price = priceFilters();
+        leftMenuGridPane.setVgap(5);
+        leftMenuGridPane.getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.ALWAYS, HPos.CENTER, false));
+        leftMenuGridPane.add(checkBox, 0, 3);
+        leftMenuGridPane.add(featuresGridPane, 0, 2);
+        leftMenuGridPane.add(price, 0, 4, 1, 2);
+        leftMenuGridPane.add(menuButton, 0, 6, 1, 1);
+
+        gridPane.add(leftMenuGridPane, 0, 0);
         centerGridPane.add(gridPane, 0, 1, 1, 6);
         centerGridPane.add(pageTitle, 0, 0, 1, 1);
         productPartSetter(buttomStyle);
         centerGridPane.add(centerGridPaneTosh, 1, 1);
     }
 
+    private GridPane priceFilters() {
+        GridPane price = new GridPane();
+        Label minValue = new Label("Min Price:");
+        Label maxValue = new Label("Max Price:");
+        TextField minPrice = new TextField();
+        TextField maxPrice = new TextField();
+        minPrice.setMaxWidth(90);
+        maxPrice.setMaxWidth(90);
+        price.add(minValue, 0, 0);
+        price.add(minPrice, 1, 0);
+        price.add(maxValue, 0, 1);
+        price.add(maxPrice, 1, 1);
+        price.setVgap(2);
+        return price;
+    }
+
+    public ArrayList<Product> showProductsAfterFilterAndSort() {
+        if (offerChecker) {
+            return ProductController.getInstance().showOffedProductsAfterFilterAndSort();
+        } else {
+            return ProductController.getInstance().showProductsAfterFilterAndSort();
+        }
+    }
+
     private void productPartSetter(String buttomStyle) {
         ProductController.getInstance().getAllProductsFromServer();
         ArrayList<GridPane> gridPanes = new ArrayList<>();
         centerGridPaneTosh.getChildren().clear();
-        for (int kk = 0; kk < ProductController.getInstance().showProductsAfterFilterAndSort().size(); kk++) {
-            Product product = ProductController.getInstance().showProductsAfterFilterAndSort().get(kk);
+        for (int kk = 0; kk < showProductsAfterFilterAndSort().size(); kk++) {
+            Product product = showProductsAfterFilterAndSort().get(kk);
             GridPane gridPane = new GridPane();
             ImageView imageView = new ImageView(new Image(product.getImagePath()));
             Text text = new Text("   " + product.getProductName() + "\n" + "   " + product.getCostAfterOff() + " $");
@@ -256,7 +343,7 @@ public class ProductsPageScene extends Menu {
                 public void handle(MouseEvent event) {
                     for (int i = 0; i < gridPanes.size(); i++) {
                         if (gridPanes.get(i).equals(gridPane)) {
-                            ClientController.getInstance().setCurrentProduct(ProductController.getInstance().showProductsAfterFilterAndSort().get(i));
+                            ClientController.getInstance().setCurrentProduct(showProductsAfterFilterAndSort().get(i));
                             new ProductMenu(stage).execute();
                         }
                     }
@@ -280,7 +367,7 @@ public class ProductsPageScene extends Menu {
                 public void handle(MouseEvent event) {
                     for (int i = 0; i < gridPanes.size(); i++) {
                         if (gridPanes.get(i).equals(gridPane)) {
-                            ClientController.getInstance().setCurrentProduct(ProductController.getInstance().showProductsAfterFilterAndSort().get(i));
+                            ClientController.getInstance().setCurrentProduct(showProductsAfterFilterAndSort().get(i));
                             new ProductMenu(stage).execute();
                         }
                     }
@@ -304,7 +391,7 @@ public class ProductsPageScene extends Menu {
                 public void handle(MouseEvent event) {
                     for (int i = 0; i < gridPanes.size(); i++) {
                         if (gridPanes.get(i).equals(gridPane)) {
-                            ClientController.getInstance().setCurrentProduct(ProductController.getInstance().showProductsAfterFilterAndSort().get(i));
+                            ClientController.getInstance().setCurrentProduct(showProductsAfterFilterAndSort().get(i));
                             new ProductMenu(stage).execute();
                         }
                     }
@@ -381,7 +468,7 @@ public class ProductsPageScene extends Menu {
             centerGridPaneTosh.add(productsPages.get(0), 1, 1, 1, 1);
         } else {
             ImageView imageView = new ImageView(new Image("file:src/empty.png"));
-            Text text = new Text("This Category doesn't have any product.");
+            Text text = new Text("No product to show.");
             GridPane gridPane = new GridPane();
             imageView.setFitWidth(150);
             imageView.setFitHeight(150);
