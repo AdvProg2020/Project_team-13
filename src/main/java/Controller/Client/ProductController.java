@@ -162,9 +162,7 @@ public class ProductController {
         filterProducts();
         sortProducts();
         ArrayList<Product> allProducts = new ArrayList<>(allProductsAfterSort);
-
         return allProducts;
-
     }
 
     public void filterProducts() {
@@ -392,8 +390,8 @@ public class ProductController {
 
     public void removeProductForManager(String productId) {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("removeProductForManager", productId));
-        if(ClientController.getInstance().getCurrentUser() instanceof Seller) {
-            ((Seller)ClientController.getInstance().getCurrentUser()).removeProduct(productId);
+        if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
+            ((Seller) ClientController.getInstance().getCurrentUser()).removeProduct(productId);
         }
     }
 
@@ -466,26 +464,16 @@ public class ProductController {
         ClientController.getInstance().sendMessageToServer("@addComment@" + new Gson().toJson(comment));
     }
 
-    public void showOffedProductsAfterFilterAndSort() {
+    public ArrayList<Product> showOffedProductsAfterFilterAndSort() {
         filterProducts();
         sortProducts();
         ArrayList<Product> allProducts = new ArrayList<>();
-        String productsInViewFormat = "";
         for (Product product : allProductsAfterSort) {
             if (product.getOffer() != null) {
                 allProducts.add(product);
             }
         }
-        for (Product product : allProducts) {
-            productsInViewFormat += "ProductID: " + product.getProductId() + "\t" + "Product name: " + product.getProductName() + "\t"
-                    + "ProductCost before Off: " + product.getProductCost() + "\t"
-                    + "ProductCost after Off: " + product.getCostAfterOff() + "\t"
-                    + "Product Status: " + product.getProductStatus().toString() + "\n";
-        }
-        if (allProducts != null && !allProducts.isEmpty()) {
-            //      ClientController.getInstance().getCurrentMenu().showMessage(productsInViewFormat.substring(0, productsInViewFormat.length() - 1));
-        }
-
+        return allProducts;
     }
 
     public void rating(String productID, int rate) {

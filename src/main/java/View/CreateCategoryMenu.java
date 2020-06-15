@@ -70,7 +70,10 @@ public class CreateCategoryMenu extends Menu {
         scene.setRoot(pageGridPane);
     }
 
-    protected void setMenuBarGridPane() {
+    public void setMenuBarGridPane()  {
+        menuBarGridPane.getChildren().clear();
+        menuBarGridPane.getColumnConstraints().clear();
+        menuBarGridPane.getRowConstraints().clear();
         Menu menu = this;
         menuBarGridPane.setStyle("-fx-background-color:rgba(76, 170, 240, 1)");
         GridPane leftGridPane = new GridPane();

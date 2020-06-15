@@ -46,6 +46,7 @@ public class ClientController {
         if (menus.size() > 1) {
             System.out.println(menus.size());
             menus.remove(menus.size() - 1);
+            menus.get(menus.size() - 1).setMenuBarGridPane();
             menus.get(menus.size() - 1).execute();
         }
     }
