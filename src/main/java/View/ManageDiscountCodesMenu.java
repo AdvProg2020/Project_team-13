@@ -29,15 +29,19 @@ public class ManageDiscountCodesMenu extends Menu{
     private int pages;
     private int discountCodeCounter;
     private List<GridPane> allGridPanes;
+    private Pagination pagination;
 
-    public ManageDiscountCodesMenu(Stage stage) {
+    public ManageDiscountCodesMenu(Stage stage, int pages) {
         super(stage);
         super.setScene();
         edits = new HashMap<>();
         deletes = new HashMap<>();
         viewDetails = new HashMap<>();
-        this.setScene();
+        this.setScene(pages);
     }
+
+
+
 
     public void setPages(int pages) {
         this.pages = pages;
@@ -48,8 +52,9 @@ public class ManageDiscountCodesMenu extends Menu{
         this.discountCodeCounter = discountCodeCounter;
     }
 
-    @Override
-    public void setScene() {
+
+
+    public void setScene(int pageNumber) {
         DiscountController.getInstance().getAllDiscountCodesFromServer();
         if (!DiscountController.getInstance().getAllDiscountCodes().isEmpty()) {
             pageGridPane.getChildren().remove(centerGridPane);
@@ -60,7 +65,7 @@ public class ManageDiscountCodesMenu extends Menu{
             for (int i = 0; i < pages; i++) {
                 allGridPanes.add(null);
             }
-            Pagination pagination = new Pagination(pages, 0);
+            pagination = new Pagination(pages, pageNumber);
             pagination.setTranslateX(30);
             pagination.setTranslateY(50);
             pagination.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
@@ -86,6 +91,9 @@ public class ManageDiscountCodesMenu extends Menu{
         }
         pageGridPane.add(borderPane, 0, 2);
     }
+
+
+
 
     private GridPane createPage(Integer param) {
         if(param.equals(pages-1)){
@@ -142,7 +150,7 @@ public class ManageDiscountCodesMenu extends Menu{
             int finalI = i;
             imageView.setOnMouseClicked(event -> {
                 DiscountController.getInstance().editDiscountCode(allDiscountCodes.get(finalI));
-                //
+                new ManageDiscountCodesMenu(this.getStage(), this.pagination.getCurrentPageIndex()).execute();
             });
             imageView.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
             imageView.setOnMouseExited((EventHandler<Event>) event -> scene.setCursor(Cursor.DEFAULT));
@@ -156,7 +164,7 @@ public class ManageDiscountCodesMenu extends Menu{
             int finalI = i;
             imageView.setOnMouseClicked(event -> {
                 DiscountController.getInstance().deleteDiscountCode(allDiscountCodes.get(finalI).getDiscountCodeID());
-                //
+                new ManageDiscountCodesMenu(this.getStage(), this.pagination.getCurrentPageIndex()).execute();
             });
             imageView.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
             imageView.setOnMouseExited((EventHandler<Event>) event -> scene.setCursor(Cursor.DEFAULT));

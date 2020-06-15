@@ -200,10 +200,13 @@ public class ProductsPageScene extends Menu {
         featuresGridPane.getColumnConstraints().add(new ColumnConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.ALWAYS, HPos.LEFT, false));
         featuresGridPane.setVgap(10);
         leftMenuGridPane.add(featuresGridPane, 0, 2, 2, 2);
-        centerGridPane.add(leftMenuGridPane, 0, 1, 1, 6);
+        GridPane gridPane = new GridPane();
+        gridPane.getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.ALWAYS, HPos.LEFT, false));
+        gridPane.add(leftMenuGridPane,0,0);
+        centerGridPane.add(gridPane, 0, 1, 1, 6);
         centerGridPane.add(pageTitle, 0, 0, 1, 1);
         productPartSetter(buttomStyle);
-        centerGridPane.add(centerGridPaneTosh, 3, 1, 1, 1);
+        centerGridPane.add(centerGridPaneTosh, 1, 1);
     }
 
     private void productPartSetter(String buttomStyle) {
@@ -227,57 +230,10 @@ public class ProductsPageScene extends Menu {
             scoreGridPane.setHgap(2);
             scoreGridPane.add(label, 0, 0);
             scoreGridPane.add(star, 1, 0);
-            ImageView editInfoPic = new ImageView(new Image("file:src/edit3.png"));
-            ImageView deleteProduct = new ImageView(new Image("file:src/trash1.png"));
-            editInfoPic.setOnMouseEntered(new EventHandler() {
-                @Override
-                public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
-
-                }
-            });
-            editInfoPic.setOnMouseExited(new EventHandler() {
-                @Override
-                public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
-                }
-            });
-            editInfoPic.setOnMouseClicked(new EventHandler() {
-                @Override
-                public void handle(Event event) {
-                    currentProduct = product;
-                    handle1();
-                }
-            });
-
-            deleteProduct.setOnMouseEntered(new EventHandler() {
-                @Override
-                public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
-
-                }
-            });
-            deleteProduct.setOnMouseExited(new EventHandler() {
-                @Override
-                public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
-                }
-            });
-            editInfoPic.setFitWidth(25);
-            editInfoPic.setFitHeight(25);
-            deleteProduct.setFitWidth(25);
-            deleteProduct.setFitHeight(25);
             gridPane.add(imageView, 0, 0, 2, 1);
             gridPane.add(text, 0, 1, 1, 1);
             gridPane.add(scoreGridPane, 0, 2, 1, 1);
             GridPane options = new GridPane();
-            options.getColumnConstraints().add(new ColumnConstraints(117, Control.USE_COMPUTED_SIZE, 117, Priority.NEVER, HPos.RIGHT, false));
-            options.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
-            options.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, false));
-            options.setHgap(2);
-            options.add(editInfoPic, 0, 0);
-            options.add(deleteProduct, 1, 0);
-            gridPane.add(options, 0, 3, 2, 1);
             gridPanes.add(gridPane);
             gridPane.setStyle("-fx-background-color: #ECD5DC;-fx-background-radius: 20px;");
             text.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
@@ -408,7 +364,7 @@ public class ProductsPageScene extends Menu {
                     }
                     buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
                     productsPages.get(j[0]).add(buttons1, 1, 5, 7, 1);
-                    centerGridPaneTosh.add(productsPages.get(j[0]), 1, 1, 2, 2);
+                    centerGridPaneTosh.add(productsPages.get(j[0]), 1, 1);
                 }
             });
         }

@@ -352,7 +352,7 @@ public class CartMenu extends Menu {
         Label totalPrice = new Label("Total Price: ");
 //        totalPriceAmount = new Text(Double.toString(CartController.getInstance().getCurrentCart().getTotalPrice()));
         totalPriceAmount = new Text(Double.toString(CartController.getInstance().getCurrentCart().getTotalPrice()));
-        for (int i = 0; i < CartController.getInstance().getCurrentCart().getAllproduct().size(); i++) {
+        for (int i = 0; i < productsPages.size(); i++) {
             buttons.add(new Button(Integer.toString(i + 1)));
             buttons.get(i).setStyle(buttomStyle);
             buttons.get(i).setOnMouseEntered(new EventHandler() {

@@ -23,16 +23,16 @@ public class  OrdersMenu extends Menu {
     private Map<String, Button> viewDetails;
     private BorderPane borderPane;
     private GridPane gridPane;
-    private int pages;
+    private int page;
     private int logCounter;
     private List<GridPane> allGridPanes;
     private Customer customer;
 
-    public OrdersMenu(Stage stage) {
+    public OrdersMenu(Stage stage, int pages) {
         super(stage);
         super.setScene();
         viewDetails = new HashMap<>();
-        this.setScene();
+        this.setScene(pages);
     }
 
     public void setCustomer(Customer customer) {
@@ -40,7 +40,7 @@ public class  OrdersMenu extends Menu {
     }
 
     public void setPages(int pages) {
-        this.pages = pages;
+        this.page = pages;
     }
 
 
@@ -48,8 +48,8 @@ public class  OrdersMenu extends Menu {
         this.logCounter = logCounter;
     }
 
-    @Override
-    public void setScene() {
+
+    public void setScene(int pages) {
         setCustomer((Customer) ClientController.getInstance().getCurrentUser());
         if (!customer.getHistoryOfTransaction().isEmpty()) {
             pageGridPane.getChildren().remove(centerGridPane);
@@ -57,10 +57,10 @@ public class  OrdersMenu extends Menu {
             setPages(customer.getHistoryOfTransaction().size() % 4 == 0 ?
                     customer.getHistoryOfTransaction().size() / 4 : (customer.getHistoryOfTransaction().size() / 4) + 1);
             allGridPanes = new ArrayList<>();
-            for (int i = 0; i < pages; i++) {
+            for (int i = 0; i < page; i++) {
                 allGridPanes.add(null);
             }
-            Pagination pagination = new Pagination(pages, 0);
+            Pagination pagination = new Pagination(page, pages);
             pagination.setTranslateX(50);
             pagination.setTranslateY(50);
             pagination.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
@@ -88,7 +88,7 @@ public class  OrdersMenu extends Menu {
     }
 
     private GridPane createPage(Integer param) {
-        if (param.equals(pages - 1)) {
+        if (param.equals(page - 1)) {
             setTheCenterInfo(customer.getHistoryOfTransaction().size() - (param * 4), param);
         } else {
             setTheCenterInfo(4, param);

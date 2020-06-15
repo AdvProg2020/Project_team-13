@@ -28,21 +28,22 @@ public class ManageRequestMenu extends Menu{
     private Map<String, Button> viewDetails;
     private BorderPane borderPane;
     private GridPane gridPane;
-    private int pages;
+    private int page;
     private int requestCounter;
     private List<GridPane> allGridPanes;
+    private Pagination pagination;
 
-    public ManageRequestMenu(Stage stage) {
+    public ManageRequestMenu(Stage stage, int pages) {
         super(stage);
         super.setScene();
         accepts = new HashMap<>();
         declines = new HashMap<>();
         viewDetails = new HashMap<>();
-        this.setScene();
+        this.setScene(pages);
     }
 
     public void setPages(int pages) {
-        this.pages = pages;
+        this.page = pages;
     }
 
 
@@ -50,8 +51,7 @@ public class ManageRequestMenu extends Menu{
         this.requestCounter = requestCounter;
     }
 
-    @Override
-    public void setScene() {
+    public void setScene(int pages) {
         RequestController.getInstance().getAllRequestsFromServer();
         if (RequestController.getInstance().getAllRequests().size() != 0) {
             pageGridPane.getChildren().remove(centerGridPane);
@@ -62,7 +62,7 @@ public class ManageRequestMenu extends Menu{
             for (int i = 0; i < pages; i++) {
                 allGridPanes.add(null);
             }
-            Pagination pagination = new Pagination(pages, 0);
+            pagination = new Pagination(page, pages);
             pagination.setTranslateX(50);
             pagination.setTranslateY(50);
             pagination.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
@@ -90,7 +90,7 @@ public class ManageRequestMenu extends Menu{
     }
 
     private GridPane createPage(Integer param) {
-        if(param.equals(pages-1)){
+        if(param.equals(page-1)){
             setTheCenterInfo(RequestController.getInstance().getAllRequests().size() - (param * 4), param);
         }else{
             setTheCenterInfo(4, param);
@@ -142,6 +142,7 @@ public class ManageRequestMenu extends Menu{
             acceptImage.setOnMouseClicked(event -> {
                 String requestIdForThis = getString(acceptImage, accepts);
                 RequestController.getInstance().acceptRequest(requestIdForThis);
+                new ManageRequestMenu(this.getStage(), this.pagination.getCurrentPageIndex()).execute();
             });
             acceptImage.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
             acceptImage.setOnMouseExited((EventHandler<Event>) event -> scene.setCursor(Cursor.DEFAULT));
@@ -154,8 +155,8 @@ public class ManageRequestMenu extends Menu{
             declines.put(allRequests.get(i).getRequestId(), declineImage);
             declineImage.setOnMouseClicked(event -> {
                 String requestIdForThis = getString(declineImage, declines);
-
                 RequestController.getInstance().declineRequest(requestIdForThis);
+                new ManageRequestMenu(this.getStage(), this.pagination.getCurrentPageIndex()).execute();
             });
             declineImage.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
             declineImage.setOnMouseExited((EventHandler<Event>) event -> scene.setCursor(Cursor.DEFAULT));

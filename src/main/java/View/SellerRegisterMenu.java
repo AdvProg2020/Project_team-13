@@ -245,6 +245,9 @@ public class SellerRegisterMenu extends Menu{
         stage.setScene(scene);
         stage.show();
     }
+
+
+
     private boolean checkPasswordIsvalid(String word) {
         if (word.length() > 8 && word.length() < 18) {
             return true;
