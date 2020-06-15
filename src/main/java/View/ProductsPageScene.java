@@ -243,20 +243,20 @@ public class ProductsPageScene extends Menu {
 
     private MenuButton getSortButton(String buttomStyle) {
         MenuButton sortButton = new MenuButton("Sort");
-        MenuItem menuItem= new MenuItem("price ascending");
+        MenuItem menuItem = new MenuItem("price ascending");
         menuItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 if (menuItem.getText().startsWith("Used: ")) {
                     for (MenuItem item : sortButton.getItems()) {
-                        if(item.getText().startsWith("Used: ")) {
+                        if (item.getText().startsWith("Used: ")) {
                             menuItem.setText(menuItem.getText().substring(6));
                         }
                     }
                     ProductController.getInstance().disableSort();
                 } else {
                     for (MenuItem item : sortButton.getItems()) {
-                        if(item.getText().startsWith("Used: ")) {
+                        if (item.getText().startsWith("Used: ")) {
                             menuItem.setText("Used: " + menuItem.getText());
                         }
                     }
@@ -266,20 +266,20 @@ public class ProductsPageScene extends Menu {
                 setProductsPart(buttomStyle);
             }
         });
-        MenuItem menuItem1= new MenuItem("price descending");
+        MenuItem menuItem1 = new MenuItem("price descending");
         menuItem1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 if (menuItem1.getText().startsWith("Used: ")) {
                     for (MenuItem item : sortButton.getItems()) {
-                        if(item.getText().startsWith("Used: ")) {
+                        if (item.getText().startsWith("Used: ")) {
                             menuItem1.setText(menuItem1.getText().substring(6));
                         }
                     }
                     ProductController.getInstance().disableSort();
                 } else {
                     for (MenuItem item : sortButton.getItems()) {
-                        if(item.getText().startsWith("Used: ")) {
+                        if (item.getText().startsWith("Used: ")) {
                             menuItem1.setText("Used: " + menuItem1.getText());
                         }
                     }
@@ -289,20 +289,20 @@ public class ProductsPageScene extends Menu {
                 setProductsPart(buttomStyle);
             }
         });
-        MenuItem menuItem2= new MenuItem("score ascending");
+        MenuItem menuItem2 = new MenuItem("score ascending");
         menuItem2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 if (menuItem2.getText().startsWith("Used: ")) {
                     for (MenuItem item : sortButton.getItems()) {
-                        if(item.getText().startsWith("Used: ")) {
+                        if (item.getText().startsWith("Used: ")) {
                             menuItem2.setText(menuItem2.getText().substring(6));
                         }
                     }
                     ProductController.getInstance().disableSort();
                 } else {
                     for (MenuItem item : sortButton.getItems()) {
-                        if(item.getText().startsWith("Used: ")) {
+                        if (item.getText().startsWith("Used: ")) {
                             menuItem2.setText("Used: " + menuItem2.getText());
                         }
                     }
@@ -312,20 +312,20 @@ public class ProductsPageScene extends Menu {
                 setProductsPart(buttomStyle);
             }
         });
-        MenuItem menuItem3= new MenuItem("score descending");
+        MenuItem menuItem3 = new MenuItem("score descending");
         menuItem3.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 if (menuItem3.getText().startsWith("Used: ")) {
                     for (MenuItem item : sortButton.getItems()) {
-                        if(item.getText().startsWith("Used: ")) {
+                        if (item.getText().startsWith("Used: ")) {
                             menuItem3.setText(menuItem3.getText().substring(6));
                         }
                     }
                     ProductController.getInstance().disableSort();
                 } else {
                     for (MenuItem item : sortButton.getItems()) {
-                        if(item.getText().startsWith("Used: ")) {
+                        if (item.getText().startsWith("Used: ")) {
                             menuItem3.setText("Used: " + menuItem3.getText());
                         }
                     }
@@ -335,20 +335,20 @@ public class ProductsPageScene extends Menu {
                 setProductsPart(buttomStyle);
             }
         });
-        MenuItem menuItem4= new MenuItem("newest ascending");
+        MenuItem menuItem4 = new MenuItem("newest ascending");
         menuItem4.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 if (menuItem4.getText().startsWith("Used: ")) {
                     for (MenuItem item : sortButton.getItems()) {
-                        if(item.getText().startsWith("Used: ")) {
+                        if (item.getText().startsWith("Used: ")) {
                             menuItem4.setText(menuItem4.getText().substring(6));
                         }
                     }
                     ProductController.getInstance().disableSort();
                 } else {
                     for (MenuItem item : sortButton.getItems()) {
-                        if(item.getText().startsWith("Used: ")) {
+                        if (item.getText().startsWith("Used: ")) {
                             menuItem4.setText("Used: " + menuItem4.getText());
                         }
                     }
@@ -358,20 +358,20 @@ public class ProductsPageScene extends Menu {
                 setProductsPart(buttomStyle);
             }
         });
-        MenuItem menuItem5= new MenuItem("newest descending");
+        MenuItem menuItem5 = new MenuItem("newest descending");
         menuItem5.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 if (menuItem5.getText().startsWith("Used: ")) {
                     for (MenuItem item : sortButton.getItems()) {
-                        if(item.getText().startsWith("Used: ")) {
+                        if (item.getText().startsWith("Used: ")) {
                             menuItem5.setText(menuItem5.getText().substring(6));
                         }
                     }
                     ProductController.getInstance().disableSort();
                 } else {
                     for (MenuItem item : sortButton.getItems()) {
-                        if(item.getText().startsWith("Used: ")) {
+                        if (item.getText().startsWith("Used: ")) {
                             menuItem5.setText("Used: " + menuItem5.getText());
                         }
                     }
@@ -573,7 +573,7 @@ public class ProductsPageScene extends Menu {
                 if ((Pattern.matches("\\d+\\.?\\d*", minPrice.getText()) || minPrice.getText().isEmpty()) && (Pattern.matches("\\d+\\.?\\d*", maxPrice.getText()) || maxPrice.getText().isEmpty())) {
                     ProductController.getInstance().setMaxAndMinAmount(minPrice.getText().isEmpty() ? 0 : Double.parseDouble(minPrice.getText().trim()),
                             maxPrice.getText().isEmpty() ? Double.POSITIVE_INFINITY : Double.parseDouble(maxPrice.getText().trim()));
-                }else  {
+                } else {
                     ProductController.getInstance().disablePriceFilter();
                 }
                 setProductsPart(buttonStyle);
@@ -603,7 +603,7 @@ public class ProductsPageScene extends Menu {
             Product product = showProductsAfterFilterAndSort().get(kk);
             GridPane gridPane = new GridPane();
             ImageView imageView = new ImageView(new Image(product.getImagePath()));
-            Text text = new Text("   " + product.getProductName() + "\n" + "   " + product.getCostAfterOff() + " $");
+            Text text = new Text();
             Label label = new Label("   " + Double.toString(product.getAverageScore()));
             ImageView star = new ImageView(new Image("file:src/star.png"));
             imageView.setFitHeight(150);
@@ -616,9 +616,24 @@ public class ProductsPageScene extends Menu {
             scoreGridPane.setHgap(2);
             scoreGridPane.add(label, 0, 0);
             scoreGridPane.add(star, 1, 0);
-            gridPane.add(imageView, 0, 0, 2, 1);
-            gridPane.add(text, 0, 1, 1, 1);
-            gridPane.add(scoreGridPane, 0, 2, 1, 1);
+            if (offerChecker) {
+                text = new Text("   " + product.getProductName() + "\n" + "   " + product.getProductCost() + " $");
+                Text text1 = new Text("   Cost after off: " + product.getCostAfterOff() +" $\n"+"   "+ "Offer percent: " + product.getOffer().getAmount() + "%");
+                Text text2 = new Text("   "+"Start time: \n" + product.getOffer().getStartTime().toString() + "\n"
+                        + "   "+"End time: \n" +product.getOffer().getEndTime().toString());
+                text1.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
+                text2.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 12));
+                gridPane.add(imageView, 0, 0, 1, 1);
+                gridPane.add(text, 0, 1, 1, 1);
+                gridPane.add(text1,0,2,1,1);
+                gridPane.add(text2,0,3,1,1);
+                gridPane.add(scoreGridPane, 0, 4, 1, 1);
+            }else {
+                text = new Text("   " + product.getProductName() + "\n" + "   " + product.getCostAfterOff() + " $");
+                gridPane.add(imageView, 0, 0, 2, 1);
+                gridPane.add(text, 0, 1, 1, 1);
+                gridPane.add(scoreGridPane, 0, 2, 1, 1);
+            }
             GridPane options = new GridPane();
             gridPanes.add(gridPane);
             gridPane.setStyle("-fx-background-color: #ECD5DC;-fx-background-radius: 20px;");
