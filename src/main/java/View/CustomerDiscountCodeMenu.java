@@ -1,5 +1,6 @@
 package View;
 import Controller.Client.ClientController;
+import Controller.Client.DiscountController;
 import Models.DiscountCode;
 import Models.UserAccount.Customer;
 import javafx.event.ActionEvent;
@@ -47,6 +48,7 @@ public class CustomerDiscountCodeMenu extends Menu{
 
 
     public void setScene() {
+        DiscountController.getInstance().getAllDiscountCodesFromServer();
         Customer customer = (Customer)ClientController.getInstance().getCurrentUser();
         allDiscountCodes = customer.getAllDiscountCodes();
         if (!allDiscountCodes.isEmpty()) {

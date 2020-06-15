@@ -1,6 +1,6 @@
 package View;
 import Controller.Client.ClientController;
-import Controller.Client.allDiscountCodes;
+import Controller.Client.DiscountController;
 import Models.DiscountCode;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -32,6 +32,7 @@ public class ManageDiscountCodesMenu extends Menu{
     private List<GridPane> allGridPanes;
     private Pagination pagination;
     private Button addDiscountCode;
+    private ArrayList<DiscountCode> allDiscountCodes;
 
     public ManageDiscountCodesMenu(Stage stage, int pages) {
         super(stage);
@@ -57,7 +58,8 @@ public class ManageDiscountCodesMenu extends Menu{
 
 
     public void setScene(int pageNumber) {
-        allDiscountCodes.getInstance().getAllDiscountCodesFromServer();
+        DiscountController.getInstance().getAllDiscountCodesFromServer();
+        allDiscountCodes = DiscountController.getInstance().getAllDiscountCodes();
         addDiscountCode = new Button("Add DiscountCode");
         addDiscountCode.setStyle("-fx-background-color: #808080");
         addDiscountCode.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 15));
@@ -68,11 +70,11 @@ public class ManageDiscountCodesMenu extends Menu{
                 new CreateDiscountCodeMenu(stage).execute();
             }
         });
-        if (!allDiscountCodes.getInstance().getAllDiscountCodes().isEmpty()) {
+        if (!allDiscountCodes.isEmpty()) {
             pageGridPane.getChildren().remove(centerGridPane);
             pageGridPane.getChildren().remove(bottomGridPane);
-            this.setPages(allDiscountCodes.getInstance().getAllDiscountCodes().size()%4 == 0 ?
-                    allDiscountCodes.getInstance().getAllDiscountCodes().size()/4 : (allDiscountCodes.getInstance().getAllDiscountCodes().size()/4) + 1);
+            this.setPages(allDiscountCodes.size()%4 == 0 ?
+                    allDiscountCodes.size()/4 : (allDiscountCodes.size()/4) + 1);
             allGridPanes = new ArrayList<>();
             for (int i = 0; i < pages; i++) {
                 allGridPanes.add(null);
@@ -117,7 +119,7 @@ public class ManageDiscountCodesMenu extends Menu{
 
     private GridPane createPage(Integer param) {
         if(param.equals(pages-1)){
-            setTheCenterInfo(allDiscountCodes.getInstance().getAllDiscountCodes().size() - (param * 4), param);
+            setTheCenterInfo(DiscountController.getInstance().getAllDiscountCodes().size() - (param * 4), param);
         }else{
             setTheCenterInfo(4, param);
         }
@@ -130,7 +132,7 @@ public class ManageDiscountCodesMenu extends Menu{
 
     private void setTheBeginning() {
         borderPane = new BorderPane();
-        ArrayList<DiscountCode> allDiscountCodes = Controller.Client.allDiscountCodes.getInstance().getAllDiscountCodes();
+        allDiscountCodes = DiscountController.getInstance().getAllDiscountCodes();
         for (int i = 0; i < allDiscountCodes.size(); i++) {
             Button button = new Button("Details");
             button.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 18));
@@ -142,7 +144,7 @@ public class ManageDiscountCodesMenu extends Menu{
                     VBox vBox = new VBox();
                     vBox.setAlignment(Pos.CENTER);
                     vBox.setStyle("-fx-background-color: #afafaf");
-                    String[] details = Controller.Client.allDiscountCodes.getInstance().viewDiscountCode(allDiscountCodes.get(finalI).getDiscountCodeID()).split("\n");
+                    String[] details = allDiscountCodes.get(finalI).view().split("\n");
                     Label[] label = new Label[details.length];
                     Label label1 = new Label("Details :\n\n");
                     label1.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 30));
@@ -169,7 +171,7 @@ public class ManageDiscountCodesMenu extends Menu{
             imageView.setFitWidth(45);
             int finalI = i;
             imageView.setOnMouseClicked(event -> {
-                Controller.Client.allDiscountCodes.getInstance().editDiscountCode(allDiscountCodes.get(finalI));
+                DiscountController.getInstance().editDiscountCode(allDiscountCodes.get(finalI));
                 ClientController.getInstance().getMenus().remove(this);
                 new ManageRequestMenu(this.getStage(), this.pagination.getCurrentPageIndex()).execute();
             });
@@ -184,7 +186,7 @@ public class ManageDiscountCodesMenu extends Menu{
             imageView.setTranslateX(15);
             int finalI = i;
             imageView.setOnMouseClicked(event -> {
-                Controller.Client.allDiscountCodes.getInstance().deleteDiscountCode(allDiscountCodes.get(finalI).getDiscountCodeID());
+                DiscountController.getInstance().deleteDiscountCode(allDiscountCodes.get(finalI).getDiscountCodeID());
                 ClientController.getInstance().getMenus().remove(this);
                 new ManageRequestMenu(this.getStage(), this.pagination.getCurrentPageIndex()).execute();
             });
@@ -224,10 +226,10 @@ public class ManageDiscountCodesMenu extends Menu{
         }
         setDiscountCodeCounter(4*pages);
         for (int i = 1; i <= counter; discountCodeCounter++, i++) {
-            setTheRows(i, allDiscountCodes.getInstance().getAllDiscountCodes().get(discountCodeCounter).getDiscountCodeID(),
-                    String.valueOf(allDiscountCodes.getInstance().getAllDiscountCodes().get(discountCodeCounter).getDiscountPercent()),
-                    String.valueOf(allDiscountCodes.getInstance().getAllDiscountCodes().get(discountCodeCounter).getMaxDiscountAmount()),
-                    String.valueOf(allDiscountCodes.getInstance().getAllDiscountCodes().get(discountCodeCounter).getEndTime()));
+            setTheRows(i, allDiscountCodes.get(discountCodeCounter).getDiscountCodeID(),
+                    String.valueOf(allDiscountCodes.get(discountCodeCounter).getDiscountPercent()),
+                    String.valueOf(allDiscountCodes.get(discountCodeCounter).getMaxDiscountAmount()),
+                    String.valueOf(allDiscountCodes.get(discountCodeCounter).getEndTime()));
         }
         gridPane.setTranslateX(10);
         gridPane.setTranslateY(1);
