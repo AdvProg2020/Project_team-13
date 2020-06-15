@@ -130,7 +130,9 @@ public class ProductMenu extends Menu {
         addToCartButton.setMinWidth(200);
         addToCartButton.setMinHeight(30);
         addToCartButton.setTextFill(Color.WHITE);
-
+        if(product.getNumberOfAvailableProducts()==0){
+            addToCartButton.setDisable(true);
+        }
         productImage.setOnMouseEntered(e -> {
            productZoomedImage.setVisible(true);
         });

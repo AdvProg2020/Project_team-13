@@ -36,6 +36,7 @@ public class ManagerMenuScene extends Menu {
     public ManagerMenuScene(Stage stage) {
         super(stage);
         userInfoGridPane = new GridPane();
+        userInfoGridPane = new GridPane();
         if(ClientController.getInstance().getMediaPlayer()!=null)
             ClientController.getInstance().getMediaPlayer().stop();
         ClientController.getInstance().setMediaPlayer(new MediaPlayer(usersSong));
@@ -279,11 +280,49 @@ public class ManagerMenuScene extends Menu {
         manageCategoriesButton.setStyle("-fx-font-size: 14 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         manageCategoriesButton.setMinHeight(50);
         manageCategoriesButton.setMinWidth(150);
+        manageCategoriesButton.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+            }
+        });
+        manageCategoriesButton.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
+        manageCategoriesButton.setOnMouseClicked(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                new ManageCategoryMenu(stage).execute();
+            }
+        });
         Button manageDiscountsButton = new Button("Manage Discount Codes");
         manageDiscountsButton.setTextAlignment(TextAlignment.CENTER);
         manageDiscountsButton.setStyle("-fx-font-size: 12 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         manageDiscountsButton.setMinHeight(50);
         manageDiscountsButton.setMinWidth(150);
+        manageDiscountsButton.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+            }
+        });
+        manageDiscountsButton.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
+        manageDiscountsButton.setOnMouseClicked(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                new ManageDiscountCodesMenu(stage,0).execute();
+            }
+        });
         Button manageProductsButton = new Button("Manage Products");
         manageProductsButton.setTextAlignment(TextAlignment.CENTER);
         manageProductsButton.setStyle("-fx-font-size: 16 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");

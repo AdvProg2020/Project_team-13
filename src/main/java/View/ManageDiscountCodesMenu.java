@@ -32,7 +32,6 @@ public class ManageDiscountCodesMenu extends Menu{
     private List<GridPane> allGridPanes;
     private Pagination pagination;
     private Button addDiscountCode;
-    private ArrayList<DiscountCode> allDiscountCodes;
 
     public ManageDiscountCodesMenu(Stage stage, int pages) {
         super(stage);
@@ -59,7 +58,6 @@ public class ManageDiscountCodesMenu extends Menu{
 
     public void setScene(int pageNumber) {
         DiscountController.getInstance().getAllDiscountCodesFromServer();
-        allDiscountCodes = DiscountController.getInstance().getAllDiscountCodes();
         addDiscountCode = new Button("Add DiscountCode");
         addDiscountCode.setStyle("-fx-background-color: #808080");
         addDiscountCode.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 15));
@@ -70,11 +68,11 @@ public class ManageDiscountCodesMenu extends Menu{
                 new CreateDiscountCodeMenu(stage).execute();
             }
         });
-        if (!allDiscountCodes.isEmpty()) {
+        if (!DiscountController.getInstance().getAllDiscountCodes().isEmpty()) {
             pageGridPane.getChildren().remove(centerGridPane);
             pageGridPane.getChildren().remove(bottomGridPane);
-            this.setPages(allDiscountCodes.size()%4 == 0 ?
-                    allDiscountCodes.size()/4 : (allDiscountCodes.size()/4) + 1);
+            this.setPages(DiscountController.getInstance().getAllDiscountCodes().size()%4 == 0 ?
+                    DiscountController.getInstance().getAllDiscountCodes().size()/4 : (DiscountController.getInstance().getAllDiscountCodes().size()/4) + 1);
             allGridPanes = new ArrayList<>();
             for (int i = 0; i < pages; i++) {
                 allGridPanes.add(null);
@@ -132,7 +130,7 @@ public class ManageDiscountCodesMenu extends Menu{
 
     private void setTheBeginning() {
         borderPane = new BorderPane();
-        allDiscountCodes = DiscountController.getInstance().getAllDiscountCodes();
+        ArrayList<DiscountCode> allDiscountCodes = DiscountController.getInstance().getAllDiscountCodes();
         for (int i = 0; i < allDiscountCodes.size(); i++) {
             Button button = new Button("Details");
             button.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 18));
@@ -144,7 +142,7 @@ public class ManageDiscountCodesMenu extends Menu{
                     VBox vBox = new VBox();
                     vBox.setAlignment(Pos.CENTER);
                     vBox.setStyle("-fx-background-color: #afafaf");
-                    String[] details = allDiscountCodes.get(finalI).view().split("\n");
+                    String[] details = DiscountController.getInstance().viewDiscountCode(allDiscountCodes.get(finalI).getDiscountCodeID()).split("\n");
                     Label[] label = new Label[details.length];
                     Label label1 = new Label("Details :\n\n");
                     label1.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 30));
@@ -170,11 +168,11 @@ public class ManageDiscountCodesMenu extends Menu{
             imageView.setFitHeight(45);
             imageView.setFitWidth(45);
             int finalI = i;
+            int finalI1 = i;
             imageView.setOnMouseClicked(event -> {
-                DiscountController.getInstance().editDiscountCode(allDiscountCodes.get(finalI));
-                ClientController.getInstance().getMenus().remove(this);
-                new ManageRequestMenu(this.getStage(), this.pagination.getCurrentPageIndex()).execute();
-            });
+                ClientController.getInstance().setCurrentDiscountCode(allDiscountCodes.get(finalI1));
+                new EditDiscountCode(stage).execute();
+             });
             imageView.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
             imageView.setOnMouseExited((EventHandler<Event>) event -> scene.setCursor(Cursor.DEFAULT));
             edits.put(allDiscountCodes.get(i).getDiscountCodeID(), imageView);
@@ -187,8 +185,7 @@ public class ManageDiscountCodesMenu extends Menu{
             int finalI = i;
             imageView.setOnMouseClicked(event -> {
                 DiscountController.getInstance().deleteDiscountCode(allDiscountCodes.get(finalI).getDiscountCodeID());
-                ClientController.getInstance().getMenus().remove(this);
-                new ManageRequestMenu(this.getStage(), this.pagination.getCurrentPageIndex()).execute();
+                new ManageDiscountCodesMenu(this.getStage(), this.pagination.getCurrentPageIndex()).execute();
             });
             imageView.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
             imageView.setOnMouseExited((EventHandler<Event>) event -> scene.setCursor(Cursor.DEFAULT));
@@ -226,10 +223,10 @@ public class ManageDiscountCodesMenu extends Menu{
         }
         setDiscountCodeCounter(4*pages);
         for (int i = 1; i <= counter; discountCodeCounter++, i++) {
-            setTheRows(i, allDiscountCodes.get(discountCodeCounter).getDiscountCodeID(),
-                    String.valueOf(allDiscountCodes.get(discountCodeCounter).getDiscountPercent()),
-                    String.valueOf(allDiscountCodes.get(discountCodeCounter).getMaxDiscountAmount()),
-                    String.valueOf(allDiscountCodes.get(discountCodeCounter).getEndTime()));
+            setTheRows(i, DiscountController.getInstance().getAllDiscountCodes().get(discountCodeCounter).getDiscountCodeID(),
+                    String.valueOf(DiscountController.getInstance().getAllDiscountCodes().get(discountCodeCounter).getDiscountPercent()),
+                    String.valueOf(DiscountController.getInstance().getAllDiscountCodes().get(discountCodeCounter).getMaxDiscountAmount()),
+                    String.valueOf(DiscountController.getInstance().getAllDiscountCodes().get(discountCodeCounter).getEndTime()));
         }
         gridPane.setTranslateX(10);
         gridPane.setTranslateY(1);
