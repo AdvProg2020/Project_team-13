@@ -341,11 +341,12 @@ public class CartMenu extends Menu {
                         public void handle(MouseEvent event) {
                             if (!discountCode.getText().equals("")) {
                                 discountCode1 = getDiscountCode(discountCode.getText());
-                                if (discountCode != null) {
-                                    discountCode.setStyle("-fx-background-color: #08ff00;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                                if (discountCode1 != null) {
+                                    errorText.setText("");
+                                    discountCode.setStyle("-fx-background-color: #08ff00;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30;");
                                 } else {
                                     discountCode.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30;");
-                                    errorText.setText("Discount code is empty");
+                                    errorText.setText("you haven't any discount code with this code");
                                 }
                             } else {
                                 discountCode.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30;");
@@ -522,9 +523,8 @@ public class CartMenu extends Menu {
 
     private DiscountCode getDiscountCode(String discountCode) {
         DiscountCode discount = ((Customer) ClientController.getInstance().getCurrentUser()).findDiscountCodeWithCode(discountCode);
-        if (discount == null) {
-            errorText.setText("you don't have any discount code with this code");
-        } else {
+        System.out.println("discoount code is :"+discount);
+        if (discount != null) {
             return discount;
         }
         return null;

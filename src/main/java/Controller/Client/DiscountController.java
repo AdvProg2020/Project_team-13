@@ -8,16 +8,16 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class allDiscountCodes {
-    private static Controller.Client.allDiscountCodes discountController;
+public class DiscountController {
+    private static DiscountController discountController;
     private ArrayList<DiscountCode> allDiscountCodes = new ArrayList<>();
 
-    private allDiscountCodes() {
+    private DiscountController() {
     }
 
-    public static Controller.Client.allDiscountCodes getInstance() {
+    public static DiscountController getInstance() {
         if (discountController == null) {
-            discountController = new allDiscountCodes();
+            discountController = new DiscountController();
         }
         return discountController;
     }
