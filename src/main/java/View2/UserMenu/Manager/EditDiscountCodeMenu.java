@@ -1,7 +1,7 @@
 package View2.UserMenu.Manager;
 
 import Controller.Client.ClientController;
-import Controller.Client.DiscountController;
+import Controller.Client.allDiscountCodes;
 import Controller.Client.ManagerController;
 import Models.DiscountCode;
 import View2.Menu;
@@ -45,20 +45,20 @@ public class EditDiscountCodeMenu extends Menu {
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.equalsIgnoreCase("Edit Max Discount Amount")) {
                 discountCode.setMaxDiscountAmount(getMaxDiscountAmount());
-                DiscountController.getInstance().editDiscountCode(discountCode);
+                allDiscountCodes.getInstance().editDiscountCode(discountCode);
             } else if (command.equalsIgnoreCase("Edit Discount Percent")) {
                 discountCode.setDiscountPercent(getDiscountPercent());
-                DiscountController.getInstance().editDiscountCode(discountCode);
+                allDiscountCodes.getInstance().editDiscountCode(discountCode);
             } else if (command.equalsIgnoreCase("Edit Discount Start date and time")) {
                 discountCode.setStartTime(getStartTime().getTime());
-                DiscountController.getInstance().editDiscountCode(discountCode);
+                allDiscountCodes.getInstance().editDiscountCode(discountCode);
             } else if (command.equalsIgnoreCase("Edit Discount End date and time")) {
                 discountCode.setStartTime(getEndTime(discountCode.getStartTime()).getTime());
-                DiscountController.getInstance().editDiscountCode(discountCode);
+                allDiscountCodes.getInstance().editDiscountCode(discountCode);
             } else if (command.equalsIgnoreCase("Add Discount Code to a Customer")) {
                 ManagerController.getInstance().getAllUserFromServer();
                 getUsersThatHaveDiscountCode();
-                DiscountController.getInstance().editDiscountCode(discountCode);
+                allDiscountCodes.getInstance().editDiscountCode(discountCode);
             } else if (command.equalsIgnoreCase("help")) {
                 help();
             } else {

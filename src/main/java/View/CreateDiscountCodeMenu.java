@@ -1,9 +1,8 @@
 package View;
 
 import Controller.Client.ClientController;
-import Controller.Client.DiscountController;
+import Controller.Client.allDiscountCodes;
 import Controller.Client.ManagerController;
-import Controller.Client.RegisterController;
 import Models.DiscountCode;
 import Models.UserAccount.Customer;
 import javafx.event.ActionEvent;
@@ -25,10 +24,8 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CreateDiscountCodeMenu extends Menu {
@@ -250,7 +247,7 @@ public class CreateDiscountCodeMenu extends Menu {
                                     if (checkEndTimeValid(enddate, startdate)) {
                                         if(allUsers.size()>0) {
                                             DiscountCode discountCode = new DiscountCode(startdate, enddate, allUsers, Integer.parseInt(discountPercent.getText()), Double.parseDouble(maxAmount.getText()), maxUsingTime, remainingTimesForEachCustomer);
-                                            DiscountController.getInstance().createDiscountCode(discountCode);
+                                            allDiscountCodes.getInstance().createDiscountCode(discountCode);
                                         }else
                                             ClientController.getInstance().getCurrentMenu().showMessage("you should add discount code to some of users",MessageKind.ErrorWithoutBack);
                                     } else {

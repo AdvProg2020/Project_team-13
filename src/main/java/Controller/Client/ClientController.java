@@ -42,6 +42,10 @@ public class ClientController {
         new MainMenu(menu.getStage()).execute();
     }
 
+    public ArrayList<Menu> getMenus() {
+        return menus;
+    }
+
     public void back() {
         if (menus.size() > 1) {
             System.out.println(menus.size());

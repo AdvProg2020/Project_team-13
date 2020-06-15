@@ -1,7 +1,7 @@
 package View2.UserMenu.Manager;
 
 import Controller.Client.ClientController;
-import Controller.Client.DiscountController;
+import Controller.Client.allDiscountCodes;
 import View.MessageKind;
 import View2.Menu;
 
@@ -24,15 +24,15 @@ public class ViewDiscountMenu extends Menu {
 
     @Override
     public void execute() {
-        DiscountController.getInstance().getAllDiscountCodesFromServer();
+        allDiscountCodes.getInstance().getAllDiscountCodesFromServer();
         String command;
         while (!(command = scanner.nextLine()).equalsIgnoreCase("back")) {
             if (command.matches("view discount code [a-z]+")) {
-                DiscountController.getInstance().viewDiscountCode(command.split("\\s")[3]);
+                allDiscountCodes.getInstance().viewDiscountCode(command.split("\\s")[3]);
             } else if (command.matches("remove discount code \\S+")) {
-                DiscountController.getInstance().deleteDiscountCode(command.split("\\s")[3]);
+                allDiscountCodes.getInstance().deleteDiscountCode(command.split("\\s")[3]);
             } else if (command.matches("edit discount code [a-z]+")) {
-                ClientController.getInstance().setCurrentDiscountCode(DiscountController.getInstance().findDiscountCodeWithThisId(command.split("\\s")[3]));
+                ClientController.getInstance().setCurrentDiscountCode(allDiscountCodes.getInstance().findDiscountCodeWithThisId(command.split("\\s")[3]));
                 if (ClientController.getInstance().getCurrentDiscountCode() != null) {
                     Menu menu = new EditDiscountCodeMenu(this).setScanner(this.scanner);
 
