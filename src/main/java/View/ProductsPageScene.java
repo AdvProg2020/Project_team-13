@@ -3,11 +3,9 @@ package View;
 import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
 import Controller.Client.ProductController;
-import Controller.Server.ProductCenter;
 import Models.Product.Category;
 import Models.Product.Product;
-import Models.UserAccount.Seller;
-import com.google.gson.Gson;
+import Models.Product.ProductStatus;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -31,11 +29,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import sun.swing.MenuItemCheckIconFactory;
 
-import javax.swing.text.AbstractDocument;
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -52,7 +47,7 @@ public class ProductsPageScene extends Menu {
         productsPages = new GridPane();
         leftMenuGridPane = new GridPane();
         centerGridPaneTosh = new GridPane();
-        if(ClientController.getInstance().getMediaPlayer()!=null)
+        if (ClientController.getInstance().getMediaPlayer() != null)
             ClientController.getInstance().getMediaPlayer().stop();
         ClientController.getInstance().setMediaPlayer(new MediaPlayer(productsSong));
         ClientController.getInstance().getMediaPlayer().setVolume(0.04);
@@ -92,7 +87,7 @@ public class ProductsPageScene extends Menu {
                 "    -fx-border-radius: 20px;";
         //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
         Text personalInfo = new Text("ali");
-        Text pageTitle = new Text("Manage Products");
+        Text pageTitle = new Text(ProductController.getInstance().getCurrentCategory().getName() + "  Count of products: " + ProductController.getInstance().getCurrentCategory().getAllProducts().size());
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
         pageTitle.setStyle("-fx-font-weight: bold;");
         pageTitle.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
@@ -148,10 +143,8 @@ public class ProductsPageScene extends Menu {
                                 ProductController.getInstance().setCategoryFeaturesToFilter(new HashMap<String, ArrayList<String>>());
                             }
                             menuItem1.setText(menuItem1.getText().substring(6));
-                            System.out.println(menuItem1.getText());
                             if (ProductController.getInstance().getCategoryFeaturesToFilter()
                                     .get(s1).contains(menuItem1.getText())) {
-                                System.out.println("123123123");
                                 HashMap<String, ArrayList<String>> hashMap = ProductController.getInstance().getCategoryFeaturesToFilter();
                                 hashMap.get(s1).remove(menuItem1.getText());
                                 if (hashMap.get(s1).size() == 0) {
@@ -159,7 +152,7 @@ public class ProductsPageScene extends Menu {
                                 }
                                 ProductController.getInstance().setCategoryFeaturesToFilter(hashMap);
                             }
-                            productPartSetter(buttomStyle);
+                            setProductsPart(buttomStyle);
                         } else {
                             if (ProductController.getInstance().getCategoryFeaturesToFilter() == null) {
                                 ProductController.getInstance().setCategoryFeaturesToFilter(new HashMap<String, ArrayList<String>>());
@@ -173,7 +166,7 @@ public class ProductsPageScene extends Menu {
                                 arrayList.add(menuItem1.getText());
                                 ProductController.getInstance().getCategoryFeaturesToFilter().put(s1, arrayList);
                             }
-                            productPartSetter(buttomStyle);
+                            setProductsPart(buttomStyle);
 
                             menuItem1.setText("Used: " + menuItem1.getText());
                         }
@@ -205,6 +198,199 @@ public class ProductsPageScene extends Menu {
         featuresGridPane.setVgap(10);
         GridPane gridPane = new GridPane();
         gridPane.getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.ALWAYS, HPos.LEFT, false));
+        CheckBox checkBox = getOfferCheckBox(buttomStyle);
+        MenuButton brandFilterButton = getBrandFilterButton(buttomStyle, menuBarStyle);
+        MenuButton sellersFilterButton = getSellerFilterButton(buttomStyle, menuBarStyle);
+        MenuButton statusFilterButton = getProductStatusFilterButton(buttomStyle, menuBarStyle);
+        GridPane nameFilter = new GridPane();
+        Label nameFilterText = new Label("Name:");
+        TextField nameFilterTextField = new TextField();
+        Button setNameFilter = new Button("Filter with name");
+        nameFilter.add(nameFilterText, 0, 0);
+        nameFilter.add(nameFilterTextField, 1, 0);
+        nameFilterTextField.setMaxWidth(100);
+        setNameFilter.setAlignment(Pos.CENTER);
+        setNameFilter.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (nameFilterTextField.getText().isEmpty()) {
+                    ProductController.getInstance().disableNameFilter();
+                } else {
+                    ProductController.getInstance().setNameToFilter(nameFilterTextField.getText());
+                }
+                setProductsPart(buttomStyle);
+            }
+        });
+        GridPane price = priceFilters(buttomStyle);
+        MenuButton sortButton = getSortButton(buttomStyle);
+        leftMenuGridPane.setVgap(5);
+        leftMenuGridPane.getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.ALWAYS, HPos.CENTER, false));
+        leftMenuGridPane.add(checkBox, 0, 3);
+        leftMenuGridPane.add(featuresGridPane, 0, 2);
+        leftMenuGridPane.add(price, 0, 4, 1, 2);
+        leftMenuGridPane.add(brandFilterButton, 0, 6);
+        leftMenuGridPane.add(sellersFilterButton, 0, 7);
+        leftMenuGridPane.add(statusFilterButton, 0, 8);
+        leftMenuGridPane.add(nameFilter, 0, 9);
+        leftMenuGridPane.add(setNameFilter, 0, 10, 2, 1);
+        leftMenuGridPane.add(sortButton, 0, 11, 2, 1);
+        gridPane.add(leftMenuGridPane, 0, 0);
+        centerGridPane.add(gridPane, 0, 1, 1, 6);
+        centerGridPane.add(pageTitle, 0, 0, 2, 1);
+        setProductsPart(buttomStyle);
+        centerGridPane.add(centerGridPaneTosh, 1, 1);
+    }
+
+    private MenuButton getSortButton(String buttomStyle) {
+        MenuButton sortButton = new MenuButton("Sort");
+        MenuItem menuItem= new MenuItem("price ascending");
+        menuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (menuItem.getText().startsWith("Used: ")) {
+                    for (MenuItem item : sortButton.getItems()) {
+                        if(item.getText().startsWith("Used: ")) {
+                            menuItem.setText(menuItem.getText().substring(6));
+                        }
+                    }
+                    ProductController.getInstance().disableSort();
+                } else {
+                    for (MenuItem item : sortButton.getItems()) {
+                        if(item.getText().startsWith("Used: ")) {
+                            menuItem.setText("Used: " + menuItem.getText());
+                        }
+                    }
+                    ProductController.getInstance().setCurrentSort("price", true);
+                    menuItem.setText("Used: " + menuItem.getText());
+                }
+                setProductsPart(buttomStyle);
+            }
+        });
+        MenuItem menuItem1= new MenuItem("price descending");
+        menuItem1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (menuItem1.getText().startsWith("Used: ")) {
+                    for (MenuItem item : sortButton.getItems()) {
+                        if(item.getText().startsWith("Used: ")) {
+                            menuItem1.setText(menuItem1.getText().substring(6));
+                        }
+                    }
+                    ProductController.getInstance().disableSort();
+                } else {
+                    for (MenuItem item : sortButton.getItems()) {
+                        if(item.getText().startsWith("Used: ")) {
+                            menuItem1.setText("Used: " + menuItem1.getText());
+                        }
+                    }
+                    ProductController.getInstance().setCurrentSort("price", false);
+                    menuItem1.setText("Used: " + menuItem1.getText());
+                }
+                setProductsPart(buttomStyle);
+            }
+        });
+        MenuItem menuItem2= new MenuItem("score ascending");
+        menuItem2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (menuItem2.getText().startsWith("Used: ")) {
+                    for (MenuItem item : sortButton.getItems()) {
+                        if(item.getText().startsWith("Used: ")) {
+                            menuItem2.setText(menuItem2.getText().substring(6));
+                        }
+                    }
+                    ProductController.getInstance().disableSort();
+                } else {
+                    for (MenuItem item : sortButton.getItems()) {
+                        if(item.getText().startsWith("Used: ")) {
+                            menuItem2.setText("Used: " + menuItem2.getText());
+                        }
+                    }
+                    ProductController.getInstance().setCurrentSort("score", true);
+                    menuItem2.setText("Used: " + menuItem2.getText());
+                }
+                setProductsPart(buttomStyle);
+            }
+        });
+        MenuItem menuItem3= new MenuItem("score descending");
+        menuItem3.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (menuItem3.getText().startsWith("Used: ")) {
+                    for (MenuItem item : sortButton.getItems()) {
+                        if(item.getText().startsWith("Used: ")) {
+                            menuItem3.setText(menuItem3.getText().substring(6));
+                        }
+                    }
+                    ProductController.getInstance().disableSort();
+                } else {
+                    for (MenuItem item : sortButton.getItems()) {
+                        if(item.getText().startsWith("Used: ")) {
+                            menuItem3.setText("Used: " + menuItem3.getText());
+                        }
+                    }
+                    ProductController.getInstance().setCurrentSort("score", false);
+                    menuItem3.setText("Used: " + menuItem3.getText());
+                }
+                setProductsPart(buttomStyle);
+            }
+        });
+        MenuItem menuItem4= new MenuItem("newest ascending");
+        menuItem4.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (menuItem4.getText().startsWith("Used: ")) {
+                    for (MenuItem item : sortButton.getItems()) {
+                        if(item.getText().startsWith("Used: ")) {
+                            menuItem4.setText(menuItem4.getText().substring(6));
+                        }
+                    }
+                    ProductController.getInstance().disableSort();
+                } else {
+                    for (MenuItem item : sortButton.getItems()) {
+                        if(item.getText().startsWith("Used: ")) {
+                            menuItem4.setText("Used: " + menuItem4.getText());
+                        }
+                    }
+                    ProductController.getInstance().setCurrentSort("newest", true);
+                    menuItem4.setText("Used: " + menuItem4.getText());
+                }
+                setProductsPart(buttomStyle);
+            }
+        });
+        MenuItem menuItem5= new MenuItem("newest descending");
+        menuItem5.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (menuItem5.getText().startsWith("Used: ")) {
+                    for (MenuItem item : sortButton.getItems()) {
+                        if(item.getText().startsWith("Used: ")) {
+                            menuItem5.setText(menuItem5.getText().substring(6));
+                        }
+                    }
+                    ProductController.getInstance().disableSort();
+                } else {
+                    for (MenuItem item : sortButton.getItems()) {
+                        if(item.getText().startsWith("Used: ")) {
+                            menuItem5.setText("Used: " + menuItem5.getText());
+                        }
+                    }
+                    ProductController.getInstance().setCurrentSort("newest", false);
+                    menuItem5.setText("Used: " + menuItem5.getText());
+                }
+                setProductsPart(buttomStyle);
+            }
+        });
+        sortButton.getItems().add(menuItem);
+        sortButton.getItems().add(menuItem1);
+        sortButton.getItems().add(menuItem2);
+        sortButton.getItems().add(menuItem3);
+        sortButton.getItems().add(menuItem4);
+        sortButton.getItems().add(menuItem5);
+        return sortButton;
+    }
+
+    private CheckBox getOfferCheckBox(String buttonStyle) {
         CheckBox checkBox = new CheckBox("Offers");
         checkBox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -214,65 +400,160 @@ public class ProductsPageScene extends Menu {
                 } else {
                     offerChecker = false;
                 }
-                productPartSetter(buttomStyle);
+                setProductsPart(buttonStyle);
             }
         });
-            MenuButton menuButton = new MenuButton("Brands");
-            ArrayList<MenuItem> menuItemArrayList1 = new ArrayList<>();
-            for (String s2 : ProductController.getInstance().getAllBrands()) {
-                Text text1 = new Text("");
-                MenuItem menuItem1 = new MenuItem(s2);
-                menuItemArrayList1.add(menuItem1);
-                menuItem1.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        if (menuItem1.getText().startsWith("Used: ")) {
-                            if (ProductController.getInstance().getAllBrandsToFilter() == null) {
-                                ProductController.getInstance().setAllBrandsToFilter(new ArrayList<>());
-                            }
-                            menuItem1.setText(menuItem1.getText().substring(6));
-                            System.out.println(menuItem1.getText());
-                            if (ProductController.getInstance().getAllBrandsToFilter().contains(menuItem1.getText())){
-                                System.out.println("123123123");
-                                ArrayList<String> arrayList = ProductController.getInstance().getAllBrandsToFilter();
-                                arrayList.remove(menuItem1.getText());
-                                ProductController.getInstance().setAllBrandsToFilter(arrayList);
-                            }
-                        } else {
-                            if (ProductController.getInstance().getAllBrandsToFilter() == null) {
-                                ProductController.getInstance().setAllBrandsToFilter(new ArrayList<>());
-                            }
-                            if (!ProductController.getInstance().getAllBrandsToFilter().contains(menuItem1.getText())) {
-                                System.out.println("123123123");
-                                ArrayList<String> arrayList = ProductController.getInstance().getAllBrandsToFilter();
-                                arrayList.add(menuItem1.getText());
-                                ProductController.getInstance().setAllBrandsToFilter(arrayList);
-                            }
-                            menuItem1.setText("Used: " + menuItem1.getText());
-                        }
-                    }
-                });
-            for (MenuItem item : menuItemArrayList1) {
-                menuButton.getItems().add(item);
-            }
-        }
-            menuButton.setStyle(menuBarStyle);
-        GridPane price = priceFilters();
-        leftMenuGridPane.setVgap(5);
-        leftMenuGridPane.getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.ALWAYS, HPos.CENTER, false));
-        leftMenuGridPane.add(checkBox, 0, 3);
-        leftMenuGridPane.add(featuresGridPane, 0, 2);
-        leftMenuGridPane.add(price, 0, 4, 1, 2);
-        leftMenuGridPane.add(menuButton, 0, 6, 1, 1);
-
-        gridPane.add(leftMenuGridPane, 0, 0);
-        centerGridPane.add(gridPane, 0, 1, 1, 6);
-        centerGridPane.add(pageTitle, 0, 0, 1, 1);
-        productPartSetter(buttomStyle);
-        centerGridPane.add(centerGridPaneTosh, 1, 1);
+        return checkBox;
     }
 
-    private GridPane priceFilters() {
+    private MenuButton getBrandFilterButton(String buttonStyle, String menuBarStyle) {
+        MenuButton brandFilterButton = new MenuButton("Brands");
+        ArrayList<MenuItem> menuItemArrayList1 = new ArrayList<>();
+        for (String s2 : ProductController.getInstance().getAllBrands()) {
+            Text text1 = new Text("");
+            MenuItem menuItem1 = new MenuItem(s2);
+            menuItemArrayList1.add(menuItem1);
+            menuItem1.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    if (menuItem1.getText().startsWith("Used: ")) {
+                        if (ProductController.getInstance().getAllBrandsToFilter() == null) {
+                            ProductController.getInstance().setAllBrandsToFilter(new ArrayList<>());
+                        }
+                        menuItem1.setText(menuItem1.getText().substring(6));
+                        if (ProductController.getInstance().getAllBrandsToFilter().contains(menuItem1.getText())) {
+                            ArrayList<String> arrayList = ProductController.getInstance().getAllBrandsToFilter();
+                            arrayList.remove(menuItem1.getText());
+                            ProductController.getInstance().setAllBrandsToFilter(arrayList);
+                        }
+                        setProductsPart(buttonStyle);
+                    } else {
+                        if (ProductController.getInstance().getAllBrandsToFilter() == null) {
+                            ProductController.getInstance().setAllBrandsToFilter(new ArrayList<>());
+                        }
+                        if (!ProductController.getInstance().getAllBrandsToFilter().contains(menuItem1.getText())) {
+                            ArrayList<String> arrayList = ProductController.getInstance().getAllBrandsToFilter();
+                            arrayList.add(menuItem1.getText());
+                            ProductController.getInstance().setAllBrandsToFilter(arrayList);
+                        }
+                        menuItem1.setText("Used: " + menuItem1.getText());
+                        setProductsPart(buttonStyle);
+
+                    }
+                }
+            });
+        }
+        for (MenuItem item : menuItemArrayList1) {
+            brandFilterButton.getItems().add(item);
+        }
+        brandFilterButton.setStyle(menuBarStyle);
+        return brandFilterButton;
+    }
+
+    private MenuButton getSellerFilterButton(String buttonStyle, String menuBarStyle) {
+        MenuButton sellersFilterButton = new MenuButton("Sellers");
+        ArrayList<MenuItem> menuItemArrayList1 = new ArrayList<>();
+        for (String s2 : ProductController.getInstance().getAllSellers()) {
+            Text text1 = new Text("");
+            MenuItem menuItem1 = new MenuItem(s2);
+            menuItemArrayList1.add(menuItem1);
+            menuItem1.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    if (menuItem1.getText().startsWith("Used: ")) {
+                        if (ProductController.getInstance().getAllSellersToFilter() == null) {
+                            ProductController.getInstance().setAllSellersToFilter(new ArrayList<>());
+                        }
+                        menuItem1.setText(menuItem1.getText().substring(6));
+                        if (ProductController.getInstance().getAllSellersToFilter().contains(menuItem1.getText())) {
+                            ArrayList<String> arrayList = ProductController.getInstance().getAllSellersToFilter();
+                            arrayList.remove(menuItem1.getText());
+                            ProductController.getInstance().setAllSellersToFilter(arrayList);
+                        }
+                        setProductsPart(buttonStyle);
+                    } else {
+                        if (ProductController.getInstance().getAllSellersToFilter() == null) {
+                            ProductController.getInstance().setAllSellersToFilter(new ArrayList<>());
+                        }
+                        if (!ProductController.getInstance().getAllSellersToFilter().contains(menuItem1.getText())) {
+                            ArrayList<String> arrayList = ProductController.getInstance().getAllSellersToFilter();
+                            arrayList.add(menuItem1.getText());
+                            ProductController.getInstance().setAllSellersToFilter(arrayList);
+                        }
+                        menuItem1.setText("Used: " + menuItem1.getText());
+                        setProductsPart(buttonStyle);
+
+                    }
+                }
+            });
+        }
+        for (MenuItem item : menuItemArrayList1) {
+            sellersFilterButton.getItems().add(item);
+        }
+        sellersFilterButton.setStyle(menuBarStyle);
+        return sellersFilterButton;
+    }
+
+    private MenuButton getProductStatusFilterButton(String buttonStyle, String menuBarStyle) {
+        MenuButton sellersFilterButton = new MenuButton("Status");
+        ArrayList<MenuItem> menuItemArrayList1 = new ArrayList<>();
+        ArrayList<ProductStatus> allProductStatusToFilter = new ArrayList<>();
+        ArrayList<String> allAvailableProductStatus = new ArrayList<>();
+        allAvailableProductStatus.add(ProductStatus.accepted.getName());
+        allAvailableProductStatus.add(ProductStatus.inCreatingProgress.getName());
+        allAvailableProductStatus.add(ProductStatus.editing.getName());
+        ArrayList<ProductStatus> allAvailableProductStatus1 = new ArrayList<>();
+        allAvailableProductStatus1.add(ProductStatus.accepted);
+        allAvailableProductStatus1.add(ProductStatus.inCreatingProgress);
+        allAvailableProductStatus1.add(ProductStatus.editing);
+        for (String s2 : allAvailableProductStatus) {
+            Text text1 = new Text("");
+            MenuItem menuItem1 = new MenuItem(s2);
+            menuItemArrayList1.add(menuItem1);
+            menuItem1.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    if (menuItem1.getText().startsWith("Used: ")) {
+                        if (ProductController.getInstance().getAllProductStatusToFilter() == null) {
+                            ProductController.getInstance().setAllStatusToFilter(new ArrayList<>());
+                        }
+                        menuItem1.setText(menuItem1.getText().substring(6));
+                        for (ProductStatus status : allProductStatusToFilter) {
+                            if (status.getName().equals(s2)) {
+                                allProductStatusToFilter.remove(status);
+                                ProductController.getInstance().setAllStatusToFilter(allProductStatusToFilter);
+                                break;
+                            }
+                        }
+                        setProductsPart(buttonStyle);
+                    } else {
+                        if (ProductController.getInstance().getAllProductStatusToFilter() == null) {
+                            ProductController.getInstance().setAllStatusToFilter(new ArrayList<>());
+                        }
+                        for (ProductStatus status : allAvailableProductStatus1) {
+                            if (status.getName().equals(s2)) {
+                                if (!allProductStatusToFilter.contains(status)) {
+                                    allProductStatusToFilter.add(status);
+                                }
+                                ProductController.getInstance().setAllStatusToFilter(allProductStatusToFilter);
+                                break;
+                            }
+                        }
+                        menuItem1.setText("Used: " + menuItem1.getText());
+                        setProductsPart(buttonStyle);
+
+                    }
+                }
+            });
+        }
+        for (MenuItem item : menuItemArrayList1) {
+            sellersFilterButton.getItems().add(item);
+        }
+        sellersFilterButton.setStyle(menuBarStyle);
+        return sellersFilterButton;
+    }
+
+    private GridPane priceFilters(String buttonStyle) {
         GridPane price = new GridPane();
         Label minValue = new Label("Min Price:");
         Label maxValue = new Label("Max Price:");
@@ -284,8 +565,26 @@ public class ProductsPageScene extends Menu {
         price.add(minPrice, 1, 0);
         price.add(maxValue, 0, 1);
         price.add(maxPrice, 1, 1);
+        GridPane gridPane = new GridPane();
+        Button setPriceFilters = new Button("Set price Filter");
+        setPriceFilters.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if ((Pattern.matches("\\d+\\.?\\d*", minPrice.getText()) || minPrice.getText().isEmpty()) && (Pattern.matches("\\d+\\.?\\d*", maxPrice.getText()) || maxPrice.getText().isEmpty())) {
+                    ProductController.getInstance().setMaxAndMinAmount(minPrice.getText().isEmpty() ? 0 : Double.parseDouble(minPrice.getText().trim()),
+                            maxPrice.getText().isEmpty() ? Double.POSITIVE_INFINITY : Double.parseDouble(maxPrice.getText().trim()));
+                }else  {
+                    ProductController.getInstance().disablePriceFilter();
+                }
+                setProductsPart(buttonStyle);
+            }
+        });
+        gridPane.add(price, 0, 0);
+        gridPane.add(setPriceFilters, 0, 1, 2, 1);
+        gridPane.getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.ALWAYS, HPos.CENTER, true));
         price.setVgap(2);
-        return price;
+        gridPane.setVgap(2);
+        return gridPane;
     }
 
     public ArrayList<Product> showProductsAfterFilterAndSort() {
@@ -296,7 +595,7 @@ public class ProductsPageScene extends Menu {
         }
     }
 
-    private void productPartSetter(String buttomStyle) {
+    private void setProductsPart(String buttonStyle) {
         ProductController.getInstance().getAllProductsFromServer();
         ArrayList<GridPane> gridPanes = new ArrayList<>();
         centerGridPaneTosh.getChildren().clear();
@@ -420,7 +719,7 @@ public class ProductsPageScene extends Menu {
         ArrayList<Button> buttons = new ArrayList<>();
         for (int i = 0; i < productsPages.size(); i++) {
             buttons.add(new Button(Integer.toString(i + 1)));
-            buttons.get(i).setStyle(buttomStyle);
+            buttons.get(i).setStyle(buttonStyle);
             buttons.get(i).setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
@@ -463,8 +762,6 @@ public class ProductsPageScene extends Menu {
         buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
         if (productsPages.size() > 0) {
             productsPages.get(0).add(buttons1, 1, 5, 7, 1);
-        }
-        if (productsPages.size() > 0) {
             centerGridPaneTosh.add(productsPages.get(0), 1, 1, 1, 1);
         } else {
             ImageView imageView = new ImageView(new Image("file:src/empty.png"));
@@ -596,7 +893,6 @@ public class ProductsPageScene extends Menu {
                 public void handle(ActionEvent event) {
                     GridPane gridPane = new GridPane();
                     selectedCategory.setText(s);
-                    System.out.println(s);
                     Category category1 = new Category(null, null);
                     CategoryController.getInstance().updateAllCategories();
                     for (Category category : CategoryController.getInstance().getAllCategories()) {
