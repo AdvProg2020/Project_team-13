@@ -2,9 +2,6 @@ package View;
 
 import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
-import Controller.Client.DiscountController;
-import Controller.Client.ManagerController;
-import Models.DiscountCode;
 import Models.Product.Category;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -25,11 +22,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.regex.Pattern;
 
 public class CreateCategoryMenu extends Menu {
     private TextField maxAmount, firstName, lastName, email, credit, phoneNumber;
