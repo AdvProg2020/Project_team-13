@@ -66,6 +66,7 @@ public class ProductMenu extends Menu {
     }
 
     private void setCenterGridPane() {
+        ProductController.getInstance().getAllProductsFromServer();
         product = ClientController.getInstance().getCurrentProduct();
         ImageView productImage = new ImageView(new Image(product.getImagePath()));
         ImageView productZoomedImage = new ImageView(new Image(product.getImagePath()));
@@ -529,7 +530,7 @@ public class ProductMenu extends Menu {
                 star5.setImage(goldStar);
             if (rate > 0) {
                 if (add) {
-                    product.addScore(new Score(ClientController.getInstance().getCurrentUser().getUsername(), product.getProductId(), rate));
+                    ProductController.getInstance().rating(product.getProductId(),rate);
                     setLengthOfStarBars();
                 }
                 isScored = true;

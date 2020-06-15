@@ -64,7 +64,7 @@ public class ManageDiscountCodesMenu extends Menu{
         addDiscountCode.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                // Handle Add Discount Code Menu
+                new CreateDiscountCodeMenu(stage).execute();
             }
         });
         if (!DiscountController.getInstance().getAllDiscountCodes().isEmpty()) {

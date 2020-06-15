@@ -666,17 +666,6 @@ public class Menu {
                 public void handle(MouseEvent event) {
                     popupwindow.hide();
                     scene.setFill(null);
-                    if (message.startsWith("Register Successful")) {
-                        new UserMenuScene(stage).execute();
-                    } else if (message.startsWith("Login successful")) {
-                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
-                            new UserMenuScene(stage).execute();
-                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
-                            new SellerMenuScene(stage).execute();
-                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
-                            new ManagerMenuScene(stage).execute();
-                        }
-                    }
                 }
             });
             button.setFill(Color.WHITE);
@@ -689,18 +678,6 @@ public class Menu {
                 public void handle(MouseEvent event) {
                     popupwindow.hide();
                     scene.setFill(null);
-                    ClientController.getInstance().back();
-                    if (message.startsWith("Register Successful")) {
-                        new UserMenuScene(stage).execute();
-                    } else if (message.startsWith("Login successful")) {
-                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
-                            new UserMenuScene(stage).execute();
-                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
-                            new SellerMenuScene(stage).execute();
-                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
-                            new ManagerMenuScene(stage).execute();
-                        }
-                    }
                 }
             });
             Label error = new Label("Error");
@@ -720,17 +697,6 @@ public class Menu {
                 public void handle(MouseEvent event) {
                     popupwindow.hide();
                     scene.setFill(null);
-                    if (message.startsWith("Register Successful")) {
-                        new UserMenuScene(stage).execute();
-                    } else if (message.startsWith("Login successful")) {
-                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
-                            new UserMenuScene(stage).execute();
-                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
-                            new SellerMenuScene(stage).execute();
-                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
-                            new ManagerMenuScene(stage).execute();
-                        }
-                    }
                 }
             });
             button.setFill(Color.WHITE);
@@ -743,17 +709,6 @@ public class Menu {
                 public void handle(MouseEvent event) {
                     popupwindow.hide();
                     scene.setFill(null);
-                    if (message.startsWith("Register Successful")) {
-                        new UserMenuScene(stage).execute();
-                    } else if (message.startsWith("Login successful")) {
-                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
-                            new UserMenuScene(stage).execute();
-                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
-                            new SellerMenuScene(stage).execute();
-                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
-                            new ManagerMenuScene(stage).execute();
-                        }
-                    }
                 }
             });
             Label error = new Label("Message");
@@ -774,7 +729,7 @@ public class Menu {
                     popupwindow.hide();
                     ClientController.getInstance().back();
                     scene.setFill(null);
-                    if (message.startsWith("Register Successful")) {
+                    /*if (message.startsWith("Register Successful")) {
                         new UserMenuScene(stage).execute();
                     } else if (message.startsWith("Login successful")) {
                         if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
@@ -784,7 +739,7 @@ public class Menu {
                         } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
                             new ManagerMenuScene(stage).execute();
                         }
-                    }
+                    }*/
                 }
             });
             button.setFill(Color.WHITE);
@@ -797,17 +752,17 @@ public class Menu {
                 public void handle(MouseEvent event) {
                     popupwindow.hide();
                     scene.setFill(null);
-                    if (message.startsWith("Register Successful")) {
-                        new UserMenuScene(stage).execute();
-                    } else if (message.startsWith("Login successful")) {
-                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
-                            new UserMenuScene(stage).execute();
-                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
-                            new SellerMenuScene(stage).execute();
-                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
-                            new ManagerMenuScene(stage).execute();
-                        }
-                    }
+//                    if (message.startsWith("Register Successful")) {
+//                        new UserMenuScene(stage).execute();
+//                    } else if (message.startsWith("Login successful")) {
+//                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
+//                            new UserMenuScene(stage).execute();
+//                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
+//                            new SellerMenuScene(stage).execute();
+//                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
+//                            new ManagerMenuScene(stage).execute();
+//                        }
+//                    }
                 }
             });
             Label error = new Label("Message");

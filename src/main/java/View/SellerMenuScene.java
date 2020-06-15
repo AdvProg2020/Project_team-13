@@ -278,7 +278,7 @@ public class SellerMenuScene extends Menu{
         salesHistoryButton.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
-                new SalesHistoryMenu(stage).execute();
+                new SalesHistoryMenu(stage,0).execute();
             }
         });
         salesHistoryButton.setTextAlignment(TextAlignment.CENTER);

@@ -57,13 +57,13 @@ public class DiscountCode {
 
     public String view() {
         String data = "";
-        data += "\u001B[34mCode: \u001B[0m" + discountCodeID + "\n";
-        data += "\u001B[34mPercent: \u001B[0m" + discountPercent + "%\n";
-        data += "\u001B[34mMax Amount: \u001B[0m" + maxDiscountAmount + "\n";
-        data += "\u001B[34mStart time: \u001B[0m" + startTime + "\n";
-        data += "\u001B[34mEnd time: \u001B[0m" + endTime + "\n";
+        data += "Code: " + discountCodeID + "\n";
+        data += "Percent: " + discountPercent + "%\n";
+        data += "Max Amount: " + maxDiscountAmount + "\n";
+        data += "Start time: " + startTime + "\n";
+        data += "End time: " + endTime + "\n";
         for (String userame : allUserAccountsThatHaveDiscount) {
-            data += "\u001B[34mUsername: \u001B[0m"+userame + " \u001B[34mRemaining time: \u001B[0m " + remainingTimesForEachCustomer.get(userame) + "\u001B[34m/\u001B[0m" + maxUsingTime.get(userame) + "\n";
+            data += "Username: "+userame + " Remaining time: " + remainingTimesForEachCustomer.get(userame) + "/" + maxUsingTime.get(userame) + "\n";
         }
         return data;
     }

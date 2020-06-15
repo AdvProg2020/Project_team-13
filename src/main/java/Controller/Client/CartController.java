@@ -42,7 +42,7 @@ public class CartController {
 
     public void changeCountOfProduct(Product product, boolean amount) {
         if (amount) {
-            if (product.getNumberOfAvailableProducts() > currentCart.getCountOfEachProduct().get(product.getProductId()) + 1)
+            if (product.getNumberOfAvailableProducts() >= currentCart.getCountOfEachProduct().get(product.getProductId()) + 1)
                 currentCart.getCountOfEachProduct().replace(product.getProductId(), currentCart.getCountOfEachProduct().get(product.getProductId()) + 1);
         } else {
             if (currentCart.getCountOfEachProduct().get(product.getProductId()) - 1 > 0) {

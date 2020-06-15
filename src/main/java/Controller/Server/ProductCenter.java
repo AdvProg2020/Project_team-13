@@ -38,18 +38,20 @@ public class ProductCenter {
 
     public void decreaseProductCount(String productId, int count) {
         Product product = findProductWithID(productId);
-        if (product.getNumberOfAvailableProducts() - count > 1) {
+        if (product.getNumberOfAvailableProducts() - count >=0) {
+            System.out.println("count"+count);
             product.setNumberOfAvailableProducts(product.getNumberOfAvailableProducts() - count);
             UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).reduceProductCount(productId, count);
             if (OffCenter.getInstance().findProductWithID(productId) != null) {
                 OffCenter.getInstance().findProductWithID(productId).setNumberOfAvailableProducts(OffCenter.getInstance().findProductWithID(productId).getNumberOfAvailableProducts() - count);
             }
-        } else {
-            allProducts.remove(product);
-            UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).removeProduct(productId);
-            OffCenter.getInstance().removeProduct(productId);
-
         }
+//        else {
+//            allProducts.remove(product);
+//            UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).removeProduct(productId);
+//            OffCenter.getInstance().removeProduct(productId);
+//
+//        }
 
     }
 
@@ -65,7 +67,6 @@ public class ProductCenter {
         DataBase.getInstance().updateAllOffers(new Gson().toJson(OffCenter.getInstance().getAllOffers()));
         DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
         DataBase.getInstance().updateAllSellers(new Gson().toJson(UserCenter.getIncstance().getAllSeller()));
-        ServerController.getInstance().sendMessageToClient("@Successful@successfully rating");
     }
     public void commenting(String json){
         Comment comment=new Gson().fromJson(json,Comment.class);

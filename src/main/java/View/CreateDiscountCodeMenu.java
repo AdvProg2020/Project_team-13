@@ -110,6 +110,11 @@ public class CreateDiscountCodeMenu extends Menu {
 
 
     private void setCenterGridPane() {
+        ComboBox comboBox=new ComboBox();
+        comboBox.setEditable(true);
+        for (Customer customer : ManagerController.getInstance().getAllCustomers()) {
+            comboBox.getItems().add(customer.getUsername());
+        }
         userInfoGridPane.setVgap(10);
         userInfoGridPane.setHgap(20);
         userInfoGridPane.setMinWidth(650);
@@ -176,7 +181,7 @@ public class CreateDiscountCodeMenu extends Menu {
         email.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
         phoneNumber.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
         credit.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
-        firstName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30;");
+        comboBox.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30;");
         lastName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30;");
         userInfoGridPane.add(maxAmountText, 5, 9, 3, 1);
         userInfoGridPane.add(discountPercentText, 5, 10, 3, 1);
@@ -189,7 +194,7 @@ public class CreateDiscountCodeMenu extends Menu {
         userInfoGridPane.add(discountPercent, 8, 10, 6, 1);
         userInfoGridPane.add(startDatePicker, 8, 11, 6, 1);
         userInfoGridPane.add(endDatePicker, 8, 12, 6, 1);
-        userInfoGridPane.add(firstName, 19, 9, 6, 1);
+        userInfoGridPane.add(comboBox, 19, 9, 6, 1);
         userInfoGridPane.add(lastName, 19, 10, 6, 1);
         userInfoGridPane.add(signUp, 13, 16, 5, 1);
         userInfoGridPane.add(errorText, 7, 14, 10, 1);
@@ -200,14 +205,14 @@ public class CreateDiscountCodeMenu extends Menu {
         adduser.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(!firstName.getText().equals("")){
+                if(!((String)comboBox.getValue()).equals("")){
                     if(lastName.getText().matches("\\d+")){
-                        if(ManagerController.getInstance().isThereCustomerWithThisUsername(firstName.getText())){
-                            if(!allUsers.contains(firstName.getText())) {
-                                allUsers.add(firstName.getText());
-                                remainingTimesForEachCustomer.put(firstName.getText(), Integer.parseInt(lastName.getText()));
-                                maxUsingTime.put(firstName.getText(), Integer.parseInt(lastName.getText()));
-                                firstName.setText("");
+                        if(ManagerController.getInstance().isThereCustomerWithThisUsername(((String)comboBox.getValue()))){
+                            if(!allUsers.contains(((String)comboBox.getValue()))) {
+                                allUsers.add(((String)comboBox.getValue()));
+                                remainingTimesForEachCustomer.put(((String)comboBox.getValue()), Integer.parseInt(lastName.getText()));
+                                maxUsingTime.put(((String)comboBox.getValue()), Integer.parseInt(lastName.getText()));
+                                comboBox.setValue("");
                                 lastName.setText("");
                             }else
                                 ClientController.getInstance().getCurrentMenu().showMessage("this user already has this discount code",MessageKind.ErrorWithoutBack);
@@ -218,7 +223,7 @@ public class CreateDiscountCodeMenu extends Menu {
                         errorText.setText("Number of discount is invalid.");
                     }
                 }else {
-                    firstName.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                    comboBox.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                     errorText.setText("username is invalid.");
                 }
             }
@@ -231,7 +236,7 @@ public class CreateDiscountCodeMenu extends Menu {
                 startDatePicker.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
                 phoneNumber.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30;");
                 endDatePicker.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
-                firstName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
+                comboBox.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
                 lastName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
                 errorText.setText("");
                 if (checkdiscountPercentIsvalid(discountPercent.getText().trim())) {

@@ -316,9 +316,24 @@ public class CartMenu extends Menu {
                         public void handle(MouseEvent event) {
                             if (discountCode1 != null)
                                 CartController.getInstance().getCurrentCart().setDiscountCode(discountCode1);
-                            CartController.getInstance().getCurrentCart().setReceivingInformation(getTitle.getText()+"\n"+getContent.getText());
-                            CartController.getInstance().getCurrentCart().setCustomerID(ClientController.getInstance().getCurrentUser().getUsername());
-                            CartController.getInstance().pay();
+                            if(!getContent.getText().equals("")&&!getTitle.getText().equals("")) {
+                                if(getTitle.getText().matches("\\d\\d\\d\\d\\d\\d\\d\\d+")) {
+                                    CartController.getInstance().getCurrentCart().setReceivingInformation(getTitle.getText() + "\n" + getContent.getText());
+                                    CartController.getInstance().getCurrentCart().setCustomerID(ClientController.getInstance().getCurrentUser().getUsername());
+                                    CartController.getInstance().pay();
+                                    popupwindow.hide();
+                                    scene.setFill(null);
+                                }else{
+                                    getTitle.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30;");
+                                    errorText.setText("Phone Number is invalid");
+                                }
+                            }else if(getContent.getText().equals("")){
+                                getContent.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30;");
+                                errorText.setText("Address is empty");
+                            }else if(getTitle.getText().equals("")){
+                                getTitle.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30;");
+                                errorText.setText("Phone Number is empty");
+                            }
                         }
                     });
                     checkDiscountCodeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {

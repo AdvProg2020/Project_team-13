@@ -85,11 +85,13 @@ public class Product {
         if (imagePath != null) {
             if (imagePath.equals("") || imagePath.length() < 5) {
                 return "file:src/product_icon.png";
-            } else {
+            } else if(numberOfAvailableProducts>0){
                 File file = new File(imagePath);
                 if (file == null || !file.exists()) {
                     return "file:src/product_icon.png";
                 }
+            }else {
+                return "file:src/sold_out.png";
             }
             return imagePath;
         }
@@ -358,6 +360,8 @@ public class Product {
 
         }
         attributes += "Category: " + getProductsCategory() + "<br>";
+        attributes += "Available Numbers: " + getNumberOfAvailableProducts() + "<br>";
+        attributes += "Status: " + getProductStatus() + "<br>";
         for (String feature : featuresOfCategoryThatHas.keySet()) {
             attributes += feature + ": " + featuresOfCategoryThatHas.get(feature) + "<br>";
         }

@@ -227,7 +227,26 @@ public class UserMenuScene extends Menu {
         ordersButton.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
-                new OrdersMenu(stage).execute();
+                new OrdersMenu(stage,0).execute();
+            }
+        });
+        discountCodesButton.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+            }
+        });
+        discountCodesButton.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
+        discountCodesButton.setOnMouseClicked(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                new CustomerDiscountCodeMenu(stage).execute();
             }
         });
         ordersButton.setTextAlignment(TextAlignment.CENTER);
