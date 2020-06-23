@@ -1,39 +1,32 @@
 package View;
 
-import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
 import Controller.Client.ProductController;
-import Models.Product.Category;
 import Models.Product.Product;
-import Models.UserAccount.Seller;
 import com.google.gson.Gson;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Control;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.regex.Pattern;
 
 public class ManageProductsForManager extends Menu {
     GridPane productsPages;
@@ -280,30 +273,6 @@ public class ManageProductsForManager extends Menu {
         GridPane leftMenuGridPane = new GridPane();
         leftMenuGridPane.setMinHeight(400);
         leftMenuGridPane.setStyle("-fx-background-color:rgba(45, 156, 240, 1);");
-        Button addProduct = new Button("Add product");
-        addProduct.setTextAlignment(TextAlignment.CENTER);
-        addProduct.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
-        addProduct.setMinHeight(50);
-        addProduct.setMinWidth(150);
-        addProduct.setOnMouseEntered(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
-            }
-        });
-        addProduct.setOnMouseExited(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
-            }
-        });
-        addProduct.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                new AddProductScene(stage).execute();
-            }
-        });
-        leftMenuGridPane.add(addProduct, 0, 2, 2, 2);
         centerGridPane.add(leftMenuGridPane, 0, 1, 1, 6);
         centerGridPane.add(pageTitle, 0, 0, 1, 1);
         if (productsPages.size() > 0) {
