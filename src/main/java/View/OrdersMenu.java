@@ -81,7 +81,7 @@ public class  OrdersMenu extends Menu {
             pageGridPane.getChildren().remove(centerGridPane);
             pageGridPane.getChildren().remove(bottomGridPane);
             borderPane = new BorderPane();
-            Label noRequest = new Label("There is No Sell History!!");
+            Label noRequest = new Label("There is No Orders!!");
             noRequest.setTranslateY(150);
             noRequest.setFont(Font.loadFont("file:src/Bangers.ttf", 50));
             borderPane.setCenter(noRequest);
