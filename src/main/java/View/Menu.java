@@ -30,6 +30,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +43,7 @@ public class Menu {
     protected Media mainSong = new Media(new File("src/DesertOfSadness.mp3").toURI().toString());
     protected Media productsSong = new Media(new File("src/If_I_Could_Tell_You.mp3").toURI().toString());
     protected Media usersSong = new Media(new File("src/InTHeMorningLight.mp3").toURI().toString());
+
     public Menu(Stage stage) {
         this.stage = stage;
         upGridPane = new GridPane();
@@ -119,7 +121,6 @@ public class Menu {
             for (MenuItem menuItem : menuItemArrayList) {
                 products.getItems().add(menuItem);
             }
-            products.setTextFill(Color.WHITE);
             products.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
@@ -139,7 +140,7 @@ public class Menu {
 //                    ClientController.getInstance().back();
                 }
             });
-            products.setStyle("-fx-background-color: rgba(45, 156, 240, 0.24);-fx-text-fill: White;");
+            products.setStyle("-fx-background-color: rgba(45, 156, 240, 0.24);");
             home.setStyle("-fx-background-color:rgba(45, 156, 240, 0.31);-fx-text-fill: White;-fx-font-weight: bold;");
             ImageView back = new ImageView(new Image("file:src/back.png"));
             back.setFitWidth(40);
@@ -166,7 +167,7 @@ public class Menu {
             });
             leftGridPane.add(back, 0, 0);
             leftGridPane.add(home, 1, 0);
-            products.setTextFill(Color.WHITE);
+            //  products.setTextFill(Color.WHITE);
             leftGridPane.add(products, 2, 0);
             leftGridPane.setHgap(5);
             GridPane rightGridPane = new GridPane();

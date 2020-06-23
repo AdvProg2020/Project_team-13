@@ -314,15 +314,16 @@ public class UserCenter {
         allManager.remove(findManagerWithUsername(manager.getUsername()));
         allManager.add(index, manager);
         DataBase.getInstance().updateAllManagers(new Gson().toJson(allManager));
-        ServerController.getInstance().sendMessageToClient("@Successful@user successfully edited");
+        System.out.println("edited");
+        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@user successfully edited");
     }
 
     public void editCustomer(Customer customer) {
         int index = allCustomer.indexOf(findCustomerWithUsername(customer.getUsername()));
-        allCustomer.remove(findCustomerWithUsername(customer.getUsername()));
+        allCustomer.remove(index);
         allCustomer.set(index, customer);
         DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
-        ServerController.getInstance().sendMessageToClient("@Successful@user successfully edited");
+        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@user successfully edited");
     }
 
     public void editSeller(Seller seller) {
@@ -330,7 +331,7 @@ public class UserCenter {
         allSeller.remove(findCustomerWithUsername(seller.getUsername()));
         allSeller.add(index, seller);
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
-        ServerController.getInstance().sendMessageToClient("@Successful@user successfully edited");
+        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@user successfully edited");
     }
 
     public Seller findSellerWithUsername(String username) {
