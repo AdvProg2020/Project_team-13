@@ -116,7 +116,7 @@ public class SalesHistoryMenu extends Menu {
                     VBox vBox = new VBox();
                     vBox.setAlignment(Pos.CENTER);
                     vBox.setStyle("-fx-background-color: #afafaf");
-                    String[] details = seller.findOrderWithId(allSellLog.get(finalI).getId()).toString().split("\n");
+                    String[] details = seller.findOrderWithId(allSellLog.get(finalI).getId()).viewOrders().split("\n");
                     Label[] label = new Label[details.length];
                     Label label1 = new Label("Details :\n\n");
                     label1.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 30));
