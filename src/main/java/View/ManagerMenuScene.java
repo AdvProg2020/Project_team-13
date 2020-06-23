@@ -296,7 +296,7 @@ public class ManagerMenuScene extends Menu {
         manageCategoriesButton.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
-                new ManageCategoryMenu(stage).execute();
+                new ManageCategoryMenu(stage, 0).execute();
             }
         });
         Button manageDiscountsButton = new Button("Manage Discount Codes");
