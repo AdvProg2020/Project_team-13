@@ -192,6 +192,7 @@ public class UserMenuScene extends Menu {
             if (selectedFile != null) {
                 userIcon.setImage(new Image("file:" + selectedFile.getAbsolutePath()));
                 customer.setImagePath("file:" + selectedFile.getAbsolutePath());
+                ClientController.getInstance().sendMessageToServer("@editSeller@" + new Gson().toJson(customer));
             }
         });
         editPhotoButton.setGraphic(editPic);

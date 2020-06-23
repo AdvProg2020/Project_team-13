@@ -83,21 +83,21 @@ public class RequestCenter {
         ProductCenter.getInstance().createProduct(new Gson().fromJson(request.getDetails(), Product.class));
         String arrayData = new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);
-        ServerController.getInstance().sendMessageToClient("@Successful@" + "request accepted successfully");
+        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@" + "request accepted successfully");
     }
     public void acceptCommentRequest(Request request) {
         allRequests.remove(request);
         ProductCenter.getInstance().addComment(new Gson().fromJson(request.getDetails(), Comment.class));
         String arrayData = new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);
-        ServerController.getInstance().sendMessageToClient("@Successful@" + "request accepted successfully");
+        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@" + "request accepted successfully");
     }
     public void acceptSellerRegisterRequest(Request request) {
         if (UserCenter.getIncstance().canAcceptSellerRegister(new Gson().fromJson(request.getDetails(), Seller.class).getUsername())) {
             allRequests.remove(request);
             String arrayData = new Gson().toJson(allRequests);
             DataBase.getInstance().updateAllRequests(arrayData);
-            ServerController.getInstance().sendMessageToClient("@Successful@" + "request accepted successfully");
+            ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@" + "request accepted successfully");
         }
     }
 
@@ -123,7 +123,7 @@ public class RequestCenter {
         OffCenter.getInstance().editOffer(new Gson().fromJson(request.getDetails(), Offer.class));
         String arrayData = new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);
-        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "Request accept successfully"));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("SuccessfulNotBack", "Request accept successfully"));
     }
 
     public void acceptAddOfferRequest(Request request) {
@@ -131,7 +131,7 @@ public class RequestCenter {
         OffCenter.getInstance().createNewOff(new Gson().fromJson(request.getDetails(), Offer.class));
         String arrayData = new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);
-        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "Request accept successfully"));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("SuccessfulNotBack", "Request accept successfully"));
     }
 
     public void acceptEdiProductRequest(Request request) {
@@ -142,7 +142,7 @@ public class RequestCenter {
                 ProductCenter.getInstance().editProduct(product);
                 String arrayData = new Gson().toJson(allRequests);
                 DataBase.getInstance().updateAllRequests(arrayData);
-                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "Request accept successfully"));
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("SuccessfulNotBack", "Request accept successfully"));
                 return;
             }
         }
@@ -157,6 +157,6 @@ public class RequestCenter {
         }
         String arrayData = new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);
-        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "Request declined successfully"));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("SuccessfulNotBack", "Request declined successfully"));
     }
 }

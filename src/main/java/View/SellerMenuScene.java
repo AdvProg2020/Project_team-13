@@ -153,7 +153,7 @@ public class SellerMenuScene extends Menu{
                                                 seller.setPhoneNumber(phoneNumber.getText().trim());
                                                 seller.setPassword(password.getText().trim());
                                                 seller.setCompanyName(companyName.getText().trim());
-                                                ClientController.getInstance().sendMessageToServer("@editCustomer@" + new Gson().toJson(seller));
+                                                ClientController.getInstance().sendMessageToServer("@editSeller@" + new Gson().toJson(seller));
                                                 popupwindow.close();
                                             } else {
                                                 errors.setText("Company name format is invalid\nuse alphabetical characters");
@@ -202,6 +202,7 @@ public class SellerMenuScene extends Menu{
             if (selectedFile != null) {
                 userIcon.setImage(new Image("file:" + selectedFile.getAbsolutePath()));
                 seller.setImagePath("file:" + selectedFile.getAbsolutePath());
+                ClientController.getInstance().sendMessageToServer("@editSeller@" + new Gson().toJson(seller));
             }
         });
         editPhotoButton.setGraphic(editPic);

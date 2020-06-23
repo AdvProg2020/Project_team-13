@@ -39,6 +39,9 @@ public class MessageController {
         } else if (message.startsWith("@Successful@")) {
             message = message.substring(12, message.length());
             ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.MessageWithBack);
+        }else if (message.startsWith("@SuccessfulNotBack@")) {
+            message = message.substring(19);
+            ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.MessageWithoutBack);
         } else if (message.startsWith("@payed@")) {
             message = message.substring(7, message.length());
             CartController.getInstance().payed(message);

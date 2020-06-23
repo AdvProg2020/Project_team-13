@@ -119,7 +119,7 @@ public class ManageCategoryMenu extends Menu implements EventHandler<ActionEvent
 
     private GridPane createPage(Integer param) {
         if(param.equals(pages-1)){
-            setTheCenterInfo(DiscountController.getInstance().getAllDiscountCodes().size() - (param * 4), param);
+            setTheCenterInfo(allCategories.size() - (param * 4), param);
         }else{
             setTheCenterInfo(4, param);
         }
@@ -132,7 +132,7 @@ public class ManageCategoryMenu extends Menu implements EventHandler<ActionEvent
         for (int i = 0; i < allCategories.size(); i++) {
             Button button = new Button("Details");
             button.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 18));
-            button.setTranslateX(0);
+            button.setTranslateX(38);
             int finalI1 = i;
             button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -165,6 +165,7 @@ public class ManageCategoryMenu extends Menu implements EventHandler<ActionEvent
             ImageView imageView = new ImageView(new Image("file:src/edit.png"));
             imageView.setFitHeight(45);
             imageView.setFitWidth(45);
+            imageView.setTranslateX(60);
             int finalI1 = i;
             imageView.setOnMouseClicked(event -> {
                 CategoryController.getInstance().setCurrentCategory(allCategories.get(finalI1));
@@ -178,7 +179,7 @@ public class ManageCategoryMenu extends Menu implements EventHandler<ActionEvent
             ImageView imageView = new ImageView(new Image("file:src/trash1.png"));
             imageView.setFitHeight(45);
             imageView.setFitWidth(45);
-            imageView.setTranslateX(15);
+            imageView.setTranslateX(80);
             int finalI1 = i;
             imageView.setOnMouseClicked(event -> {
                 CategoryController.getInstance().removeCategory(allCategories.get(finalI1).getName());
@@ -210,7 +211,7 @@ public class ManageCategoryMenu extends Menu implements EventHandler<ActionEvent
         gridPane.setTranslateY(1);
         gridPane.add(name, 0, 0);
         gridPane.add(numberOfProducts, 1, 0);
-        allGridPanes.add(pages, gridPane);
+        allGridPanes.set(pages, gridPane);
     }
 
 
@@ -225,10 +226,10 @@ public class ManageCategoryMenu extends Menu implements EventHandler<ActionEvent
         Label[] allLabels = labelMaker(name, numberOfProducts);
         for (int i = 0; i < 2; i++) {
             if(i == 0){
-                allLabels[i].setTranslateX(15);
+                allLabels[i].setTranslateX(30);
             }
             if(i == 1){
-                allLabels[i].setTranslateX(40);
+                allLabels[i].setTranslateX(75);
             }
             allPanes[i].getChildren().add(allLabels[i]);
             allLabels[i].setTranslateY(1);

@@ -143,7 +143,7 @@ public class ManagerMenuScene extends Menu {
                                             manager.setEmail(email.getText().trim());
                                             manager.setPhoneNumber(phoneNumber.getText().trim());
                                             manager.setPassword(password.getText().trim());
-                                            ClientController.getInstance().sendMessageToServer("@editCustomer@" + new Gson().toJson(manager));
+                                            ClientController.getInstance().sendMessageToServer("@editManager@" + new Gson().toJson(manager));
                                             popupwindow.close();
                                         } else {
                                             errors.setText("Phone number is invalid.\nCorrect format:09xxxxxxxxx");
@@ -189,6 +189,7 @@ public class ManagerMenuScene extends Menu {
             if (selectedFile != null) {
                 userIcon.setImage(new Image("file:" + selectedFile.getAbsolutePath()));
                 manager.setImagePath("file:" + selectedFile.getAbsolutePath());
+                ClientController.getInstance().sendMessageToServer("@editManager@" + new Gson().toJson(manager));
             }
         });
         editPhotoButton.setGraphic(editPic);
@@ -257,6 +258,13 @@ public class ManagerMenuScene extends Menu {
             }
         });
         createManagerButton.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+            }
+        });
+        requestsButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
                 scene.setCursor(Cursor.HAND); //Change cursor to hand
