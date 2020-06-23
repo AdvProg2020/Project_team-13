@@ -421,6 +421,10 @@ public class ProductController {
         return null;
     }
 
+    public ArrayList<Product> getAllProducts() {
+        return allProducts;
+    }
+
     public String getTheProductDetails(ArrayList<String> allProducts) {
         if (allProducts != null) {
             StringBuilder allDetails = new StringBuilder();
