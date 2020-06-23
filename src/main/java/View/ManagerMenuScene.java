@@ -37,7 +37,7 @@ public class ManagerMenuScene extends Menu {
         super(stage);
         userInfoGridPane = new GridPane();
         userInfoGridPane = new GridPane();
-        if(ClientController.getInstance().getMediaPlayer()!=null)
+        if (ClientController.getInstance().getMediaPlayer() != null)
             ClientController.getInstance().getMediaPlayer().stop();
         ClientController.getInstance().setMediaPlayer(new MediaPlayer(usersSong));
         ClientController.getInstance().getMediaPlayer().setVolume(0.04);
@@ -328,7 +328,7 @@ public class ManagerMenuScene extends Menu {
         manageDiscountsButton.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
-                new ManageDiscountCodesMenu(stage,0).execute();
+                new ManageDiscountCodesMenu(stage, 0).execute();
             }
         });
         Button manageProductsButton = new Button("Manage Products");
@@ -336,6 +336,26 @@ public class ManagerMenuScene extends Menu {
         manageProductsButton.setStyle("-fx-font-size: 16 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         manageProductsButton.setMinHeight(50);
         manageProductsButton.setMinWidth(150);
+        manageProductsButton.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+            }
+        });
+        manageProductsButton.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
+        manageProductsButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                new ManageProductsForManager(stage).execute();
+            }
+        });
+
         leftMenuGridPane.add(requestsButton, 0, 0, 2, 2);
         leftMenuGridPane.add(manageUsersButton, 0, 2, 2, 2);
         leftMenuGridPane.add(createManagerButton, 0, 4, 2, 2);

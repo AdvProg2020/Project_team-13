@@ -106,7 +106,6 @@ public class ManageProducts extends Menu {
                 @Override
                 public void handle(Event event) {
                     scene.setCursor(Cursor.HAND); //Change cursor to hand
-
                 }
             });
             editInfoPic.setOnMouseExited(new EventHandler() {
@@ -265,7 +264,6 @@ public class ManageProducts extends Menu {
                 @Override
                 public void handle(Event event) {
                     scene.setCursor(Cursor.HAND); //Change cursor to hand
-
                 }
             });
             buttons.get(i).setOnMouseExited(new EventHandler() {
@@ -375,27 +373,12 @@ public class ManageProducts extends Menu {
         stage.show();
     }
 
-    private boolean checkPasswordIsvalid(String word) {
-        if (word.length() > 8 && word.length() < 18) {
-            return true;
-        }
-        return false;
-    }
-
     private boolean checkNameIsvalid(String name) {
-        if (Pattern.matches("(([a-z]|[A-Z])+ )*(([a-z]|[A-Z])+)", name) && !name.isEmpty()) {
+        if (Pattern.matches("(\\w+)( \\w+)*", name) && !name.isEmpty()) {
             return true;
         }
         return false;
     }
-
-    private boolean checkEmailIsvalid(String email) {
-        if (Pattern.matches("\\w+\\.?\\w*@\\w+\\.\\w+", email)) {
-            return true;
-        }
-        return false;
-    }
-
 
     private boolean checkCreditIsvalid(String credit) {
         if (Pattern.matches("\\d+\\.?\\d*", credit)) {
@@ -431,7 +414,6 @@ public class ManageProducts extends Menu {
         GridPane userInfoGridPane;
         userInfoGridPane = new GridPane();
         TextField productName, availableNumbers, description, cost, companyName;
-
         String menuBarStyle = "    -fx-background-radius: 5,4,3,5;\n" +
                 "    -fx-background-insets: 0,1,2,0;\n" +
                 "    -fx-text-fill: white;\n" +
@@ -493,7 +475,7 @@ public class ManageProducts extends Menu {
                 }
             }
         };
-        HashMap<String, String> categoryFeaturesForProduct = new HashMap<>();
+        HashMap<String, String> categoryFeaturesForProduct = currentProduct.getFeaturesOfCategoryThatHas();
         ArrayList<MenuItem> menuItemArrayList = new ArrayList<>();
         String s = currentProduct.getProductsCategory();
         {
@@ -557,6 +539,8 @@ public class ManageProducts extends Menu {
                     gridPane.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);");
                     GridPane featuresGridPane = new GridPane();
                     gridPane.add(featuresGridPane, 1, 1, 1, 1);
+                    featuresGridPane.setHgap(5);
+                    featuresGridPane.setVgap(5);
                     featuresGridPane.setAlignment(Pos.CENTER);
                     int k1 = 0;
                     for (Text text : categoryFeatures.keySet()) {
@@ -586,15 +570,13 @@ public class ManageProducts extends Menu {
                         k1++;
                     }
                     gridPane.getRowConstraints().add(new RowConstraints(20, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.CENTER, true));
-                    gridPane.getRowConstraints().add(new RowConstraints(200, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, true));
                     gridPane.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.ALWAYS, HPos.CENTER, true));
+                    gridPane.getRowConstraints().add(new RowConstraints(200, Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, VPos.TOP, true));
                     gridPane.getColumnConstraints().add(new ColumnConstraints(250, Control.USE_COMPUTED_SIZE, 250, Priority.NEVER, HPos.CENTER, true));
                     featuresGridPane.getColumnConstraints().add(new ColumnConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.ALWAYS, HPos.CENTER, false));
                     featuresGridPane.getColumnConstraints().add(new ColumnConstraints(120, Control.USE_COMPUTED_SIZE, 120, Priority.ALWAYS, HPos.LEFT, false));
                     featuresGridPane.getColumnConstraints().add(new ColumnConstraints(90, Control.USE_COMPUTED_SIZE, 90, Priority.ALWAYS, HPos.LEFT, false));
-                    featuresGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, true));
-                    featuresGridPane.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.CENTER, true));
-                    Scene scene1 = new Scene(gridPane, 320, 240);
+                    Scene scene1 = new Scene(gridPane, 320, categoryFeatures.size()*50 + 200);
                     popupwindow.initModality(Modality.APPLICATION_MODAL);
                     popupwindow.initStyle(StageStyle.UNDECORATED);
                     popupwindow.setScene(scene1);

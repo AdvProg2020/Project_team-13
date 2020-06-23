@@ -34,7 +34,7 @@ public abstract class Menu {
     }
 
     public void printError(String error) {
-        System.out.println("\u001B[31m"+error+"\u001B[0m");
+        System.out.println("\uF01B[31m"+error+"\uF01B[0m");
     }
 
     public void showMessage(String message) {
