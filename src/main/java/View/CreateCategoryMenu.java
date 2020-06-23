@@ -29,16 +29,9 @@ public class CreateCategoryMenu extends Menu {
     private TextField maxAmount, firstName, lastName, email, credit, phoneNumber;
     private TextField discountPercent;
     private DatePicker startDatePicker = new DatePicker();
-    private DatePicker endDatePicker = new DatePicker();
-    private Button loginButton;
-    private Hyperlink createNewAccount;
-    private HashMap<String, Integer> maxUsingTime = new HashMap<>();
-    private HashMap<String, Integer> remainingTimesForEachCustomer = new HashMap<>();
-    private ArrayList<String> allUsers = new ArrayList<>();
     String imagePath = "";
     GridPane userInfoGridPane;
     HashMap<String, ArrayList<String>> featuresOfCategory = new HashMap();
-    String categoryName;
     ArrayList<String> allModesOfFeature = new ArrayList<>();
 
     public CreateCategoryMenu(Stage stage) {
@@ -64,7 +57,7 @@ public class CreateCategoryMenu extends Menu {
         scene.setRoot(pageGridPane);
     }
 
-    public void setMenuBarGridPane()  {
+    public void setMenuBarGridPane() {
         menuBarGridPane.getChildren().clear();
         menuBarGridPane.getColumnConstraints().clear();
         menuBarGridPane.getRowConstraints().clear();
@@ -213,11 +206,11 @@ public class CreateCategoryMenu extends Menu {
                 comboBox.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
                 errorText.setText("");
                 if (!((String) comboBox.getValue()).equals("")) {
-                    if(!allModesOfFeature.contains((String) comboBox.getValue())) {
+                    if (!allModesOfFeature.contains((String) comboBox.getValue())) {
                         comboBox.getItems().add((String) comboBox.getValue());
                         allModesOfFeature.add((String) comboBox.getValue());
                         comboBox.setValue("");
-                    }else{
+                    } else {
                         comboBox.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                         errorText.setText("you can't add same mode");
                     }
@@ -250,14 +243,14 @@ public class CreateCategoryMenu extends Menu {
                 errorText.setText("");
                 if (!(discountPercent.getText()).equals("")) {
                     if (allModesOfFeature.size() != 0) {
-                        if(!featuresOfCategory.containsKey(discountPercent.getText())) {
+                        if (!featuresOfCategory.containsKey(discountPercent.getText())) {
                             featuresOfCategory.put(discountPercent.getText(), allModesOfFeature);
                             discountPercent.setText("");
                             for (String mode : allModesOfFeature) {
                                 comboBox.getItems().remove(mode);
                             }
                             allModesOfFeature = new ArrayList<>();
-                        }else{
+                        } else {
                             discountPercent.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                             errorText.setText("you can't add same feature");
                         }
@@ -286,7 +279,7 @@ public class CreateCategoryMenu extends Menu {
                         CategoryController.getInstance().addNewCategory(new Category(maxAmount.getText(), featuresOfCategory));
                     } else
                         ClientController.getInstance().getCurrentMenu().showMessage("you should add one feature to category at least", MessageKind.ErrorWithoutBack);
-                }else{
+                } else {
                     maxAmount.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                     errorText.setText("Category name is empty");
                 }
@@ -298,11 +291,6 @@ public class CreateCategoryMenu extends Menu {
         stage.setScene(scene);
         stage.show();
     }
-
-
-
-
-
 
 
 }

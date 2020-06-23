@@ -1,4 +1,5 @@
 package View;
+
 import Controller.Client.ClientController;
 import Controller.Client.RequestController;
 import Models.Request;
@@ -18,12 +19,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import java.util.HashMap;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ManageRequestMenu extends Menu{
+public class ManageRequestMenu extends Menu {
     private Map<String, ImageView> accepts;
     private Map<String, ImageView> declines;
     private Map<String, Button> viewDetails;
@@ -57,8 +59,8 @@ public class ManageRequestMenu extends Menu{
         if (RequestController.getInstance().getAllRequests().size() != 0) {
             pageGridPane.getChildren().remove(centerGridPane);
             pageGridPane.getChildren().remove(bottomGridPane);
-            this.setPages(RequestController.getInstance().getAllRequests().size()%4 == 0 ?
-                    RequestController.getInstance().getAllRequests().size()/4 : (RequestController.getInstance().getAllRequests().size()/4) + 1);
+            this.setPages(RequestController.getInstance().getAllRequests().size() % 4 == 0 ?
+                    RequestController.getInstance().getAllRequests().size() / 4 : (RequestController.getInstance().getAllRequests().size() / 4) + 1);
             allGridPanes = new ArrayList<>();
             for (int i = 0; i < page; i++) {
                 allGridPanes.add(null);
@@ -78,7 +80,7 @@ public class ManageRequestMenu extends Menu{
             hBox.getChildren().add(ManageRequests);
             borderPane.setTop(hBox);
             borderPane.setCenter(pagination);
-        }else{
+        } else {
             pageGridPane.getChildren().remove(centerGridPane);
             pageGridPane.getChildren().remove(bottomGridPane);
             borderPane = new BorderPane();
@@ -91,9 +93,9 @@ public class ManageRequestMenu extends Menu{
     }
 
     private GridPane createPage(Integer param) {
-        if(param.equals(page-1)){
+        if (param.equals(page - 1)) {
             setTheCenterInfo(RequestController.getInstance().getAllRequests().size() - (param * 4), param);
-        }else{
+        } else {
             setTheCenterInfo(4, param);
         }
         return getAllGridPanes().get(param);
@@ -111,7 +113,7 @@ public class ManageRequestMenu extends Menu{
             button.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 19));
             button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event){
+                public void handle(ActionEvent event) {
                     VBox vBox = new VBox();
                     vBox.setAlignment(Pos.CENTER);
                     vBox.setStyle("-fx-background-color: #afafaf");
@@ -137,7 +139,7 @@ public class ManageRequestMenu extends Menu{
             viewDetails.put(allRequests.get(i).getRequestId(), button);
         }
         for (int i = 0; i < RequestController.getInstance().getAllRequests().size(); i++) {
-            ImageView acceptImage= new ImageView(new Image("file:src/like1.png"));
+            ImageView acceptImage = new ImageView(new Image("file:src/like1.png"));
             acceptImage.setFitHeight(50);
             acceptImage.setFitWidth(50);
             acceptImage.setOnMouseClicked(event -> {
@@ -151,7 +153,7 @@ public class ManageRequestMenu extends Menu{
             accepts.put(allRequests.get(i).getRequestId(), acceptImage);
         }
         for (int i = 0; i < RequestController.getInstance().getAllRequests().size(); i++) {
-            ImageView declineImage= new ImageView(new Image("file:src/dislike1.png"));
+            ImageView declineImage = new ImageView(new Image("file:src/dislike1.png"));
             declineImage.setFitWidth(50);
             declineImage.setFitHeight(50);
             declines.put(allRequests.get(i).getRequestId(), declineImage);
@@ -178,7 +180,7 @@ public class ManageRequestMenu extends Menu{
     }
 
 
-    private String getTheIdForDetail(Map<String, Button> viewDetails, Button button){
+    private String getTheIdForDetail(Map<String, Button> viewDetails, Button button) {
         String requestIdForThis = null;
         for (String requestId : viewDetails.keySet()) {
             if (viewDetails.get(requestId).equals(button)) {
@@ -197,13 +199,13 @@ public class ManageRequestMenu extends Menu{
         type.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         gridPane.setVgap(30);
         for (int i = 0; i < 5; i++) {
-            if (i==1){
+            if (i == 1) {
                 gridPane.getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
             }
             gridPane.getColumnConstraints().add(new ColumnConstraints(120,
                     Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
         }
-        setRequestCounter(4*pages);
+        setRequestCounter(4 * pages);
         for (int i = 1; i <= counter; requestCounter++, i++) {
             setTheRows(i, RequestController.getInstance().getAllRequests().get(requestCounter).getRequestId(), String.valueOf(RequestController.getInstance().getAllRequests().get(requestCounter).getType()));
         }
@@ -223,10 +225,10 @@ public class ManageRequestMenu extends Menu{
         }
         Label[] allLabels = labelMaker(ids, types);
         for (int i = 0; i < 2; i++) {
-            if(i==0){
+            if (i == 0) {
                 allLabels[i].setTranslateX(20);
             }
-            if(i==1){
+            if (i == 1) {
                 allLabels[i].setTranslateX(30);
             }
             allPanes[i].getChildren().add(allLabels[i]);

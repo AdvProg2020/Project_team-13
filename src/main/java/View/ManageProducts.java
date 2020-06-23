@@ -138,8 +138,7 @@ public class ManageProducts extends Menu {
                 @Override
                 public void handle(Event event) {
                     Gson gson = new Gson();
-                    String sellerObject = gson.toJson(seller);
-                    ProductController.getInstance().removeProductForManager(product.getProductId());
+                    ProductController.getInstance().createDeleteProductRequest(product);
                     setCenterGridPane();
                 }
             });
@@ -447,11 +446,11 @@ public class ManageProducts extends Menu {
         title.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         Button editPhotoButton = new Button("Choose Photo");
         Button editProduct = new Button("Edit Product");
-         productName.setText(currentProduct.getProductName());
-         availableNumbers.setText(Integer.toString(currentProduct.getNumberOfAvailableProducts()));
-         description.setText(currentProduct.getDescription());
-         cost.setText(Double.toString(currentProduct.getProductCost()));
-         companyName.setText(currentProduct.getProductCompany());
+        productName.setText(currentProduct.getProductName());
+        availableNumbers.setText(Integer.toString(currentProduct.getNumberOfAvailableProducts()));
+        description.setText(currentProduct.getDescription());
+        cost.setText(Double.toString(currentProduct.getProductCost()));
+        companyName.setText(currentProduct.getProductCompany());
         editProduct.setStyle("-fx-background-color: #E85D9E;");
         editProduct.setMinWidth(100);
         editProduct.setTextFill(Color.WHITE);
@@ -548,7 +547,7 @@ public class ManageProducts extends Menu {
                         Text text1 = new Text("");
                         featuresGridPane.add(text1, 2, k1);
                         for (String s1 : currentProduct.getFeaturesOfCategoryThatHas().keySet()) {
-                            if(s1.equals(text.getText())) {
+                            if (s1.equals(text.getText())) {
                                 text1.setText(currentProduct.getFeaturesOfCategoryThatHas().get(text.getText()));
                             }
                         }
@@ -574,7 +573,7 @@ public class ManageProducts extends Menu {
                     featuresGridPane.getColumnConstraints().add(new ColumnConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.ALWAYS, HPos.CENTER, false));
                     featuresGridPane.getColumnConstraints().add(new ColumnConstraints(120, Control.USE_COMPUTED_SIZE, 120, Priority.ALWAYS, HPos.LEFT, false));
                     featuresGridPane.getColumnConstraints().add(new ColumnConstraints(90, Control.USE_COMPUTED_SIZE, 90, Priority.ALWAYS, HPos.LEFT, false));
-                    Scene scene1 = new Scene(gridPane, 320, categoryFeatures.size()*50 + 200);
+                    Scene scene1 = new Scene(gridPane, 320, categoryFeatures.size() * 50 + 200);
                     popupwindow.initModality(Modality.APPLICATION_MODAL);
                     popupwindow.initStyle(StageStyle.UNDECORATED);
                     popupwindow.setScene(scene1);

@@ -29,16 +29,9 @@ public class EditCategoryMenu extends Menu {
     private TextField maxAmount, firstName, lastName, email, credit, phoneNumber;
     private TextField discountPercent;
     private DatePicker startDatePicker = new DatePicker();
-    private DatePicker endDatePicker = new DatePicker();
-    private Button loginButton;
-    private Hyperlink createNewAccount;
-    private HashMap<String, Integer> maxUsingTime = new HashMap<>();
-    private HashMap<String, Integer> remainingTimesForEachCustomer = new HashMap<>();
-    private ArrayList<String> allUsers = new ArrayList<>();
     String imagePath = "";
     GridPane userInfoGridPane;
     HashMap<String, ArrayList<String>> featuresOfCategory = new HashMap();
-    String categoryName;
     ArrayList<String> allModesOfFeature = new ArrayList<>();
 
     public EditCategoryMenu(Stage stage) {
@@ -227,9 +220,9 @@ public class EditCategoryMenu extends Menu {
         featureNamesComboBox.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
-                String featrueName=(String)featureNamesComboBox.getValue();
-                if(featureNamesComboBox.getValue()!=null&&!(featrueName).equals("")){
-                    allModesOfFeature=category.getFeatures().get(featrueName);
+                String featrueName = (String) featureNamesComboBox.getValue();
+                if (featureNamesComboBox.getValue() != null && !(featrueName).equals("")) {
+                    allModesOfFeature = category.getFeatures().get(featrueName);
                 }
             }
         });
@@ -241,13 +234,13 @@ public class EditCategoryMenu extends Menu {
                 errorText.setText("");
                 if (!((String) comboBox.getValue()).equals("")) {
                     if (!allModesOfFeature.contains((String) comboBox.getValue())) {
-                        if(category.getFeatures().containsKey((String) comboBox.getValue())) {
+                        if (category.getFeatures().containsKey((String) comboBox.getValue())) {
                             System.out.println("add mode!!: " + (String) comboBox.getValue());
                             comboBox.getItems().add((String) comboBox.getValue());
                             category.getFeatures().get((String) featureNamesComboBox.getValue()).add((String) comboBox.getValue());
                             comboBox.setValue("");
                             CategoryController.getInstance().editCategoryFeatures(category, "adM");
-                        }else{
+                        } else {
                             featureNamesComboBox.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                             errorText.setText("you should add new feature before add modes to it");
                         }

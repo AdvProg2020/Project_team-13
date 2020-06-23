@@ -184,6 +184,13 @@ public class ProductCenter {
         ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful" ,"Product edit request has been send to the manager."));
     }
 
+    public void createDeleteProductRequest(Product product) {
+        getProductWithId(product.getProductId()).setProductStatus(ProductStatus.editing);
+        DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));
+        RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("deleteRequest", new Gson().toJson(product)));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful" ,"Product delete request has been send to the manager."));
+    }
+
     public void editProduct(Product product) {
         product.setProductStatus(ProductStatus.accepted);
         if (allProducts != null) {

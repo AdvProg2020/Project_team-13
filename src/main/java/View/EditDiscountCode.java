@@ -8,7 +8,6 @@ import Models.UserAccount.Customer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -36,14 +35,13 @@ public class EditDiscountCode extends Menu {
     private TextField discountPercent;
     private DatePicker startDatePicker = new DatePicker();
     private DatePicker endDatePicker = new DatePicker();
-    private Button loginButton;
-    private Hyperlink createNewAccount;
     private HashMap<String, Integer> maxUsingTime = new HashMap<>();
     private HashMap<String, Integer> remainingTimesForEachCustomer = new HashMap<>();
     private ArrayList<String> allUsers = new ArrayList<>();
     String imagePath = "";
     GridPane userInfoGridPane;
-    DiscountCode discountCode= ClientController.getInstance().getCurrentDiscountCode();
+    DiscountCode discountCode = ClientController.getInstance().getCurrentDiscountCode();
+
     public EditDiscountCode
             (Stage stage) {
         super(stage);
@@ -68,6 +66,7 @@ public class EditDiscountCode extends Menu {
 //        bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
         scene.setRoot(pageGridPane);
     }
+
     @Override
     public void setMenuBarGridPane() {
         Menu menu = this;
@@ -111,7 +110,7 @@ public class EditDiscountCode extends Menu {
 
 
     private void setCenterGridPane() {
-        ComboBox comboBox=new ComboBox();
+        ComboBox comboBox = new ComboBox();
         comboBox.setEditable(true);
         for (Customer customer : ManagerController.getInstance().getAllCustomers()) {
             comboBox.getItems().add(customer.getUsername());
@@ -172,8 +171,8 @@ public class EditDiscountCode extends Menu {
         comboBox.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (discountCode.getAllUserAccountsThatHaveDiscount().contains((String)comboBox.getValue())) {
-                    lastName.setText(Integer.valueOf(discountCode.getRemainingTimesForEachCustomer().get((String)comboBox.getValue())).toString());
+                if (discountCode.getAllUserAccountsThatHaveDiscount().contains((String) comboBox.getValue())) {
+                    lastName.setText(Integer.valueOf(discountCode.getRemainingTimesForEachCustomer().get((String) comboBox.getValue())).toString());
                 }
             }
         });
@@ -218,30 +217,29 @@ public class EditDiscountCode extends Menu {
         adduser.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(!((String)comboBox.getValue()).equals("")){
-                    if(lastName.getText().matches("\\d+")){
-                        if(ManagerController.getInstance().isThereCustomerWithThisUsername(((String)comboBox.getValue()))){
-                            if(!allUsers.contains(((String)comboBox.getValue()))) {
-                                allUsers.add(((String)comboBox.getValue()));
-                                remainingTimesForEachCustomer.put(((String)comboBox.getValue()), Integer.parseInt(lastName.getText()));
-                                maxUsingTime.put(((String)comboBox.getValue()), Integer.parseInt(lastName.getText()));
+                if (!((String) comboBox.getValue()).equals("")) {
+                    if (lastName.getText().matches("\\d+")) {
+                        if (ManagerController.getInstance().isThereCustomerWithThisUsername(((String) comboBox.getValue()))) {
+                            if (!allUsers.contains(((String) comboBox.getValue()))) {
+                                allUsers.add(((String) comboBox.getValue()));
+                                remainingTimesForEachCustomer.put(((String) comboBox.getValue()), Integer.parseInt(lastName.getText()));
+                                maxUsingTime.put(((String) comboBox.getValue()), Integer.parseInt(lastName.getText()));
                                 comboBox.setValue("");
                                 lastName.setText("");
-                            }else
-                            {
-                                allUsers.set(allUsers.indexOf((String)comboBox.getValue()),(String)comboBox.getValue());
-                                remainingTimesForEachCustomer.replace(((String)comboBox.getValue()), Integer.parseInt(lastName.getText()));
-                                maxUsingTime.replace(((String)comboBox.getValue()), Integer.parseInt(lastName.getText()));
+                            } else {
+                                allUsers.set(allUsers.indexOf((String) comboBox.getValue()), (String) comboBox.getValue());
+                                remainingTimesForEachCustomer.replace(((String) comboBox.getValue()), Integer.parseInt(lastName.getText()));
+                                maxUsingTime.replace(((String) comboBox.getValue()), Integer.parseInt(lastName.getText()));
                                 comboBox.setValue("");
                                 lastName.setText("");
                             }
-                        }else
-                            ClientController.getInstance().getCurrentMenu().showMessage("there is no user with this username",MessageKind.ErrorWithoutBack);
-                    }else {
+                        } else
+                            ClientController.getInstance().getCurrentMenu().showMessage("there is no user with this username", MessageKind.ErrorWithoutBack);
+                    } else {
                         lastName.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                         errorText.setText("Number of discount is invalid.");
                     }
-                }else {
+                } else {
                     comboBox.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                     errorText.setText("username is invalid.");
                 }

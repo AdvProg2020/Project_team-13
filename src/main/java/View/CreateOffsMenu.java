@@ -32,9 +32,7 @@ public class CreateOffsMenu extends Menu {
     private TextField discountPercent;
     private DatePicker startDatePicker = new DatePicker();
     private DatePicker endDatePicker = new DatePicker();
-    private Button loginButton;
     private ChoiceBox choiceBox = new ChoiceBox();
-    private Hyperlink createNewAccount;
     private ArrayList<String> allProducts = new ArrayList<>();
     String imagePath = "";
     GridPane userInfoGridPane;
@@ -60,7 +58,7 @@ public class CreateOffsMenu extends Menu {
         scene.setRoot(pageGridPane);
     }
 
-    public void setMenuBarGridPane()  {
+    public void setMenuBarGridPane() {
         menuBarGridPane.getChildren().clear();
         menuBarGridPane.getColumnConstraints().clear();
         menuBarGridPane.getRowConstraints().clear();
@@ -236,6 +234,7 @@ public class CreateOffsMenu extends Menu {
         }
         return false;
     }
+
     private boolean checkEndTimeValid(Date endTime, Date startTime) {
         if (endTime.after(new Date()) && endTime.after(startTime)) {
             return true;
@@ -243,6 +242,7 @@ public class CreateOffsMenu extends Menu {
             return false;
         }
     }
+
     private boolean checkStartTimeValid(Date startTime) {
         if (startTime.after(new Date())) {
             return true;

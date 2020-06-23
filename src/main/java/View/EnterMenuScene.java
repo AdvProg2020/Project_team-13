@@ -8,9 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -54,7 +51,7 @@ public class EnterMenuScene extends Menu {
     }
 
     protected void setPageGridPain() {
-        pageGridPane.getRowConstraints().add(new RowConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.NEVER,VPos.CENTER, false));
+        pageGridPane.getRowConstraints().add(new RowConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.NEVER, VPos.CENTER, false));
         pageGridPane.getRowConstraints().add(new RowConstraints(40, Control.USE_COMPUTED_SIZE, 40, Priority.ALWAYS, VPos.TOP, true));
         pageGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, VPos.TOP, false));
         pageGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.BOTTOM, false));
@@ -63,16 +60,16 @@ public class EnterMenuScene extends Menu {
         pageGridPane.add(menuBarGridPane, 0, 1);
         pageGridPane.add(centerGridPane, 0, 2);
         pageGridPane.add(bottomGridPane, 0, 3);
-        Stage popupwindow=new Stage();
+        Stage popupwindow = new Stage();
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.setTitle("This is a pop up window");
-        Label label1= new Label("Pop up window now displayed");
-        Button button1= new Button("Close this pop up window");
+        Label label1 = new Label("Pop up window now displayed");
+        Button button1 = new Button("Close this pop up window");
         button1.setOnAction(e -> popupwindow.close());
-        VBox layout= new VBox(10);
+        VBox layout = new VBox(10);
         layout.getChildren().addAll(label1, button1);
         layout.setAlignment(Pos.CENTER);
-        Scene scene1= new Scene(layout, 300, 250);
+        Scene scene1 = new Scene(layout, 300, 250);
         popupwindow.setScene(scene1);
         popupwindow.showAndWait();
     }

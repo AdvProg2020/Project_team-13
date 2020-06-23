@@ -195,6 +195,9 @@ public class ProductController {
     public void editProduct(Product product) {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("editProduct", new Gson().toJson(product)));
     }
+    public void createDeleteProductRequest(Product product) {
+        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("deleteProduct", new Gson().toJson(product)));
+    }
 
     private void filterByPrice() {
         if (isPriceFilterActive) {

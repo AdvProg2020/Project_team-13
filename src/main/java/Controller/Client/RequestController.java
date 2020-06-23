@@ -6,6 +6,7 @@ import Models.UserAccount.Seller;
 import View.MessageKind;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -35,7 +36,9 @@ public class RequestController {
         String showAllRequests = "";
         if (allRequests != null && !allRequests.isEmpty()) {
             for (Request request : allRequests) {
-                showAllRequests += request.getRequestId() + " " + request.getType() + "\n";
+                if (request != null) {
+                    showAllRequests += request.getRequestId() + " " + request.getType() + "\n";
+                }
             }
         }
         //   ClientController.getInstance().getCurrentMenu().showMessage(showAllRequests);
@@ -66,29 +69,29 @@ public class RequestController {
         }
     }
 
-        public void acceptRequest(String requestId){
-            for (Request request : allRequests) {
-                if (request.getRequestId().equals(requestId)) {
-                    ClientController.getInstance().sendMessageToServer("@acceptRequest@" + requestId);
-                    allRequests.remove(request);
-                    return;
-                }
+    public void acceptRequest(String requestId) {
+        for (Request request : allRequests) {
+            if (request.getRequestId().equals(requestId)) {
+                ClientController.getInstance().sendMessageToServer("@acceptRequest@" + requestId);
+                allRequests.remove(request);
+                return;
             }
-            ClientController.getInstance().getCurrentMenu().showMessage("there is no request with this id", MessageKind.ErrorWithoutBack);
         }
+        ClientController.getInstance().getCurrentMenu().showMessage("there is no request with this id", MessageKind.ErrorWithoutBack);
+    }
 
-        public void declineRequest(String requestId){
-            for (Request request : allRequests) {
-                if (request.getRequestId().equals(requestId)) {
-                    ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("declineRequest", requestId));
-                    allRequests.remove(request);
-                    return;
-                }
+    public void declineRequest(String requestId) {
+        for (Request request : allRequests) {
+            if (request.getRequestId().equals(requestId)) {
+                ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("declineRequest", requestId));
+                allRequests.remove(request);
+                return;
             }
-            ClientController.getInstance().getCurrentMenu().showMessage("there is no request with this id", MessageKind.ErrorWithoutBack);
         }
+        ClientController.getInstance().getCurrentMenu().showMessage("there is no request with this id", MessageKind.ErrorWithoutBack);
+    }
 
-        public ArrayList<Request> getAllRequests(){
-            return allRequests;
-        }
+    public ArrayList<Request> getAllRequests() {
+        return allRequests;
+    }
 }

@@ -33,8 +33,6 @@ public class CreateDiscountCodeMenu extends Menu {
     private TextField discountPercent;
     private DatePicker startDatePicker = new DatePicker();
     private DatePicker endDatePicker = new DatePicker();
-    private Button loginButton;
-    private Hyperlink createNewAccount;
     private HashMap<String, Integer> maxUsingTime = new HashMap<>();
     private HashMap<String, Integer> remainingTimesForEachCustomer = new HashMap<>();
     private ArrayList<String> allUsers = new ArrayList<>();
@@ -65,7 +63,7 @@ public class CreateDiscountCodeMenu extends Menu {
         scene.setRoot(pageGridPane);
     }
 
-    public void setMenuBarGridPane()  {
+    public void setMenuBarGridPane() {
         menuBarGridPane.getChildren().clear();
         menuBarGridPane.getColumnConstraints().clear();
         menuBarGridPane.getRowConstraints().clear();
@@ -110,7 +108,7 @@ public class CreateDiscountCodeMenu extends Menu {
 
 
     private void setCenterGridPane() {
-        ComboBox comboBox=new ComboBox();
+        ComboBox comboBox = new ComboBox();
         comboBox.setEditable(true);
         for (Customer customer : ManagerController.getInstance().getAllCustomers()) {
             comboBox.getItems().add(customer.getUsername());
@@ -205,24 +203,24 @@ public class CreateDiscountCodeMenu extends Menu {
         adduser.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(!((String)comboBox.getValue()).equals("")){
-                    if(lastName.getText().matches("\\d+")){
-                        if(ManagerController.getInstance().isThereCustomerWithThisUsername(((String)comboBox.getValue()))){
-                            if(!allUsers.contains(((String)comboBox.getValue()))) {
-                                allUsers.add(((String)comboBox.getValue()));
-                                remainingTimesForEachCustomer.put(((String)comboBox.getValue()), Integer.parseInt(lastName.getText()));
-                                maxUsingTime.put(((String)comboBox.getValue()), Integer.parseInt(lastName.getText()));
+                if (!((String) comboBox.getValue()).equals("")) {
+                    if (lastName.getText().matches("\\d+")) {
+                        if (ManagerController.getInstance().isThereCustomerWithThisUsername(((String) comboBox.getValue()))) {
+                            if (!allUsers.contains(((String) comboBox.getValue()))) {
+                                allUsers.add(((String) comboBox.getValue()));
+                                remainingTimesForEachCustomer.put(((String) comboBox.getValue()), Integer.parseInt(lastName.getText()));
+                                maxUsingTime.put(((String) comboBox.getValue()), Integer.parseInt(lastName.getText()));
                                 comboBox.setValue("");
                                 lastName.setText("");
-                            }else
-                                ClientController.getInstance().getCurrentMenu().showMessage("this user already has this discount code",MessageKind.ErrorWithoutBack);
-                        }else
-                            ClientController.getInstance().getCurrentMenu().showMessage("there is no user with this username",MessageKind.ErrorWithoutBack);
-                    }else {
+                            } else
+                                ClientController.getInstance().getCurrentMenu().showMessage("this user already has this discount code", MessageKind.ErrorWithoutBack);
+                        } else
+                            ClientController.getInstance().getCurrentMenu().showMessage("there is no user with this username", MessageKind.ErrorWithoutBack);
+                    } else {
                         lastName.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                         errorText.setText("Number of discount is invalid.");
                     }
-                }else {
+                } else {
                     comboBox.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                     errorText.setText("username is invalid.");
                 }
@@ -240,28 +238,28 @@ public class CreateDiscountCodeMenu extends Menu {
                 lastName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
                 errorText.setText("");
                 if (checkdiscountPercentIsvalid(discountPercent.getText().trim())) {
-                            if (checkmaxAmountIsvalid(maxAmount.getText())) {
-                                Date startdate = Date.from(startDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-                                Date enddate = Date.from(endDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-                                if (checkStartTimeValid(startdate)) {
-                                    if (checkEndTimeValid(enddate, startdate)) {
-                                        if(allUsers.size()>0) {
-                                            DiscountCode discountCode = new DiscountCode(startdate, enddate, allUsers, Integer.parseInt(discountPercent.getText()), Double.parseDouble(maxAmount.getText()), maxUsingTime, remainingTimesForEachCustomer);
-                                            DiscountController.getInstance().createDiscountCode(discountCode);
-                                        }else
-                                            ClientController.getInstance().getCurrentMenu().showMessage("you should add discount code to some of users",MessageKind.ErrorWithoutBack);
-                                    } else {
-                                        endDatePicker.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
-                                        errorText.setText("End time is invalid.");
-                                    }
-                                } else {
-                                    startDatePicker.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
-                                    errorText.setText("Start date is invalid.");
-                                }
+                    if (checkmaxAmountIsvalid(maxAmount.getText())) {
+                        Date startdate = Date.from(startDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                        Date enddate = Date.from(endDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                        if (checkStartTimeValid(startdate)) {
+                            if (checkEndTimeValid(enddate, startdate)) {
+                                if (allUsers.size() > 0) {
+                                    DiscountCode discountCode = new DiscountCode(startdate, enddate, allUsers, Integer.parseInt(discountPercent.getText()), Double.parseDouble(maxAmount.getText()), maxUsingTime, remainingTimesForEachCustomer);
+                                    DiscountController.getInstance().createDiscountCode(discountCode);
+                                } else
+                                    ClientController.getInstance().getCurrentMenu().showMessage("you should add discount code to some of users", MessageKind.ErrorWithoutBack);
                             } else {
-                                maxAmount.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
-                                errorText.setText("Max Amount is invalid. correct format 0-9 A-z");
+                                endDatePicker.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                                errorText.setText("End time is invalid.");
                             }
+                        } else {
+                            startDatePicker.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                            errorText.setText("Start date is invalid.");
+                        }
+                    } else {
+                        maxAmount.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                        errorText.setText("Max Amount is invalid. correct format 0-9 A-z");
+                    }
                 } else {
                     discountPercent.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                     errorText.setText("Discount Percent Format is Invalid. use 0-9 alphabetical character.");

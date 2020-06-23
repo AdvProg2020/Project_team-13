@@ -52,10 +52,7 @@ public class AddProductScene extends Menu {
         setUpGridPane();
         setMenuBarGridPane();
         setCenterGridPane();
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(pageGridPane);
-        scene.setRoot(scrollPane);
-        scrollPane.setFitToWidth(true);
+        scene.setRoot(pageGridPane);
         bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
     }
 
@@ -308,7 +305,7 @@ public class AddProductScene extends Menu {
                         errorText.setText("available number of product is not a number.");
                     }
                 } else {
-                   companyName1.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                    companyName1.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                     errorText.setText("Company Name Format is Invalid. use 0-9 alphabetical character.");
                 }
             }

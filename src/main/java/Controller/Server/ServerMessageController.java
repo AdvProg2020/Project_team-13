@@ -51,11 +51,7 @@ public class ServerMessageController {
             Gson gson = new Gson();
             Product product = gson.fromJson(message, Product.class);
             ProductCenter.getInstance().createProductRequest(product);
-        } else if (message.startsWith("@deleteProduct@")) {
-            message = message.substring(15, message.length());
-            String[] split = message.split("/");
-            // ProductCenter.getInstance().deleteProductForSeller(split[0], split[1]);
-        } else if (message.startsWith("@getAllUsers@")) {
+        }  else if (message.startsWith("@getAllUsers@")) {
             DataBase.getInstance().getAllUsersListFromDateBase();
         } else if (message.startsWith("@deleteCustomer@")) {
             UserCenter.getIncstance().removeCustomer(message.substring(16, message.length()));
@@ -125,7 +121,11 @@ public class ServerMessageController {
         } else if (message.startsWith("@editProduct@")) {
             message = message.substring(13);
             ProductCenter.getInstance().createEditProductRequest(new Gson().fromJson(message, Product.class));
-        } else if (message.startsWith("@pay@")) {
+        }  else if (message.startsWith("@deleteProduct@")) {
+            System.out.println("aa1");
+            message = message.substring(15);
+            ProductCenter.getInstance().createDeleteProductRequest(new Gson().fromJson(message, Product.class));
+        }else if (message.startsWith("@pay@")) {
             message = message.substring(5);
             CartCenter.getInstance().pay(new Gson().fromJson(message, Cart.class));//
         } else if (message.startsWith("@declineRequest@")) {

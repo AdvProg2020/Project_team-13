@@ -2,9 +2,6 @@ package View;
 
 import Controller.Client.CartController;
 import Controller.Client.ClientController;
-import Controller.Client.ProductController;
-import Models.Comment;
-import Models.CommentStatus;
 import Models.DiscountCode;
 import Models.Product.Product;
 import Models.UserAccount.Customer;
@@ -35,7 +32,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.regex.Pattern;
 
 public class CartMenu extends Menu {
@@ -315,21 +311,21 @@ public class CartMenu extends Menu {
                         public void handle(MouseEvent event) {
                             if (discountCode1 != null)
                                 CartController.getInstance().getCurrentCart().setDiscountCode(discountCode1);
-                            if(!getContent.getText().equals("")&&!getTitle.getText().equals("")) {
-                                if(getTitle.getText().matches("\\d\\d\\d\\d\\d\\d\\d\\d+")) {
+                            if (!getContent.getText().equals("") && !getTitle.getText().equals("")) {
+                                if (getTitle.getText().matches("\\d\\d\\d\\d\\d\\d\\d\\d+")) {
                                     CartController.getInstance().getCurrentCart().setReceivingInformation(getTitle.getText() + "\n" + getContent.getText());
                                     CartController.getInstance().getCurrentCart().setCustomerID(ClientController.getInstance().getCurrentUser().getUsername());
                                     CartController.getInstance().pay();
                                     popupwindow.hide();
                                     scene.setFill(null);
-                                }else{
+                                } else {
                                     getTitle.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30;");
                                     errorText.setText("Phone Number is invalid");
                                 }
-                            }else if(getContent.getText().equals("")){
+                            } else if (getContent.getText().equals("")) {
                                 getContent.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30;");
                                 errorText.setText("Address is empty");
-                            }else if(getTitle.getText().equals("")){
+                            } else if (getTitle.getText().equals("")) {
                                 getTitle.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30;");
                                 errorText.setText("Phone Number is empty");
                             }
@@ -522,7 +518,7 @@ public class CartMenu extends Menu {
 
     private DiscountCode getDiscountCode(String discountCode) {
         DiscountCode discount = ((Customer) ClientController.getInstance().getCurrentUser()).findDiscountCodeWithCode(discountCode);
-        System.out.println("discoount code is :"+discount);
+        System.out.println("discoount code is :" + discount);
         if (discount != null) {
             return discount;
         }

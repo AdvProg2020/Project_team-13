@@ -26,8 +26,6 @@ import java.util.regex.Pattern;
 public class CreateManagerProfile extends Menu{
     private TextField userName,firstName,lastName,email,credit,phoneNumber;
     private PasswordField passWord;
-    private Button loginButton;
-    private Hyperlink createNewAccount;
     String imagePath="";
     GridPane userInfoGridPane;
 
