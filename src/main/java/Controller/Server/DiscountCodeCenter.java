@@ -114,7 +114,7 @@ public class DiscountCodeCenter {
         allDiscountCodes.remove(discountCode);
         DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(allDiscountCodes));
         DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
-        ServerController.getInstance().sendMessageToClient("@Successful@discount code successfully removed");
+        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@discount code successfully removed");
     }
 
     public void usedDiscountCode(String code, String username) {

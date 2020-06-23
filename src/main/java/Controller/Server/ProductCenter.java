@@ -82,7 +82,7 @@ public class ProductCenter {
         DataBase.getInstance().updateAllOffers(new Gson().toJson(OffCenter.getInstance().getAllOffers()));
         DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
         DataBase.getInstance().updateAllSellers(new Gson().toJson(UserCenter.getIncstance().getAllSeller()));
-        ServerController.getInstance().sendMessageToClient("@Successful@successfully rating");
+        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@successfully rating");
     }
     public Product findProductWithID(String productId) {
         for (Product product : allProducts) {
