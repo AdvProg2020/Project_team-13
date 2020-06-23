@@ -405,7 +405,7 @@ public class ProductController {
             }
             return allBrands;
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public ArrayList<String> getAllSellers() {

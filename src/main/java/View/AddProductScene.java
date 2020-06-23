@@ -3,10 +3,8 @@ package View;
 import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
 import Controller.Client.ProductController;
-import Controller.Client.RegisterController;
 import Models.Product.Category;
 import Models.Product.Product;
-import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -37,7 +35,7 @@ public class AddProductScene extends Menu {
     private ArrayList<Category> categories;
     private String imagePath = "";
     private GridPane productsPages, userInfoGridPane;
-    private TextField productName, availableNumbers, description, cost, companyName;
+    private TextField productName, availableNumbers, description, cost;
     private Button loginButton;
     private Hyperlink createNewAccount;
 
@@ -75,7 +73,7 @@ public class AddProductScene extends Menu {
         userInfoGridPane.setMinWidth(650);
         userInfoGridPane.setMinHeight(400);
         productName = new TextField();
-        companyName = new TextField();
+        final TextField companyName1 = new TextField();
         availableNumbers = new TextField();
         description = new TextField();
         cost = new TextField();
@@ -242,7 +240,7 @@ public class AddProductScene extends Menu {
         // upGridPane.setGridLinesVisible(true);
         upGridPane.add(title, 1, 0, 1, 1);
         this.productName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
-        this.companyName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+        companyName1.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         description.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         cost.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         availableNumbers.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
@@ -255,7 +253,7 @@ public class AddProductScene extends Menu {
         userInfoGridPane.add(categoryText, 15, 11, 3, 1);
         userInfoGridPane.add(selectedCategoryText, 14, 12, 2, 1);
         userInfoGridPane.add(this.productName, 8, 9, 6, 1);
-        userInfoGridPane.add(this.companyName, 8, 10, 6, 1);
+        userInfoGridPane.add(companyName1, 8, 10, 6, 1);
         userInfoGridPane.add(description, 8, 11, 6, 1);
         userInfoGridPane.add(menuButton, 18, 11, 3, 1);
         userInfoGridPane.add(selectedCategory, 19, 12);
@@ -272,18 +270,21 @@ public class AddProductScene extends Menu {
             @Override
             public void handle(MouseEvent event) {
                 AddProductScene.this.productName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
-                AddProductScene.this.companyName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                companyName1.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                 description.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                 cost.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                 availableNumbers.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                 errorText.setText("");
-                if (checkNameIsvalid(AddProductScene.this.companyName.getText().trim())) {
+                if (checkNameIsvalid(companyName1.getText().trim())) {
                     if (Pattern.matches("\\d+", availableNumbers.getText().trim())) {
                         if (!(description.getText().trim()).isEmpty()) {
                             if (checkNameIsvalid(AddProductScene.this.productName.getText())) {
                                 if (checkCreditIsvalid(cost.getText())) {
                                     if (categoryFeaturesForProduct.size() == CategoryController.getInstance().getCategoryWithName(selectedCategory.getText()).getFeatures().size()) {
-                                        Product product = new Product(companyName.getText().trim(), "", productName.getText().trim(),
+                                        System.out.println("aaaaabbbbbb");
+                                        System.out.println(companyName1.getText().trim());
+                                        System.out.println("bbbbbaaaaaa");
+                                        Product product = new Product(companyName1.getText().trim(), "", productName.getText().trim(),
                                                 (Seller) ClientController.getInstance().getCurrentUser(), Double.parseDouble(cost.getText().trim()), selectedCategory.getText().trim(), description.getText().trim(), Integer.parseInt(availableNumbers.getText().trim()), categoryFeaturesForProduct);
                                         product.setImagePath(imagePath);
                                         ProductController.getInstance().addProduct(product);
@@ -307,7 +308,7 @@ public class AddProductScene extends Menu {
                         errorText.setText("available number of product is not a number.");
                     }
                 } else {
-                    AddProductScene.this.companyName.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                   companyName1.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                     errorText.setText("Company Name Format is Invalid. use 0-9 alphabetical character.");
                 }
             }

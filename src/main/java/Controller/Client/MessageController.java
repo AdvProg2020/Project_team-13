@@ -1,5 +1,7 @@
 package Controller.Client;
 
+import Models.BuyLog;
+import Models.Log;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
@@ -40,7 +42,9 @@ public class MessageController {
         } else if (message.startsWith("@payed@")) {
             message = message.substring(7, message.length());
             CartController.getInstance().payed(message);
-            ClientController.getInstance().getCurrentMenu().showMessage("Successfully purchase", MessageKind.MessageWithBack);
+            int size=((Customer)ClientController.getInstance().getCurrentUser()).getHistoryOfTransaction().size();
+            Log buyLog= (ClientController.getInstance().getCurrentUser()).getHistoryOfTransaction().get(size-1);
+            ClientController.getInstance().getCurrentMenu().showMessage("Successfully purchase\ntotal price: "+buyLog.getPrice()+"\n"+buyLog.getDate(), MessageKind.MessageWithBack);
         } else if (message.startsWith("@Login as Customer@")) {
             Gson gson = new Gson();
             message = message.substring(19, message.length());

@@ -68,7 +68,7 @@ public class EditDiscountCode extends Menu {
 //        bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
         scene.setRoot(pageGridPane);
     }
-
+    @Override
     public void setMenuBarGridPane() {
         Menu menu = this;
         menuBarGridPane.setStyle("-fx-background-color:rgba(76, 170, 240, 1)");
