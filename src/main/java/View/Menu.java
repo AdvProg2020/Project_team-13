@@ -556,7 +556,7 @@ public class Menu {
     }
 
     protected void setUpGridPane() {
-        Label label = new Label("        Pms.com");
+        Label label = new Label("           Pms.com");
         label.setStyle("-fx-font-weight: bold;");
         Font font = Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28);
         label.setFont(font);

@@ -81,7 +81,7 @@ public class  OrdersMenu extends Menu {
             pageGridPane.getChildren().remove(centerGridPane);
             pageGridPane.getChildren().remove(bottomGridPane);
             borderPane = new BorderPane();
-            Label noRequest = new Label("There is No Sell History!!");
+            Label noRequest = new Label("There is No Orders!!");
             noRequest.setTranslateY(150);
             noRequest.setFont(Font.loadFont("file:src/Bangers.ttf", 50));
             borderPane.setCenter(noRequest);
@@ -116,7 +116,7 @@ public class  OrdersMenu extends Menu {
                     VBox vBox = new VBox();
                     vBox.setAlignment(Pos.CENTER);
                     vBox.setStyle("-fx-background-color: #afafaf");
-                    String[] details = customer.findOrderWithId(allBuyLog.get(finalI).getId()).toString().split("\n");
+                    String[] details = customer.findOrderWithId(allBuyLog.get(finalI).getId()).viewOrders().split("\n");
                     Label[] label = new Label[details.length];
                     Label label1 = new Label("Details :\n\n");
                     label1.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 30));

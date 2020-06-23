@@ -43,15 +43,16 @@ public class Log {
 
     public String viewOrders(){
         String order="";
-        order+=id+"\n";
-        order+=receiverUserName+"\n";
-        order+=otherSideUserName;
-        order+=date+"\n";
-        order+=price+"\n";
-        order+=reduceCostForOffs+"\n";
-        order+=receivingStatus+"\n";
+        order+="Log Id: "+id+"\n";
+        order+="Seller UserName:  "+receiverUserName+"\n";
+        order+="Customer UserName:  "+otherSideUserName+"\n";
+        order+="Date:  "+date+"\n";
+        order+="Price:  "+price+"\n";
+        order+="CostAfterOffer:  "+reduceCostForOffs+"\n";
+        order+="Receiving Status:  "+receivingStatus+"\n";
+        order+="Products:  "+"\n";
         for (Product product : allProducts) {
-            order += product.getProductId() + " " + product.getCostAfterOff() + "\n";
+            order += "Product id:  "+product.getProductId() +"\n"+"ProductCost After Off: "+ product.getCostAfterOff() + "\n----------------\n";
         }
         return order;
     }
