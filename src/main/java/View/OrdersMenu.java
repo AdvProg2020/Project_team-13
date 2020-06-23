@@ -66,13 +66,15 @@ public class  OrdersMenu extends Menu {
             pagination.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
             pagination.setPageFactory(this::createPage);
             setTheBeginning();
-            Label ManageRequests = new Label("Sales History");
+            Label ManageRequests = new Label("Orders Menu");
+            ManageRequests.setTranslateX(150);
             ManageRequests.setTranslateX(20);
             ManageRequests.setTranslateY(20);
             ManageRequests.setFont(Font.loadFont("file:src/Bangers.ttf", 20));
             HBox hBox = new HBox();
             hBox.setAlignment(Pos.BASELINE_LEFT);
             hBox.getChildren().add(ManageRequests);
+            hBox.setTranslateX(50);
             borderPane.setTop(hBox);
             borderPane.setCenter(pagination);
         } else {
@@ -104,8 +106,9 @@ public class  OrdersMenu extends Menu {
         borderPane = new BorderPane();
         ArrayList<Log> allBuyLog = customer.getHistoryOfTransaction();
         for (int i = 0; i < allBuyLog.size(); i++) {
-            Button button = new Button("View Details");
+            Button button = new Button("Details");
             button.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 19));
+            button.setTranslateX(40);
             int finalI = i;
             button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -120,7 +123,7 @@ public class  OrdersMenu extends Menu {
                     vBox.getChildren().add(label1);
                     for (int j = 0; j < label.length; j++) {
                         label[j] = new Label(details[j]);
-                        label[j].setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 19));
+                        label[j].setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 10));
                         vBox.getChildren().add(label[j]);
                     }
                     Scene scene = new Scene(vBox, 300, 500);
@@ -146,10 +149,22 @@ public class  OrdersMenu extends Menu {
         price.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         date.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         status.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
+        date.setTranslateX(0);
         gridPane.setVgap(30);
         for (int i = 0; i < 6; i++) {
-            gridPane.getColumnConstraints().add(new ColumnConstraints(110,
-                    Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+            if(i==2){
+                gridPane.getColumnConstraints().add(new ColumnConstraints(300,
+                        Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+            }else if(i==3){
+                gridPane.getColumnConstraints().add(new ColumnConstraints(180,
+                        Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+            }else if(i==5) {
+                gridPane.getColumnConstraints().add(new ColumnConstraints(100,
+                        Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+            }else{
+                    gridPane.getColumnConstraints().add(new ColumnConstraints(110,
+                            Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+            }
         }
         setLogCounter(4 * pages);
         ArrayList<Log> allBuyLog = customer.getHistoryOfTransaction();
@@ -163,29 +178,29 @@ public class  OrdersMenu extends Menu {
         gridPane.add(price, 1, 0);
         gridPane.add(date, 2, 0);
         gridPane.add(status, 3, 0);
-        allGridPanes.add(pages, gridPane);
+        allGridPanes.set(pages, gridPane);
     }
 
 
     private void setTheRows(int row, String id, String price, String date, String status) {
-        Pane[] allPanes = new Pane[5];
-        for (int i = 0; i < 5; i++) {
+        Pane[] allPanes = new Pane[4];
+        for (int i = 0; i < 4; i++) {
             allPanes[i] = new Pane();
             allPanes[i].setStyle("-fx-background-color: #e6e6e6");
         }
         Label[] allLabels = labelMaker(id, price, date, status);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             if (i == 0) {
                 allLabels[i].setTranslateX(10);
             }
             if (i == 1) {
-                allLabels[i].setTranslateX(15);
+                allLabels[i].setTranslateX(30);
             }
             if (i == 2) {
                 allLabels[i].setTranslateX(20);
             }
             if (i == 3) {
-                allLabels[i].setTranslateX(20);
+                allLabels[i].setTranslateX(-5);
             }
             allLabels[i].setAlignment(Pos.CENTER);
             allPanes[i].getChildren().add(allLabels[i]);
@@ -194,8 +209,8 @@ public class  OrdersMenu extends Menu {
             gridPane.add(allPanes[i], i, row);
         }
         Pane pane = new Pane();
-        pane.getChildren().add(viewDetails.get(id));
         pane.setStyle("-fx-background-color: #e6e6e6");
+        pane.getChildren().add(viewDetails.get(id));
         gridPane.add(pane, 4, row);
     }
 

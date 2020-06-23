@@ -1,8 +1,6 @@
 package View;
 import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
-import Controller.Client.DiscountController;
-import Models.DiscountCode;
 import Models.Product.Category;
 import javafx.event.ActionEvent;
 import javafx.event.Event;

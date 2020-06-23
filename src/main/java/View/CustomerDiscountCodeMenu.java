@@ -186,7 +186,7 @@ public class CustomerDiscountCodeMenu extends Menu{
                 allLabels[i].setTranslateX(40);
             }
             if(i == 2){
-                allLabels[i].setTranslateX(30);
+                allLabels[i].setTranslateX(25);
             }
             if(i == 3){
                 allLabels[i].setTranslateX(1);
