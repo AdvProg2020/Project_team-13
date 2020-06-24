@@ -74,6 +74,7 @@ public class SalesHistoryMenu extends Menu {
             HBox hBox = new HBox();
             hBox.setAlignment(Pos.BASELINE_LEFT);
             hBox.getChildren().add(ManageRequests);
+            hBox.setTranslateX(60);
             borderPane.setTop(hBox);
             borderPane.setCenter(pagination);
         } else {
@@ -105,8 +106,9 @@ public class SalesHistoryMenu extends Menu {
         borderPane = new BorderPane();
         ArrayList<Log> allSellLog = seller.getHistoryOfTransaction();
         for (int i = 0; i < allSellLog.size(); i++) {
-            Button button = new Button("View Details");
+            Button button = new Button("Details");
             button.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 19));
+            button.setTranslateX(40);
             int finalI = i;
             button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -114,7 +116,7 @@ public class SalesHistoryMenu extends Menu {
                     VBox vBox = new VBox();
                     vBox.setAlignment(Pos.CENTER);
                     vBox.setStyle("-fx-background-color: #afafaf");
-                    String[] details = seller.findOrderWithId(allSellLog.get(finalI).getId()).toString().split("\n");
+                    String[] details = seller.findOrderWithId(allSellLog.get(finalI).getId()).viewOrders().split("\n");
                     Label[] label = new Label[details.length];
                     Label label1 = new Label("Details :\n\n");
                     label1.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 30));
@@ -149,8 +151,19 @@ public class SalesHistoryMenu extends Menu {
         status.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         gridPane.setVgap(30);
         for (int i = 0; i < 6; i++) {
-            gridPane.getColumnConstraints().add(new ColumnConstraints(110,
-                    Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+            if(i==2){
+                gridPane.getColumnConstraints().add(new ColumnConstraints(300,
+                        Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+            }else if(i==3){
+                gridPane.getColumnConstraints().add(new ColumnConstraints(180,
+                        Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+            }else if(i==5) {
+                gridPane.getColumnConstraints().add(new ColumnConstraints(100,
+                        Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+            }else{
+                gridPane.getColumnConstraints().add(new ColumnConstraints(110,
+                        Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+            }
         }
         setLogCounter(4 * pages);
         ArrayList<Log> allSellLog = seller.getHistoryOfTransaction();
@@ -169,24 +182,24 @@ public class SalesHistoryMenu extends Menu {
 
 
     private void setTheRows(int row, String id, String price, String date, String status) {
-        Pane[] allPanes = new Pane[5];
-        for (int i = 0; i < 5; i++) {
+        Pane[] allPanes = new Pane[4];
+        for (int i = 0; i < 4; i++) {
             allPanes[i] = new Pane();
             allPanes[i].setStyle("-fx-background-color: #e6e6e6");
         }
         Label[] allLabels = labelMaker(id, price, date, status);
-        for (int i = 0; i < 5; i++) {
-            if(i == 0){
+        for (int i = 0; i < 4; i++) {
+            if (i == 0) {
                 allLabels[i].setTranslateX(10);
             }
-            if(i == 1){
+            if (i == 1) {
+                allLabels[i].setTranslateX(30);
+            }
+            if (i == 2) {
                 allLabels[i].setTranslateX(15);
             }
-            if (i == 2){
-                allLabels[i].setTranslateX(20);
-            }
-            if (i == 3){
-                allLabels[i].setTranslateX(20);
+            if (i == 3) {
+                allLabels[i].setTranslateX(-3);
             }
             allLabels[i].setAlignment(Pos.CENTER);
             allPanes[i].getChildren().add(allLabels[i]);

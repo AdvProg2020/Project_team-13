@@ -75,7 +75,6 @@ public class ManageProducts extends Menu {
                 "    -fx-padding: 7 10 7 10;" +
                 "     -fx-background-radius: 40px;" +
                 "    -fx-border-radius: 20px;";
-        //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
         Text personalInfo = new Text("ali");
         Text pageTitle = new Text("Manage Products");
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
@@ -249,7 +248,6 @@ public class ManageProducts extends Menu {
             productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(5, Control.USE_COMPUTED_SIZE, 5, Priority.NEVER, HPos.LEFT, false));
             productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.NEVER, HPos.LEFT, false));
             productsPages.get(j).setVgap(10);
-            productsPages.get(j).setHgap(10);
             productsPages.get(j).setMinWidth(600);
             productsPages.get(j).setMaxHeight(300);
             for (int i = j * 12; i < (j) * 12 + (j == ((gridPanes.size() / 12) + (gridPanes.size() % 12 == 0 ? 0 : 1) - 1) ? gridPanes.size() % 12 : 12); i++) {
