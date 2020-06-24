@@ -9,5 +9,6 @@ public enum RequestType {
     addOff,
     editOff,
     scoring,
-    commenting;
+    commenting,
+    commercial;
 }

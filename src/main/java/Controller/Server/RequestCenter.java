@@ -51,6 +51,8 @@ public class RequestCenter {
                 return new Request(RequestType.EditProduct, RequestStatus.onReview, makeRequestID(), details);
             case "deleteRequest":
                 return new Request(RequestType.deleteProduct, RequestStatus.onReview, makeRequestID(), details);
+            case "Commercial":
+                return new Request(RequestType.commercial, RequestStatus.onReview, makeRequestID(), details);
             default:
                 return null;
         }

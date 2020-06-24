@@ -7,16 +7,21 @@ import Models.Product.Category;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -218,6 +223,39 @@ public class AddProductScene extends Menu {
             });
             menuItemArrayList.add(menuItem);
         }
+        MediaView mediaView = new MediaView();
+        Button chooseVideoButton = new Button("Choose video");
+        chooseVideoButton.setStyle("-fx-background-color: #E85D9E;");
+        chooseVideoButton.setMinWidth(100);
+        chooseVideoButton.setTextFill(Color.WHITE);
+        mediaView.setFitWidth(100);
+        mediaView.setFitHeight(100);
+        chooseVideoButton.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+            }
+        });
+        chooseVideoButton.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
+        final String[] videoPath = new String[1];
+        chooseVideoButton.setOnMouseClicked(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                FileChooser fileChooser = new FileChooser();
+                File selectedFile = fileChooser.showOpenDialog(stage);
+                if (selectedFile != null) {
+                    mediaView.setMediaPlayer(new MediaPlayer(new Media(selectedFile.getAbsolutePath())));
+                    videoPath[0] = selectedFile.getAbsolutePath();
+                }
+
+            }
+        });
         ImageView imageView = new ImageView(new Image("file:src/standings.png"));
         imageView.setFitHeight(30);
         imageView.setFitWidth(30);
@@ -242,6 +280,8 @@ public class AddProductScene extends Menu {
         cost.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         availableNumbers.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         userInfoGridPane.add(userImage, 13, 1, 5, 5);
+        userInfoGridPane.add(chooseVideoButton, 5, 1, 5, 5);
+        userInfoGridPane.add(mediaView, 8, 1, 5, 5);
         userInfoGridPane.add(productName1, 5, 9, 3, 1);
         userInfoGridPane.add(companyName, 5, 10, 3, 1);
         userInfoGridPane.add(descriptionText, 5, 11, 3, 1);
@@ -283,6 +323,7 @@ public class AddProductScene extends Menu {
                                         System.out.println("bbbbbaaaaaa");
                                         Product product = new Product(companyName1.getText().trim(), "", productName.getText().trim(),
                                                 (Seller) ClientController.getInstance().getCurrentUser(), Double.parseDouble(cost.getText().trim()), selectedCategory.getText().trim(), description.getText().trim(), Integer.parseInt(availableNumbers.getText().trim()), categoryFeaturesForProduct);
+                                        product.setVideoPath(videoPath[0]);
                                         product.setImagePath(imagePath);
                                         ProductController.getInstance().addProduct(product);
                                     } else {

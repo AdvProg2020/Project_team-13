@@ -1,8 +1,8 @@
 package Controller.Server;
 
 import Controller.Client.MessageController;
-import Models.Offer;
 import Models.DiscountCode;
+import Models.Offer;
 import Models.Product.Cart;
 import Models.Product.Category;
 import Models.Product.Product;
@@ -51,7 +51,7 @@ public class ServerMessageController {
             Gson gson = new Gson();
             Product product = gson.fromJson(message, Product.class);
             ProductCenter.getInstance().createProductRequest(product);
-        }  else if (message.startsWith("@getAllUsers@")) {
+        } else if (message.startsWith("@getAllUsers@")) {
             DataBase.getInstance().getAllUsersListFromDateBase();
         } else if (message.startsWith("@deleteCustomer@")) {
             UserCenter.getIncstance().removeCustomer(message.substring(16, message.length()));
@@ -121,21 +121,24 @@ public class ServerMessageController {
         } else if (message.startsWith("@editProduct@")) {
             message = message.substring(13);
             ProductCenter.getInstance().createEditProductRequest(new Gson().fromJson(message, Product.class));
-        }  else if (message.startsWith("@deleteProduct@")) {
+        } else if (message.startsWith("@deleteProduct@")) {
             System.out.println("aa1");
             message = message.substring(15);
             ProductCenter.getInstance().createDeleteProductRequest(new Gson().fromJson(message, Product.class));
-        }else if (message.startsWith("@pay@")) {
+        } else if (message.startsWith("@pay@")) {
             message = message.substring(5);
             CartCenter.getInstance().pay(new Gson().fromJson(message, Cart.class));//
         } else if (message.startsWith("@declineRequest@")) {
             message = message.substring(16);
             RequestCenter.getIncstance().declineRequest(message);
-        }else if(message.startsWith("@rate@")){
-            message=message.substring(6);
+        } else if (message.startsWith("@rate@")) {
+            message = message.substring(6);
             ProductCenter.getInstance().rating(message);
-        }else if(message.startsWith("@addComment@")){
-            message=message.substring(12);
+        } else if (message.startsWith("@cmc@")) {
+            message = message.substring(5);
+            ProductCenter.getInstance().rating(message);
+        } else if (message.startsWith("@addComment@")) {
+            message = message.substring(12);
             ProductCenter.getInstance().commenting(message);
             ServerController.getInstance().sendMessageToClient("@Successful@your comment sent to manager for accept");
         }

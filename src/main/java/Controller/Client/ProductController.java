@@ -195,6 +195,7 @@ public class ProductController {
     public void editProduct(Product product) {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("editProduct", new Gson().toJson(product)));
     }
+
     public void createDeleteProductRequest(Product product) {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("deleteProduct", new Gson().toJson(product)));
     }
@@ -206,7 +207,10 @@ public class ProductController {
                     lst.stream().filter(e -> e.getProductCost() <= max && e.getProductCost() >= min).toArray(Product[]::new);
             allProductsAfterFilter = new ArrayList<>(Arrays.asList(productsAfterPriceFilter));
         }
+    }
 
+    public void setCommercializedProduct(String productId) {
+        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("cmc", productId));
     }
 
     private void filterByBrand() {
