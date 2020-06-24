@@ -8,6 +8,7 @@ import Models.Comment;
 import Models.CommentStatus;
 import Models.Product.Product;
 import Models.Score;
+import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -130,7 +131,7 @@ public class ProductMenu extends Menu {
         addToCartButton.setMinWidth(200);
         addToCartButton.setMinHeight(30);
         addToCartButton.setTextFill(Color.WHITE);
-        if(product.getNumberOfAvailableProducts()==0){
+        if(product.getNumberOfAvailableProducts()==0||!(ClientController.getInstance().getCurrentUser() instanceof Customer)){
             addToCartButton.setDisable(true);
         }
         productImage.setOnMouseEntered(e -> {
