@@ -5,7 +5,6 @@ import Models.Offer;
 import Models.Product.Product;
 import Models.Product.ProductStatus;
 import Models.Score;
-import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -38,8 +37,8 @@ public class ProductCenter {
 
     public void decreaseProductCount(String productId, int count) {
         Product product = findProductWithID(productId);
-        if (product.getNumberOfAvailableProducts() - count >=0) {
-            System.out.println("count"+count);
+        if (product.getNumberOfAvailableProducts() - count >= 0) {
+            System.out.println("count" + count);
             product.setNumberOfAvailableProducts(product.getNumberOfAvailableProducts() - count);
             UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).reduceProductCount(productId, count);
             if (OffCenter.getInstance().findProductWithID(productId) != null) {
@@ -56,27 +55,29 @@ public class ProductCenter {
     }
 
     public void rating(String json) {
-        Score score=new Gson().fromJson(json,Score.class);
-        Product product=ProductCenter.getInstance().findProductWithID(score.getProductID());
+        Score score = new Gson().fromJson(json, Score.class);
+        Product product = ProductCenter.getInstance().findProductWithID(score.getProductID());
         product.addScore(score);
         UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).findProductWithID(product.getProductId()).addScore(score);
         UserCenter.getIncstance().findCustomerWithUsername(score.getCustomerID()).findProductWithId(product.getProductId()).addScore(score);
-        if(OffCenter.getInstance().findProductWithID(product.getProductId())!=null)
-        OffCenter.getInstance().findProductWithID(product.getProductId()).addScore(score);
+        if (OffCenter.getInstance().findProductWithID(product.getProductId()) != null)
+            OffCenter.getInstance().findProductWithID(product.getProductId()).addScore(score);
         DataBase.getInstance().updateAllProducts(new Gson().toJson(ProductCenter.getInstance().getAllProducts()));
         DataBase.getInstance().updateAllOffers(new Gson().toJson(OffCenter.getInstance().getAllOffers()));
         DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
         DataBase.getInstance().updateAllSellers(new Gson().toJson(UserCenter.getIncstance().getAllSeller()));
     }
-    public void commenting(String json){
-        Comment comment=new Gson().fromJson(json,Comment.class);
-        RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("Commenting",new Gson().toJson(comment)));
+
+    public void commenting(String json) {
+        Comment comment = new Gson().fromJson(json, Comment.class);
+        RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("Commenting", new Gson().toJson(comment)));
     }
+
     public void addComment(Comment comment) {
-        Product product=ProductCenter.getInstance().findProductWithID(comment.getProductId());
+        Product product = ProductCenter.getInstance().findProductWithID(comment.getProductId());
         product.addComment(comment);
         UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).findProductWithID(product.getProductId()).addComment(comment);
-        if(OffCenter.getInstance().findProductWithID(product.getProductId())!=null)
+        if (OffCenter.getInstance().findProductWithID(product.getProductId()) != null)
             OffCenter.getInstance().findProductWithID(product.getProductId()).addComment(comment);
         DataBase.getInstance().updateAllProducts(new Gson().toJson(ProductCenter.getInstance().getAllProducts()));
         DataBase.getInstance().updateAllOffers(new Gson().toJson(OffCenter.getInstance().getAllOffers()));
@@ -84,6 +85,7 @@ public class ProductCenter {
         DataBase.getInstance().updateAllSellers(new Gson().toJson(UserCenter.getIncstance().getAllSeller()));
         ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@successfully rating");
     }
+
     public Product findProductWithID(String productId) {
         for (Product product : allProducts) {
             if (product.getProductId().equals(productId)) {
@@ -181,14 +183,14 @@ public class ProductCenter {
         getProductWithId(product.getProductId()).setProductStatus(ProductStatus.editing);
         DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));
         RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("EditProduct", new Gson().toJson(product)));
-        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful" ,"Product edit request has been send to the manager."));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "Product edit request has been send to the manager."));
     }
 
     public void createDeleteProductRequest(Product product) {
         getProductWithId(product.getProductId()).setProductStatus(ProductStatus.editing);
         DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));
         RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("deleteRequest", new Gson().toJson(product)));
-        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful" ,"Product delete request has been send to the manager."));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "Product delete request has been send to the manager."));
     }
 
     public void editProduct(Product product) {
@@ -205,6 +207,15 @@ public class ProductCenter {
         CategoryCenter.getIncstance().editProductInCategory(product);
         CategoryCenter.getIncstance().addProductToCategory(product);
         DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));
+    }
+
+    public void addCommercialRequest(String productId) {
+        for (Product product : allProducts) {
+            if (product.getProductId().equalsIgnoreCase(productId)) {
+                RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("Commercial", new Gson().toJson(product)));
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("productCreating", "Product commercialized request has been sended"));
+            }
+        }
     }
 
     public void addOfferToProduct(String productId, Offer offer) {

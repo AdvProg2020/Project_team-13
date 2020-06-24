@@ -21,6 +21,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -31,6 +34,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ProductMenu extends Menu {
@@ -40,7 +44,7 @@ public class ProductMenu extends Menu {
     ImageView star3 = new ImageView(new Image("file:src/gray_star.png"));
     ImageView star4 = new ImageView(new Image("file:src/gray_star.png"));
     ImageView star5 = new ImageView(new Image("file:src/gray_star.png"));
-    ImageView productZoomedImage ;
+    ImageView productZoomedImage;
     GridPane commentGridPane = new GridPane();
     private Image goldStar = new Image("file:src/gold_star.png");
     private Rectangle fiveStarBar = new Rectangle(), fourStarBar = new Rectangle(), threeStarBar = new Rectangle(), twoStarBar = new Rectangle(), oneStarBar = new Rectangle();
@@ -60,9 +64,9 @@ public class ProductMenu extends Menu {
         setMenuBarGridPane();
         setCenterGridPane();
         bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, true));
-       ScrollPane scrollPane=new ScrollPane();
-       scrollPane.setFitToWidth(true);
-       scrollPane.setContent(pageGridPane);
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToWidth(true);
+        scrollPane.setContent(pageGridPane);
         scene.setRoot(scrollPane);
     }
 
@@ -131,11 +135,19 @@ public class ProductMenu extends Menu {
         addToCartButton.setMinWidth(200);
         addToCartButton.setMinHeight(30);
         addToCartButton.setTextFill(Color.WHITE);
-        if(product.getNumberOfAvailableProducts()==0||!(ClientController.getInstance().getCurrentUser() instanceof Customer)){
+        Button videoButton = new Button("Show Video");
+        videoButton.setStyle("-fx-background-color: rgba(45, 156, 240, 1);-fx-font-size: 15;");
+        videoButton.setMinWidth(200);
+        videoButton.setMinHeight(30);
+        videoButton.setTextFill(Color.WHITE);
+        if (product.getVideoPath() != null && product.getVideoPath().equals("")) {
+            videoButton.setDisable(false);
+        }
+        if (product.getNumberOfAvailableProducts() == 0 || !(ClientController.getInstance().getCurrentUser() instanceof Customer)) {
             addToCartButton.setDisable(true);
         }
         productImage.setOnMouseEntered(e -> {
-           productZoomedImage.setVisible(true);
+            productZoomedImage.setVisible(true);
         });
         productImage.setOnMouseExited(e -> {
             productZoomedImage.setVisible(false);
@@ -163,19 +175,19 @@ public class ProductMenu extends Menu {
             commentPaneGrid.add(commentText, 2, 0, 1, 2);
             commentPane.add(commentPaneGrid, 0, i + 1);
         }
-        GridPane similarProductPane=new GridPane();
-        Text similarProductText=new Text("Similar Products");
+        GridPane similarProductPane = new GridPane();
+        Text similarProductText = new Text("Similar Products");
         similarProductText.setFont(Font.loadFont("file:src/FredokaOne-Regular.ttf", 20));
 
 
         ArrayList<GridPane> gridPanes = new ArrayList<>();
         CategoryController.getInstance().updateAllCategories();
         for (int kk = 0; kk < 3; kk++) {
-            if(kk==CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts().size()){
+            if (kk == CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts().size()) {
                 break;
             }
             Product productSim = CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts().get(kk);
-            if(productSim.getProductId().equals(product.getProductId())){
+            if (productSim.getProductId().equals(product.getProductId())) {
                 continue;
             }
             GridPane gridPane = new GridPane();
@@ -233,7 +245,7 @@ public class ProductMenu extends Menu {
                 public void handle(MouseEvent event) {
                     for (int i = 0; i < gridPanes.size(); i++) {
                         if (gridPanes.get(i).equals(gridPane)) {
-                            ClientController.getInstance().setCurrentProduct(((Seller)ClientController.getInstance().getCurrentUser()).getAllProducts().get(i));
+                            ClientController.getInstance().setCurrentProduct(((Seller) ClientController.getInstance().getCurrentUser()).getAllProducts().get(i));
                             new ProductMenu(stage).execute();
                         }
                     }
@@ -244,14 +256,15 @@ public class ProductMenu extends Menu {
 
         similarProductPane.setVgap(10);
         similarProductPane.setHgap(10);
-        similarProductPane.add(similarProductText,0,0);
-        if(gridPanes.size()>0)
-        similarProductPane.add(gridPanes.get(0),0,1);
-        if(gridPanes.size()>1)
-        similarProductPane.add(gridPanes.get(1),1,1);
-        if(gridPanes.size()>2)
-        similarProductPane.add(gridPanes.get(2),2,1);
+        similarProductPane.add(similarProductText, 0, 0);
+        if (gridPanes.size() > 0)
+            similarProductPane.add(gridPanes.get(0), 0, 1);
+        if (gridPanes.size() > 1)
+            similarProductPane.add(gridPanes.get(1), 1, 1);
+        if (gridPanes.size() > 2)
+            similarProductPane.add(gridPanes.get(2), 2, 1);
         productInfoGridPane.add(addToCartButton, 1, 14, 12, 5);
+        productInfoGridPane.add(videoButton, 1, 16, 12, 5);
         productInfoGridPane.add(productName, 12, 1);
         productInfoGridPane.add(attributes, 12, 2, 5, 12);
         productInfoGridPane.add(rateGridPane, 12, 16, 8, 8);
@@ -279,7 +292,7 @@ public class ProductMenu extends Menu {
         rateGridPane.add(new Text("3"), 5, 3);
         rateGridPane.add(new Text("2"), 5, 4);
         rateGridPane.add(new Text("1"), 5, 5);
-        productInfoGridPane.add(productZoomedImage,0,0,20,20);
+        productInfoGridPane.add(productZoomedImage, 0, 0, 20, 20);
         Text addCommentText = new Text("Add Comment");
         addCommentText.setFont(Font.loadFont("file:src/FredokaOne-Regular.ttf", 20));
         commentGridPane.add(addCommentText, 0, 0);
@@ -294,6 +307,18 @@ public class ProductMenu extends Menu {
             }
         });
         commentIcon.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
+        videoButton.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+            }
+        });
+        videoButton.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
                 scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
@@ -435,6 +460,112 @@ public class ProductMenu extends Menu {
                 popupwindow.showAndWait();
             }
         });
+        videoButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Stage popupwindow = new Stage();
+                GridPane gridPane = new GridPane();
+                gridPane.setStyle("-fx-background-color: Blue");
+                Media media = new Media(product.getVideoPath());
+                MediaPlayer mediaPlayer = new MediaPlayer(media);
+                MediaView mediaView = new MediaView(mediaPlayer);
+                Button button = new Button("X");
+                button.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 25px; -fx-padding: 3,3,3,3;-fx-font-weight: bold;-fx-text-fill: Red");
+                button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        mediaPlayer.stop();
+                        popupwindow.hide();
+                        scene.setFill(null);
+                    }
+                });
+                gridPane.add(button, 0, 0);
+                gridPane.add(new Text(""), 1, 0);
+                gridPane.setStyle("-fx-background-color: rgba(255,145,200,0.85);");
+                GridPane commentPane = new GridPane();
+                gridPane.add(commentPane, 1, 1);
+                commentPane.setVgap(10);
+                commentPane.setHgap(5);
+                mediaPlayer.setAutoPlay(true);
+                mediaView.setFitHeight(380);
+                mediaView.setFitWidth(280);
+                ImageView playButton = new ImageView(new Image("file:src/play.png"));
+                ImageView pauseButton = new ImageView(new Image("file:src/pause.png"));
+                ImageView stopButton = new ImageView(new Image("file:src/stop.png"));
+                playButton.setOnMouseEntered(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                    }
+                });
+                playButton.setOnMouseExited(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    }
+                });
+                playButton.setOnMouseClicked(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        mediaPlayer.play();
+                    }
+                });
+                pauseButton.setOnMouseEntered(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                    }
+                });
+                pauseButton.setOnMouseExited(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    }
+                });
+                pauseButton.setOnMouseClicked(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        mediaPlayer.pause();
+                    }
+                });
+                stopButton.setOnMouseEntered(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                    }
+                });
+                stopButton.setOnMouseExited(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    }
+                });
+                stopButton.setOnMouseClicked(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        mediaPlayer.stop();
+                    }
+                });
+                playButton.setFitHeight(20);
+                pauseButton.setFitHeight(20);
+                stopButton.setFitHeight(20);
+                playButton.setFitWidth(20);
+                pauseButton.setFitWidth(20);
+                stopButton.setFitWidth(20);
+                commentPane.add(mediaView, 0, 0, 4, 1);
+                commentPane.add(playButton, 0, 1);
+                commentPane.add(pauseButton, 2, 1);
+                commentPane.add(stopButton, 3, 1);
+                Scene scene1 = new Scene(gridPane, 400, 300);
+                popupwindow.initModality(Modality.APPLICATION_MODAL);
+                popupwindow.initStyle(StageStyle.UNDECORATED);
+                popupwindow.setScene(scene1);
+                popupwindow.showAndWait();
+            }
+        });
         star1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -533,7 +664,7 @@ public class ProductMenu extends Menu {
                 star5.setImage(goldStar);
             if (rate > 0) {
                 if (add) {
-                    ProductController.getInstance().rating(product.getProductId(),rate);
+                    ProductController.getInstance().rating(product.getProductId(), rate);
                     setLengthOfStarBars();
                 }
                 isScored = true;

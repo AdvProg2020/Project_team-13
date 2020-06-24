@@ -101,6 +101,7 @@ public class ManageProducts extends Menu {
             scoreGridPane.add(star, 1, 0);
             ImageView editInfoPic = new ImageView(new Image("file:src/edit3.png"));
             ImageView deleteProduct = new ImageView(new Image("file:src/trash1.png"));
+            ImageView addToAdds = new ImageView(new Image("file:src/add.png"));
             editInfoPic.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
@@ -118,6 +119,24 @@ public class ManageProducts extends Menu {
                 public void handle(Event event) {
                     currentProduct = product;
                     handle1();
+                }
+            });
+            addToAdds.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                }
+            });
+            addToAdds.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            addToAdds.setOnMouseClicked(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                ProductController.getInstance().setCommercializedProduct(product.getProductId());
                 }
             });
 
@@ -146,16 +165,20 @@ public class ManageProducts extends Menu {
             editInfoPic.setFitHeight(25);
             deleteProduct.setFitWidth(25);
             deleteProduct.setFitHeight(25);
+            addToAdds.setFitWidth(25);
+            addToAdds.setFitHeight(25);
             gridPane.add(imageView, 0, 0, 2, 1);
             gridPane.add(text, 0, 1, 1, 1);
             gridPane.add(scoreGridPane, 0, 2, 1, 1);
             GridPane options = new GridPane();
-            options.getColumnConstraints().add(new ColumnConstraints(117, Control.USE_COMPUTED_SIZE, 117, Priority.NEVER, HPos.RIGHT, false));
+            options.getColumnConstraints().add(new ColumnConstraints(87, Control.USE_COMPUTED_SIZE, 87, Priority.NEVER, HPos.RIGHT, false));
+            options.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
             options.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
             options.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, false));
             options.setHgap(2);
-            options.add(editInfoPic, 0, 0);
-            options.add(deleteProduct, 1, 0);
+            options.add(addToAdds,0,0);
+            options.add(editInfoPic, 1, 0);
+            options.add(deleteProduct, 2, 0);
             gridPane.add(options, 0, 3, 2, 1);
             gridPanes.add(gridPane);
             gridPane.setStyle("-fx-background-color: #ECD5DC;-fx-background-radius: 20px;");

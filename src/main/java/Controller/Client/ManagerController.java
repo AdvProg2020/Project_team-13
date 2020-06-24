@@ -19,8 +19,6 @@ public class ManagerController {
     private ManagerController() {
     }
 
-
-
     public static ManagerController getInstance() {
         if (managerController == null) {
             managerController = new ManagerController();
@@ -30,6 +28,16 @@ public class ManagerController {
 
     public void getAllUserFromServer() {
         ClientController.getInstance().sendMessageToServer("@getAllUsers@");
+    }
+
+    public ArrayList<String> getAllCommercializedProducts() {
+        ArrayList<String> commercializedProduct = new ArrayList<>();
+        for (Seller seller : getAllSellers()) {
+            if (seller.getCommercializedProduct() != null && !seller.getCommercializedProduct().isEmpty()) {
+                commercializedProduct.add(seller.getCommercializedProduct());
+            }
+        }
+        return commercializedProduct;
     }
 
     public ArrayList<Seller> getAllSellers() {
@@ -73,7 +81,7 @@ public class ManagerController {
         for (Seller seller : allSellers) {
             showAllSellers += seller.getUsername() + " " + seller.getType() + "\n";
         }
-      //  ClientController.getInstance().getCurrentMenu().showMessage(showAllSellers);
+        //  ClientController.getInstance().getCurrentMenu().showMessage(showAllSellers);
     }
 
     public void printAllCustomers() {
@@ -81,7 +89,7 @@ public class ManagerController {
         for (Customer customer : allCustomers) {
             showAllCustomers += customer.getUsername() + " " + customer.getType() + "\n";
         }
-     //   ClientController.getInstance().getCurrentMenu().showMessage(showAllCustomers);
+        //   ClientController.getInstance().getCurrentMenu().showMessage(showAllCustomers);
     }
 
     public void printAllManagers() {
@@ -89,7 +97,7 @@ public class ManagerController {
         for (Manager manager : allManagers) {
             showAllManagers += manager.getUsername() + " " + manager.getType() + "\n";
         }
-     //   ClientController.getInstance().getCurrentMenu().showMessage(showAllManagers);
+        //   ClientController.getInstance().getCurrentMenu().showMessage(showAllManagers);
     }
 
     public void viewUser(String username) {
@@ -97,36 +105,37 @@ public class ManagerController {
         for (Customer customer : allCustomers) {
             if (customer.getUsername().equals(username)) {
                 viewDetail = username + " " + customer.getType() + " " + customer.viewPersonalInfo();
-        //        ClientController.getInstance().getCurrentMenu().showMessage(viewDetail);
+                //        ClientController.getInstance().getCurrentMenu().showMessage(viewDetail);
                 return;
             }
         }
         for (Seller seller : allSellers) {
             if (seller.getUsername().equals(username)) {
                 viewDetail = username + " " + seller.getType() + " " + seller.viewPersonalInfo();
-            //    ClientController.getInstance().getCurrentMenu().showMessage(viewDetail);
+                //    ClientController.getInstance().getCurrentMenu().showMessage(viewDetail);
                 return;
             }
         }
         for (Manager manager : allManagers) {
             if (manager.getUsername().equals(username)) {
                 viewDetail = username + " " + manager.getType() + " " + manager.viewPersonalInfo();
-           //     ClientController.getInstance().getCurrentMenu().showMessage(viewDetail);
+                //     ClientController.getInstance().getCurrentMenu().showMessage(viewDetail);
                 return;
             }
         }
         ClientController.getInstance().getCurrentMenu().showMessage("there is no user with this username", MessageKind.ErrorWithoutBack);
     }
+
     public void deleteUser(String username) {
         System.out.println("11");
-        if(ClientController.getInstance().getCurrentUser().getUsername().equals(username)){
+        if (ClientController.getInstance().getCurrentUser().getUsername().equals(username)) {
             ClientController.getInstance().getCurrentMenu().showMessage("you can't delete yourself", MessageKind.ErrorWithoutBack);
             return;
         }
         for (Customer customer : allCustomers) {
             System.out.println("22");
             if (customer.getUsername().equals(username)) {
-                ClientController.getInstance().sendMessageToServer("@deleteCustomer@"+username);
+                ClientController.getInstance().sendMessageToServer("@deleteCustomer@" + username);
                 allCustomers.remove(customer);
                 return;
             }
@@ -134,7 +143,7 @@ public class ManagerController {
         for (Seller seller : allSellers) {
             System.out.println("33");
             if (seller.getUsername().equals(username)) {
-                ClientController.getInstance().sendMessageToServer("@deleteSeller@"+username);
+                ClientController.getInstance().sendMessageToServer("@deleteSeller@" + username);
                 allSellers.remove(seller);
                 return;
             }
@@ -142,7 +151,7 @@ public class ManagerController {
         for (Manager manager : allManagers) {
             System.out.println("44");
             if (manager.getUsername().equals(username)) {
-                ClientController.getInstance().sendMessageToServer("@deleteManager@"+username);
+                ClientController.getInstance().sendMessageToServer("@deleteManager@" + username);
                 allManagers.remove(manager);
                 return;
             }
@@ -151,15 +160,16 @@ public class ManagerController {
     }
 
 
-    public boolean isThereCustomerWithThisUsername(String username){
+    public boolean isThereCustomerWithThisUsername(String username) {
         for (Customer customer : allCustomers) {
-            if(customer.getUsername().equals(username)){
+            if (customer.getUsername().equals(username)) {
                 return true;
             }
         }
         return false;
     }
-    public void createManagerProfile(Manager manager){
-        ClientController.getInstance().sendMessageToServer("@createManagerProfile@"+new Gson().toJson(manager));
+
+    public void createManagerProfile(Manager manager) {
+        ClientController.getInstance().sendMessageToServer("@createManagerProfile@" + new Gson().toJson(manager));
     }
 }

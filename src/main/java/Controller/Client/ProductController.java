@@ -10,6 +10,7 @@ import Models.UserAccount.Seller;
 import View.MessageKind;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import sun.plugin.perf.PluginRollup;
 
 import java.lang.reflect.Type;
 import java.util.*;
@@ -195,6 +196,7 @@ public class ProductController {
     public void editProduct(Product product) {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("editProduct", new Gson().toJson(product)));
     }
+
     public void createDeleteProductRequest(Product product) {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("deleteProduct", new Gson().toJson(product)));
     }
@@ -206,7 +208,10 @@ public class ProductController {
                     lst.stream().filter(e -> e.getProductCost() <= max && e.getProductCost() >= min).toArray(Product[]::new);
             allProductsAfterFilter = new ArrayList<>(Arrays.asList(productsAfterPriceFilter));
         }
+    }
 
+    public void setCommercializedProduct(String productId) {
+        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("cmc", productId));
     }
 
     private void filterByBrand() {
@@ -216,6 +221,16 @@ public class ProductController {
                     lst.stream().filter(e -> allBrandsToFilter.contains(e.getProductCompany())).toArray(Product[]::new);
             allProductsAfterFilter = new ArrayList<>(Arrays.asList(productsAfterPriceFilter));
         }
+    }
+
+    public ArrayList<Product> getAllCommercializedProduct() {
+        ArrayList<Product> products = new ArrayList<>();
+        for (Product product : allProducts) {
+            if (ManagerController.getInstance().getAllCommercializedProducts().contains(product.getProductId())) {
+                products.add(product);
+            }
+        }
+        return products;
     }
 
     private void filterBySeller() {

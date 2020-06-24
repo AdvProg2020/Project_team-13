@@ -1,8 +1,6 @@
 package Models.UserAccount;
 
-import Controller.Client.ClientController;
 import Controller.Client.ProductController;
-import Models.DiscountCode;
 import Models.Log;
 import Models.Offer;
 import Models.Product.Product;
@@ -16,6 +14,7 @@ public class Seller extends UserAccount {
     private ArrayList<Product> allProducts;
     private ArrayList<Offer> allOffer;
     private ArrayList<Request> allRequests;
+    private String commercializedProduct;
 
     public Seller(String username, String password, String firstName, String lastName, String email, String phoneNumber, double credit, String companyName, boolean isAccepted) {
         super(username, password, firstName, lastName, email, phoneNumber, credit);
@@ -25,6 +24,13 @@ public class Seller extends UserAccount {
         allProducts = new ArrayList<>();
     }
 
+    public String getCommercializedProduct() {
+        return commercializedProduct;
+    }
+
+    public void setCommercializedProduct(String commercializedProduct) {
+        this.commercializedProduct = commercializedProduct;
+    }
 
     public void removeOffer(Offer offer) {
         if (allOffer != null && !allOffer.isEmpty()) {

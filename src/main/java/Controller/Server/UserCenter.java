@@ -21,6 +21,25 @@ public class UserCenter {
 
     }
 
+    public void decreaseProductCount(String productID, String username) {
+        for (Seller seller : allSeller) {
+            if (seller.getUsername().equals(username)) {
+
+            }
+        }
+    }
+
+    public void addCommercial(Product product) {
+        for (Seller seller : allSeller) {
+            if (seller.getUsername().equalsIgnoreCase(product.getSeller())) {
+                seller.setCommercializedProduct(product.getProductId());
+                ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@" + "Request accepted successfully");
+                break;
+            }
+        }
+        DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+    }
+
     public static UserCenter getIncstance() {
         if (userCenter == null) {
             userCenter = new UserCenter();
@@ -136,8 +155,8 @@ public class UserCenter {
                     }
                     case "@Seller": {
                         String user = gson.toJson((Seller) userAccount);
-                        if(((Seller) userAccount).isAccepted())
-                        ServerController.getInstance().sendMessageToClient("@Login as Seller@" + user);
+                        if (((Seller) userAccount).isAccepted())
+                            ServerController.getInstance().sendMessageToClient("@Login as Seller@" + user);
                         else
                             ServerController.getInstance().sendMessageToClient("@Error@" + "Seller registration request hasn't been accepted");
                         break;
@@ -351,10 +370,5 @@ public class UserCenter {
             }
         }
         return null;
-    }
-
-
-    public ArrayList<Manager> getAllManager() {
-        return allManager;
     }
 }
