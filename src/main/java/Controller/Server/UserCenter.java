@@ -21,14 +21,6 @@ public class UserCenter {
 
     }
 
-    public void decreaseProductCount(String productID, String username) {
-        for (Seller seller : allSeller) {
-            if (seller.getUsername().equals(username)) {
-
-            }
-        }
-    }
-
     public static UserCenter getIncstance() {
         if (userCenter == null) {
             userCenter = new UserCenter();
@@ -359,5 +351,10 @@ public class UserCenter {
             }
         }
         return null;
+    }
+
+
+    public ArrayList<Manager> getAllManager() {
+        return allManager;
     }
 }

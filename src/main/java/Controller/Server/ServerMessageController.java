@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 public class ServerMessageController {
     private static ServerMessageController serverMessageController;
+    private String message;
 
 
     private ServerMessageController() {
@@ -32,11 +33,11 @@ public class ServerMessageController {
         return ("@" + type + "@" + command);
     }
 
-    void processMessage(String message) {
+    public void processMessage(String message) {
         ServerController.getInstance().passTime();
         if (message.startsWith("@Register@")) {
-            message = message.substring(10, message.length());
-            UserCenter.getIncstance().createNewUserAccount(message);
+            this.message = message.substring(10);
+            UserCenter.getIncstance().createNewUserAccount(this.message);
         } else if (message.startsWith("@Login@")) {
             message = message.substring(7);
             String[] split = message.split("/");
@@ -139,5 +140,10 @@ public class ServerMessageController {
             ProductCenter.getInstance().commenting(message);
             ServerController.getInstance().sendMessageToClient("@Successful@your comment sent to manager for accept");
         }
+    }
+
+
+    public String getMessage() {
+        return message;
     }
 }

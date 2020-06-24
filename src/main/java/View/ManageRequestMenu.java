@@ -213,7 +213,7 @@ public class ManageRequestMenu extends Menu {
         gridPane.setTranslateY(1);
         gridPane.add(id, 0, 0);
         gridPane.add(type, 1, 0);
-        allGridPanes.add(pages, gridPane);
+        allGridPanes.set(pages, gridPane);
     }
 
 
