@@ -78,7 +78,18 @@ public class RequestCenter {
             acceptCommentRequest(request);
         } else if (request.getType().equals(RequestType.deleteProduct)) {
             acceptDeleteProductRequest(request);
+        } else if (request.getType().equals(RequestType.commercial)) {
+            acceptCommercialRequest(request);
         }
+    }
+
+    public void acceptCommercialRequest(Request request) {
+        allRequests.remove(request);
+        ProductCenter.getInstance().createProduct(new Gson().fromJson(request.getDetails(), Product.class));
+        String arrayData = new Gson().toJson(allRequests);
+        Product product = new Gson().fromJson(request.getDetails(), Product.class);
+        DataBase.getInstance().updateAllRequests(arrayData);
+        UserCenter.getIncstance().addCommercial(product);
     }
 
     public void acceptAddProductRequest(Request request) {

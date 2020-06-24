@@ -136,7 +136,7 @@ public class ServerMessageController {
             ProductCenter.getInstance().rating(message);
         } else if (message.startsWith("@cmc@")) {
             message = message.substring(5);
-            ProductCenter.getInstance().rating(message);
+            ProductCenter.getInstance().addCommercialRequest(message);
         } else if (message.startsWith("@addComment@")) {
             message = message.substring(12);
             ProductCenter.getInstance().commenting(message);
