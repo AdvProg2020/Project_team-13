@@ -2,7 +2,6 @@ package View;
 
 import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
-import Controller.Client.ManagerController;
 import Controller.Client.ProductController;
 import Models.Product.Category;
 import Models.Product.Product;
@@ -139,7 +138,7 @@ public class ManageProducts extends Menu {
                 public void handle(Event event) {
                     if (seller.getCredit() >= 50) {
                         ProductController.getInstance().setCommercializedProduct(product.getProductId());
-                        seller.setCredit(seller.getCredit()-50);
+                        seller.setCredit(seller.getCredit() - 50);
                     } else {
                         showMessage("You dont have enough money to create new add.cost of each add is 50 boxes.", MessageKind.ErrorWithoutBack);
                     }

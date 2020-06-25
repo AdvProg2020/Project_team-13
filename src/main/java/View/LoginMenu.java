@@ -1,6 +1,11 @@
 package View;
 
+import Controller.Client.CategoryController;
+import Controller.Client.ClientController;
 import Controller.Client.LoginController;
+import Controller.Client.ProductController;
+import Models.Product.Category;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -22,6 +27,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
+import java.util.ArrayList;
 
 public class LoginMenu extends Menu {
     private TextField userName;
@@ -253,7 +260,6 @@ public class LoginMenu extends Menu {
         pageGridPane.add(bottomGridPane, 0, 3);
     }
 
-
     private void handleNullField(Text alertText) {
         if (passWord.getText().isEmpty() && userName.getText().isEmpty()) {
             userName.setStyle("-fx-background-color: rgb(250, 0, 0);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 55px;");
@@ -275,6 +281,123 @@ public class LoginMenu extends Menu {
         } else {
             // Nothing
         }
+    }
+
+    public void setMenuBarGridPane() {
+        menuBarGridPane.getChildren().clear();
+        menuBarGridPane.getColumnConstraints().clear();
+        menuBarGridPane.getRowConstraints().clear();
+        if (ClientController.getInstance().getCurrentUser() == null) {
+            Menu menu = this;
+            menuBarGridPane.setStyle("-fx-background-color:rgb(76,170,240)");
+            GridPane leftGridPane = new GridPane();
+            Label home = new Label("Home");
+            home.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            home.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            home.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (!(menu instanceof MainMenu)) {
+                        ClientController.getInstance().getMainMenu().execute();
+
+                    }
+                }
+            });
+            ArrayList<MenuItem> menuItemArrayList = new ArrayList<>();
+            for (String s : getCategoryName()) {
+                MenuItem menuItem = new MenuItem("       " + s);
+                menuItem.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        ProductController.getInstance().getAllProductsFromServer();
+                        ProductController.getInstance().setCurrentCategory(CategoryController.getInstance().getCategoryWithName(s));
+                        CategoryController.getInstance().setCurrentCategory(CategoryController.getInstance().getCategoryWithName(s));
+                        new ProductsPageScene(stage).execute();
+                    }
+                });
+                menuItemArrayList.add(menuItem);
+            }
+            MenuButton products = new MenuButton("Products");
+            for (MenuItem menuItem : menuItemArrayList) {
+                products.getItems().add(menuItem);
+            }
+            products.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            products.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            products.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+//                    ClientController.getInstance().back();
+                }
+            });
+            products.setStyle("-fx-background-color: rgba(45, 156, 240, 0.24);");
+            home.setStyle("-fx-background-color:rgba(45, 156, 240, 0.31);-fx-text-fill: White;-fx-font-weight: bold;");
+            ImageView back = new ImageView(new Image("file:src/back.png"));
+            back.setFitWidth(40);
+            back.setFitHeight(25);
+            back.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            back.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+
+            back.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    ClientController.getInstance().back();
+                }
+            });
+            leftGridPane.add(back, 0, 0);
+            leftGridPane.add(home, 1, 0);
+            //  products.setTextFill(Color.WHITE);
+            leftGridPane.add(products, 2, 0);
+            leftGridPane.setHgap(5);
+            products.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
+            home.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
+            menuBarGridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_PREF_SIZE, Double.POSITIVE_INFINITY, Priority.ALWAYS, HPos.LEFT, true));
+            menuBarGridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_PREF_SIZE, Double.POSITIVE_INFINITY, Priority.ALWAYS, HPos.RIGHT, false));
+            menuBarGridPane.add(leftGridPane, 0, 0);
+            menuBarGridPane.getRowConstraints().add(new RowConstraints(40, Control.USE_COMPUTED_SIZE, 40, Priority.NEVER, VPos.CENTER, false));
+        }
+    }
+
+    private ArrayList<String> getCategoryName() {
+        CategoryController.getInstance().updateAllCategories();
+        ArrayList<Category> categories = CategoryController.getInstance().getAllCategories();
+        ArrayList<String> categoriesNames = new ArrayList<>();
+        for (Category category : categories) {
+            categoriesNames.add(category.getName());
+        }
+        return categoriesNames;
     }
 
 

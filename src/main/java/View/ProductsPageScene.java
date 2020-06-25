@@ -799,12 +799,12 @@ public class ProductsPageScene extends Menu {
             }
         } else {
             ImageView imageView = new ImageView(new Image("file:src/empty.png"));
-            Text text = new Text("No product to show.");
+            Text text = new Text("                             No product to show.");
             GridPane gridPane = new GridPane();
             imageView.setFitWidth(150);
             imageView.setFitHeight(150);
             gridPane.add(imageView, 0, 0);
-            gridPane.add(text, 1, 1);
+            gridPane.add(text, 0, 1,2,1);
             gridPane.getColumnConstraints().add(new ColumnConstraints(400, Control.USE_COMPUTED_SIZE, 400, Priority.NEVER, HPos.RIGHT, false));
             gridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_COMPUTED_SIZE, 200, Priority.NEVER, HPos.RIGHT, false));
             text.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 32));
