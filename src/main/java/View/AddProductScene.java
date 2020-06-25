@@ -82,8 +82,8 @@ public class AddProductScene extends Menu {
         GridPane leftGridPane = new GridPane();
         GridPane upGridPane = new GridPane();
         upGridPane.setMinHeight(50);
-        leftGridPane.setMinWidth(100);
-        Text title = new Text("Add Product");
+        leftGridPane.setMinWidth(50);
+        Text title = new Text("\tAdd Product");
         ImageView userImage = new ImageView(new Image("file:src/product_icon.png"));
         userImage.setFitHeight(100);
         userImage.setFitWidth(100);
@@ -112,8 +112,8 @@ public class AddProductScene extends Menu {
             public void handle(ActionEvent e) {
                 File selectedFile = fileChooser.showOpenDialog(stage);
                 if (selectedFile != null) {
-                    userImage.setImage(new Image("file:" + selectedFile.getAbsolutePath()));
-                    imagePath = "file:" + selectedFile.getAbsolutePath();
+                    userImage.setImage(new Image(selectedFile.toURI().toString()));
+                    imagePath = selectedFile.toURI().toString();
                 }
             }
         };
@@ -284,6 +284,7 @@ public class AddProductScene extends Menu {
         description.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         cost.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         availableNumbers.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+
         userInfoGridPane.add(userImage, 13, 1, 5, 5);
         userInfoGridPane.add(chooseVideoButton, 8, 5, 5, 5);
         userInfoGridPane.add(mediaView, 8, 1, 5, 5);
@@ -302,12 +303,13 @@ public class AddProductScene extends Menu {
         userInfoGridPane.add(cost, 8, 12, 6, 1);
         userInfoGridPane.add(availableNumbers, 19, 9, 1, 1);
         userInfoGridPane.add(editPhotoButton, 13, 6, 5, 1);
-        userInfoGridPane.add(addProduct, 13, 16, 5, 1);
         userInfoGridPane.add(errorText, 7, 14, 10, 1);
         userInfoGridPane.setStyle("-fx-background-color: #ECD5DC;");
         centerGridPane.add(userInfoGridPane, 2, 2, 1, 1);
         centerGridPane.add(upGridPane, 1, 1, 2, 1);
         centerGridPane.add(leftGridPane, 0, 0, 1, 1);
+        userInfoGridPane.add(addProduct, 13, 15, 5, 3);
+        userInfoGridPane.add(new Text(""), 18, 18);
         addProduct.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -323,9 +325,6 @@ public class AddProductScene extends Menu {
                             if (checkNameIsvalid(AddProductScene.this.productName.getText())) {
                                 if (checkCreditIsvalid(cost.getText())) {
                                     if (categoryFeaturesForProduct.size() == CategoryController.getInstance().getCategoryWithName(selectedCategory.getText()).getFeatures().size()) {
-                                        System.out.println("aaaaabbbbbb");
-                                        System.out.println(companyName1.getText().trim());
-                                        System.out.println("bbbbbaaaaaa");
                                         Product product = new Product(companyName1.getText().trim(), "", productName.getText().trim(),
                                                 (Seller) ClientController.getInstance().getCurrentUser(), Double.parseDouble(cost.getText().trim()), selectedCategory.getText().trim(), description.getText().trim(), Integer.parseInt(availableNumbers.getText().trim()), categoryFeaturesForProduct);
                                         product.setVideoPath(videoPath[0]);

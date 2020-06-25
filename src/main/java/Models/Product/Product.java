@@ -54,6 +54,7 @@ public class Product {
         this.costAfterOff = product.productCost;
         this.productsCategory = product.productsCategory;
         this.description = product.description;
+        this.videoPath="";
         this.numberOfAvailableProducts = product.numberOfAvailableProducts;
         this.featuresOfCategoryThatHas = (HashMap<String, String>) (product.featuresOfCategoryThatHas).clone();
     }
@@ -89,7 +90,7 @@ public class Product {
             } else if (numberOfAvailableProducts > 0) {
                 File file = new File(imagePath);
                 if (file == null || !file.exists()) {
-                    return "file:src/product_icon.png";
+                  //  return "file:src/product_icon.png";
                 }
             } else {
                 return "file:src/sold_out.png";

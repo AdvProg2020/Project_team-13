@@ -142,10 +142,10 @@ public class ProductMenu extends Menu {
         videoButton.setMinWidth(200);
         videoButton.setMinHeight(30);
         videoButton.setTextFill(Color.WHITE);
-        if(product.getVideoPath()!=null&&product.getVideoPath().equals("")){
-            videoButton.setDisable(false);
+        if(product.getVideoPath()==null||product.getVideoPath().equals("")){
+            videoButton.setDisable(true);
         }
-        if(product.getNumberOfAvailableProducts()==0||!(ClientController.getInstance().getCurrentUser() instanceof Customer)){
+        if(product.getNumberOfAvailableProducts()==0||!(ClientController.getInstance().getCurrentUser()==null||ClientController.getInstance().getCurrentUser() instanceof Customer)){
             addToCartButton.setDisable(true);
         }
         productImage.setOnMouseEntered(e -> {
