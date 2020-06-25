@@ -468,7 +468,7 @@ public class ProductMenu extends Menu {
                 Stage popupwindow = new Stage();
                 GridPane gridPane = new GridPane();
                 gridPane.setStyle("-fx-background-color: Blue");
-                Media media = new Media(new File("\\Users\\USER\\Downloads\\aab.mp4").toURI().toString());
+                Media media = new Media(product.getVideoPath());
                 MediaPlayer mediaPlayer = new MediaPlayer(media);
                 MediaView mediaView = new MediaView(mediaPlayer);
                 Button button = new Button("X");

@@ -244,14 +244,19 @@ public class AddProductScene extends Menu {
             }
         });
         final String[] videoPath = new String[1];
+        videoPath[0]="";
         chooseVideoButton.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
                 FileChooser fileChooser = new FileChooser();
                 File selectedFile = fileChooser.showOpenDialog(stage);
                 if (selectedFile != null) {
-                    mediaView.setMediaPlayer(new MediaPlayer(new Media(selectedFile.getAbsolutePath())));
-                    videoPath[0] = selectedFile.getAbsolutePath();
+                    if(selectedFile.toURI().toString().endsWith("mp4")) {
+                        mediaView.setMediaPlayer(new MediaPlayer(new Media(selectedFile.toURI().toString())));
+                        videoPath[0] = selectedFile.toURI().toString();
+                    }else {
+                        errorText.setText("your file should be .mp4 format");
+                    }
                 }
 
             }
@@ -280,7 +285,7 @@ public class AddProductScene extends Menu {
         cost.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         availableNumbers.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         userInfoGridPane.add(userImage, 13, 1, 5, 5);
-        userInfoGridPane.add(chooseVideoButton, 5, 1, 5, 5);
+        userInfoGridPane.add(chooseVideoButton, 8, 5, 5, 5);
         userInfoGridPane.add(mediaView, 8, 1, 5, 5);
         userInfoGridPane.add(productName1, 5, 9, 3, 1);
         userInfoGridPane.add(companyName, 5, 10, 3, 1);
