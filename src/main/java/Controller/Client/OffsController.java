@@ -14,7 +14,7 @@ import java.util.Date;
 public class OffsController {
     private static OffsController offsController;
     private ArrayList<Offer> allOffs;
-
+    private Offer currentOffer;
     public OffsController() {
     }
 
@@ -24,6 +24,14 @@ public class OffsController {
             offsController = new OffsController();
         }
         return offsController;
+    }
+
+    public Offer getCurrentOffer() {
+        return currentOffer;
+    }
+
+    public void setCurrentOffer(Offer currentOffer) {
+        this.currentOffer = currentOffer;
     }
 
     public void getAllOffersFromServer() {

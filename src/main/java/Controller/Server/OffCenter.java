@@ -29,7 +29,7 @@ public class OffCenter {
         Offer offer = gson.fromJson(message, Offer.class);
         offer.setOfferStatus(OfferStatus.onReviewForCreate);
         RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("AddOffer", gson.toJson(offer)));
-        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("CreatingOffer", "The Offer Registered For Manager's Confirmation"));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "The Offer Registered For Manager's Confirmation"));
     }
 
     public String getOfferIdForCreateInOffer() {

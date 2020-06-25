@@ -1,12 +1,11 @@
 package View;
 
 import Controller.Client.ClientController;
-import Controller.Client.DiscountController;
 import Controller.Client.ManagerController;
-import Models.DiscountCode;
-import Models.UserAccount.Customer;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import Controller.Client.OffsController;
+import Models.Offer;
+import Models.Product.Product;
+import Models.UserAccount.Seller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -27,23 +26,19 @@ import java.io.File;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.regex.Pattern;
 
-public class EditDiscountCode extends Menu {
-    private TextField maxAmount, firstName, lastName, email, credit, phoneNumber;
+public class EditOffsMenu extends Menu{
+    private TextField maxAmount, firstName;
+    Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
     private TextField discountPercent;
     private DatePicker startDatePicker = new DatePicker();
     private DatePicker endDatePicker = new DatePicker();
-    private HashMap<String, Integer> maxUsingTime = new HashMap<>();
-    private HashMap<String, Integer> remainingTimesForEachCustomer = new HashMap<>();
-    private ArrayList<String> allUsers = new ArrayList<>();
+    private ChoiceBox choiceBox = new ChoiceBox();
+    private ArrayList<String> allProducts = new ArrayList<>();
     String imagePath = "";
     GridPane userInfoGridPane;
-    DiscountCode discountCode = ClientController.getInstance().getCurrentDiscountCode();
 
-    public EditDiscountCode
-            (Stage stage) {
+    public EditOffsMenu(Stage stage) {
         super(stage);
         ManagerController.getInstance().getAllUserFromServer();
         upGridPane = new GridPane();
@@ -60,15 +55,14 @@ public class EditDiscountCode extends Menu {
         setPageGridPain();
         setUpGridPane();
         setMenuBarGridPane();
-//           centerGridPane.getRowConstraints().add(new RowConstraints(600, Control.USE_COMPUTED_SIZE, 600, Priority.NEVER, VPos.CENTER, false));
-//               bottomGridPane.setStyle("-fx-background-color: rgba(45, 156, 240, 1);");
         setCenterGridPane();
-//        bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
         scene.setRoot(pageGridPane);
     }
 
-    @Override
     public void setMenuBarGridPane() {
+        menuBarGridPane.getChildren().clear();
+        menuBarGridPane.getColumnConstraints().clear();
+        menuBarGridPane.getRowConstraints().clear();
         Menu menu = this;
         menuBarGridPane.setStyle("-fx-background-color:rgba(76, 170, 240, 1)");
         GridPane leftGridPane = new GridPane();
@@ -110,27 +104,18 @@ public class EditDiscountCode extends Menu {
 
 
     private void setCenterGridPane() {
-        ComboBox comboBox = new ComboBox();
-        comboBox.setEditable(true);
-        for (Customer customer : ManagerController.getInstance().getAllCustomers()) {
-            comboBox.getItems().add(customer.getUsername());
-        }
+        Offer offer= OffsController.getInstance().getCurrentOffer();
         userInfoGridPane.setVgap(10);
         userInfoGridPane.setHgap(20);
         userInfoGridPane.setMinWidth(650);
         userInfoGridPane.setMinHeight(400);
         maxAmount = new TextField();
         discountPercent = new TextField();
-        firstName = new TextField();
-        lastName = new TextField();
-        phoneNumber = new TextField();
-        email = new TextField();
-        credit = new TextField();
         GridPane leftGridPane = new GridPane();
         GridPane upGridPane = new GridPane();
         upGridPane.setMinHeight(50);
-        leftGridPane.setMinWidth(25);
-        Text title = new Text("\t  Edit Discount Code");
+        leftGridPane.setMinWidth(100);
+        Text title = new Text("Create Offs");
         ImageView userImage = new ImageView(new Image("file:src/user_icon.png"));
         userImage.setFitHeight(100);
         userImage.setFitWidth(100);
@@ -138,16 +123,15 @@ public class EditDiscountCode extends Menu {
         Text discountPercentText = new Text("Percent");
         Text startDateText = new Text("Start Date");
         Text endDateText = new Text("End Date");
-        Text firstNameText = new Text("Username");
-        Text lastNameText = new Text("Numbers");
+        Text firstNameText = new Text("Choose Product");
         title.setStyle("-fx-font-weight: bold;");
         title.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         Button editPhotoButton = new Button("Choose Photo");
-        Button signUp = new Button("Edit DiscountCode");
+        Button signUp = new Button("Create Offs");
         signUp.setStyle("-fx-background-color: #E85D9E;");
         signUp.setMinWidth(100);
         signUp.setTextFill(Color.WHITE);
-        Button adduser = new Button("Add or Edit User");
+        Button adduser = new Button("Add Product");
         adduser.setStyle("-fx-background-color: #E85D9E;");
         adduser.setMinWidth(100);
         adduser.setTextFill(Color.WHITE);
@@ -166,48 +150,35 @@ public class EditDiscountCode extends Menu {
                 }
             }
         };
-        maxAmount.setText(Double.valueOf(discountCode.getMaxDiscountAmount()).toString());
-        discountPercent.setText(Double.valueOf(discountCode.getDiscountPercent()).toString());
-        comboBox.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (discountCode.getAllUserAccountsThatHaveDiscount().contains((String) comboBox.getValue())) {
-                    lastName.setText(Integer.valueOf(discountCode.getRemainingTimesForEachCustomer().get((String) comboBox.getValue())).toString());
-                }
+        int i = 1;
+        for (Product product : seller.getAllProducts()) {
+            if(offer.getProductByIdInOfferList(product.getProductId())==null) {
+                choiceBox.getItems().add(i + ". " + product.getProductName());
+                i++;
             }
-        });
-       startDatePicker.setValue(discountCode.getStartTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-        endDatePicker.setValue(discountCode.getEndTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-        editPhotoButton.setOnAction(eventChoosePhoto);
-        // userInfoGridPane.add(title,0,0);
+        }
         HBox hBox = new HBox();
         hBox.setMinWidth(230);
         HBox hBox1 = new HBox();
         hBox1.setMinWidth(250);
-        //  userInfoGridPane.setGridLinesVisible(true);
+        allProducts=offer.getProducts();
+        startDatePicker.setValue(offer.getStartTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        endDatePicker.setValue(offer.getEndTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        discountPercent.setText(Double.valueOf(offer.getOfferId()).toString());
         upGridPane.add(hBox1, 0, 0, 1, 1);
-        // upGridPane.setGridLinesVisible(true);
         upGridPane.add(title, 1, 0, 1, 1);
         maxAmount.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30;");
         discountPercent.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
-        email.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
-        phoneNumber.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
-        credit.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
-        comboBox.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30;");
-        lastName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30;");
-        userInfoGridPane.add(maxAmountText, 5, 9, 3, 1);
-        userInfoGridPane.add(discountPercentText, 5, 10, 3, 1);
-        userInfoGridPane.add(startDateText, 5, 11, 3, 1);
-        userInfoGridPane.add(endDateText, 5, 12, 3, 1);
-        userInfoGridPane.add(firstNameText, 15, 9, 3, 1);
-        userInfoGridPane.add(lastNameText, 15, 10, 3, 1);
+        choiceBox.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30;");
+        userInfoGridPane.add(discountPercentText, 5, 9, 3, 1);
+        userInfoGridPane.add(startDateText, 5, 10, 3, 1);
+        userInfoGridPane.add(endDateText, 5, 11, 3, 1);
+        userInfoGridPane.add(firstNameText, 15, 9, 5, 1);
         userInfoGridPane.add(adduser, 15, 11, 3, 1);
-        userInfoGridPane.add(maxAmount, 8, 9, 6, 1);
-        userInfoGridPane.add(discountPercent, 8, 10, 6, 1);
-        userInfoGridPane.add(startDatePicker, 8, 11, 6, 1);
-        userInfoGridPane.add(endDatePicker, 8, 12, 6, 1);
-        userInfoGridPane.add(comboBox, 19, 9, 6, 1);
-        userInfoGridPane.add(lastName, 19, 10, 6, 1);
+        userInfoGridPane.add(discountPercent, 8, 9, 6, 1);
+        userInfoGridPane.add(startDatePicker, 8, 10, 6, 1);
+        userInfoGridPane.add(endDatePicker, 8, 11, 6, 1);
+        userInfoGridPane.add(choiceBox, 20, 9, 6, 1);
         userInfoGridPane.add(signUp, 13, 16, 5, 1);
         userInfoGridPane.add(errorText, 7, 14, 10, 1);
         userInfoGridPane.setStyle("-fx-background-color: #ECD5DC;");
@@ -217,30 +188,11 @@ public class EditDiscountCode extends Menu {
         adduser.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (!((String) comboBox.getValue()).equals("")) {
-                    if (lastName.getText().matches("\\d+")) {
-                        if (ManagerController.getInstance().isThereCustomerWithThisUsername(((String) comboBox.getValue()))) {
-                            if (!allUsers.contains(((String) comboBox.getValue()))) {
-                                allUsers.add(((String) comboBox.getValue()));
-                                remainingTimesForEachCustomer.put(((String) comboBox.getValue()), Integer.parseInt(lastName.getText()));
-                                maxUsingTime.put(((String) comboBox.getValue()), Integer.parseInt(lastName.getText()));
-                                comboBox.setValue("");
-                                lastName.setText("");
-                            } else {
-                                allUsers.set(allUsers.indexOf((String) comboBox.getValue()), (String) comboBox.getValue());
-                                remainingTimesForEachCustomer.replace(((String) comboBox.getValue()), Integer.parseInt(lastName.getText()));
-                                maxUsingTime.replace(((String) comboBox.getValue()), Integer.parseInt(lastName.getText()));
-                                comboBox.setValue("");
-                                lastName.setText("");
-                            }
-                        } else
-                            ClientController.getInstance().getCurrentMenu().showMessage("there is no user with this username", MessageKind.ErrorWithoutBack);
-                    } else {
-                        lastName.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
-                        errorText.setText("Number of discount is invalid.");
-                    }
+                if (!((String) choiceBox.getValue()).equals("")) {
+                    allProducts.add(seller.getAllProducts().get(Integer.parseInt(((String) choiceBox.getValue()).substring(0, 1)) - 1).getProductId());
+                    choiceBox.getItems().remove((choiceBox.getValue()));
                 } else {
-                    comboBox.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                    choiceBox.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                     errorText.setText("username is invalid.");
                 }
             }
@@ -248,7 +200,35 @@ public class EditDiscountCode extends Menu {
         signUp.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                DiscountController.getInstance().editDiscountCode(discountCode);
+                maxAmount.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
+                discountPercent.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30;");
+                startDatePicker.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
+                endDatePicker.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
+                choiceBox.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
+                errorText.setText("");
+                if (checkdiscountPercentIsvalid(discountPercent.getText().trim())) {
+                    Date startdate = Date.from(startDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                    Date enddate = Date.from(endDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                    if (checkStartTimeValid(startdate)) {
+                        if (checkEndTimeValid(enddate, startdate)) {
+                            if (allProducts.size() > 0) {
+                                Offer offeredited=new Offer(Double.parseDouble(discountPercent.getText()), offer.getSeller(),allProducts,startdate,enddate);
+                                offeredited.setOfferId(offer.getOfferId());
+                                OffsController.getInstance().editOff(offeredited);
+                            } else
+                                ClientController.getInstance().getCurrentMenu().showMessage("you should add discount code to some of users", MessageKind.ErrorWithoutBack);
+                        } else {
+                            endDatePicker.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                            errorText.setText("End time is invalid.");
+                        }
+                    } else {
+                        startDatePicker.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                        errorText.setText("Start date is invalid.");
+                    }
+                } else {
+                    discountPercent.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                    errorText.setText("Discount Percent Format is Invalid. use 0-9 alphabetical character.");
+                }
             }
         });
     }
@@ -260,27 +240,6 @@ public class EditDiscountCode extends Menu {
 
     private boolean checkdiscountPercentIsvalid(String word) {
         if (word.matches("\\d+") && Double.parseDouble(word) <= 100) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkNameIsvalid(String name) {
-        if (Pattern.matches("\\w+", name) && !name.isEmpty()) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkEmailIsvalid(String email) {
-        if (Pattern.matches("\\w+\\.?\\w*@\\w+\\.\\w+", email)) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkmaxAmountIsvalid(String maxAmount) {
-        if (Pattern.matches("\\d+", maxAmount)) {
             return true;
         }
         return false;
