@@ -1,16 +1,10 @@
 package Controller.Server;
 
-import Controller.Client.CategoryController;
-import Controller.Client.ClientController;
-import Controller.Client.MessageController;
 import Models.Product.Category;
 import Models.Product.Product;
-import Models.Request;
 import com.google.gson.Gson;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class CategoryCenter {
     private static CategoryCenter categoryCenter;
