@@ -141,7 +141,7 @@ public class ServerMessageController {
         } else if (message.startsWith("@addComment@")) {
             message = message.substring(12);
             ProductCenter.getInstance().commenting(message);
-            ServerController.getInstance().sendMessageToClient("@Successful@your comment sent to manager for accept");
+            ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@your comment sent to manager for accept");
         }
     }
 
