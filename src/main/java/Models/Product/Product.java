@@ -27,7 +27,7 @@ public class Product {
     private int numberOfAvailableProducts;
     private HashMap<String, String> featuresOfCategoryThatHas;
     private ArrayList<Customer> allBuyers = new ArrayList<>();
-    private Offer offer;
+    private ArrayList<Offer> offers = new ArrayList<>();
     private String imagePath = "", videoPath = "";
 
     public Product(String productCompany, String productId, String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, HashMap<String, String> featuresOfCategoryThatHas) {
@@ -51,7 +51,7 @@ public class Product {
         this.productName = product.productName;
         this.sellerUsername = product.getSeller();
         this.productCost = product.productCost;
-        this.costAfterOff = product.productCost;
+        this.costAfterOff = product.costAfterOff;
         this.productsCategory = product.productsCategory;
         this.description = product.description;
         this.videoPath = "";
@@ -168,12 +168,28 @@ public class Product {
     }
 
     public Offer getOffer() {
-        return offer;
+        if (offers == null || offers.isEmpty()) {
+            return null;
+        } else {
+            ArrayList<Offer> offers = new ArrayList<>();
+            for (Offer offer : this.offers) {
+                if (offer.getStartTime().before(new Date()) && offer.getEndTime().after(new Date())) {
+                    offers.add(offer);
+                }
+            }
+            Offer offer = null;
+            for (Offer offer1 : offers) {
+                if (offer1.getAmount() > offer.getAmount()) {
+                    offer = offer1;
+                }
+            }
+            return offer;
+        }
     }
 
     public double getCostAfterOff() {
-        if (offer != null) {
-            costAfterOff = this.productCost * ((double) 100 - offer.getAmount()) / (double) 100;
+        if (getOffer() != null) {
+            costAfterOff = this.productCost * ((double) 100 - getOffer().getAmount()) / (double) 100;
         }
         return this.costAfterOff;
     }
@@ -279,7 +295,6 @@ public class Product {
         }
     }
 
-
     public String viewAllBuyers() {
         String allBuyer = "";
         for (Customer buyer : allBuyers) {
@@ -296,12 +311,16 @@ public class Product {
     }
 
     public void setOffer(Offer offer) {
-        this.offer = offer;
-        if (offer != null) {
-            costAfterOff = ((100 - offer.getAmount()) / 100) * productCost;
+        if (offers == null) {
+            offers = new ArrayList<>();
+        }
+        if (offer == null) {
+            offers.add(offer);
+        }
+        if (getOffer() != null) {
+            costAfterOff = ((100 - getOffer().getAmount()) / 100) * productCost;
         }
     }
-
 
     public void setProductCompany(String productCompany) {
         this.productCompany = productCompany;
@@ -309,7 +328,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return  "productId: " + productId + '\n' +
+        return "productId: " + productId + '\n' +
                 "productStatus: " + productStatus +
                 "productName: " + productName + '\n' +
                 "productCompany: '" + productCompany + '\n' +
@@ -343,8 +362,8 @@ public class Product {
         String digest = "";
         digest += description + "\n";
         digest += productCost + "\n";
-        if (offer != null)
-            digest += offer.getAmount() + "%\n";
+        if (getOffer() != null)
+            digest += getOffer().getAmount() + "%\n";
         digest += productsCategory + "%\n";
         digest += sellerUsername + "\n";
         digest += getAverageScore() + "\n";

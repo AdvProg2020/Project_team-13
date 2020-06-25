@@ -815,6 +815,9 @@ public class ProductsPageScene extends Menu {
     }
 
     private void createAddGridPane(GridPane gridPane, ArrayList<GridPane> gridPanes, String buttonStyle) {
+        if (gridPanes.isEmpty()) {
+            return;
+        }
         ArrayList<GridPane> productsPages = new ArrayList<>();
         for (int j = 0; j < (gridPanes.size() / 4) + (gridPanes.size() % 4 == 0 ? 0 : 1); j++) {
             productsPages.add(new GridPane());
@@ -883,7 +886,6 @@ public class ProductsPageScene extends Menu {
         text.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
         gridPane.add(text, 0, 0);
         gridPane.add(productsPages.get(0), 0, 1);
-
     }
 
     private void createProductsGridPanes(ArrayList<GridPane> gridPanes) {
