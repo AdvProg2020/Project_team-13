@@ -16,6 +16,7 @@ public class UserCenter {
     private ArrayList<Customer> allCustomer = new ArrayList<>();
     private ArrayList<Seller> allSeller = new ArrayList<>();
     private ArrayList<Manager> allManager = new ArrayList<>();
+    private boolean hasManager;
 
     private UserCenter() {
 
@@ -371,4 +372,9 @@ public class UserCenter {
         }
         return null;
     }
+
+    public ArrayList<Manager> getAllManager() {
+        return allManager;
+    }
+
 }
