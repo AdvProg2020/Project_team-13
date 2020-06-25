@@ -46,7 +46,7 @@ public class ProductMenu extends Menu {
     ImageView star3 = new ImageView(new Image("file:src/gray_star.png"));
     ImageView star4 = new ImageView(new Image("file:src/gray_star.png"));
     ImageView star5 = new ImageView(new Image("file:src/gray_star.png"));
-    ImageView productZoomedImage ;
+    ImageView productZoomedImage;
     GridPane commentGridPane = new GridPane();
     private Image goldStar = new Image("file:src/gold_star.png");
     private Rectangle fiveStarBar = new Rectangle(), fourStarBar = new Rectangle(), threeStarBar = new Rectangle(), twoStarBar = new Rectangle(), oneStarBar = new Rectangle();
@@ -66,9 +66,9 @@ public class ProductMenu extends Menu {
         setMenuBarGridPane();
         setCenterGridPane();
         bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, true));
-       ScrollPane scrollPane=new ScrollPane();
-       scrollPane.setFitToWidth(true);
-       scrollPane.setContent(pageGridPane);
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToWidth(true);
+        scrollPane.setContent(pageGridPane);
         scene.setRoot(scrollPane);
     }
 
@@ -177,19 +177,19 @@ public class ProductMenu extends Menu {
             commentPaneGrid.add(commentText, 2, 0, 1, 2);
             commentPane.add(commentPaneGrid, 0, i + 1);
         }
-        GridPane similarProductPane=new GridPane();
-        Text similarProductText=new Text("Similar Products");
+        GridPane similarProductPane = new GridPane();
+        Text similarProductText = new Text("Similar Products");
         similarProductText.setFont(Font.loadFont("file:src/FredokaOne-Regular.ttf", 20));
 
 
         ArrayList<GridPane> gridPanes = new ArrayList<>();
         CategoryController.getInstance().updateAllCategories();
         for (int kk = 0; kk < 3; kk++) {
-            if(kk==CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts().size()){
+            if (kk == CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts().size()) {
                 break;
             }
             Product productSim = CategoryController.getInstance().getCategoryWithName(product.getProductsCategory()).getAllProducts().get(kk);
-            if(productSim.getProductId().equals(product.getProductId())){
+            if (productSim.getProductId().equals(product.getProductId())) {
                 continue;
             }
             GridPane gridPane = new GridPane();
@@ -247,7 +247,7 @@ public class ProductMenu extends Menu {
                 public void handle(MouseEvent event) {
                     for (int i = 0; i < gridPanes.size(); i++) {
                         if (gridPanes.get(i).equals(gridPane)) {
-                            ClientController.getInstance().setCurrentProduct(((Seller)ClientController.getInstance().getCurrentUser()).getAllProducts().get(i));
+                            ClientController.getInstance().setCurrentProduct(((Seller) ClientController.getInstance().getCurrentUser()).getAllProducts().get(i));
                             new ProductMenu(stage).execute();
                         }
                     }
@@ -258,13 +258,13 @@ public class ProductMenu extends Menu {
 
         similarProductPane.setVgap(10);
         similarProductPane.setHgap(10);
-        similarProductPane.add(similarProductText,0,0);
-        if(gridPanes.size()>0)
-        similarProductPane.add(gridPanes.get(0),0,1);
-        if(gridPanes.size()>1)
-        similarProductPane.add(gridPanes.get(1),1,1);
-        if(gridPanes.size()>2)
-        similarProductPane.add(gridPanes.get(2),2,1);
+        similarProductPane.add(similarProductText, 0, 0);
+        if (gridPanes.size() > 0)
+            similarProductPane.add(gridPanes.get(0), 0, 1);
+        if (gridPanes.size() > 1)
+            similarProductPane.add(gridPanes.get(1), 1, 1);
+        if (gridPanes.size() > 2)
+            similarProductPane.add(gridPanes.get(2), 2, 1);
         productInfoGridPane.add(addToCartButton, 1, 14, 12, 5);
         productInfoGridPane.add(videoButton, 1, 16, 12, 5);
         productInfoGridPane.add(productName, 12, 1);
@@ -294,7 +294,7 @@ public class ProductMenu extends Menu {
         rateGridPane.add(new Text("3"), 5, 3);
         rateGridPane.add(new Text("2"), 5, 4);
         rateGridPane.add(new Text("1"), 5, 5);
-        productInfoGridPane.add(productZoomedImage,0,0,20,20);
+        productInfoGridPane.add(productZoomedImage, 0, 0, 20, 20);
         Text addCommentText = new Text("Add Comment");
         addCommentText.setFont(Font.loadFont("file:src/FredokaOne-Regular.ttf", 20));
         commentGridPane.add(addCommentText, 0, 0);
@@ -491,9 +491,9 @@ public class ProductMenu extends Menu {
                 mediaPlayer.setAutoPlay(true);
                 mediaView.setFitHeight(380);
                 mediaView.setFitWidth(280);
-                ImageView playButton=new ImageView(new Image("file:src/play.png"));
-                ImageView pauseButton=new ImageView(new Image("file:src/pause.png"));
-                ImageView stopButton=new ImageView(new Image("file:src/stop.png"));
+                ImageView playButton = new ImageView(new Image("file:src/play.png"));
+                ImageView pauseButton = new ImageView(new Image("file:src/pause.png"));
+                ImageView stopButton = new ImageView(new Image("file:src/stop.png"));
                 playButton.setOnMouseEntered(new EventHandler() {
                     @Override
                     public void handle(Event event) {
@@ -557,7 +557,7 @@ public class ProductMenu extends Menu {
                 playButton.setFitWidth(20);
                 pauseButton.setFitWidth(20);
                 stopButton.setFitWidth(20);
-                commentPane.add(mediaView, 0, 0,4,1);
+                commentPane.add(mediaView, 0, 0, 4, 1);
                 commentPane.add(playButton, 0, 1);
                 commentPane.add(pauseButton, 2, 1);
                 commentPane.add(stopButton, 3, 1);
@@ -666,7 +666,7 @@ public class ProductMenu extends Menu {
                 star5.setImage(goldStar);
             if (rate > 0) {
                 if (add) {
-                    ProductController.getInstance().rating(product.getProductId(),rate);
+                    ProductController.getInstance().rating(product.getProductId(), rate);
                     setLengthOfStarBars();
                 }
                 isScored = true;

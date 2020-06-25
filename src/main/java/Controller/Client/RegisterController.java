@@ -1,6 +1,4 @@
 package Controller.Client;
-
-import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import com.google.gson.Gson;
 
@@ -21,5 +19,6 @@ public class RegisterController {
         String message = "@Register@" + new Gson().toJson(userAccount);
         ClientController.getInstance().sendMessageToServer(message);
     }
+
 
 }

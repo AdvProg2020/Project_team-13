@@ -2,6 +2,7 @@ package View;
 
 import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
+import Controller.Client.ManagerController;
 import Controller.Client.ProductController;
 import Models.Product.Category;
 import Models.Product.Product;
@@ -598,7 +599,12 @@ public class ProductsPageScene extends Menu {
     private void setProductsPart(String buttonStyle) {
         ProductController.getInstance().getAllProductsFromServer();
         ArrayList<GridPane> gridPanes = new ArrayList<>();
+        ArrayList<GridPane> addGridPanes = new ArrayList<>();
+        ManagerController.getInstance().getAllUserFromServer();
+        System.out.println(ProductController.getInstance().getAllCommercializedProduct().size());
         centerGridPaneTosh.getChildren().clear();
+//        createAddGridPanes(addGridPanes);
+        System.out.println(addGridPanes.size());
         for (int kk = 0; kk < showProductsAfterFilterAndSort().size(); kk++) {
             Product product = showProductsAfterFilterAndSort().get(kk);
             GridPane gridPane = new GridPane();
@@ -618,17 +624,285 @@ public class ProductsPageScene extends Menu {
             scoreGridPane.add(star, 1, 0);
             if (offerChecker) {
                 text = new Text("   " + product.getProductName() + "\n" + "   " + product.getProductCost() + " $");
-                Text text1 = new Text("   Cost after off: " + product.getCostAfterOff() +" $\n"+"   "+ "Offer percent: " + product.getOffer().getAmount() + "%");
-                Text text2 = new Text("   "+"Start time: \n" + product.getOffer().getStartTime().toString() + "\n"
-                        + "   "+"End time: \n" +product.getOffer().getEndTime().toString());
+                Text text1 = new Text("   Cost after off: " + product.getCostAfterOff() + " $\n" + "   " + "Offer percent: " + product.getOffer().getAmount() + "%");
+                Text text2 = new Text("   " + "Start time: \n" + product.getOffer().getStartTime().toString() + "\n"
+                        + "   " + "End time: \n" + product.getOffer().getEndTime().toString());
                 text1.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
                 text2.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 12));
                 gridPane.add(imageView, 0, 0, 1, 1);
                 gridPane.add(text, 0, 1, 1, 1);
-                gridPane.add(text1,0,2,1,1);
-                gridPane.add(text2,0,3,1,1);
+                gridPane.add(text1, 0, 2, 1, 1);
+                gridPane.add(text2, 0, 3, 1, 1);
                 gridPane.add(scoreGridPane, 0, 4, 1, 1);
+            } else {
+                text = new Text("   " + product.getProductName() + "\n" + "   " + product.getCostAfterOff() + " $");
+                gridPane.add(imageView, 0, 0, 2, 1);
+                gridPane.add(text, 0, 1, 1, 1);
+                gridPane.add(scoreGridPane, 0, 2, 1, 1);
+            }
+            GridPane options = new GridPane();
+            gridPanes.add(gridPane);
+            gridPane.setStyle("-fx-background-color: #ECD5DC;-fx-background-radius: 20px;");
+            text.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
+            label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
+            scoreGridPane.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            scoreGridPane.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            scoreGridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    for (int i = 0; i < gridPanes.size(); i++) {
+                        if (gridPanes.get(i).equals(gridPane)) {
+                            ClientController.getInstance().setCurrentProduct(showProductsAfterFilterAndSort().get(i));
+                            new ProductMenu(stage).execute();
+                        }
+                    }
+                }
+            });
+            text.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            text.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            text.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    for (int i = 0; i < gridPanes.size(); i++) {
+                        if (gridPanes.get(i).equals(gridPane)) {
+                            ClientController.getInstance().setCurrentProduct(showProductsAfterFilterAndSort().get(i));
+                            new ProductMenu(stage).execute();
+                        }
+                    }
+                }
+            });
+            imageView.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            imageView.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    for (int i = 0; i < gridPanes.size(); i++) {
+                        if (gridPanes.get(i).equals(gridPane)) {
+                            ClientController.getInstance().setCurrentProduct(showProductsAfterFilterAndSort().get(i));
+                            new ProductMenu(stage).execute();
+                        }
+                    }
+                }
+            });
+        }        GridPane addGridPane = new GridPane();
+//        createAddGridPane(addGridPane,addGridPanes,buttonStyle);
+        ArrayList<GridPane> productsPages = new ArrayList<>();
+        for (int j = 0; j < (gridPanes.size() / 8) + (gridPanes.size() % 8 == 0 ? 0 : 1); j++) {
+            productsPages.add(new GridPane());
+            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(5, Control.USE_COMPUTED_SIZE, 5, Priority.NEVER, HPos.LEFT, false));
+            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.NEVER, HPos.LEFT, false));
+            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(5, Control.USE_COMPUTED_SIZE, 5, Priority.NEVER, HPos.LEFT, false));
+            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.NEVER, HPos.LEFT, false));
+            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(5, Control.USE_COMPUTED_SIZE, 5, Priority.NEVER, HPos.LEFT, false));
+            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.NEVER, HPos.LEFT, false));
+            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(5, Control.USE_COMPUTED_SIZE, 5, Priority.NEVER, HPos.LEFT, false));
+            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.NEVER, HPos.LEFT, false));
+            productsPages.get(j).setVgap(10);
+            productsPages.get(j).setMinWidth(600);
+            productsPages.get(j).setMaxHeight(300);
+            for (int i = j * 8; i < (j) * 8 + (j == ((gridPanes.size() / 8) + (gridPanes.size() % 8 == 0 ? 0 : 1) - 1) ? gridPanes.size() % 8 : 8); i++) {
+                productsPages.get(j).add(gridPanes.get(i), 2 * ((i % 8) % 4) + 1, ((i % 8) / 4), 1, 1);
+            }
+        }
+        ArrayList<Button> buttons = new ArrayList<>();
+        for (int i = 0; i < productsPages.size(); i++) {
+            buttons.add(new Button(Integer.toString(i + 1)));
+            buttons.get(i).setStyle(buttonStyle);
+            buttons.get(i).setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            buttons.get(i).setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            final int[] j = {i};
+            buttons.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    for (Node child : centerGridPaneTosh.getChildren()) {
+                        if (productsPages.contains(child)) {
+                            centerGridPaneTosh.getChildren().remove(child);
+                            break;
+                        }
+                    }
+                    GridPane buttons1 = new GridPane();
+                    buttons1.setHgap(3);
+                    for (int i = 0; i < buttons.size(); i++) {
+                        buttons1.add(buttons.get(i), i + 1, 0);
+                    }
+                    buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
+                    productsPages.get(j[0]).add(buttons1, 1, 5, 7, 1);
+                    centerGridPaneTosh.add(productsPages.get(j[0]), 1, 1);
+                }
+            });
+        }
+        GridPane buttons1 = new GridPane();
+        buttons1.setHgap(3);
+        for (int i = 0; i < buttons.size(); i++) {
+            buttons1.add(buttons.get(i), i + 1, 0);
+        }
+        buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
+        if (productsPages.size() > 0) {
+            productsPages.get(0).add(buttons1, 1, 5, 7, 1);
+            if(!addGridPane.getChildren().isEmpty()) {
+                System.out.println(1);
+//                centerGridPaneTosh.add(addGridPane, 1, 2, 1, 1);
+                centerGridPaneTosh.add(productsPages.get(0), 1, 1, 1, 1);
             }else {
+                System.out.println(2);
+                centerGridPaneTosh.add(productsPages.get(0), 1, 1, 1, 1);
+            }
+        } else {
+            ImageView imageView = new ImageView(new Image("file:src/empty.png"));
+            Text text = new Text("No product to show.");
+            GridPane gridPane = new GridPane();
+            imageView.setFitWidth(150);
+            imageView.setFitHeight(150);
+            gridPane.add(imageView, 0, 0);
+            gridPane.add(text, 1, 1);
+            gridPane.getColumnConstraints().add(new ColumnConstraints(400, Control.USE_COMPUTED_SIZE, 400, Priority.NEVER, HPos.RIGHT, false));
+            gridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_COMPUTED_SIZE, 200, Priority.NEVER, HPos.RIGHT, false));
+            text.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 32));
+            centerGridPaneTosh.add(gridPane, 1, 1, 1, 1);
+        }
+    }
+
+    private void createAddGridPane(GridPane gridPane,ArrayList<GridPane> gridPanes,String buttonStyle) {
+        ArrayList<GridPane> productsPages = new ArrayList<>();
+        for (int j = 0; j < (gridPanes.size() / 4) + (gridPanes.size() % 4 == 0 ? 0 : 1); j++) {
+            productsPages.add(new GridPane());
+            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(5, Control.USE_COMPUTED_SIZE, 5, Priority.NEVER, HPos.LEFT, false));
+            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.NEVER, HPos.LEFT, false));
+            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(5, Control.USE_COMPUTED_SIZE, 5, Priority.NEVER, HPos.LEFT, false));
+            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.NEVER, HPos.LEFT, false));
+            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(5, Control.USE_COMPUTED_SIZE, 5, Priority.NEVER, HPos.LEFT, false));
+            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.NEVER, HPos.LEFT, false));
+            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(5, Control.USE_COMPUTED_SIZE, 5, Priority.NEVER, HPos.LEFT, false));
+            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.NEVER, HPos.LEFT, false));
+            productsPages.get(j).setVgap(10);
+            productsPages.get(j).setMinWidth(600);
+            productsPages.get(j).setMaxHeight(300);
+            for (int i = j * 4; i < (j) * 4 + (j == ((gridPanes.size() / 4) + (gridPanes.size() % 4 == 0 ? 0 : 1) - 1) ? gridPanes.size() % 4 : 4); i++) {
+                productsPages.get(j).add(gridPanes.get(i), 2 * ((i % 4) % 4) + 1, ((i % 4) / 4), 1, 1);
+            }
+        }
+        ArrayList<Button> buttons = new ArrayList<>();
+        for (int i = 0; i < productsPages.size(); i++) {
+            buttons.add(new Button(Integer.toString(i + 1)));
+            buttons.get(i).setStyle(buttonStyle);
+            buttons.get(i).setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            buttons.get(i).setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            final int[] j = {i};
+            buttons.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    for (Node child : centerGridPaneTosh.getChildren()) {
+                        if (productsPages.contains(child)) {
+                            centerGridPaneTosh.getChildren().remove(child);
+                            break;
+                        }
+                    }
+                    GridPane buttons1 = new GridPane();
+                    buttons1.setHgap(3);
+                    for (int i = 0; i < buttons.size(); i++) {
+                        buttons1.add(buttons.get(i), i + 1, 0);
+                    }
+                    buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
+                    productsPages.get(j[0]).add(buttons1, 1, 5, 7, 1);
+                    centerGridPaneTosh.add(productsPages.get(j[0]), 1, 1);
+                }
+            });
+        }
+        GridPane buttons1 = new GridPane();
+        buttons1.setHgap(3);
+        for (int i = 0; i < buttons.size(); i++) {
+            buttons1.add(buttons.get(i), i + 1, 0);
+        }
+        buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
+        gridPane.add(productsPages.get(0),0,0);
+    }
+
+    private void createProductsGridPanes(ArrayList<GridPane> gridPanes) {
+        for (int kk = 0; kk < showProductsAfterFilterAndSort().size(); kk++) {
+            Product product = showProductsAfterFilterAndSort().get(kk);
+            GridPane gridPane = new GridPane();
+            ImageView imageView = new ImageView(new Image(product.getImagePath()));
+            Text text = new Text();
+            Label label = new Label("   " + Double.toString(product.getAverageScore()));
+            ImageView star = new ImageView(new Image("file:src/star.png"));
+            imageView.setFitHeight(150);
+            imageView.setFitWidth(150);
+            star.setFitWidth(20);
+            star.setFitHeight(20);
+            GridPane scoreGridPane = new GridPane();
+            scoreGridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
+            scoreGridPane.getColumnConstraints().add(new ColumnConstraints(15, Control.USE_COMPUTED_SIZE, 20, Priority.NEVER, HPos.LEFT, false));
+            scoreGridPane.setHgap(2);
+            scoreGridPane.add(label, 0, 0);
+            scoreGridPane.add(star, 1, 0);
+            if (offerChecker) {
+                text = new Text("   " + product.getProductName() + "\n" + "   " + product.getProductCost() + " $");
+                Text text1 = new Text("   Cost after off: " + product.getCostAfterOff() + " $\n" + "   " + "Offer percent: " + product.getOffer().getAmount() + "%");
+                Text text2 = new Text("   " + "Start time: \n" + product.getOffer().getStartTime().toString() + "\n"
+                        + "   " + "End time: \n" + product.getOffer().getEndTime().toString());
+                text1.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
+                text2.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 12));
+                gridPane.add(imageView, 0, 0, 1, 1);
+                gridPane.add(text, 0, 1, 1, 1);
+                gridPane.add(text1, 0, 2, 1, 1);
+                gridPane.add(text2, 0, 3, 1, 1);
+                gridPane.add(scoreGridPane, 0, 4, 1, 1);
+            } else {
                 text = new Text("   " + product.getProductName() + "\n" + "   " + product.getCostAfterOff() + " $");
                 gridPane.add(imageView, 0, 0, 2, 1);
                 gridPane.add(text, 0, 1, 1, 1);
@@ -712,83 +986,107 @@ public class ProductsPageScene extends Menu {
                 }
             });
         }
-        ArrayList<GridPane> productsPages = new ArrayList<>();
-        for (int j = 0; j < (gridPanes.size() / 12) + (gridPanes.size() % 12 == 0 ? 0 : 1); j++) {
-            productsPages.add(new GridPane());
-            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(5, Control.USE_COMPUTED_SIZE, 5, Priority.NEVER, HPos.LEFT, false));
-            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.NEVER, HPos.LEFT, false));
-            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(5, Control.USE_COMPUTED_SIZE, 5, Priority.NEVER, HPos.LEFT, false));
-            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.NEVER, HPos.LEFT, false));
-            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(5, Control.USE_COMPUTED_SIZE, 5, Priority.NEVER, HPos.LEFT, false));
-            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.NEVER, HPos.LEFT, false));
-            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(5, Control.USE_COMPUTED_SIZE, 5, Priority.NEVER, HPos.LEFT, false));
-            productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.NEVER, HPos.LEFT, false));
-            productsPages.get(j).setVgap(10);
-            productsPages.get(j).setMinWidth(600);
-            productsPages.get(j).setMaxHeight(300);
-            for (int i = j * 12; i < (j) * 12 + (j == ((gridPanes.size() / 12) + (gridPanes.size() % 12 == 0 ? 0 : 1) - 1) ? gridPanes.size() % 12 : 12); i++) {
-                productsPages.get(j).add(gridPanes.get(i), 2 * ((i % 12) % 4) + 1, ((i % 12) / 4), 1, 1);
-            }
-        }
-        ArrayList<Button> buttons = new ArrayList<>();
-        for (int i = 0; i < productsPages.size(); i++) {
-            buttons.add(new Button(Integer.toString(i + 1)));
-            buttons.get(i).setStyle(buttonStyle);
-            buttons.get(i).setOnMouseEntered(new EventHandler() {
+    }
+
+    private void createAddGridPanes(ArrayList<GridPane> addGridPanes) {
+        for (int i = 0; i < ProductController.getInstance().getAllCommercializedProduct().size(); i++) {
+            Product product = ProductController.getInstance().getAllCommercializedProduct().get(i);
+            GridPane gridPane = new GridPane();
+            ImageView imageView = new ImageView(new Image(product.getImagePath()));
+            Text text = new Text();
+            Label label = new Label("   " + Double.toString(product.getAverageScore()));
+            ImageView star = new ImageView(new Image("file:src/star.png"));
+            imageView.setFitHeight(150);
+            imageView.setFitWidth(150);
+            star.setFitWidth(20);
+            star.setFitHeight(20);
+            GridPane scoreGridPane = new GridPane();
+            scoreGridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
+            scoreGridPane.getColumnConstraints().add(new ColumnConstraints(15, Control.USE_COMPUTED_SIZE, 20, Priority.NEVER, HPos.LEFT, false));
+            scoreGridPane.setHgap(2);
+            scoreGridPane.add(label, 0, 0);
+            scoreGridPane.add(star, 1, 0);
+            text = new Text("   " + product.getProductName() + "\n" + "   " + product.getCostAfterOff() + " $");
+            gridPane.add(imageView, 0, 0, 2, 1);
+            gridPane.add(text, 0, 1, 1, 1);
+            gridPane.add(scoreGridPane, 0, 2, 1, 1);
+            GridPane options = new GridPane();
+            addGridPanes.add(gridPane);
+            gridPane.setStyle("-fx-background-color: #ECD5DC;-fx-background-radius: 20px;");
+            text.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
+            label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
+            scoreGridPane.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
                     scene.setCursor(Cursor.HAND); //Change cursor to hand
 
                 }
             });
-            buttons.get(i).setOnMouseExited(new EventHandler() {
+            scoreGridPane.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
                     scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
                 }
             });
-            final int[] j = {i};
-            buttons.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            scoreGridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    for (Node child : centerGridPaneTosh.getChildren()) {
-                        if (productsPages.contains(child)) {
-                            centerGridPaneTosh.getChildren().remove(child);
-                            break;
+                    for (int i = 0; i < addGridPanes.size(); i++) {
+                        if (addGridPanes.get(i).equals(gridPane)) {
+                            ClientController.getInstance().setCurrentProduct(showProductsAfterFilterAndSort().get(i));
+                            new ProductMenu(stage).execute();
                         }
                     }
-                    GridPane buttons1 = new GridPane();
-                    buttons1.setHgap(3);
-                    for (int i = 0; i < buttons.size(); i++) {
-                        buttons1.add(buttons.get(i), i + 1, 0);
-                    }
-                    buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
-                    productsPages.get(j[0]).add(buttons1, 1, 5, 7, 1);
-                    centerGridPaneTosh.add(productsPages.get(j[0]), 1, 1);
                 }
             });
-        }
-        GridPane buttons1 = new GridPane();
-        buttons1.setHgap(3);
-        for (int i = 0; i < buttons.size(); i++) {
-            buttons1.add(buttons.get(i), i + 1, 0);
-        }
-        buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
-        if (productsPages.size() > 0) {
-            productsPages.get(0).add(buttons1, 1, 5, 7, 1);
-            centerGridPaneTosh.add(productsPages.get(0), 1, 1, 1, 1);
-        } else {
-            ImageView imageView = new ImageView(new Image("file:src/empty.png"));
-            Text text = new Text("No product to show.");
-            GridPane gridPane = new GridPane();
-            imageView.setFitWidth(150);
-            imageView.setFitHeight(150);
-            gridPane.add(imageView, 0, 0);
-            gridPane.add(text, 1, 1);
-            gridPane.getColumnConstraints().add(new ColumnConstraints(400, Control.USE_COMPUTED_SIZE, 400, Priority.NEVER, HPos.RIGHT, false));
-            gridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_COMPUTED_SIZE, 200, Priority.NEVER, HPos.RIGHT, false));
-            text.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 32));
-            centerGridPaneTosh.add(gridPane, 1, 1, 1, 1);
+            text.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            text.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            text.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    for (int i = 0; i < addGridPanes.size(); i++) {
+                        if (addGridPanes.get(i).equals(gridPane)) {
+                            ClientController.getInstance().setCurrentProduct(showProductsAfterFilterAndSort().get(i));
+                            new ProductMenu(stage).execute();
+                        }
+                    }
+                }
+            });
+            imageView.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            imageView.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    for (int i = 0; i < addGridPanes.size(); i++) {
+                        if (addGridPanes.get(i).equals(gridPane)) {
+                            ClientController.getInstance().setCurrentProduct(showProductsAfterFilterAndSort().get(i));
+                            new ProductMenu(stage).execute();
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -816,7 +1114,6 @@ public class ProductsPageScene extends Menu {
         stage.setScene(scene);
         stage.show();
     }
-
 
     public void handle1() {
         CategoryController.getInstance().updateAllCategories();

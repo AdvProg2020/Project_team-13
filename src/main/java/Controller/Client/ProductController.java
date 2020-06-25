@@ -10,6 +10,7 @@ import Models.UserAccount.Seller;
 import View.MessageKind;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import sun.plugin.perf.PluginRollup;
 
 import java.lang.reflect.Type;
 import java.util.*;
@@ -220,6 +221,16 @@ public class ProductController {
                     lst.stream().filter(e -> allBrandsToFilter.contains(e.getProductCompany())).toArray(Product[]::new);
             allProductsAfterFilter = new ArrayList<>(Arrays.asList(productsAfterPriceFilter));
         }
+    }
+
+    public ArrayList<Product> getAllCommercializedProduct() {
+        ArrayList<Product> products = new ArrayList<>();
+        for (Product product : allProducts) {
+            if (ManagerController.getInstance().getAllCommercializedProducts().contains(product.getProductId())) {
+                products.add(product);
+            }
+        }
+        return products;
     }
 
     private void filterBySeller() {
