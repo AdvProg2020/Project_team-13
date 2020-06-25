@@ -309,22 +309,21 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
-                "productId='" + productId + '\'' +
-                ", productStatus=" + productStatus +
-                ", productName='" + productName + '\'' +
-                ", productCompany='" + productCompany + '\'' +
-                ", seller=" + sellerUsername +
-                ", allScores=" + allScores +
-                ", productCost=" + productCost +
-                ", costAfterOff=" + costAfterOff +
-                ", productsCategory='" + productsCategory + '\'' +
-                ", description='" + description + '\'' +
-                ", commentList=" + commentList +
-                ", numberOfAvailableProducts=" + numberOfAvailableProducts +
-                ", featuresOfCategoryThatHas=" + featuresOfCategoryThatHas +
-                ", allBuyers=" + allBuyers +
-                '}';
+        return  "productId: " + productId + '\n' +
+                "productStatus: " + productStatus +
+                "productName: " + productName + '\n' +
+                "productCompany: '" + productCompany + '\n' +
+                "seller: " + sellerUsername + '\n' +
+                "allScores: " + allScores + '\n' +
+                "productCost: " + productCost + '\n' +
+                "costAfterOff: " + costAfterOff + '\n' +
+                "productsCategory: " + productsCategory + '\n' +
+                "description: " + description + '\n' +
+                "commentList: " + commentList + '\n' +
+                "numberOfAvailableProducts: " + numberOfAvailableProducts + '\n' +
+                "featuresOfCategoryThatHas: " + featuresOfCategoryThatHas + '\n' +
+                "allBuyers: " + allBuyers + '\n' +
+                "--------------------";
     }
 
     public String productInfoFor() {

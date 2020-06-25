@@ -34,7 +34,8 @@ public class Customer extends UserAccount {
         personalInfo += "Last name: " + this.lastName + "\n";
         personalInfo += "Email: " + this.email + "\n";
         personalInfo += "Phone Number: " + this.phoneNumber + "\n";
-        personalInfo += "Credit: " + this.credit+"$";
+        personalInfo += "Credit: " + this.credit + "$" + "\n";
+        personalInfo += "-----";
         return personalInfo;
     }
 
