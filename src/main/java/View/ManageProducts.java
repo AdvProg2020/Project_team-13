@@ -2,6 +2,7 @@ package View;
 
 import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
+import Controller.Client.ManagerController;
 import Controller.Client.ProductController;
 import Models.Product.Category;
 import Models.Product.Product;
@@ -136,7 +137,12 @@ public class ManageProducts extends Menu {
             addToAdds.setOnMouseClicked(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                ProductController.getInstance().setCommercializedProduct(product.getProductId());
+                    if (seller.getCredit() >= 50) {
+                        ProductController.getInstance().setCommercializedProduct(product.getProductId());
+                        seller.setCredit(seller.getCredit()-50);
+                    } else {
+                        showMessage("You dont have enough money to create new add.cost of each add is 50 boxes.", MessageKind.ErrorWithoutBack);
+                    }
                 }
             });
 
@@ -176,7 +182,7 @@ public class ManageProducts extends Menu {
             options.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
             options.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, false));
             options.setHgap(2);
-            options.add(addToAdds,0,0);
+            options.add(addToAdds, 0, 0);
             options.add(editInfoPic, 1, 0);
             options.add(deleteProduct, 2, 0);
             gridPane.add(options, 0, 3, 2, 1);

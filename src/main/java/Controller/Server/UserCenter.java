@@ -47,6 +47,24 @@ public class UserCenter {
         return userCenter;
     }
 
+    public void reduceSellerCreditForAnAdd(Product product) {
+        for (Seller seller : allSeller) {
+            if (seller.getUsername().equals(product.getSeller())) {
+                seller.setCredit(seller.getCredit() - 50);
+                DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+            }
+        }
+    }
+
+    public void increaseSellerCreditForAnAdd(Product product) {
+        for (Seller seller : allSeller) {
+            if (seller.getUsername().equals(product.getSeller())) {
+                seller.setCredit(seller.getCredit() + 50);
+                DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+            }
+        }
+    }
+
     public boolean isThereUserWithThisUsername(String username) {
         for (Customer customer : allCustomer) {
             if (customer.getUsername().equals(username)) {

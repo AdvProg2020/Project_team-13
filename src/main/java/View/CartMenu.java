@@ -220,7 +220,6 @@ public class CartMenu extends Menu {
             @Override
             public void handle(Event event) {
                 scene.setCursor(Cursor.HAND); //Change cursor to hand
-
             }
         });
         purchase.setOnMouseExited(new EventHandler() {
