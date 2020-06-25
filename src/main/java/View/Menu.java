@@ -298,7 +298,6 @@ public class Menu {
                 @Override
                 public void handle(Event event) {
                     scene.setCursor(Cursor.HAND); //Change cursor to hand
-
                 }
             });
             image1.setOnMouseExited(new EventHandler() {

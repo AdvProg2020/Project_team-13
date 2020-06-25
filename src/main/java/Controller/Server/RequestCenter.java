@@ -185,6 +185,8 @@ public class RequestCenter {
         allRequests.remove(request);
         if (request.getType().equals(RequestType.addOff) || request.getType().equals(RequestType.editOff)) {
             OffCenter.getInstance().setProductStatusForOffer(new Gson().fromJson(request.getDetails(), Offer.class));
+        }else if(request.getType().equals(RequestType.commercial)) {
+            UserCenter.getIncstance().increaseSellerCreditForAnAdd(new Gson().fromJson(request.getDetails(),Product.class));
         }
         String arrayData = new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);

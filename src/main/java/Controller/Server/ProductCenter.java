@@ -213,8 +213,9 @@ public class ProductCenter {
         updateAllProducts();
         for (Product product : allProducts) {
             if (product.getProductId().equalsIgnoreCase(productId)) {
+                UserCenter.getIncstance().reduceSellerCreditForAnAdd(product);
                 RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("Commercial", new Gson().toJson(product)));
-                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("productCreating", "Product commercialized request has been sended"));
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("SuccessfulNotBack", "Product commercialized request has been sended."));
             }
         }
     }

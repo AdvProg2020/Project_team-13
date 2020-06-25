@@ -156,14 +156,16 @@ public class CartMenu extends Menu {
             gridPane.add(scoreGridPane, 0, 2, 2, 1);
             gridPane.add(positive, 0, 3);
             GridPane options = new GridPane();
-            options.getColumnConstraints().add(new ColumnConstraints(117, Control.USE_COMPUTED_SIZE, 117, Priority.NEVER, HPos.LEFT, false));
-//            options.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
-//            options.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, false));
+            options.getColumnConstraints().add(new ColumnConstraints(90, Control.USE_COMPUTED_SIZE, 90, Priority.NEVER, HPos.LEFT, false));
+            options.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
+            options.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
+            options.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, false));
             options.setHgap(2);
             options.add(countPane, 0, 0);
             options.add(positive, 1, 0);
             options.add(negative, 2, 0);
             gridPane.add(options, 0, 3, 2, 1);
+            gridPane.setMaxWidth(150);
             gridPanes.add(gridPane);
             gridPane.setStyle("-fx-background-color: #ECD5DC;-fx-background-radius: 20px;");
             countText.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 12));
@@ -220,7 +222,6 @@ public class CartMenu extends Menu {
             @Override
             public void handle(Event event) {
                 scene.setCursor(Cursor.HAND); //Change cursor to hand
-
             }
         });
         purchase.setOnMouseExited(new EventHandler() {
@@ -464,7 +465,7 @@ public class CartMenu extends Menu {
             centerGridPane.add(productsPages.get(0), 1, 1, 2, 2);
         } else {
             ImageView imageView = new ImageView(new Image("file:src/empty.png"));
-            Text text = new Text("You don't have any product to sell.");
+            Text text = new Text("You'r cart is empty.                  ");
             GridPane gridPane = new GridPane();
             imageView.setFitWidth(150);
             imageView.setFitHeight(150);
