@@ -1,6 +1,9 @@
 package View;
 
 import Controller.Client.ClientController;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Control;
@@ -14,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class MainMenu extends Menu {
     public MainMenu(Stage stage) {
@@ -35,9 +39,11 @@ public class MainMenu extends Menu {
         centerGridPane = new GridPane();
 //        centerGridPane.setBackground(new Background(new BackgroundImage(new Image("file:src/main_background.jpg"),BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.CENTER,BackgroundSize.DEFAULT)));
         bottomGridPane = new GridPane();
+        String welcomeString="Welcome to our Store ;)";
+        final int[] i = {0};
         pageGridPane = new GridPane();
         scene = new Scene(pageGridPane, 850, 600);
-        centerGridPane.add(new ImageView(new Image("file:src/main_background.jpg")),0,0);
+        centerGridPane.add(new ImageView(new Image("file:src/main_background.jpg")), 0, 0);
         setPageGridPain();
         setUpGridPane();
         setMenuBarGridPane();
@@ -45,12 +51,21 @@ public class MainMenu extends Menu {
         storeAnim.setFitWidth(200);
         storeAnim.setFitHeight(200);
         GridPane mainGridPane = new GridPane();
-        mainGridPane.add(storeAnim, 13, 0,8,1);
+        Text welcomeText = new Text("");
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
+            if(i[0] ==44)
+                i[0] =0;
+            if(i[0]<=23)
+            welcomeText.setText(welcomeString.substring(0,i[0]));
+            i[0]++;
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+        mainGridPane.add(storeAnim, 13, 0, 8, 1);
         mainGridPane.setHgap(20);
-        Text welcomeText = new Text("Welcome to our Store ;)");
         welcomeText.setFont(Font.loadFont("file:src/Bangers.ttf", 36));
         welcomeText.setFill(Color.WHITE);
-        mainGridPane.add(welcomeText, 11, 1,8,1);
+        mainGridPane.add(welcomeText, 11, 1, 8, 1);
         centerGridPane.add(mainGridPane, 0, 0);
         bottomGridPane.setStyle("-fx-background-color: rgb(45,156,240);");
         bottomGridPane.getRowConstraints().add(new RowConstraints(15, Control.USE_COMPUTED_SIZE, 15, Priority.NEVER, VPos.CENTER, false));

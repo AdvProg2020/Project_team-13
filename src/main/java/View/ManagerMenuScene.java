@@ -358,7 +358,7 @@ public class ManagerMenuScene extends Menu {
 
         leftMenuGridPane.add(requestsButton, 0, 0, 2, 2);
         leftMenuGridPane.add(manageUsersButton, 0, 2, 2, 2);
-        leftMenuGridPane.add(createManagerButton, 0, 4, 2, 2);
+      //  leftMenuGridPane.add(createManagerButton, 0, 4, 2, 2);
         leftMenuGridPane.add(manageCategoriesButton, 0, 6, 2, 2);
         leftMenuGridPane.add(manageDiscountsButton, 0, 8, 2, 2);
         leftMenuGridPane.add(manageProductsButton, 0, 10, 2, 2);

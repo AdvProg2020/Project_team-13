@@ -5,7 +5,6 @@ import Models.UserAccount.Manager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.Test;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -35,11 +34,13 @@ class DataBaseTest {
         scanner.close();
         assert allManagers != null;
         int size = allManagers.size();
-        assertEquals(2, size);
+        assertEquals(3, size);
         Gson gson = new Gson();
-        String string = gson.toJson(new Manager("ali123", "12345", "ali", "majidi", "majid@gmail.com", "09122197321", 21));
+        allManagers.add(new Manager("Karim", "12345", "ali", "majidi", "majid@gmail.com", "09122197321", 21));
+        String string = gson.toJson(allManagers);
         dataBase.updateAllManagers(string);
-        scanner = new Scanner(bufferedReader);
+        BufferedReader bufferedReader1 = new BufferedReader(new FileReader("allManagers.txt"));
+        scanner = new Scanner(bufferedReader1);
         allManagers = new ArrayList<>();
         while(scanner.hasNextLine()){
             anotherString = scanner.nextLine();

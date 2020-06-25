@@ -1,10 +1,12 @@
 package View;
 
 import Controller.Client.LoginController;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -103,6 +105,19 @@ public class LoginMenu extends Menu {
         centerGridPane.add(leftGridPane, 0, 0);
         centerGridPane.add(upGridPane, 1, 0);
         userInfoGridPane.setAlignment(Pos.CENTER);
+        loginButton.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+            }
+        });
+        loginButton.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+            }
+        });
         loginButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -134,6 +149,32 @@ public class LoginMenu extends Menu {
                 gridPane.add(new Text(""), 1, 0);
                 ImageView seller = new ImageView(new Image("file:src/seller.png"));
                 ImageView customer = new ImageView(new Image("file:src/customer.png"));
+                seller.setOnMouseEntered(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                    }
+                });
+                seller.setOnMouseExited(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    }
+                });
+                customer.setOnMouseEntered(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                    }
+                });
+                customer.setOnMouseExited(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    }
+                });
                 customer.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
