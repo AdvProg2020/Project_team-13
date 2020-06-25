@@ -63,7 +63,7 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
         addOffer.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 15));
         addOffer.setMaxHeight(20);
         addOffer.setOnAction(this);
-        if (!allOffers.isEmpty()) {
+        if ( allOffers != null && !allOffers.isEmpty()) {
             pageGridPane.getChildren().remove(centerGridPane);
             pageGridPane.getChildren().remove(bottomGridPane);
             this.setPages(allOffers.size()%4 == 0 ?
@@ -96,12 +96,12 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
             pageGridPane.getChildren().remove(centerGridPane);
             pageGridPane.getChildren().remove(bottomGridPane);
             borderPane = new BorderPane();
-            Label noRequest = new Label("There is No Offer");
+            Label noRequest = new Label("There is No Offer!!");
             noRequest.setTranslateY(150);
             noRequest.setFont(Font.loadFont("file:src/Bangers.ttf", 50));
             borderPane.setTop(addOffer);
             addOffer.setTranslateY(250);
-            addOffer.setTranslateX(350);
+            addOffer.setTranslateX(375);
             borderPane.setCenter(noRequest);
         }
         pageGridPane.add(borderPane, 0, 2);
