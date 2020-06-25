@@ -45,12 +45,12 @@ public class MainMenu extends Menu {
         storeAnim.setFitWidth(200);
         storeAnim.setFitHeight(200);
         GridPane mainGridPane = new GridPane();
-        mainGridPane.add(storeAnim, 10, 0);
+        mainGridPane.add(storeAnim, 13, 0,8,1);
         mainGridPane.setHgap(20);
         Text welcomeText = new Text("Welcome to our Store ;)");
         welcomeText.setFont(Font.loadFont("file:src/Bangers.ttf", 36));
         welcomeText.setFill(Color.WHITE);
-        mainGridPane.add(welcomeText, 11, 1);
+        mainGridPane.add(welcomeText, 11, 1,8,1);
         centerGridPane.add(mainGridPane, 0, 0);
         bottomGridPane.setStyle("-fx-background-color: rgb(45,156,240);");
         bottomGridPane.getRowConstraints().add(new RowConstraints(15, Control.USE_COMPUTED_SIZE, 15, Priority.NEVER, VPos.CENTER, false));
