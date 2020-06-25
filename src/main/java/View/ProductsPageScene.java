@@ -746,7 +746,6 @@ public class ProductsPageScene extends Menu {
                 @Override
                 public void handle(Event event) {
                     scene.setCursor(Cursor.HAND); //Change cursor to hand
-
                 }
             });
             buttons.get(i).setOnMouseExited(new EventHandler() {
@@ -772,7 +771,7 @@ public class ProductsPageScene extends Menu {
                     }
                     buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
                     productsPages.get(j[0]).add(buttons1, 1, 5, 7, 1);
-                    centerGridPaneTosh.add(productsPages.get(j[0]), 1, 1);
+                    centerGridPaneTosh.add(productsPages.get(j[0]), 1, 3);
                 }
             });
         }
@@ -780,6 +779,9 @@ public class ProductsPageScene extends Menu {
         buttons1.setHgap(3);
         for (int i = 0; i < buttons.size(); i++) {
             buttons1.add(buttons.get(i), i + 1, 0);
+        }
+        for (GridPane productsPage : productsPages) {
+            productsPage.setHgap(10);
         }
         buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
         if (productsPages.size() > 0) {
