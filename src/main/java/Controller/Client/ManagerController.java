@@ -1,5 +1,7 @@
 package Controller.Client;
 
+import Controller.Server.DataBase;
+import Models.Product.Product;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
@@ -38,6 +40,14 @@ public class ManagerController {
             }
         }
         return commercializedProduct;
+    }
+
+    public void reduceSellerCreditForAnAdd(Product product) {
+        for (Seller seller : allSellers) {
+            if (seller.getUsername().equals(product.getSeller())) {
+                seller.setCredit(seller.getCredit() - 50);
+            }
+        }
     }
 
     public ArrayList<Seller> getAllSellers() {

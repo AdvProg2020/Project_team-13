@@ -16,6 +16,7 @@ public class UserCenter {
     private ArrayList<Customer> allCustomer = new ArrayList<>();
     private ArrayList<Seller> allSeller = new ArrayList<>();
     private ArrayList<Manager> allManager = new ArrayList<>();
+    private boolean hasManager;
 
     private UserCenter() {
 
@@ -45,6 +46,24 @@ public class UserCenter {
             userCenter = new UserCenter();
         }
         return userCenter;
+    }
+
+    public void reduceSellerCreditForAnAdd(Product product) {
+        for (Seller seller : allSeller) {
+            if (seller.getUsername().equals(product.getSeller())) {
+                seller.setCredit(seller.getCredit() - 50);
+                DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+            }
+        }
+    }
+
+    public void increaseSellerCreditForAnAdd(Product product) {
+        for (Seller seller : allSeller) {
+            if (seller.getUsername().equals(product.getSeller())) {
+                seller.setCredit(seller.getCredit() + 50);
+                DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+            }
+        }
     }
 
     public boolean isThereUserWithThisUsername(String username) {
@@ -371,4 +390,9 @@ public class UserCenter {
         }
         return null;
     }
+
+    public ArrayList<Manager> getAllManager() {
+        return allManager;
+    }
+
 }
