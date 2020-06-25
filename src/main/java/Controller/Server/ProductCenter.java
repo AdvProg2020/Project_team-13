@@ -210,6 +210,7 @@ public class ProductCenter {
     }
 
     public void addCommercialRequest(String productId) {
+        updateAllProducts();
         for (Product product : allProducts) {
             if (product.getProductId().equalsIgnoreCase(productId)) {
                 RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("Commercial", new Gson().toJson(product)));

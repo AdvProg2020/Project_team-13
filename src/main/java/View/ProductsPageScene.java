@@ -603,8 +603,6 @@ public class ProductsPageScene extends Menu {
         ManagerController.getInstance().getAllUserFromServer();
         System.out.println(ProductController.getInstance().getAllCommercializedProduct().size());
         centerGridPaneTosh.getChildren().clear();
-//        createAddGridPanes(addGridPanes);
-        System.out.println(addGridPanes.size());
         for (int kk = 0; kk < showProductsAfterFilterAndSort().size(); kk++) {
             Product product = showProductsAfterFilterAndSort().get(kk);
             GridPane gridPane = new GridPane();
@@ -713,12 +711,15 @@ public class ProductsPageScene extends Menu {
                         if (gridPanes.get(i).equals(gridPane)) {
                             ClientController.getInstance().setCurrentProduct(showProductsAfterFilterAndSort().get(i));
                             new ProductMenu(stage).execute();
+                            break;
                         }
                     }
                 }
             });
-        }        GridPane addGridPane = new GridPane();
-//        createAddGridPane(addGridPane,addGridPanes,buttonStyle);
+        }
+        GridPane addGridPane = new GridPane();
+        createAddGridPanes(addGridPanes);
+        createAddGridPane(addGridPane, addGridPanes, buttonStyle);
         ArrayList<GridPane> productsPages = new ArrayList<>();
         for (int j = 0; j < (gridPanes.size() / 8) + (gridPanes.size() % 8 == 0 ? 0 : 1); j++) {
             productsPages.add(new GridPane());
@@ -783,13 +784,18 @@ public class ProductsPageScene extends Menu {
         buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
         if (productsPages.size() > 0) {
             productsPages.get(0).add(buttons1, 1, 5, 7, 1);
-            if(!addGridPane.getChildren().isEmpty()) {
+            if (!addGridPane.getChildren().isEmpty()) {
                 System.out.println(1);
-//                centerGridPaneTosh.add(addGridPane, 1, 2, 1, 1);
-                centerGridPaneTosh.add(productsPages.get(0), 1, 1, 1, 1);
-            }else {
-                System.out.println(2);
-                centerGridPaneTosh.add(productsPages.get(0), 1, 1, 1, 1);
+                centerGridPaneTosh.setVgap(5);
+                centerGridPaneTosh.add(addGridPane, 1, 1, 1, 1);
+                Text text= new Text(" Products");
+                text.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
+                centerGridPaneTosh.add(text, 1, 2, 1, 1);
+                centerGridPaneTosh.add(productsPages.get(0), 1, 3, 1, 1);
+            } else {
+                Text text= new Text(" Products");
+                centerGridPaneTosh.add(text, 1, 1, 1, 1);
+                centerGridPaneTosh.add(productsPages.get(0), 1, 2, 1, 1);
             }
         } else {
             ImageView imageView = new ImageView(new Image("file:src/empty.png"));
@@ -806,7 +812,7 @@ public class ProductsPageScene extends Menu {
         }
     }
 
-    private void createAddGridPane(GridPane gridPane,ArrayList<GridPane> gridPanes,String buttonStyle) {
+    private void createAddGridPane(GridPane gridPane, ArrayList<GridPane> gridPanes, String buttonStyle) {
         ArrayList<GridPane> productsPages = new ArrayList<>();
         for (int j = 0; j < (gridPanes.size() / 4) + (gridPanes.size() % 4 == 0 ? 0 : 1); j++) {
             productsPages.add(new GridPane());
@@ -826,6 +832,7 @@ public class ProductsPageScene extends Menu {
             }
         }
         ArrayList<Button> buttons = new ArrayList<>();
+        System.out.println("AAAAAa              "+productsPages.size());
         for (int i = 0; i < productsPages.size(); i++) {
             buttons.add(new Button(Integer.toString(i + 1)));
             buttons.get(i).setStyle(buttonStyle);
@@ -869,7 +876,12 @@ public class ProductsPageScene extends Menu {
             buttons1.add(buttons.get(i), i + 1, 0);
         }
         buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
-        gridPane.add(productsPages.get(0),0,0);
+        System.out.println("Aaaaaaaaaa" + "      " + productsPages.size());
+        Text text = new Text(" Adds");
+        text.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
+        gridPane.add(text, 0, 0);
+        gridPane.add(productsPages.get(0), 0, 1);
+
     }
 
     private void createProductsGridPanes(ArrayList<GridPane> gridPanes) {
@@ -1012,7 +1024,7 @@ public class ProductsPageScene extends Menu {
             gridPane.add(scoreGridPane, 0, 2, 1, 1);
             GridPane options = new GridPane();
             addGridPanes.add(gridPane);
-            gridPane.setStyle("-fx-background-color: #ECD5DC;-fx-background-radius: 20px;");
+            gridPane.setStyle("-fx-background-color: rgba(206, 186, 9, 0.62); -fx-effect: innershadow( gaussian ,rgba(231, 171, 206, 0.62) ,45,.25,0,10);-fx-background-radius: 20px;");
             text.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
             label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
             scoreGridPane.setOnMouseEntered(new EventHandler() {
