@@ -259,13 +259,7 @@ public class UserMenuScene extends Menu {
         centerGridPane.add(userInfoGridPane, 3, 1, 2, 2);
     }
 
-    protected void setUpGridPane() {
-        Label label = new Label("        Pms.com");
-        label.setStyle("-fx-font-weight: bold;");
-        label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
-        upGridPane.getRowConstraints().add(new RowConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.ALWAYS, VPos.CENTER, true));
-        upGridPane.add(label, 0, 0);
-    }
+
 
     protected void setPageGridPain() {
         pageGridPane.getRowConstraints().add(new RowConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.NEVER, VPos.CENTER, false));

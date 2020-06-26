@@ -53,10 +53,7 @@ public class CartMenu extends Menu {
         setUpGridPane();
         setMenuBarGridPane();
         setCenterGridPane();
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(pageGridPane);
-        scene.setRoot(scrollPane);
-        scrollPane.setFitToWidth(true);
+        scene.setRoot(pageGridPane);
         bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
     }
 
@@ -199,7 +196,7 @@ public class CartMenu extends Menu {
             });
         }
         ArrayList<GridPane> productsPages = new ArrayList<>();
-        for (int j = 0; j < (gridPanes.size() / 12) + (gridPanes.size() % 12 == 0 ? 0 : 1); j++) {
+        for (int j = 0; j < (gridPanes.size() / 4) + (gridPanes.size() % 4 == 0 ? 0 : 1); j++) {
             productsPages.add(new GridPane());
             productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(5, Control.USE_COMPUTED_SIZE, 5, Priority.NEVER, HPos.LEFT, false));
             productsPages.get(j).getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, 150, Priority.NEVER, HPos.LEFT, false));
@@ -212,8 +209,8 @@ public class CartMenu extends Menu {
             productsPages.get(j).setVgap(10);
             productsPages.get(j).setMinWidth(600);
             productsPages.get(j).setMaxHeight(300);
-            for (int i = j * 12; i < (j) * 12 + (j == ((gridPanes.size() / 12) + (gridPanes.size() % 12 == 0 ? 0 : 1) - 1) ? gridPanes.size() % 12 : 12); i++) {
-                productsPages.get(j).add(gridPanes.get(i), 2 * ((i % 12) % 4) + 1, ((i % 12) / 4), 1, 1);
+            for (int i = j * 4; i < (j) * 4 + (j == ((gridPanes.size() / 4) + (gridPanes.size() % 4 == 0 ? 0 : 1) - 1) ? gridPanes.size() % 4 : 4); i++) {
+                productsPages.get(j).add(gridPanes.get(i), 2 * ((i % 4) % 4) + 1, ((i % 4) / 4), 1, 1);
             }
         }
         ArrayList<Button> buttons = new ArrayList<>();
@@ -486,13 +483,6 @@ public class CartMenu extends Menu {
         }
     }
 
-    protected void setUpGridPane() {
-        Label label = new Label("        Pms.com");
-        label.setStyle("-fx-font-weight: bold;");
-        label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
-        upGridPane.getRowConstraints().add(new RowConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.ALWAYS, VPos.CENTER, true));
-        upGridPane.add(label, 0, 0);
-    }
 
     protected void setPageGridPain() {
         pageGridPane.getRowConstraints().add(new RowConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.NEVER, VPos.CENTER, false));
