@@ -24,6 +24,10 @@ public class OffsController {
         return offsController;
     }
 
+    public void setCurrentOffer(Offer currentOffer) {
+        this.currentOffer = currentOffer;
+    }
+
     public Offer getCurrentOffer() {
         return currentOffer;
     }
