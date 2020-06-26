@@ -255,7 +255,7 @@ public class SellerMenuScene extends Menu{
         offsButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                new CreateOffsMenu(stage).execute();
+                new MangeOffsMenu(stage, 0).execute();
             }
         });
         offsButton.setTextAlignment(TextAlignment.CENTER);

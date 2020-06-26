@@ -21,7 +21,7 @@ import javafx.scene.image.ImageView;
 
 import java.util.*;
 
-public class ManageDiscountCodesMenu extends Menu{
+public class  ManageDiscountCodesMenu extends Menu{
     private Map<String, ImageView> edits;
     private Map<String, ImageView> deletes;
     private Map<String, Button> viewDetails;

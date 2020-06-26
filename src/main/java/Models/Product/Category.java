@@ -64,10 +64,8 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" +
-                "name='" + name + '\'' +
-                ", features=" + features +
-                ", allProducts=" + allProducts +
-                '}';
+        return  "name: " + name + "\n" +
+                "features: " + features + "\n" +
+                "allProducts: " + allProducts;
     }
 }

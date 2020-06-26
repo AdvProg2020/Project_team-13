@@ -200,10 +200,11 @@ public class ManageRequestMenu extends Menu {
         gridPane.setVgap(30);
         for (int i = 0; i < 5; i++) {
             if (i == 1) {
-                gridPane.getColumnConstraints().add(new ColumnConstraints(150, Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+                gridPane.getColumnConstraints().add(new ColumnConstraints(180, Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+            }else {
+                gridPane.getColumnConstraints().add(new ColumnConstraints(120,
+                        Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
             }
-            gridPane.getColumnConstraints().add(new ColumnConstraints(120,
-                    Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
         }
         setRequestCounter(4 * pages);
         for (int i = 1; i <= counter; requestCounter++, i++) {
@@ -229,7 +230,7 @@ public class ManageRequestMenu extends Menu {
                 allLabels[i].setTranslateX(20);
             }
             if (i == 1) {
-                allLabels[i].setTranslateX(30);
+                allLabels[i].setTranslateX(50);
             }
             allPanes[i].getChildren().add(allLabels[i]);
             allLabels[i].setTranslateY(8);

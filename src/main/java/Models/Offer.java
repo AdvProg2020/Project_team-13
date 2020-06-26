@@ -1,7 +1,5 @@
 package Models;
 
-import Models.UserAccount.Seller;
-
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -87,7 +85,7 @@ public class Offer {
     public String toString() {
         String listOfProducts="";
         for (String s : productsId) {
-            listOfProducts+=s+"\t";
+            listOfProducts+= s + "\n" + "--------";
         }
         return "offerId :" + offerId + "\n" +
                 "amount : " + amount + '%'+"\n"+
