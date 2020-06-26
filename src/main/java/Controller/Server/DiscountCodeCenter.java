@@ -1,17 +1,10 @@
 package Controller.Server;
 
 import Models.DiscountCode;
-import Models.Request;
 import Models.UserAccount.Customer;
 import com.google.gson.Gson;
 
-import java.net.UnknownServiceException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class DiscountCodeCenter {
     private static DiscountCodeCenter discountCodeCenter;
@@ -164,7 +157,7 @@ public class DiscountCodeCenter {
                 break;
             }
         }
-        if ((calendar.get(Calendar.DAY_OF_MONTH) == 28 && calendar.get(Calendar.MONTH) == 9) || calendar.getTime().getDay() == calendar.getTime().getMonth()+1) {
+        if ((calendar.get(Calendar.DAY_OF_MONTH) == 28 && calendar.get(Calendar.MONTH) == 9) || calendar.getTime().getDay() == calendar.getTime().getMonth() + 1) {
             makeDiscountCodeForRandomCustomer();
         }
     }

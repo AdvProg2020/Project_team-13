@@ -21,7 +21,10 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
     private Map<String, ImageView> edits;
@@ -154,6 +157,10 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
                             .getStartTime()), String.valueOf(allOffers.get(offerCounter).getEndTime()));
         }
         gridPane.setTranslateX(10);
+        processSeTheBeginning(integer, name, percent, startDate, endDate, gridPane, allGridPanes);
+    }
+
+    static void processSeTheBeginning(Integer integer, Label name, Label percent, Label startDate, Label endDate, GridPane gridPane, List<GridPane> allGridPanes) {
         gridPane.setTranslateY(1);
         gridPane.add(name, 0, 0);
         gridPane.add(percent, 1, 0);
@@ -169,30 +176,27 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
             button.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 18));
             button.setTranslateX(38);
             int finalI1 = i;
-            button.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event){
-                    VBox vBox = new VBox();
-                    vBox.setAlignment(Pos.CENTER);
-                    vBox.setStyle("-fx-background-color: #afafaf");
-                    String[] details = allOffers.get(finalI1).toString().split("\n");
-                    Label[] label = new Label[details.length];
-                    Label label1 = new Label("Details :\n\n");
-                    label1.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 30));
-                    vBox.getChildren().add(label1);
-                    for (int j = 0; j < label.length; j++) {
-                        label[j] = new Label(details[j]);
-                        label[j].setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 19));
-                        vBox.getChildren().add(label[j]);
-                    }
-                    Scene scene = new Scene(vBox, 300, 500);
-                    Stage stage = new Stage();
-                    stage.setWidth(400);
-                    stage.setHeight(600);
-                    stage.setScene(scene);
-                    stage.setTitle("Details");
-                    stage.show();
+            button.setOnAction(event -> {
+                VBox vBox = new VBox();
+                vBox.setAlignment(Pos.CENTER);
+                vBox.setStyle("-fx-background-color: #afafaf");
+                String[] details = allOffers.get(finalI1).toString().split("\n");
+                Label[] label = new Label[details.length];
+                Label label1 = new Label("Details :\n\n");
+                label1.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 30));
+                vBox.getChildren().add(label1);
+                for (int j = 0; j < label.length; j++) {
+                    label[j] = new Label(details[j]);
+                    label[j].setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 19));
+                    vBox.getChildren().add(label[j]);
                 }
+                Scene scene = new Scene(vBox, 300, 500);
+                Stage stage = new Stage();
+                stage.setWidth(400);
+                stage.setHeight(600);
+                stage.setScene(scene);
+                stage.setTitle("Details");
+                stage.show();
             });
             viewDetails.put(allOffers.get(i).getOfferId(), button);
         }
@@ -250,6 +254,10 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
     }
 
     private Label[] labelMaker(String offerId, String offerPercent, String startDate, String endDate) {
+        return getLabels(offerId, offerPercent, startDate, endDate);
+    }
+
+    static Label[] getLabels(String offerId, String offerPercent, String startDate, String endDate) {
         Label[] allLabels = new Label[4];
         allLabels[0] = new Label(offerId);
         allLabels[1] = new Label(offerPercent);
