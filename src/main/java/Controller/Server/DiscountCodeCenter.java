@@ -87,6 +87,9 @@ public class DiscountCodeCenter {
             if (flag == 0) {
                 customeradded = true;
                 customer.addDiscountCode(discountCode);
+            }else if(flag == 1){
+                DiscountCode discountCode1 = customer.findDiscountCodeWithCode(discountCode.getDiscountCodeID());
+                customer.getAllDiscountCodes().set(customer.getAllDiscountCodes().indexOf(discountCode1), discountCode);
             }
         }
         if (customeradded) {
@@ -112,6 +115,8 @@ public class DiscountCodeCenter {
     public void usedDiscountCode(String code, String username) {
         DiscountCode discountCode = findDiscountCodeWithThisId(code);
         if (discountCode != null) {
+            System.out.println(discountCode.getRemainingTimesForEachCustomer());
+            System.out.println(discountCode.getRemainingTimesForEachCustomer().get(username));
             if (discountCode.getRemainingTimesForEachCustomer().get(username) > 1) {
                 discountCode.usedOneTime(username);
                 UserCenter.getIncstance().findCustomerWithUsername(username).useDiscountCode(code);

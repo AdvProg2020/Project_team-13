@@ -170,6 +170,7 @@ public class ManageCategoryMenu extends Menu implements EventHandler<ActionEvent
             imageView.setOnMouseClicked(event -> {
                 CategoryController.getInstance().setCurrentCategory(allCategories.get(finalI1));
                 ClientController.getInstance().getMenus().remove(this);
+                ClientController.getInstance().getMenus().trimToSize();
                 new EditCategoryMenu(this.stage).execute();
             });
             imageView.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
@@ -185,6 +186,7 @@ public class ManageCategoryMenu extends Menu implements EventHandler<ActionEvent
             imageView.setOnMouseClicked(event -> {
                 CategoryController.getInstance().removeCategory(allCategories.get(finalI1).getName());
                 ClientController.getInstance().getMenus().remove(this);
+                ClientController.getInstance().getMenus().trimToSize();
                 new ManageCategoryMenu(this.getStage(), this.pagination.getCurrentPageIndex()).execute();
             });
             imageView.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
@@ -265,6 +267,7 @@ public class ManageCategoryMenu extends Menu implements EventHandler<ActionEvent
     @Override
     public void handle(ActionEvent event) {
         ClientController.getInstance().getMenus().remove(this);
+        ClientController.getInstance().getMenus().trimToSize();
         new CreateCategoryMenu(this.stage).execute();
     }
 }

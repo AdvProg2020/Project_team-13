@@ -70,6 +70,7 @@ public class  ManageDiscountCodesMenu extends Menu{
             @Override
             public void handle(ActionEvent event) {
                 ClientController.getInstance().getMenus().remove(this);
+                ClientController.getInstance().getMenus().trimToSize();
                 new CreateDiscountCodeMenu(stage).execute();
             }
         });
@@ -177,6 +178,7 @@ public class  ManageDiscountCodesMenu extends Menu{
             imageView.setOnMouseClicked(event -> {
                 ClientController.getInstance().setCurrentDiscountCode(allDiscountCodes.get(finalI1));
                 ClientController.getInstance().getMenus().remove(this);
+                ClientController.getInstance().getMenus().trimToSize();
                 new EditDiscountCode(stage).execute();
              });
             imageView.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
@@ -192,6 +194,7 @@ public class  ManageDiscountCodesMenu extends Menu{
             imageView.setOnMouseClicked(event -> {
                 DiscountController.getInstance().deleteDiscountCode(allDiscountCodes.get(finalI).getDiscountCodeID());
                 ClientController.getInstance().getMenus().remove(this);
+                ClientController.getInstance().getMenus().trimToSize();
                 new ManageDiscountCodesMenu(this.getStage(), this.pagination.getCurrentPageIndex()).execute();
             });
             imageView.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
