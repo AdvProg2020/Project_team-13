@@ -130,17 +130,21 @@ public class OrdersMenu extends Menu {
                         label[j].setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 10));
                         vBox.getChildren().add(label[j]);
                     }
-                    Scene scene = new Scene(vBox, 300, 500);
-                    Stage stage = new Stage();
-                    stage.setWidth(400);
-                    stage.setHeight(600);
-                    stage.setScene(scene);
-                    stage.setTitle("Details");
-                    stage.show();
+                    setTheSettings(vBox);
                 }
             });
             viewDetails.put(allBuyLog.get(i).getId(), button);
         }
+    }
+
+    static void setTheSettings(VBox vBox) {
+        Scene scene = new Scene(vBox, 300, 500);
+        Stage stage = new Stage();
+        stage.setWidth(400);
+        stage.setHeight(600);
+        stage.setScene(scene);
+        stage.setTitle("Details");
+        stage.show();
     }
 
     private void setTheCenterInfo(int counter, Integer pages) {

@@ -4,7 +4,6 @@ import Controller.Client.ClientController;
 import Controller.Client.UserController;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
-import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -88,7 +87,7 @@ public class ManageUsersMenu extends Menu {
             GridPane gridPane = new GridPane();
             ImageView imageView = new ImageView(new Image(user.getImagePath()));
             Text text = new Text("   " + user.getUsername() + "\n" + "   " + user.getFirstName() + "\n" + "   " + user.getLastName());
-            Label label = new Label("   " + Double.toString(user.getCredit()) + "$");
+            Label label = new Label("   " + user.getCredit() + "$");
             imageView.setFitHeight(125);
             imageView.setFitWidth(125);
             GridPane photoPane = new GridPane();
@@ -221,7 +220,7 @@ public class ManageUsersMenu extends Menu {
         createNewManager.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
-                new ManagerRegisterMenu(stage).execute();
+                new CreateManagerProfile(stage).execute();
             }
         });
         leftMenuGridPane.add(createNewManager, 0, 0, 1, 2);

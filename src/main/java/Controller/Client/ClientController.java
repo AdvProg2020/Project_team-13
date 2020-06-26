@@ -18,7 +18,7 @@ public class ClientController {
     private Product currentProduct;
     private ArrayList<View.Menu> menus = new ArrayList<>();
     private MediaPlayer mediaPlayer;
-
+    private String message;
     public MediaPlayer getMediaPlayer() {
         return mediaPlayer;
     }
@@ -96,6 +96,7 @@ public class ClientController {
     }
 
     public void sendMessageToServer(String message) {
+        this.message = message;
         ServerController.getInstance().getMessageFromClient(message);
     }
 
@@ -108,5 +109,9 @@ public class ClientController {
             return (Seller) currentUser;
         }
         return null;
+    }
+
+    public String getTransactionMessage() {
+        return message;
     }
 }

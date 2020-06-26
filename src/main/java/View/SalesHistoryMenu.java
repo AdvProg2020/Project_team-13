@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
@@ -130,13 +129,7 @@ public class SalesHistoryMenu extends Menu {
                         label[j].setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 19));
                         vBox.getChildren().add(label[j]);
                     }
-                    Scene scene = new Scene(vBox, 300, 500);
-                    Stage stage = new Stage();
-                    stage.setWidth(400);
-                    stage.setHeight(600);
-                    stage.setScene(scene);
-                    stage.setTitle("Details");
-                    stage.show();
+                    OrdersMenu.setTheSettings(vBox);
                 }
             });
             viewDetails.put(allSellLog.get(i).getId(), button);

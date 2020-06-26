@@ -32,50 +32,51 @@ public class MessageController {
             message = message.substring(7);
             ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.ErrorWithoutBack);
         } else if (message.startsWith("@Successfulrc@")) {
-            message = message.substring(14, message.length());
+            message = message.substring(14);
             ClientController.getInstance().setCurrentUser(new Gson().fromJson(message, Customer.class));
             ClientController.getInstance().getCurrentMenu().showMessage("Register Successful", MessageKind.MessageWithBack);
         } else if (message.startsWith("@Successful@")) {
-            message = message.substring(12, message.length());
+            message = message.substring(12);
             ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.MessageWithBack);
         } else if (message.startsWith("@SuccessfulNotBack@")) {
             message = message.substring(19);
             ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.MessageWithoutBack);
         } else if (message.startsWith("@payed@")) {
-            message = message.substring(7, message.length());
+            message = message.substring(7);
             CartController.getInstance().payed(message);
-            int size = ((Customer) ClientController.getInstance().getCurrentUser()).getHistoryOfTransaction().size();
+            int size = ClientController.getInstance().getCurrentUser().getHistoryOfTransaction().size();
             Log buyLog = (ClientController.getInstance().getCurrentUser()).getHistoryOfTransaction().get(size - 1);
             ClientController.getInstance().getCurrentMenu().showMessage("Successfully purchase\ntotal price: " + buyLog.getPrice() + "\n" + buyLog.getDate(), MessageKind.MessageWithBack);
         } else if (message.startsWith("@Login as Customer@")) {
             Gson gson = new Gson();
-            message = message.substring(19, message.length());
+            message = message.substring(19);
             Customer customer = gson.fromJson(message, Customer.class);
             ClientController.getInstance().setCurrentUser(customer);
             ClientController.getInstance().getCurrentMenu().showMessage("Login successful", MessageKind.MessageWithBack);
         } else if (message.startsWith("@Login as Manager@")) {
             Gson gson = new Gson();
-            message = message.substring(18, message.length());
+            message = message.substring(18);
             Manager manager = gson.fromJson(message, Manager.class);
             ClientController.getInstance().setCurrentUser(manager);
             ClientController.getInstance().getCurrentMenu().showMessage("Login successful", MessageKind.MessageWithBack);
         } else if (message.startsWith("@Login as Seller@")) {
             Gson gson = new Gson();
-            message = message.substring(17, message.length());
+            message = message.substring(17);
             Seller seller = gson.fromJson(message, Seller.class);
             ClientController.getInstance().setCurrentUser(seller);
             ClientController.getInstance().getCurrentMenu().showMessage("Login successful", MessageKind.MessageWithBack);
         } else if (message.startsWith("@productCreating@")) {
-            ClientController.getInstance().getCurrentMenu().showMessage(message.substring(17, message.length()), MessageKind.MessageWithBack);
+            ClientController.getInstance().getCurrentMenu().showMessage(message.substring(17), MessageKind.MessageWithBack);
         } else if (message.startsWith("@removedSuccessful@")) {
-            ClientController.getInstance().getCurrentMenu().showMessage(message.substring(19, message.length()), MessageKind.MessageWithoutBack);
+            ClientController.getInstance().getCurrentMenu().showMessage(message.substring(19), MessageKind.MessageWithoutBack);
         }  else if (message.startsWith("@AllDiscountCodes@")) {
-            message = message.substring(18, message.length());
+            message = message.substring(18);
+            DiscountController.getInstance().setAllDiscountCodes(message);
         } else if (message.startsWith("@allCustomers@")) {
-            message = message.substring(14, message.length());
+            message = message.substring(14);
             UserController.getInstance().setAllCustomers(message);
         } else if (message.startsWith("@allSellers@")) {
-            message = message.substring(12, message.length());
+            message = message.substring(12);
             UserController.getInstance().setAllSellers(message);
         } else if (message.startsWith("@allManagers@")) {
             message = message.substring(13);
