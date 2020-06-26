@@ -654,6 +654,7 @@ public class ProductMenu extends Menu {
             if (rate > 0) {
                 if (add) {
                     ProductController.getInstance().rating(product.getProductId(), rate);
+                    product.addScore(ClientController.getInstance().getCurrentUser().getUsername(),rate);
                     setLengthOfStarBars();
                 }
                 isScored = true;
