@@ -332,15 +332,13 @@ public class UserCenter {
 
     public void editManager(Manager manager) {
         int index = allManager.indexOf(findManagerWithUsername(manager.getUsername()));
-        allManager.remove(findManagerWithUsername(manager.getUsername()));
-        allManager.add(index, manager);
+        allManager.set(index, manager);
         DataBase.getInstance().updateAllManagers(new Gson().toJson(allManager));
         ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@user successfully edited");
     }
 
     public void editCustomer(Customer customer) {
         int index = allCustomer.indexOf(findCustomerWithUsername(customer.getUsername()));
-        allCustomer.remove(index);
         allCustomer.set(index, customer);
         DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
         ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@user successfully edited");
@@ -348,8 +346,7 @@ public class UserCenter {
 
     public void editSeller(Seller seller) {
         int index = allSeller.indexOf(findSellerWithUsername(seller.getUsername()));
-        allSeller.remove(findCustomerWithUsername(seller.getUsername()));
-        allSeller.add(index, seller);
+        allSeller.set(index, seller);
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
         ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@user successfully edited");
     }

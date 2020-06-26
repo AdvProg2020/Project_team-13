@@ -4,13 +4,10 @@ import Controller.Client.ClientController;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.EventHandler;
 import javafx.geometry.VPos;
-import javafx.scene.Scene;
 import javafx.scene.control.Control;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
@@ -27,7 +24,7 @@ public class MainMenu extends Menu {
         if (ClientController.getInstance().getMediaPlayer() != null)
             ClientController.getInstance().getMediaPlayer().stop();
         ClientController.getInstance().setMediaPlayer(new MediaPlayer(mainSong));
-        ClientController.getInstance().getMediaPlayer().setVolume(0.02);
+        ClientController.getInstance().getMediaPlayer().setVolume(0.05);
         ClientController.getInstance().getMediaPlayer().play();
         ClientController.getInstance().getMediaPlayer().setCycleCount(MediaPlayer.INDEFINITE);
         setScene();

@@ -98,12 +98,12 @@ public class Menu {
                 soundNumber++;
             }
         });
-        key1.setVolume(0.015);
-        key2.setVolume(0.015);
-        key3.setVolume(0.015);
-        key4.setVolume(0.015);
-        key5.setVolume(0.015);
-        key6.setVolume(0.015);
+        key1.setVolume(0.03);
+        key2.setVolume(0.03);
+        key3.setVolume(0.03);
+        key4.setVolume(0.03);
+        key5.setVolume(0.03);
+        key6.setVolume(0.03);
     }
 
     public void setScene() {

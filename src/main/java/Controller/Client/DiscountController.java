@@ -67,4 +67,10 @@ public class DiscountController {
     public ArrayList<DiscountCode> getAllDiscountCodes() {
         return allDiscountCodes;
     }
+
+    public void setAllDiscountCodes(String json) {
+        Type discountType = new TypeToken<ArrayList<DiscountCode>>(){
+        }.getType();
+        this.allDiscountCodes = new Gson().fromJson(json, discountType);
+    }
 }

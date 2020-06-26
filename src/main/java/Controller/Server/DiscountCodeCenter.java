@@ -72,8 +72,7 @@ public class DiscountCodeCenter {
     public void editDiscountCode(DiscountCode discountCode) {
         DiscountCode oldDiscountCode = findDiscountCodeWithThisId(discountCode.getDiscountCodeID());
         int index = allDiscountCodes.indexOf(oldDiscountCode);
-        allDiscountCodes.remove(oldDiscountCode);
-        allDiscountCodes.add(index, discountCode);
+        allDiscountCodes.set(index, discountCode);
         boolean customeradded = false;
         DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(allDiscountCodes));
         for (String username : discountCode.getAllUserAccountsThatHaveDiscount()) {
