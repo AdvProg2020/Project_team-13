@@ -1,0 +1,1 @@
+[{"totalBuyAmount":0.0,"username":"customer","password":"123456789","firstName":"ali","lastName":"ali","email":"h@h.h","phoneNumber":"09330410360","type":"@Customer","allDiscountCodes":[],"credit":1000000.0,"historyOfTransaction":[],"imagePath":"file:E:\\downloads\\photo\\product.png"}]
