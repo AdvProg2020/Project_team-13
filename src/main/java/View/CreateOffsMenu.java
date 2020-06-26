@@ -5,7 +5,6 @@ import Controller.Client.ManagerController;
 import Controller.Client.OffsController;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -21,7 +20,6 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -139,15 +137,6 @@ public class CreateOffsMenu extends Menu {
         editPhotoButton.setMinWidth(100);
         editPhotoButton.setTextFill(Color.WHITE);
         FileChooser fileChooser = new FileChooser();
-        EventHandler<ActionEvent> eventChoosePhoto = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                File selectedFile = fileChooser.showOpenDialog(stage);
-                if (selectedFile != null) {
-                    userImage.setImage(new Image("file:" + selectedFile.getAbsolutePath()));
-                    imagePath = "file:" + selectedFile.getAbsolutePath();
-                }
-            }
-        };
         int i = 1;
         for (Product product : seller.getAllProducts()) {
             choiceBox.getItems().add(i + ". " + product.getProductName());
@@ -183,9 +172,6 @@ public class CreateOffsMenu extends Menu {
                 if (!((String) choiceBox.getValue()).equals("")) {
                     allProducts.add(seller.getAllProducts().get(Integer.parseInt(((String) choiceBox.getValue()).substring(0, 1)) - 1).getProductId());
                     choiceBox.getItems().remove((choiceBox.getValue()));
-                } else {
-                    choiceBox.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
-                    errorText.setText("username is invalid.");
                 }
             }
         });
@@ -206,7 +192,7 @@ public class CreateOffsMenu extends Menu {
                             if (allProducts.size() > 0) {
                                 OffsController.getInstance().addOff(Double.parseDouble(discountPercent.getText()), allProducts, startdate, enddate);
                             } else
-                                ClientController.getInstance().getCurrentMenu().showMessage("you should add discount code to some of users", MessageKind.ErrorWithoutBack);
+                                showMessage("you should add discount code to some of users", MessageKind.ErrorWithoutBack);
                         } else {
                             endDatePicker.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                             errorText.setText("End time is invalid.");

@@ -23,14 +23,12 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
 public class ManageProductsForManager extends Menu {
     GridPane productsPages;
-    Product currentProduct;
 
     public ManageProductsForManager(Stage stage) {
         super(stage);
@@ -109,7 +107,6 @@ public class ManageProductsForManager extends Menu {
             deleteProduct.setOnMouseClicked(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    Gson gson = new Gson();
                     ProductController.getInstance().removeProductForManager(product.getProductId());
                     setCenterGridPane();
                 }

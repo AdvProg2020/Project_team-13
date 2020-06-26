@@ -28,7 +28,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 public class ManageUsersMenu extends Menu {
     GridPane productsPages;
@@ -270,26 +269,5 @@ public class ManageUsersMenu extends Menu {
     public void execute() {
         stage.setScene(scene);
         stage.show();
-    }
-
-    private boolean checkPasswordIsvalid(String word) {
-        if (word.length() > 8 && word.length() < 18) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkNameIsvalid(String name) {
-        if (Pattern.matches("(([a-z]|[A-Z])+ )*(([a-z]|[A-Z])+)", name) && !name.isEmpty()) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkEmailIsvalid(String email) {
-        if (Pattern.matches("\\w+\\.?\\w*@\\w+\\.\\w+", email)) {
-            return true;
-        }
-        return false;
     }
 }

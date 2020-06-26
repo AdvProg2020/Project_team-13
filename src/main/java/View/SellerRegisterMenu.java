@@ -25,8 +25,6 @@ import java.util.regex.Pattern;
 public class SellerRegisterMenu extends Menu {
     private TextField userName, firstName, lastName, email, credit, phoneNumber, company;
     private PasswordField passWord;
-    private Button loginButton;
-    private Hyperlink createNewAccount;
     String imagePath = "";
     GridPane userInfoGridPane;
 

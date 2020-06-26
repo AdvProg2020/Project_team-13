@@ -43,7 +43,6 @@ public class ProductMenu extends Menu {
     ImageView star3 = new ImageView(new Image("file:src/gray_star.png"));
     ImageView star4 = new ImageView(new Image("file:src/gray_star.png"));
     ImageView star5 = new ImageView(new Image("file:src/gray_star.png"));
-    ImageView productZoomedImage;
     GridPane commentGridPane = new GridPane();
     private Image goldStar = new Image("file:src/gold_star.png");
     private Rectangle fiveStarBar = new Rectangle(), fourStarBar = new Rectangle(), threeStarBar = new Rectangle(), twoStarBar = new Rectangle(), oneStarBar = new Rectangle();

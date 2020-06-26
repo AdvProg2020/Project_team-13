@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class  OrdersMenu extends Menu {
+public class OrdersMenu extends Menu {
     private Map<String, Button> viewDetails;
     private BorderPane borderPane;
     private GridPane gridPane;
@@ -154,18 +154,18 @@ public class  OrdersMenu extends Menu {
         date.setTranslateX(0);
         gridPane.setVgap(30);
         for (int i = 0; i < 6; i++) {
-            if(i==2){
+            if (i == 2) {
                 gridPane.getColumnConstraints().add(new ColumnConstraints(300,
                         Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
-            }else if(i==3){
+            } else if (i == 3) {
                 gridPane.getColumnConstraints().add(new ColumnConstraints(180,
                         Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
-            }else if(i==5) {
+            } else if (i == 5) {
                 gridPane.getColumnConstraints().add(new ColumnConstraints(100,
                         Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
-            }else{
-                    gridPane.getColumnConstraints().add(new ColumnConstraints(110,
-                            Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+            } else {
+                gridPane.getColumnConstraints().add(new ColumnConstraints(110,
+                        Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
             }
         }
         setLogCounter(4 * pages);

@@ -761,17 +761,6 @@ public class Menu {
                     popupwindow.hide();
                     ClientController.getInstance().back();
                     scene.setFill(null);
-                    /*if (message.startsWith("Register Successful")) {
-                        new UserMenuScene(stage).execute();
-                    } else if (message.startsWith("Login successful")) {
-                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
-                            new UserMenuScene(stage).execute();
-                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
-                            new SellerMenuScene(stage).execute();
-                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
-                            new ManagerMenuScene(stage).execute();
-                        }
-                    }*/
                 }
             });
             button.setFill(Color.WHITE);
