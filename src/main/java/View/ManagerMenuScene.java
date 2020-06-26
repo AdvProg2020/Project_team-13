@@ -212,14 +212,14 @@ public class ManagerMenuScene extends Menu {
         manageUsersButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
+                scene.setCursor(Cursor.HAND);
 
             }
         });
         manageUsersButton.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                scene.setCursor(Cursor.DEFAULT);
             }
         });
         manageUsersButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -241,14 +241,14 @@ public class ManagerMenuScene extends Menu {
         createManagerButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
+                scene.setCursor(Cursor.HAND);
 
             }
         });
         createManagerButton.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                scene.setCursor(Cursor.DEFAULT);
             }
         });
         createManagerButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -260,21 +260,21 @@ public class ManagerMenuScene extends Menu {
         createManagerButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
+                scene.setCursor(Cursor.HAND);
 
             }
         });
         requestsButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
+                scene.setCursor(Cursor.HAND);
 
             }
         });
         requestsButton.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                scene.setCursor(Cursor.DEFAULT);
             }
         });
         requestsButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -291,14 +291,14 @@ public class ManagerMenuScene extends Menu {
         manageCategoriesButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
+                scene.setCursor(Cursor.HAND);
 
             }
         });
         manageCategoriesButton.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                scene.setCursor(Cursor.DEFAULT);
             }
         });
         manageCategoriesButton.setOnMouseClicked(new EventHandler() {
@@ -315,14 +315,14 @@ public class ManagerMenuScene extends Menu {
         manageDiscountsButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
+                scene.setCursor(Cursor.HAND);
 
             }
         });
         manageDiscountsButton.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                scene.setCursor(Cursor.DEFAULT);
             }
         });
         manageDiscountsButton.setOnMouseClicked(new EventHandler() {
@@ -339,14 +339,14 @@ public class ManagerMenuScene extends Menu {
         manageProductsButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
+                scene.setCursor(Cursor.HAND);
 
             }
         });
         manageProductsButton.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                scene.setCursor(Cursor.DEFAULT);
             }
         });
         manageProductsButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -358,7 +358,6 @@ public class ManagerMenuScene extends Menu {
 
         leftMenuGridPane.add(requestsButton, 0, 0, 2, 2);
         leftMenuGridPane.add(manageUsersButton, 0, 2, 2, 2);
-        //  leftMenuGridPane.add(createManagerButton, 0, 4, 2, 2);
         leftMenuGridPane.add(manageCategoriesButton, 0, 6, 2, 2);
         leftMenuGridPane.add(manageDiscountsButton, 0, 8, 2, 2);
         leftMenuGridPane.add(manageProductsButton, 0, 10, 2, 2);

@@ -56,7 +56,6 @@ public class UserMenuScene extends Menu {
     }
 
     private void setCenterGridPane() {
-        //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
         Customer customer = (Customer) ClientController.getInstance().getCurrentUser();
         Text personalInfo = new Text(customer.viewPersonalInfo());
         Text pageTitle = new Text("User Menu");
@@ -214,14 +213,13 @@ public class UserMenuScene extends Menu {
         ordersButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
-
+                scene.setCursor(Cursor.HAND);
             }
         });
         ordersButton.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                scene.setCursor(Cursor.DEFAULT);
             }
         });
         ordersButton.setOnMouseClicked(new EventHandler() {
@@ -233,14 +231,14 @@ public class UserMenuScene extends Menu {
         discountCodesButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
+                scene.setCursor(Cursor.HAND);
 
             }
         });
         discountCodesButton.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                scene.setCursor(Cursor.DEFAULT);
             }
         });
         discountCodesButton.setOnMouseClicked(new EventHandler() {

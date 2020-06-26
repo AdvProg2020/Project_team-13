@@ -142,14 +142,11 @@ public class RegisterMenu extends Menu {
             }
         };
         editPhotoButton.setOnAction(eventChoosePhoto);
-        // userInfoGridPane.add(title,0,0);
         HBox hBox = new HBox();
         hBox.setMinWidth(230);
         HBox hBox1 = new HBox();
         hBox1.setMinWidth(250);
-        //  userInfoGridPane.setGridLinesVisible(true);
         upGridPane.add(hBox1, 0, 0, 1, 1);
-        // upGridPane.setGridLinesVisible(true);
         upGridPane.add(title, 1, 0, 1, 1);
         userName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         passWord.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");

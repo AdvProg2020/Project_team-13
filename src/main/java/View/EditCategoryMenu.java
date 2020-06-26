@@ -50,10 +50,7 @@ public class EditCategoryMenu extends Menu {
         setPageGridPain();
         setUpGridPane();
         setMenuBarGridPane();
-//           centerGridPane.getRowConstraints().add(new RowConstraints(600, Control.USE_COMPUTED_SIZE, 600, Priority.NEVER, VPos.CENTER, false));
-//               bottomGridPane.setStyle("-fx-background-color: rgba(45, 156, 240, 1);");
         setCenterGridPane();
-//        bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
         scene.setRoot(pageGridPane);
     }
 
@@ -141,7 +138,6 @@ public class EditCategoryMenu extends Menu {
         addmode.setStyle("-fx-background-color: #E85D9E;");
         addmode.setMinWidth(100);
         addmode.setTextFill(Color.WHITE);
-        // userInfoGridPane.add(title,0,0);
         HBox hBox = new HBox();
         hBox.setMinWidth(230);
         HBox hBox1 = new HBox();
@@ -159,7 +155,7 @@ public class EditCategoryMenu extends Menu {
                 if (featureNamesComboBox.getValue() != null && !((String) featureNamesComboBox.getValue()).equals("")) {
                     comboBox.getItems().remove(0, comboBox.getItems().size());
                     allModesOfFeature.clear();
-                    if(category.getFeatures().containsKey((String) featureNamesComboBox.getValue())) {
+                    if (category.getFeatures().containsKey((String) featureNamesComboBox.getValue())) {
                         for (String mode : category.getFeatures().get((String) featureNamesComboBox.getValue())) {
                             comboBox.getItems().add(mode);
                             allModesOfFeature.add(mode);
@@ -192,13 +188,13 @@ public class EditCategoryMenu extends Menu {
         addmode.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
+                scene.setCursor(Cursor.HAND);
             }
         });
         addmode.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                scene.setCursor(Cursor.DEFAULT);
             }
         });
         addmode.setOnMouseClicked(new EventHandler() {
@@ -215,11 +211,11 @@ public class EditCategoryMenu extends Menu {
                             CategoryController.getInstance().editCategoryFeatures(category, "adM");
                             comboBox.setValue("");
                         } else {
-                            ArrayList<String> modes=new ArrayList<>();
-                            modes.add((String)comboBox.getValue());
+                            ArrayList<String> modes = new ArrayList<>();
+                            modes.add((String) comboBox.getValue());
                             featureNamesComboBox.getItems().add((String) featureNamesComboBox.getValue());
-                            category.getFeatures().put((String) featureNamesComboBox.getValue(),modes);
-                            CategoryController.getInstance().editCategoryFeatures(category,"add");
+                            category.getFeatures().put((String) featureNamesComboBox.getValue(), modes);
+                            CategoryController.getInstance().editCategoryFeatures(category, "add");
                             comboBox.setValue("");
                         }
                     } else {
@@ -237,14 +233,14 @@ public class EditCategoryMenu extends Menu {
         adduser.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
+                scene.setCursor(Cursor.HAND);
 
             }
         });
         adduser.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                scene.setCursor(Cursor.DEFAULT);
             }
         });
         adduser.setOnMouseClicked(new EventHandler() {

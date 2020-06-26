@@ -4,6 +4,7 @@ import Controller.Client.ClientController;
 import Controller.Client.UserController;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
+import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -97,14 +98,14 @@ public class ManageUsersMenu extends Menu {
             deleteProduct.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             deleteProduct.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             deleteProduct.setOnMouseClicked(event -> {
@@ -156,14 +157,14 @@ public class ManageUsersMenu extends Menu {
             buttons.get(i).setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             buttons.get(i).setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             final int[] j = {i};

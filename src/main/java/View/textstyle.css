@@ -1,8 +1,0 @@
-@font-face {
-    font-family: 'Roboto';
-    src: url('src/BalooBhai2-Bold.ttf');
-}
-
-.text {
-    -fx-font-family: "Roboto";
-}

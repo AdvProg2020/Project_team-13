@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Client.ClientController;
+import Controller.Client.OffsController;
 import Models.Offer;
 import Models.UserAccount.Seller;
 import javafx.event.ActionEvent;
@@ -34,6 +35,7 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
     private int offerCounter;
     private List<GridPane> allGridPanes;
     private Pagination pagination;
+    private Button addOffer;
     private List<Offer> allOffers;
 
 
@@ -57,7 +59,7 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
     private void setScene(int pageNumber) {
         Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
         allOffers = seller.getAllOffer();
-        Button addOffer = new Button("Add Offer");
+        addOffer = new Button("Add Offer");
         addOffer.setStyle("-fx-background-color: #808080");
         addOffer.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 15));
         addOffer.setMaxHeight(20);
@@ -131,7 +133,10 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
         endDate.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         gridPane.setVgap(30);
         for (int i = 0; i < 6; i++) {
-            if (i == 2 || i == 3) {
+            if(i==2){
+                gridPane.getColumnConstraints().add(new ColumnConstraints(250,
+                        Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+            }else if(i==3){
                 gridPane.getColumnConstraints().add(new ColumnConstraints(250,
                         Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
             } else if (i == 4 || i == 5) {
@@ -199,8 +204,11 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
             imageView.setFitHeight(45);
             imageView.setFitWidth(45);
             imageView.setTranslateX(60);
+            int finalI1 = i;
             imageView.setOnMouseClicked(event -> {
                 new EditOffsMenu(this.stage).execute();
+               OffsController.getInstance().setCurrentOffer(allOffers.get(finalI1));
+               new EditOffsMenu(this.stage).execute();
             });
             imageView.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
             imageView.setOnMouseExited((EventHandler<Event>) event -> scene.setCursor(Cursor.DEFAULT));
@@ -220,14 +228,14 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
             if (i == 0) {
                 allLabels[i].setTranslateX(15);
             }
-            if (i == 1) {
-                allLabels[i].setTranslateX(20);
+            if(i == 1){
+                allLabels[i].setTranslateX(30);
             }
-            if (i == 2) {
-                allLabels[i].setTranslateX(0);
+            if(i == 2){
+                allLabels[i].setTranslateX(-40);
             }
-            if (i == 3) {
-                allLabels[i].setTranslateX(0);
+            if(i == 3){
+                allLabels[i].setTranslateX(-20);
             }
             allPanes[i].getChildren().add(allLabels[i]);
             allLabels[i].setTranslateY(1);
