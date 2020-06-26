@@ -188,7 +188,6 @@ public class ProductController {
         allProductStatusToFilter = null;
         max = 0;
         max = 0;
-        currentCategory = null;
         isPriceFilterActive = false;
         isSortActivated = false;
     }

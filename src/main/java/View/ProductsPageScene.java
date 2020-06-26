@@ -86,6 +86,9 @@ public class ProductsPageScene extends Menu {
                 "     -fx-background-radius: 40px;" +
                 "    -fx-border-radius: 20px;";
         Text personalInfo = new Text("ali");
+        System.out.println(ProductController.getInstance().getCurrentCategory()==null);
+        CategoryController.getInstance().updateAllCategories();
+        System.out.println(CategoryController.getInstance().getAllCategories().size());
         Text pageTitle = new Text(ProductController.getInstance().getCurrentCategory().getName() + "  Count of products: " + ProductController.getInstance().getCurrentCategory().getAllProducts().size());
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
         pageTitle.setStyle("-fx-font-weight: bold;");
