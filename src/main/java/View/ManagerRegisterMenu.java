@@ -1,12 +1,17 @@
 package View;
 
+import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
+import Controller.Client.ProductController;
 import Controller.Client.RegisterController;
+import Models.Product.Category;
 import Models.UserAccount.Manager;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -20,9 +25,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class ManagerRegisterMenu extends Menu{
+public class ManagerRegisterMenu extends Menu {
 
     private TextField userName;
     private TextField firstName;
@@ -30,7 +36,7 @@ public class ManagerRegisterMenu extends Menu{
     private TextField email;
     private TextField phoneNumber;
     private PasswordField passWord;
-    String imagePath="";
+    String imagePath = "";
     GridPane userInfoGridPane;
 
     public ManagerRegisterMenu(Stage stage) {
@@ -53,76 +59,150 @@ public class ManagerRegisterMenu extends Menu{
         scene.setRoot(pageGridPane);
     }
 
-    public void setMenuBarGridPane()  {
+
+    public void setMenuBarGridPane() {
         menuBarGridPane.getChildren().clear();
         menuBarGridPane.getColumnConstraints().clear();
         menuBarGridPane.getRowConstraints().clear();
-        Menu menu = this;
-        menuBarGridPane.setStyle("-fx-background-color:rgba(76, 170, 240, 1)");
-        GridPane leftGridPane = new GridPane();
-        Label home = new Label("Home");
-        home.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (!(menu instanceof MainMenu)) {
-                    if (ClientController.getInstance().getMainMenu() != null) {
-                        ClientController.getInstance().addNewMenu(ClientController.getInstance().getMainMenu());
+        if (ClientController.getInstance().getCurrentUser() == null) {
+            Menu menu = this;
+            menuBarGridPane.setStyle("-fx-background-color:rgb(76,170,240)");
+            GridPane leftGridPane = new GridPane();
+            Label home = new Label("Home");
+            home.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            home.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            home.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (!(menu instanceof MainMenu)) {
                         ClientController.getInstance().getMainMenu().execute();
+
                     }
                 }
+            });
+            ArrayList<MenuItem> menuItemArrayList = new ArrayList<>();
+            for (String s : getCategoryName()) {
+                MenuItem menuItem = new MenuItem("       " + s);
+                menuItem.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        ProductController.getInstance().getAllProductsFromServer();
+                        ProductController.getInstance().setCurrentCategory(CategoryController.getInstance().getCategoryWithName(s));
+                        CategoryController.getInstance().setCurrentCategory(CategoryController.getInstance().getCategoryWithName(s));
+                        new ProductsPageScene(stage).execute();
+                    }
+                });
+                menuItemArrayList.add(menuItem);
             }
-        });
-        Label products = new Label("Products");
-        products.setStyle("-fx-background-color: rgba(45, 156, 240, 0.24);-fx-text-fill: White");
-        home.setStyle("-fx-background-color:rgba(45, 156, 240, 0.31);-fx-text-fill: White;-fx-font-weight: bold;");
-        ImageView back = new ImageView(new Image("file:src/back.png"));
-        back.setFitWidth(40);
-        back.setFitHeight(25);
-        back.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                ClientController.getInstance().back();
+            MenuButton products = new MenuButton("Products");
+            for (MenuItem menuItem : menuItemArrayList) {
+                products.getItems().add(menuItem);
             }
-        });
-        leftGridPane.add(back, 0, 0);
-        leftGridPane.add(home, 1, 0);
-        leftGridPane.add(products, 2, 0);
-        leftGridPane.setHgap(5);
-        products.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
-        home.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
-        menuBarGridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_PREF_SIZE, Double.POSITIVE_INFINITY, Priority.ALWAYS, HPos.LEFT, true));
-        menuBarGridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_PREF_SIZE, Double.POSITIVE_INFINITY, Priority.ALWAYS, HPos.RIGHT, false));
-        menuBarGridPane.add(leftGridPane, 0, 0);
-        menuBarGridPane.getRowConstraints().add(new RowConstraints(40, Control.USE_COMPUTED_SIZE, 40, Priority.NEVER, VPos.CENTER, false));
+            products.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            products.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            products.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+//                    ClientController.getInstance().back();
+                }
+            });
+            products.setStyle("-fx-background-color: rgba(45, 156, 240, 0.24);");
+            home.setStyle("-fx-background-color:rgba(45, 156, 240, 0.31);-fx-text-fill: White;-fx-font-weight: bold;");
+            ImageView back = new ImageView(new Image("file:src/back.png"));
+            back.setFitWidth(40);
+            back.setFitHeight(25);
+            back.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+
+                }
+            });
+            back.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+
+            back.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    ClientController.getInstance().back();
+                }
+            });
+            leftGridPane.add(back, 0, 0);
+            leftGridPane.add(home, 1, 0);
+            //  products.setTextFill(Color.WHITE);
+            leftGridPane.add(products, 2, 0);
+            leftGridPane.setHgap(5);
+            products.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
+            home.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
+            menuBarGridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_PREF_SIZE, Double.POSITIVE_INFINITY, Priority.ALWAYS, HPos.LEFT, true));
+            menuBarGridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_PREF_SIZE, Double.POSITIVE_INFINITY, Priority.ALWAYS, HPos.RIGHT, false));
+            menuBarGridPane.add(leftGridPane, 0, 0);
+            menuBarGridPane.getRowConstraints().add(new RowConstraints(40, Control.USE_COMPUTED_SIZE, 40, Priority.NEVER, VPos.CENTER, false));
+        }
     }
 
+    private ArrayList<String> getCategoryName() {
+        CategoryController.getInstance().updateAllCategories();
+        ArrayList<Category> categories = CategoryController.getInstance().getAllCategories();
+        ArrayList<String> categoriesNames = new ArrayList<>();
+        for (Category category : categories) {
+            categoriesNames.add(category.getName());
+        }
+        return categoriesNames;
+    }
 
     private void setCenterGridPane() {
         userInfoGridPane.setVgap(10);
         userInfoGridPane.setHgap(20);
         userInfoGridPane.setMinWidth(650);
         userInfoGridPane.setMinHeight(400);
-        userName=new TextField();
-        passWord=new PasswordField();
-        firstName=new TextField();
-        lastName=new TextField();
-        phoneNumber=new TextField();
-        email=new TextField();
+        userName = new TextField();
+        passWord = new PasswordField();
+        firstName = new TextField();
+        lastName = new TextField();
+        phoneNumber = new TextField();
+        email = new TextField();
         TextField credit = new TextField();
-        GridPane leftGridPane= new GridPane();
-        GridPane upGridPane= new GridPane();
+        GridPane leftGridPane = new GridPane();
+        GridPane upGridPane = new GridPane();
         upGridPane.setMinHeight(50);
         leftGridPane.setMinWidth(100);
-        Text title=new Text("Create Manager Profile");
-        ImageView userImage=new ImageView(new Image("file:src/user_icon.png"));
+        Text title = new Text("Create Manager Profile");
+        ImageView userImage = new ImageView(new Image("file:src/user_icon.png"));
         userImage.setFitHeight(100);
         userImage.setFitWidth(100);
-        Text usernameText=new Text("Username");
-        Text passwordText=new Text("Password");
-        Text phonenumberText=new Text("Phone Number");
-        Text emailText=new Text("Email");
-        Text firstNameText=new Text("First Name");
-        Text lastNameText=new Text("Last Name");
+        Text usernameText = new Text("Username");
+        Text passwordText = new Text("Password");
+        Text phonenumberText = new Text("Phone Number");
+        Text emailText = new Text("Email");
+        Text firstNameText = new Text("First Name");
+        Text lastNameText = new Text("Last Name");
         title.setStyle("-fx-font-weight: bold;");
         title.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         Button editPhotoButton = new Button("Choose Photo");
@@ -130,7 +210,7 @@ public class ManagerRegisterMenu extends Menu{
         signUp.setStyle("-fx-background-color: #E85D9E;");
         signUp.setMinWidth(100);
         signUp.setTextFill(Color.WHITE);
-        Text errorText=new Text();
+        Text errorText = new Text();
         errorText.setFill(Color.RED);
         editPhotoButton.setStyle("-fx-background-color: #E85D9E");
         editPhotoButton.setMinWidth(100);
@@ -139,41 +219,41 @@ public class ManagerRegisterMenu extends Menu{
         EventHandler<ActionEvent> eventChoosePhoto = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 File selectedFile = fileChooser.showOpenDialog(stage);
-                if(selectedFile!=null) {
+                if (selectedFile != null) {
                     userImage.setImage(new Image("file:" + selectedFile.getAbsolutePath()));
-                    imagePath="file:"+selectedFile.getAbsolutePath();
+                    imagePath = "file:" + selectedFile.getAbsolutePath();
                 }
             }
         };
         editPhotoButton.setOnAction(eventChoosePhoto);
-        HBox hBox=new HBox();
+        HBox hBox = new HBox();
         hBox.setMinWidth(230);
-        HBox hBox1=new HBox();
+        HBox hBox1 = new HBox();
         hBox1.setMinWidth(250);
-        upGridPane.add(hBox1,0,0,1,1);
-        upGridPane.add(title,1,0,1,1);
+        upGridPane.add(hBox1, 0, 0, 1, 1);
+        upGridPane.add(title, 1, 0, 1, 1);
         userName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         passWord.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         email.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         phoneNumber.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         firstName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         lastName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
-        userInfoGridPane.add(userImage,13,1,5,5);
-        userInfoGridPane.add(usernameText,5,9,3,1);
-        userInfoGridPane.add(passwordText,5,10,3,1);
-        userInfoGridPane.add(emailText,5,11,3,1);
-        userInfoGridPane.add(firstNameText,15,9,3,1);
-        userInfoGridPane.add(lastNameText,15,10,3,1);
-        userInfoGridPane.add(phonenumberText,15,11,3,1);
-        userInfoGridPane.add(userName,8,9,6,1);
-        userInfoGridPane.add(passWord,8,10,6,1);
-        userInfoGridPane.add(email,8,11,6,1);
-        userInfoGridPane.add(firstName,19,9,6,1);
-        userInfoGridPane.add(lastName,19,10,6,1);
-        userInfoGridPane.add(phoneNumber,19,11,6,1);
-        userInfoGridPane.add(editPhotoButton,13,6,5,1);
-        userInfoGridPane.add(signUp,13,16,5,1);
-        userInfoGridPane.add(errorText,7,14,10,1);
+        userInfoGridPane.add(userImage, 13, 1, 5, 5);
+        userInfoGridPane.add(usernameText, 5, 9, 3, 1);
+        userInfoGridPane.add(passwordText, 5, 10, 3, 1);
+        userInfoGridPane.add(emailText, 5, 11, 3, 1);
+        userInfoGridPane.add(firstNameText, 15, 9, 3, 1);
+        userInfoGridPane.add(lastNameText, 15, 10, 3, 1);
+        userInfoGridPane.add(phonenumberText, 15, 11, 3, 1);
+        userInfoGridPane.add(userName, 8, 9, 6, 1);
+        userInfoGridPane.add(passWord, 8, 10, 6, 1);
+        userInfoGridPane.add(email, 8, 11, 6, 1);
+        userInfoGridPane.add(firstName, 19, 9, 6, 1);
+        userInfoGridPane.add(lastName, 19, 10, 6, 1);
+        userInfoGridPane.add(phoneNumber, 19, 11, 6, 1);
+        userInfoGridPane.add(editPhotoButton, 13, 6, 5, 1);
+        userInfoGridPane.add(signUp, 13, 16, 5, 1);
+        userInfoGridPane.add(errorText, 7, 14, 10, 1);
         userInfoGridPane.setStyle("-fx-background-color: #ECD5DC;");
         centerGridPane.add(userInfoGridPane, 2, 2, 1, 1);
         centerGridPane.add(upGridPane, 1, 1, 2, 1);
@@ -192,19 +272,20 @@ public class ManagerRegisterMenu extends Menu{
                     if (checkNameIsValid(firstName.getText().trim())) {
                         if (checkNameIsValid(lastName.getText().trim())) {
                             if (checkEmailIsValid(email.getText().trim())) {
-                                if (Pattern.matches("\\d+", phoneNumber.getText().trim()) && phoneNumber.getText().trim().length() == 11&&phoneNumber.getText().charAt(0)=='0') {
-                                    if(checkUsernameIsValid(userName.getText())) {
-                                            Manager manager = new Manager(userName.getText(), passWord.getText(), firstName.getText(), lastName.getText(), email.getText(), phoneNumber.getText(), 0);
-                                            manager.setImagePath(imagePath);
-                                            RegisterController.getInstance().createNewUserAccount(manager);
-                                    }else{
+                                if (Pattern.matches("\\d+", phoneNumber.getText().trim()) && phoneNumber.getText().trim().length() == 11 && phoneNumber.getText().charAt(0) == '0') {
+                                    if (checkUsernameIsValid(userName.getText())) {
+                                        Manager manager = new Manager(userName.getText(), passWord.getText(), firstName.getText(), lastName.getText(), email.getText(), phoneNumber.getText(), 0);
+                                        manager.setImagePath(imagePath);
+                                        RegisterController.getInstance().createNewUserAccount(manager);
+                                    } else {
                                         userName.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                                         errorText.setText("Username is invalid. correct format 0-9 A-z");
                                     }
 
                                 } else {
                                     phoneNumber.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
-                                    errorText.setText("Phone number is invalid. Correct format:09xxxxxxxxx"); }
+                                    errorText.setText("Phone number is invalid. Correct format:09xxxxxxxxx");
+                                }
                             } else {
                                 email.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                                 errorText.setText("Email format is invalid. Correct Format: for@example.com");
@@ -229,6 +310,7 @@ public class ManagerRegisterMenu extends Menu{
         stage.setScene(scene);
         stage.show();
     }
+
     private boolean checkPasswordIsValid(String word) {
         if (word.length() > 8 && word.length() < 18) {
             return true;
@@ -249,6 +331,7 @@ public class ManagerRegisterMenu extends Menu{
         }
         return false;
     }
+
     private boolean checkUsernameIsValid(String username) {
         if (Pattern.matches("\\w+", username)) {
             return true;
