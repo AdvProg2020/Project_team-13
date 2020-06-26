@@ -2,7 +2,6 @@ package View;
 
 import Controller.Client.ClientController;
 import Controller.Client.RegisterController;
-import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -48,10 +47,7 @@ public class ManagerRegisterMenu extends Menu{
         setPageGridPain();
         setUpGridPane();
         setMenuBarGridPane();
-//           centerGridPane.getRowConstraints().add(new RowConstraints(600, Control.USE_COMPUTED_SIZE, 600, Priority.NEVER, VPos.CENTER, false));
-//               bottomGridPane.setStyle("-fx-background-color: rgba(45, 156, 240, 1);");
         setCenterGridPane();
-//        bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
         scene.setRoot(pageGridPane);
     }
 
@@ -148,14 +144,11 @@ public class ManagerRegisterMenu extends Menu{
             }
         };
         editPhotoButton.setOnAction(eventChoosePhoto);
-        // userInfoGridPane.add(title,0,0);
         HBox hBox=new HBox();
         hBox.setMinWidth(230);
         HBox hBox1=new HBox();
         hBox1.setMinWidth(250);
-        //  userInfoGridPane.setGridLinesVisible(true);
         upGridPane.add(hBox1,0,0,1,1);
-        // upGridPane.setGridLinesVisible(true);
         upGridPane.add(title,1,0,1,1);
         userName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         passWord.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
@@ -201,7 +194,6 @@ public class ManagerRegisterMenu extends Menu{
                                     if(checkUsernameIsvalid(userName.getText())) {
                                             Manager manager = new Manager(userName.getText(), passWord.getText(), firstName.getText(), lastName.getText(), email.getText(), phoneNumber.getText(), 0);
                                             manager.setImagePath(imagePath);
-                                        System.out.println(imagePath);
                                             RegisterController.getInstance().createNewUserAccount(manager);
                                     }else{
                                         userName.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");

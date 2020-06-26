@@ -1,4 +1,5 @@
 package View;
+
 import Controller.Client.ClientController;
 import Models.Log;
 import Models.UserAccount.Customer;
@@ -14,8 +15,9 @@ import javafx.scene.control.Pagination;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import java.util.HashMap;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

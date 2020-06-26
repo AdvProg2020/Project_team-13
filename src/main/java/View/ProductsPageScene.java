@@ -86,7 +86,6 @@ public class ProductsPageScene extends Menu {
                 "    -fx-padding: 7 10 7 10;" +
                 "     -fx-background-radius: 40px;" +
                 "    -fx-border-radius: 20px;";
-        //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
         Text personalInfo = new Text("ali");
         Text pageTitle = new Text(ProductController.getInstance().getCurrentCategory().getName() + "  Count of products: " + ProductController.getInstance().getCurrentCategory().getAllProducts().size());
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
@@ -102,13 +101,13 @@ public class ProductsPageScene extends Menu {
         addProduct.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
+                scene.setCursor(Cursor.HAND);
             }
         });
         addProduct.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                scene.setCursor(Cursor.DEFAULT);
             }
         });
         addProduct.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -601,7 +600,6 @@ public class ProductsPageScene extends Menu {
         ArrayList<GridPane> gridPanes = new ArrayList<>();
         ArrayList<GridPane> addGridPanes = new ArrayList<>();
         ManagerController.getInstance().getAllUserFromServer();
-        System.out.println(ProductController.getInstance().getAllCommercializedProduct().size());
         centerGridPaneTosh.getChildren().clear();
         for (int kk = 0; kk < showProductsAfterFilterAndSort().size(); kk++) {
             Product product = showProductsAfterFilterAndSort().get(kk);
@@ -646,14 +644,14 @@ public class ProductsPageScene extends Menu {
             scoreGridPane.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             scoreGridPane.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             scoreGridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -670,14 +668,14 @@ public class ProductsPageScene extends Menu {
             text.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             text.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             text.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -694,14 +692,14 @@ public class ProductsPageScene extends Menu {
             imageView.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             imageView.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -745,13 +743,13 @@ public class ProductsPageScene extends Menu {
             buttons.get(i).setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
                 }
             });
             buttons.get(i).setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             final int[] j = {i};
@@ -787,15 +785,14 @@ public class ProductsPageScene extends Menu {
         if (productsPages.size() > 0) {
             productsPages.get(0).add(buttons1, 1, 5, 7, 1);
             if (!addGridPane.getChildren().isEmpty()) {
-                System.out.println(1);
                 centerGridPaneTosh.setVgap(5);
                 centerGridPaneTosh.add(addGridPane, 1, 1, 1, 1);
-                Text text= new Text(" Products");
+                Text text = new Text(" Products");
                 text.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
                 centerGridPaneTosh.add(text, 1, 2, 1, 1);
                 centerGridPaneTosh.add(productsPages.get(0), 1, 3, 1, 1);
             } else {
-                Text text= new Text(" Products");
+                Text text = new Text(" Products");
                 centerGridPaneTosh.add(text, 1, 1, 1, 1);
                 centerGridPaneTosh.add(productsPages.get(0), 1, 2, 1, 1);
             }
@@ -806,7 +803,7 @@ public class ProductsPageScene extends Menu {
             imageView.setFitWidth(150);
             imageView.setFitHeight(150);
             gridPane.add(imageView, 0, 0);
-            gridPane.add(text, 0, 1,2,1);
+            gridPane.add(text, 0, 1, 2, 1);
             gridPane.getColumnConstraints().add(new ColumnConstraints(400, Control.USE_COMPUTED_SIZE, 400, Priority.NEVER, HPos.RIGHT, false));
             gridPane.getColumnConstraints().add(new ColumnConstraints(0, Control.USE_COMPUTED_SIZE, 200, Priority.NEVER, HPos.RIGHT, false));
             text.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 32));
@@ -837,21 +834,20 @@ public class ProductsPageScene extends Menu {
             }
         }
         ArrayList<Button> buttons = new ArrayList<>();
-        System.out.println("AAAAAa              "+productsPages.size());
         for (int i = 0; i < productsPages.size(); i++) {
             buttons.add(new Button(Integer.toString(i + 1)));
             buttons.get(i).setStyle(buttonStyle);
             buttons.get(i).setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             buttons.get(i).setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             final int[] j = {i};
@@ -881,7 +877,6 @@ public class ProductsPageScene extends Menu {
             buttons1.add(buttons.get(i), i + 1, 0);
         }
         buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
-        System.out.println("Aaaaaaaaaa" + "      " + productsPages.size());
         Text text = new Text(" Adds");
         text.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
         gridPane.add(text, 0, 0);
@@ -932,14 +927,14 @@ public class ProductsPageScene extends Menu {
             scoreGridPane.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             scoreGridPane.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             scoreGridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -956,14 +951,14 @@ public class ProductsPageScene extends Menu {
             text.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             text.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             text.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -980,14 +975,14 @@ public class ProductsPageScene extends Menu {
             imageView.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             imageView.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -1034,14 +1029,14 @@ public class ProductsPageScene extends Menu {
             scoreGridPane.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             scoreGridPane.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             scoreGridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -1058,14 +1053,14 @@ public class ProductsPageScene extends Menu {
             text.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             text.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             text.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -1082,14 +1077,14 @@ public class ProductsPageScene extends Menu {
             imageView.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             imageView.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -1328,14 +1323,11 @@ public class ProductsPageScene extends Menu {
         }
         menuButton.setStyle(menuBarStyle);
         editPhotoButton.setOnAction(eventChoosePhoto);
-        // userInfoGridPane.add(title,0,0);
         HBox hBox = new HBox();
         hBox.setMinWidth(230);
         HBox hBox1 = new HBox();
         hBox1.setMinWidth(250);
-        //  userInfoGridPane.setGridLinesVisible(true);
         upGridPane.add(hBox1, 0, 0, 1, 1);
-        // upGridPane.setGridLinesVisible(true);
         upGridPane.add(title, 1, 0, 1, 1);
         productName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         companyName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");

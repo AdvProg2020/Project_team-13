@@ -30,14 +30,14 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.regex.Pattern;
 
-public class SellerMenuScene extends Menu{
+public class SellerMenuScene extends Menu {
     GridPane userInfoGridPane;
 
     public SellerMenuScene(Stage stage) {
         super(stage);
         this.stage = stage;
         userInfoGridPane = new GridPane();
-        if(ClientController.getInstance().getMediaPlayer()!=null)
+        if (ClientController.getInstance().getMediaPlayer() != null)
             ClientController.getInstance().getMediaPlayer().stop();
         ClientController.getInstance().setMediaPlayer(new MediaPlayer(usersSong));
         ClientController.getInstance().getMediaPlayer().setVolume(0.02);
@@ -55,8 +55,7 @@ public class SellerMenuScene extends Menu{
     }
 
     private void setCenterGridPane() {
-        //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
-        Seller seller =(Seller) ClientController.getInstance().getCurrentUser();
+        Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
         Text personalInfo = new Text(seller.viewPersonalInfo());
         Text pageTitle = new Text("User Menu");
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
@@ -227,13 +226,13 @@ public class SellerMenuScene extends Menu{
         manageProducts.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
+                scene.setCursor(Cursor.HAND);
             }
         });
         manageProducts.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                scene.setCursor(Cursor.DEFAULT);
             }
         });
         manageProducts.setStyle("-fx-font-size:  16;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
@@ -243,13 +242,13 @@ public class SellerMenuScene extends Menu{
         offsButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
+                scene.setCursor(Cursor.HAND);
             }
         });
         offsButton.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                scene.setCursor(Cursor.DEFAULT);
             }
         });
         offsButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -266,20 +265,20 @@ public class SellerMenuScene extends Menu{
         salesHistoryButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
+                scene.setCursor(Cursor.HAND);
 
             }
         });
         salesHistoryButton.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                scene.setCursor(Cursor.DEFAULT);
             }
         });
         salesHistoryButton.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
-                new SalesHistoryMenu(stage,0).execute();
+                new SalesHistoryMenu(stage, 0).execute();
             }
         });
         salesHistoryButton.setTextAlignment(TextAlignment.CENTER);
@@ -289,13 +288,13 @@ public class SellerMenuScene extends Menu{
         salesHistoryButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
+                scene.setCursor(Cursor.HAND);
             }
         });
         salesHistoryButton.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                scene.setCursor(Cursor.DEFAULT);
             }
         });
         leftMenuGridPane.add(manageProducts, 0, 0, 2, 2);

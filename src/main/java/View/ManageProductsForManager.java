@@ -68,7 +68,6 @@ public class ManageProductsForManager extends Menu {
                 "    -fx-padding: 7 10 7 10;" +
                 "     -fx-background-radius: 40px;" +
                 "    -fx-border-radius: 20px;";
-        //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
         Text personalInfo = new Text("ali");
         Text pageTitle = new Text("Manage Products");
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
@@ -97,14 +96,14 @@ public class ManageProductsForManager extends Menu {
             deleteProduct.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             deleteProduct.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             deleteProduct.setOnMouseClicked(new EventHandler() {
@@ -134,14 +133,14 @@ public class ManageProductsForManager extends Menu {
             scoreGridPane.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             scoreGridPane.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             scoreGridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -158,14 +157,14 @@ public class ManageProductsForManager extends Menu {
             text.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             text.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             text.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -182,19 +181,19 @@ public class ManageProductsForManager extends Menu {
             imageView.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             imageView.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
-                public void handle(MouseEvent event) {
+        public void handle(MouseEvent event) {
                     for (int i = 0; i < gridPanes.size(); i++) {
                         if (gridPanes.get(i).equals(gridPane)) {
                             ClientController.getInstance().setCurrentProduct(ProductController.getInstance().getAllProducts().get(i));
@@ -204,7 +203,6 @@ public class ManageProductsForManager extends Menu {
                 }
             });
         }
-        System.out.println(gridPanes.size());
         ArrayList<GridPane> productsPages = new ArrayList<>();
         for (int j = 0; j < (gridPanes.size() / 12) + (gridPanes.size() % 12 == 0 ? 0 : 1); j++) {
             productsPages.add(new GridPane());
@@ -230,13 +228,13 @@ public class ManageProductsForManager extends Menu {
             buttons.get(i).setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
                 }
             });
             buttons.get(i).setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             final int[] j = {i};
