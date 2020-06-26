@@ -1,4 +1,5 @@
 package View;
+
 import Controller.Client.ClientController;
 import Controller.Client.DiscountController;
 import Models.DiscountCode;
@@ -14,12 +15,15 @@ import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.scene.image.ImageView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class  ManageDiscountCodesMenu extends Menu{
     private Map<String, ImageView> edits;
@@ -65,6 +69,7 @@ public class  ManageDiscountCodesMenu extends Menu{
         addDiscountCode.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                ClientController.getInstance().getMenus().remove(this);
                 new CreateDiscountCodeMenu(stage).execute();
             }
         });
@@ -171,6 +176,7 @@ public class  ManageDiscountCodesMenu extends Menu{
             int finalI1 = i;
             imageView.setOnMouseClicked(event -> {
                 ClientController.getInstance().setCurrentDiscountCode(allDiscountCodes.get(finalI1));
+                ClientController.getInstance().getMenus().remove(this);
                 new EditDiscountCode(stage).execute();
              });
             imageView.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
@@ -185,6 +191,7 @@ public class  ManageDiscountCodesMenu extends Menu{
             int finalI = i;
             imageView.setOnMouseClicked(event -> {
                 DiscountController.getInstance().deleteDiscountCode(allDiscountCodes.get(finalI).getDiscountCodeID());
+                ClientController.getInstance().getMenus().remove(this);
                 new ManageDiscountCodesMenu(this.getStage(), this.pagination.getCurrentPageIndex()).execute();
             });
             imageView.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));

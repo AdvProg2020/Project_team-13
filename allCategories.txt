@@ -1,0 +1,1 @@
+[{"name":"Phone","features":{"Color":["Red","Yello"],"CPU":["1GHz","2GHz","3Ghz"],"Ram":["4GB","8Gb","16Gb"]},"allProducts":[]}]

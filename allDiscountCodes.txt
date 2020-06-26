@@ -1,1 +1,1 @@
-[{"discountCodeID":"aaaaafi","startTime":"Jun 27, 2020 12:00:00 AM","endTime":"Jul 1, 2020 12:00:00 AM","allUserAccountsThatHaveDiscount":["customer"],"discountPercent":55,"maxDiscountAmount":1000.0,"maxUsingTime":{"customer":1},"remainingTimesForEachCustomer":{"customer":1}}]
+[{"discountCodeID":"aaaaafi","startTime":"Jun 27, 2020 12:00:00 AM","endTime":"Aug 1, 2020 12:00:00 AM","allUserAccountsThatHaveDiscount":[],"discountPercent":21,"maxDiscountAmount":1500.0,"maxUsingTime":{},"remainingTimesForEachCustomer":{}}]
