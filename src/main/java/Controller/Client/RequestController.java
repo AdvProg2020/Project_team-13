@@ -1,11 +1,15 @@
 package Controller.Client;
 
-import Models.*;
+import Models.Comment;
+import Models.Offer;
 import Models.Product.Product;
+import Models.Request;
+import Models.Score;
 import Models.UserAccount.Seller;
 import View.MessageKind;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -34,10 +38,10 @@ public class RequestController {
         Type requestListType = new TypeToken<ArrayList<Request>>() {
         }.getType();
         allRequests = new Gson().fromJson(json, requestListType);
-        String showAllRequests = "";
+        StringBuilder showAllRequests = new StringBuilder();
         if (allRequests != null && !allRequests.isEmpty()) {
             for (Request request : allRequests) {
-                showAllRequests += request.getRequestId() + " " + request.getType() + "\n";
+                showAllRequests.append(request.getRequestId()).append(" ").append(request.getType()).append("\n");
             }
         }
     }
@@ -49,6 +53,7 @@ public class RequestController {
                 selectedRequest = request;
             }
         }
+        assert selectedRequest != null;
         switch (selectedRequest.getType()) {
             case addOff:
             case editOff:
@@ -57,6 +62,7 @@ public class RequestController {
                 return "requestId: " + requestId + "\nrequestType: " + selectedRequest.getType() + "\n" + new Gson().fromJson(selectedRequest.getDetails(), Seller.class).viewPersonalInfo();
             case addProduct:
             case EditProduct:
+            case commercial:
                 return "requestId: " + requestId + "\nrequestType: " + selectedRequest.getType() + "\n" + new Gson().fromJson(selectedRequest.getDetails(), Product.class).productInfoFor();
             case scoring:
                 return "requestId: " + requestId + "\nrequestType: " + selectedRequest.getType() + "\n" + new Gson().fromJson(selectedRequest.getDetails(), Score.class).toString();
@@ -64,6 +70,7 @@ public class RequestController {
                 return "requestId: " + requestId + "\nrequestType: " + selectedRequest.getType() + "\n" + new Gson().fromJson(selectedRequest.getDetails(), Comment.class).toString();
             default:
                 return null;
+
         }
     }
 

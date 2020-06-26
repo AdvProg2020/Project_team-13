@@ -6,7 +6,6 @@ import Models.Score;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -163,10 +162,6 @@ public class Product {
         if (offers == null || offers.isEmpty()) {
             return null;
         } else {
-            for (Offer offer : offers) {
-                System.out.println(offer);
-            }
-            System.out.println(new Date());
             ArrayList<Offer> offers = new ArrayList<>();
             for (Offer offer : this.offers) {
                 if (offer.getStartTime().before(new Date()) && offer.getEndTime().after(new Date())) {

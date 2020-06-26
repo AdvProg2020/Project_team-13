@@ -264,6 +264,8 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
 
     @Override
     public void handle(ActionEvent event) {
+        ClientController.getInstance().getMenus().remove(this);
+        ClientController.getInstance().getMenus().trimToSize();
         new CreateOffsMenu(this.stage).execute();
     }
 }
