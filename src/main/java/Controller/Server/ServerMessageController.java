@@ -45,7 +45,7 @@ public class ServerMessageController {
         } else if (message.equals("@getAllRequests@")) {
             ServerController.getInstance().sendMessageToClient("@AllRequests@" + new Gson().toJson(RequestCenter.getIncstance().getAllRequests()));
         } else if (message.startsWith("@acceptRequest@")) {
-            message = message.substring(15, message.length());
+            message = message.substring(15);
             RequestCenter.getIncstance().acceptRequest(message);
         } else if (message.startsWith("@AddProduct@")) {
             message = message.substring(12);
@@ -55,19 +55,20 @@ public class ServerMessageController {
         } else if (message.startsWith("@getAllUsers@")) {
             DataBase.getInstance().getAllUsersListFromDateBase();
         } else if (message.startsWith("@deleteCustomer@")) {
-            UserCenter.getIncstance().removeCustomer(message.substring(16, message.length()));
+            UserCenter.getIncstance().removeCustomer(message.substring(16
+            ));
         } else if (message.startsWith("@deleteSeller@")) {
-            UserCenter.getIncstance().removeSeller(message.substring(14, message.length()));
+            UserCenter.getIncstance().removeSeller(message.substring(14));
         } else if (message.startsWith("@deleteManager@")) {
-            UserCenter.getIncstance().removeManager(message.substring(15, message.length()));
+            UserCenter.getIncstance().removeManager(message.substring(15));
         } else if (message.startsWith("@createManagerProfile@")) {
-            UserCenter.getIncstance().createManagerProfile(message.substring(22, message.length()));
+            UserCenter.getIncstance().createManagerProfile(message.substring(22));
         } else if (message.startsWith("@getAllProductsForManager@")) {
             DataBase.getInstance().getAllProductsFromDataBase();
         } else if (message.startsWith("@getAllOffers@")) {
             DataBase.getInstance().getAllOffersFromDataBase();
         } else if (message.startsWith("@removeProductForManager@")) {
-            message = message.substring(25, message.length());
+            message = message.substring(25);
             ProductCenter.getInstance().deleteProduct(message);
         } else if (message.startsWith("@getAllCategories@")) {
             CategoryCenter.getIncstance().updateAllCategories();
@@ -127,7 +128,7 @@ public class ServerMessageController {
             ProductCenter.getInstance().createDeleteProductRequest(new Gson().fromJson(message, Product.class));
         } else if (message.startsWith("@pay@")) {
             message = message.substring(5);
-            CartCenter.getInstance().pay(new Gson().fromJson(message, Cart.class));//
+            CartCenter.getInstance().pay(new Gson().fromJson(message, Cart.class));
         } else if (message.startsWith("@declineRequest@")) {
             message = message.substring(16);
             RequestCenter.getIncstance().declineRequest(message);

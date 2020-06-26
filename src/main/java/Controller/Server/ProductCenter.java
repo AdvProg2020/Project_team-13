@@ -26,11 +26,6 @@ public class ProductCenter {
         return productCenter;
     }
 
-    public String getLastProductId() {
-        DataBase.getInstance().setLastProductIdFromDataBase();
-        return lastProductId;
-    }
-
     public void setLastProductId(String lastProductId) {
         this.lastProductId = lastProductId;
     }
@@ -44,13 +39,6 @@ public class ProductCenter {
                 OffCenter.getInstance().findProductWithID(productId).setNumberOfAvailableProducts(OffCenter.getInstance().findProductWithID(productId).getNumberOfAvailableProducts() - count);
             }
         }
-//        else {
-//            allProducts.remove(product);
-//            UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).removeProduct(productId);
-//            OffCenter.getInstance().removeProduct(productId);
-//
-//        }
-
     }
 
     public void rating(String json) {

@@ -542,7 +542,7 @@ public class DataBase {
             nullPointer.getCause();
         } finally {
             try {
-                fileReader.close();///
+                fileReader.close();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (NullPointerException error) {

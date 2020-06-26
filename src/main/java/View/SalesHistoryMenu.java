@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static View.MangeOffsMenu.getLabels;
+
 public class SalesHistoryMenu extends Menu {
     private Map<String, Button> viewDetails;
     private BorderPane borderPane;
@@ -216,14 +218,6 @@ public class SalesHistoryMenu extends Menu {
     }
 
     private Label[] labelMaker(String id, String price, String date, String status) {
-        Label[] allLabels = new Label[4];
-        allLabels[0] = new Label(id);
-        allLabels[1] = new Label(price);
-        allLabels[2] = new Label(date);
-        allLabels[3] = new Label(status);
-        for (Label label : allLabels) {
-            label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
-        }
-        return allLabels;
+        return getLabels(id, price, date, status);
     }
 }

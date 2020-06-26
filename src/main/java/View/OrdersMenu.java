@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static View.MangeOffsMenu.getLabels;
+
 public class OrdersMenu extends Menu {
     private Map<String, Button> viewDetails;
     private BorderPane borderPane;
@@ -175,12 +177,7 @@ public class OrdersMenu extends Menu {
                     String.valueOf(allBuyLog.get(logCounter).getDate()), String.valueOf(allBuyLog.get(logCounter).getReceivingStatus()));
         }
         gridPane.setTranslateX(20);
-        gridPane.setTranslateY(1);
-        gridPane.add(id, 0, 0);
-        gridPane.add(price, 1, 0);
-        gridPane.add(date, 2, 0);
-        gridPane.add(status, 3, 0);
-        allGridPanes.set(pages, gridPane);
+        MangeOffsMenu.processSeTheBeginning(pages, id, price, date, status, gridPane, allGridPanes);
     }
 
 
@@ -217,14 +214,6 @@ public class OrdersMenu extends Menu {
     }
 
     private Label[] labelMaker(String id, String price, String date, String status) {
-        Label[] allLabels = new Label[4];
-        allLabels[0] = new Label(id);
-        allLabels[1] = new Label(price);
-        allLabels[2] = new Label(date);
-        allLabels[3] = new Label(status);
-        for (Label label : allLabels) {
-            label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
-        }
-        return allLabels;
+        return getLabels(id, price, date, status);
     }
 }

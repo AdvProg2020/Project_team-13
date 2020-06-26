@@ -64,11 +64,11 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
         addOffer.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 15));
         addOffer.setMaxHeight(20);
         addOffer.setOnAction(this);
-        if (allOffers != null && !allOffers.isEmpty()) {
+        if ( allOffers != null && !allOffers.isEmpty()) {
             pageGridPane.getChildren().remove(centerGridPane);
             pageGridPane.getChildren().remove(bottomGridPane);
-            this.setPages(allOffers.size() % 4 == 0 ?
-                    allOffers.size() / 4 : (allOffers.size() / 4) + 1);
+            this.setPages(allOffers.size()%4 == 0 ?
+                    allOffers.size()/4 : (allOffers.size()/4) + 1);
             allGridPanes = new ArrayList<>();
             for (int i = 0; i < pages; i++) {
                 allGridPanes.add(null);
@@ -91,7 +91,7 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
             addOffer.setTranslateY(18);
             borderPane.setTop(hBox);
             borderPane.setCenter(pagination);
-        } else {
+        }else{
             HBox hBox = new HBox();
             hBox.getChildren().add(addOffer);
             pageGridPane.getChildren().remove(centerGridPane);
@@ -109,9 +109,9 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
     }
 
     private GridPane createPage(Integer integer) {
-        if (integer.equals(pages - 1)) {
+        if(integer.equals(pages-1)){
             setTheCenterInfo(allOffers.size() - (integer * 4), integer);
-        } else {
+        }else{
             setTheCenterInfo(4, integer);
         }
         return getAllGridPanes().get(integer);
@@ -139,24 +139,28 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
             }else if(i==3){
                 gridPane.getColumnConstraints().add(new ColumnConstraints(250,
                         Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
-            } else if (i == 4 || i == 5) {
+            }else if (i==4 || i==5){
                 gridPane.getColumnConstraints().add(new ColumnConstraints(110,
                         Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
-            } else if (i == 1) {
-                gridPane.getColumnConstraints().add(new ColumnConstraints(100,
+            }else if(i==1){
+                gridPane.getColumnConstraints().add(new ColumnConstraints(120,
                         Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
-            } else {
-                gridPane.getColumnConstraints().add(new ColumnConstraints(100,
-                        Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+            }else{
+                gridPane.getColumnConstraints().add(new ColumnConstraints(120,
+                            Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
             }
         }
-        setOfferCounter(4 * integer);
+        setOfferCounter(4*integer);
         for (int i = 1; i <= counter; offerCounter++, i++) {
             setTheRows(i, allOffers.get(offerCounter).getOfferId(), String.valueOf(allOffers.get(offerCounter).getAmount()),
                     String.valueOf(allOffers.get(offerCounter)
                             .getStartTime()), String.valueOf(allOffers.get(offerCounter).getEndTime()));
         }
         gridPane.setTranslateX(10);
+        processSeTheBeginning(integer, name, percent, startDate, endDate, gridPane, allGridPanes);
+    }
+
+    static void processSeTheBeginning(Integer integer, Label name, Label percent, Label startDate, Label endDate, GridPane gridPane, List<GridPane> allGridPanes) {
         gridPane.setTranslateY(1);
         gridPane.add(name, 0, 0);
         gridPane.add(percent, 1, 0);
@@ -172,30 +176,27 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
             button.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 18));
             button.setTranslateX(38);
             int finalI1 = i;
-            button.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    VBox vBox = new VBox();
-                    vBox.setAlignment(Pos.CENTER);
-                    vBox.setStyle("-fx-background-color: #afafaf");
-                    String[] details = allOffers.get(finalI1).toString().split("\n");
-                    Label[] label = new Label[details.length];
-                    Label label1 = new Label("Details :\n\n");
-                    label1.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 30));
-                    vBox.getChildren().add(label1);
-                    for (int j = 0; j < label.length; j++) {
-                        label[j] = new Label(details[j]);
-                        label[j].setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 19));
-                        vBox.getChildren().add(label[j]);
-                    }
-                    Scene scene = new Scene(vBox, 300, 500);
-                    Stage stage = new Stage();
-                    stage.setWidth(400);
-                    stage.setHeight(600);
-                    stage.setScene(scene);
-                    stage.setTitle("Details");
-                    stage.show();
+            button.setOnAction(event -> {
+                VBox vBox = new VBox();
+                vBox.setAlignment(Pos.CENTER);
+                vBox.setStyle("-fx-background-color: #afafaf");
+                String[] details = allOffers.get(finalI1).toString().split("\n");
+                Label[] label = new Label[details.length];
+                Label label1 = new Label("Details :\n\n");
+                label1.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 30));
+                vBox.getChildren().add(label1);
+                for (int j = 0; j < label.length; j++) {
+                    label[j] = new Label(details[j]);
+                    label[j].setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 19));
+                    vBox.getChildren().add(label[j]);
                 }
+                Scene scene = new Scene(vBox, 300, 500);
+                Stage stage = new Stage();
+                stage.setWidth(400);
+                stage.setHeight(600);
+                stage.setScene(scene);
+                stage.setTitle("Details");
+                stage.show();
             });
             viewDetails.put(allOffers.get(i).getOfferId(), button);
         }
@@ -206,7 +207,6 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
             imageView.setTranslateX(60);
             int finalI1 = i;
             imageView.setOnMouseClicked(event -> {
-                new EditOffsMenu(this.stage).execute();
                OffsController.getInstance().setCurrentOffer(allOffers.get(finalI1));
                new EditOffsMenu(this.stage).execute();
             });
@@ -217,7 +217,7 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
     }
 
 
-    private void setTheRows(int row, String offerId, String amount, String startTime, String endTime) {
+    private void setTheRows(int row, String offerId, String amount, String startTime, String endTime){
         Pane[] allPanes = new Pane[4];
         for (int i = 0; i < 4; i++) {
             allPanes[i] = new Pane();
@@ -225,7 +225,7 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
         }
         Label[] allLabels = labelMaker(offerId, amount, startTime, endTime);
         for (int i = 0; i < 4; i++) {
-            if (i == 0) {
+            if(i == 0){
                 allLabels[i].setTranslateX(15);
             }
             if(i == 1){
@@ -254,6 +254,10 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
     }
 
     private Label[] labelMaker(String offerId, String offerPercent, String startDate, String endDate) {
+        return getLabels(offerId, offerPercent, startDate, endDate);
+    }
+
+    static Label[] getLabels(String offerId, String offerPercent, String startDate, String endDate) {
         Label[] allLabels = new Label[4];
         allLabels[0] = new Label(offerId);
         allLabels[1] = new Label(offerPercent);

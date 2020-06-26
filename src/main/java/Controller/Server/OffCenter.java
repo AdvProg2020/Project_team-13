@@ -1,6 +1,5 @@
 package Controller.Server;
 
-import Models.DiscountCode;
 import Models.Offer;
 import Models.OfferStatus;
 import Models.Product.Product;
@@ -111,6 +110,7 @@ public class OffCenter {
         UserCenter.getIncstance().editOfferForSeller(newOffer);
         DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
     }
+
     public void deleteOffer(Offer offer) {
         allOffers.remove(offer);
         for (String product : offer.getProducts()) {
@@ -138,12 +138,12 @@ public class OffCenter {
     }
 
     public void passTime() {
-            Calendar calendar = Calendar.getInstance();
-            DataBase.getInstance().setAllOffersFromDatabase();
+        Calendar calendar = Calendar.getInstance();
+        DataBase.getInstance().setAllOffersFromDatabase();
         for (Offer offer : allOffers) {
-         if(offer.getEndTime().before(calendar.getTime())) {
+            if (offer.getEndTime().before(calendar.getTime())) {
 
-         }
+            }
         }
     }
 }

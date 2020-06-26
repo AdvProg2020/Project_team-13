@@ -21,14 +21,6 @@ public class UserCenter {
 
     }
 
-    public void decreaseProductCount(String productID, String username) {
-        for (Seller seller : allSeller) {
-            if (seller.getUsername().equals(username)) {
-
-            }
-        }
-    }
-
     public void addCommercial(Product product) {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equalsIgnoreCase(product.getSeller())) {
@@ -167,12 +159,12 @@ public class UserCenter {
             if (userAccount.getPassword().equals(password)) {
                 switch (userAccount.getType()) {
                     case "@Customer": {
-                        String user = gson.toJson((Customer) userAccount);
+                        String user = gson.toJson(userAccount);
                         ServerController.getInstance().sendMessageToClient("@Login as Customer@" + user);
                         break;
                     }
                     case "@Seller": {
-                        String user = gson.toJson((Seller) userAccount);
+                        String user = gson.toJson(userAccount);
                         if (((Seller) userAccount).isAccepted())
                             ServerController.getInstance().sendMessageToClient("@Login as Seller@" + user);
                         else
@@ -180,7 +172,7 @@ public class UserCenter {
                         break;
                     }
                     case "@Manager": {
-                        String user = gson.toJson((Manager) userAccount);
+                        String user = gson.toJson(userAccount);
                         ServerController.getInstance().sendMessageToClient("@Login as Manager@" + user);
                         break;
                     }
