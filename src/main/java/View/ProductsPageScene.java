@@ -2,8 +2,8 @@ package View;
 
 import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
-import Controller.Client.ManagerController;
 import Controller.Client.ProductController;
+import Controller.Client.UserController;
 import Models.Product.Category;
 import Models.Product.Product;
 import Models.Product.ProductStatus;
@@ -15,30 +15,27 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
 public class ProductsPageScene extends Menu {
     GridPane productsPages;
-    Product currentProduct;
     GridPane leftMenuGridPane, centerGridPaneTosh;
     private boolean offerChecker;
 
@@ -70,6 +67,8 @@ public class ProductsPageScene extends Menu {
     }
 
     private void setCenterGridPane() {
+        ProductController.getInstance().setAllFiltersNull();
+        ProductController.getInstance().disableSort();
         centerGridPane.getChildren().clear();
         String buttomStyle = "  -fx-background-color: \n" +
                 "        #090a0c,\n" +
@@ -86,7 +85,6 @@ public class ProductsPageScene extends Menu {
                 "    -fx-padding: 7 10 7 10;" +
                 "     -fx-background-radius: 40px;" +
                 "    -fx-border-radius: 20px;";
-        //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
         Text personalInfo = new Text("ali");
         Text pageTitle = new Text(ProductController.getInstance().getCurrentCategory().getName() + "  Count of products: " + ProductController.getInstance().getCurrentCategory().getAllProducts().size());
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
@@ -600,8 +598,7 @@ public class ProductsPageScene extends Menu {
         ProductController.getInstance().getAllProductsFromServer();
         ArrayList<GridPane> gridPanes = new ArrayList<>();
         ArrayList<GridPane> addGridPanes = new ArrayList<>();
-        ManagerController.getInstance().getAllUserFromServer();
-        System.out.println(ProductController.getInstance().getAllCommercializedProduct().size());
+        UserController.getInstance().getAllUserFromServer();
         centerGridPaneTosh.getChildren().clear();
         for (int kk = 0; kk < showProductsAfterFilterAndSort().size(); kk++) {
             Product product = showProductsAfterFilterAndSort().get(kk);
@@ -787,7 +784,6 @@ public class ProductsPageScene extends Menu {
         if (productsPages.size() > 0) {
             productsPages.get(0).add(buttons1, 1, 5, 7, 1);
             if (!addGridPane.getChildren().isEmpty()) {
-                System.out.println(1);
                 centerGridPaneTosh.setVgap(5);
                 centerGridPaneTosh.add(addGridPane, 1, 1, 1, 1);
                 Text text = new Text(" Products");
@@ -837,7 +833,6 @@ public class ProductsPageScene extends Menu {
             }
         }
         ArrayList<Button> buttons = new ArrayList<>();
-        System.out.println("AAAAAa              " + productsPages.size());
         for (int i = 0; i < productsPages.size(); i++) {
             buttons.add(new Button(Integer.toString(i + 1)));
             buttons.get(i).setStyle(buttonStyle);
@@ -881,7 +876,6 @@ public class ProductsPageScene extends Menu {
             buttons1.add(buttons.get(i), i + 1, 0);
         }
         buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
-        System.out.println("Aaaaaaaaaa" + "      " + productsPages.size());
         Text text = new Text(" Adds");
         text.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
         gridPane.add(text, 0, 0);

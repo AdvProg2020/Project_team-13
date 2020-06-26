@@ -123,7 +123,6 @@ public class ServerMessageController {
             message = message.substring(13);
             ProductCenter.getInstance().createEditProductRequest(new Gson().fromJson(message, Product.class));
         } else if (message.startsWith("@deleteProduct@")) {
-            System.out.println("aa1");
             message = message.substring(15);
             ProductCenter.getInstance().createDeleteProductRequest(new Gson().fromJson(message, Product.class));
         } else if (message.startsWith("@pay@")) {

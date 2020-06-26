@@ -1,7 +1,7 @@
 package View;
 
 import Controller.Client.ClientController;
-import Controller.Client.ManagerController;
+import Controller.Client.UserController;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.UserAccount;
@@ -72,13 +72,13 @@ public class ManageUsersMenu extends Menu {
         pageTitle.setStyle("-fx-font-weight: bold;");
         pageTitle.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
         ArrayList<GridPane> gridPanes = new ArrayList<>();
-        ManagerController.getInstance().getAllUserFromServer();
+        UserController.getInstance().getAllUserFromServer();
         ArrayList<UserAccount> allUser = new ArrayList<>();
-        allUser.addAll(ManagerController.getInstance().getAllSellers());
-        for (Customer seller1 : ManagerController.getInstance().getAllCustomers()) {
+        allUser.addAll(UserController.getInstance().getAllSellers());
+        for (Customer seller1 : UserController.getInstance().getAllCustomers()) {
             allUser.add(seller1);
         }
-        for (Manager seller1 : ManagerController.getInstance().getAllManagers()) {
+        for (Manager seller1 : UserController.getInstance().getAllManagers()) {
             if (!seller1.getUsername().equals(ClientController.getInstance().getCurrentUser().getUsername()))
                 allUser.add(seller1);
         }
@@ -108,10 +108,7 @@ public class ManageUsersMenu extends Menu {
                 }
             });
             deleteProduct.setOnMouseClicked(event -> {
-                System.out.println("1111111111111111111");
-                ManagerController.getInstance().deleteUser(user.getUsername());
-                System.out.println("aaaaaaaaa");
-                System.out.println(user.getUsername());
+                UserController.getInstance().deleteUser(user.getUsername());
             });
             photoPane.getRowConstraints().add(new RowConstraints(10, Control.USE_COMPUTED_SIZE, 10, Priority.NEVER, VPos.TOP, false));
 
@@ -134,7 +131,6 @@ public class ManageUsersMenu extends Menu {
             label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 14));
             gridPanes.add(gridPane1);
         }
-        System.out.println(gridPanes.size());
         ArrayList<GridPane> productsPages = new ArrayList<>();
         for (int j = 0; j < (gridPanes.size() / 12) + (gridPanes.size() % 12 == 0 ? 0 : 1); j++) {
             productsPages.add(new GridPane());

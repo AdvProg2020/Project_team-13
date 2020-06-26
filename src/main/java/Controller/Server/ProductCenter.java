@@ -38,7 +38,6 @@ public class ProductCenter {
     public void decreaseProductCount(String productId, int count) {
         Product product = findProductWithID(productId);
         if (product.getNumberOfAvailableProducts() - count >= 0) {
-            System.out.println("count" + count);
             product.setNumberOfAvailableProducts(product.getNumberOfAvailableProducts() - count);
             UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).reduceProductCount(productId, count);
             if (OffCenter.getInstance().findProductWithID(productId) != null) {

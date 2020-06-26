@@ -85,7 +85,6 @@ public class OffCenter {
         }
         allOffers.add(offer);
         DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
-        System.out.println("aaaaaaaaaaaaa                                                      "+allOffers.size());
         UserCenter.getIncstance().addOfferToSeller(offer);
         for (String product : offer.getProducts()) {
             ProductCenter.getInstance().addOfferToProduct(product, offer);

@@ -38,7 +38,6 @@ public class EnterMenuScene extends Menu {
         scene.setRoot(pageGridPane);
         Customer customer = new Customer("mamooti", "majidmajid", "Mahmood", "Ahmadi nejad", "Mamooti@yahoo.com", "09123456789", 10000);
         Text personalInfo = new Text(customer.viewPersonalInfo());
-        System.out.println(personalInfo.getText());
         centerGridPane.add(personalInfo, 0, 0);
     }
 

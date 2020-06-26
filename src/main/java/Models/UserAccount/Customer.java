@@ -104,7 +104,6 @@ public class Customer extends UserAccount {
                 return discountCode;
             }
         }
-        System.out.println("not found");
         return null;
     }
 

@@ -1,6 +1,5 @@
 package Controller.Client;
 
-import Controller.Server.DataBase;
 import Models.Product.Product;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
@@ -12,18 +11,18 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class ManagerController {
-    private static ManagerController managerController;
+public class UserController {
+    private static UserController managerController;
     private ArrayList<Seller> allSellers = new ArrayList<>();
     private ArrayList<Customer> allCustomers = new ArrayList<>();
     private ArrayList<Manager> allManagers = new ArrayList<>();
 
-    private ManagerController() {
+    private UserController() {
     }
 
-    public static ManagerController getInstance() {
+    public static UserController getInstance() {
         if (managerController == null) {
-            managerController = new ManagerController();
+            managerController = new UserController();
         }
         return managerController;
     }
@@ -137,13 +136,11 @@ public class ManagerController {
     }
 
     public void deleteUser(String username) {
-        System.out.println("11");
         if (ClientController.getInstance().getCurrentUser().getUsername().equals(username)) {
             ClientController.getInstance().getCurrentMenu().showMessage("you can't delete yourself", MessageKind.ErrorWithoutBack);
             return;
         }
         for (Customer customer : allCustomers) {
-            System.out.println("22");
             if (customer.getUsername().equals(username)) {
                 ClientController.getInstance().sendMessageToServer("@deleteCustomer@" + username);
                 allCustomers.remove(customer);
@@ -151,7 +148,6 @@ public class ManagerController {
             }
         }
         for (Seller seller : allSellers) {
-            System.out.println("33");
             if (seller.getUsername().equals(username)) {
                 ClientController.getInstance().sendMessageToServer("@deleteSeller@" + username);
                 allSellers.remove(seller);
@@ -159,7 +155,6 @@ public class ManagerController {
             }
         }
         for (Manager manager : allManagers) {
-            System.out.println("44");
             if (manager.getUsername().equals(username)) {
                 ClientController.getInstance().sendMessageToServer("@deleteManager@" + username);
                 allManagers.remove(manager);

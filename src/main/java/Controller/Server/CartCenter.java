@@ -42,8 +42,6 @@ public class CartCenter {
 
     }
     public void pay(Cart cart){
-        System.out.println();
-        System.out.println(UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID()));
         Customer customer=UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID());
         double price=cart.getTotalPrice(),reducedPrice=0;
         DiscountCode discountCode=cart.getDiscountCode();
@@ -71,7 +69,6 @@ public class CartCenter {
                 ProductCenter.getInstance().findProductWithID(product.getProductId()).addToAllBuyers(UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID()));
                 UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).findProductWithID(product.getProductId()).addToAllBuyers(customer);
                 ProductCenter.getInstance().decreaseProductCount(product.getProductId(),cart.getCountOfEachProduct().get(product.getProductId()));
-                System.out.println("in CART: "+product.getProductName()+cart.getCountOfEachProduct().get(product.getProductId()));
                 if(!sellers.contains(product.getSeller())){
                     sellers.add(product.getSeller());
                 }

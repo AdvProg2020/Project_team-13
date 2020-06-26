@@ -10,7 +10,6 @@ import Models.UserAccount.Seller;
 import View.MessageKind;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import sun.plugin.perf.PluginRollup;
 
 import java.lang.reflect.Type;
 import java.util.*;
@@ -36,15 +35,6 @@ public class ProductController {
         return productController;
     }
 
-    public Product getProductWithId(String productId) {
-        for (Product product : allProducts) {
-            if (product.getProductId().equals(productId)) {
-                return product;
-            }
-        }
-        return null;
-    }
-
     public void addProduct(ArrayList<String> fields, HashMap<String, String> featuresOfCategory, Category category) {
         Product product = new Product(fields.get(0), null, fields.get(1), (Seller) ClientController.getInstance().getCurrentUser()
                 , Double.parseDouble(fields.get(3)), category.getName(), fields.get(2), Integer.parseInt(fields.get(4))
@@ -60,102 +50,12 @@ public class ProductController {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("AddProduct", product0));
     }
 
-    public String getPriceFiltersInStringForm() {
-        if (isPriceFilterActive) {
-            return ("Price Filter: maximum price= " + max + " minimum price=" + min + "\n");
-        } else return "";
-    }
-
-    public String getBrandsFiltersInStringForm() {
-        if (allBrandsToFilter != null && !allBrandsToFilter.isEmpty()) {
-            String brandsStringForm = "All brands used to filter:\n";
-            int i = 1;
-            for (String brand : allBrandsToFilter) {
-                brandsStringForm += i + "." + brand + "\n";
-                i++;
-            }
-            return brandsStringForm;
-        } else return "";
-    }
-
-    public String getSellersFiltersInStringForm() {
-        if (allSellersToFilter != null && !allSellersToFilter.isEmpty()) {
-            String stringForm = "All sellers used to filter:\n";
-            int i = 1;
-            for (String seller : allSellersToFilter) {
-                stringForm += i + "." + seller + "\n";
-                i++;
-            }
-            return stringForm;
-        } else return "";
-    }
-
-    public String getProductsStatusFiltersInStringForm() {
-        if (allProductStatusToFilter != null && !allProductStatusToFilter.isEmpty()) {
-            String stringForm = "All productStatus used to filter:\n";
-            int i = 1;
-            for (ProductStatus productStatus : allProductStatusToFilter) {
-                stringForm += i + "." + productStatus.getName() + "\n";
-                i++;
-            }
-            return stringForm;
-        } else return "";
-    }
-
-    public String getNameToFilterInStringForm() {
-        if (nameToFilter != null) {
-            return ("products filtered by name: " + nameToFilter + "\n");
-        }
-        return "";
-    }
-
-    public String getCategoryFeaturesFiltersInStringForm() {
-        if (categoryFeaturesToFilter != null && !categoryFeaturesToFilter.isEmpty()) {
-            String stringForm = "All features used to filter:\n";
-            int j = 1;
-            for (String feature : categoryFeaturesToFilter.keySet()) {
-                stringForm += j + "." + feature + "  modes:\n";
-                int i = 1;
-                for (String seller : categoryFeaturesToFilter.get(feature)) {
-                    stringForm += "\t" + j + "." + i + ". " + seller + "\n";
-                    i++;
-                }
-                j++;
-            }
-            return stringForm;
-        } else return "";
-    }
-
-    public void removeProduct(String productId, String seller) {
-        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("deleteProduct", productId + "/" + seller));
-    }
-
-    public String getCurrentSort() {
-        if (isSortActivated) {
-            String sortKind = "";
-            if (kindOfSort) {
-                sortKind = "ascending";
-            } else {
-                sortKind = "descending";
-            }
-            return "current sort: " + this.currentSort + " " + sortKind;
-        }
-        return "no sort selected";
-    }
-
     public String disableSort() {
         if (isSortActivated) {
             isSortActivated = false;
             return "current sort disabled.";
         } else {
             return "no sort selected";
-        }
-    }
-
-    public void printAllProducts() {
-        getAllProductsFromServer();
-        for (Product product : allProducts) {
-            //      ClientController.getInstance().getCurrentMenu().showMessage(product.viewProduct());
         }
     }
 
@@ -226,7 +126,7 @@ public class ProductController {
     public ArrayList<Product> getAllCommercializedProduct() {
         ArrayList<Product> products = new ArrayList<>();
         for (Product product : allProducts) {
-            if (ManagerController.getInstance().getAllCommercializedProducts().contains(product.getProductId())) {
+            if (UserController.getInstance().getAllCommercializedProducts().contains(product.getProductId())) {
                 products.add(product);
             }
         }
@@ -443,45 +343,6 @@ public class ProductController {
         return allProducts;
     }
 
-    public String getTheProductDetails(ArrayList<String> allProducts) {
-        if (allProducts != null) {
-            StringBuilder allDetails = new StringBuilder();
-            for (String product1 : allProducts) {
-                Product product = getProductWithId(product1);
-                if (product != null) {
-                    allDetails.append(product.productInfoFor()).append("\n");
-                }
-            }
-            if (allDetails.length() > 0)
-                return allDetails.substring(0, allDetails.length() - 1);
-        }
-        return "";
-    }
-
-    public Product findProductAfterFilter(String productID) {
-        allProductsAfterFilter = new ArrayList<>(allProducts);
-        filterProducts();
-        for (Product product : allProductsAfterFilter) {
-            if (product.getProductId().equals(productID)) {
-                return product;
-            }
-        }
-        return null;
-    }
-
-    public Product findProductAfterFilterInOffer(String productID) {
-        allProductsAfterFilter = new ArrayList<>(allProducts);
-        filterProducts();
-        for (Product product : allProductsAfterFilter) {
-            if (product.getProductId().equals(productID) && product.getOffer() != null) {
-                return product;
-            } else if (product.getProductId().equals(productID) && product.getOffer() == null) {
-                return null;
-            }
-        }
-        return null;
-    }
-
     public void addComment(Comment comment) {
         ClientController.getInstance().sendMessageToServer("@addComment@" + new Gson().toJson(comment));
     }
@@ -506,25 +367,6 @@ public class ProductController {
             ClientController.getInstance().sendMessageToServer("@rate@" + new Gson().toJson(score));
         } else {
             ClientController.getInstance().getCurrentMenu().showMessage("there is no products with this id", MessageKind.ErrorWithoutBack);
-        }
-    }
-
-    public void compareWithProduct(String productId) {
-        if (getProductWithId(productId) == null) {
-            ClientController.getInstance().getCurrentMenu().showMessage("there is no product with this id", MessageKind.ErrorWithoutBack);
-        } else {
-            Product product = ClientController.getInstance().getCurrentProduct();
-            Product compareProduct = getProductWithId(productId);
-            String attributes = "";
-            attributes += "Product Ids:\t" + compareProduct.getProductId() + "\t\t" + product.getProductId() + "\n";
-            attributes += "Product Names:\t" + compareProduct.getProductName() + "\t\t" + product.getProductName() + "\n";
-            attributes += "Product Category:\t" + compareProduct.getProductsCategory() + "\t\t" + product.getProductsCategory() + "\n";
-            attributes += "Product Sellers:\t" + compareProduct.getSeller() + "\t\t" + product.getSeller() + "\n";
-            attributes += "Product Companies:\t" + compareProduct.getProductCompany() + "\t\t" + product.getProductCompany() + "\n";
-            attributes += "Product Costs:\t" + compareProduct.getProductCost() + "\t\t" + product.getProductCost() + "\n";
-            attributes += "Product Costs After Off:\t" + compareProduct.getCostAfterOff() + "\t\t" + product.getCostAfterOff() + "\n";
-            attributes += "Product Descriptions:\t" + compareProduct.getDescription() + "\t\t" + product.getDescription() + "\n";
-            //    ClientController.getInstance().getCurrentMenu().showMessage(attributes);
         }
     }
 }

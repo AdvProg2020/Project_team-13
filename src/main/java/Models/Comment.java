@@ -25,10 +25,8 @@ public class Comment {
 
     public String getuserImagePath() {
         if(userImagePath==null||userImagePath.isEmpty()||userImagePath.length()<4) {
-            System.out.println("file:src/user_icon.png");
             return "file:src/user_icon.png";
         }
-        System.out.println(userImagePath);
         return userImagePath;
     }
     public String getProductId() {

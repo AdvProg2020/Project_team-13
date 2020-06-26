@@ -197,7 +197,6 @@ public class CartMenu extends Menu {
                 }
             });
         }
-        System.out.println(gridPanes.size());
         ArrayList<GridPane> productsPages = new ArrayList<>();
         for (int j = 0; j < (gridPanes.size() / 12) + (gridPanes.size() % 12 == 0 ? 0 : 1); j++) {
             productsPages.add(new GridPane());
@@ -519,7 +518,6 @@ public class CartMenu extends Menu {
 
     private DiscountCode getDiscountCode(String discountCode) {
         DiscountCode discount = ((Customer) ClientController.getInstance().getCurrentUser()).findDiscountCodeWithCode(discountCode);
-        System.out.println("discoount code is :" + discount);
         if (discount != null) {
             return discount;
         }

@@ -14,8 +14,8 @@ public class LoginController {
         return loginController;
     }
 
-    public void login(String userName,String password) {
-        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("Login",userName+"/"+password));
+    public void login(String userName, String password) {
+        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("Login", userName + "/" + password));
     }
 
 

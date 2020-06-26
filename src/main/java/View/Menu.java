@@ -490,9 +490,6 @@ public class Menu {
             });
             Label userName = new Label(ClientController.getInstance().getCurrentUser().getUsername().trim());
             Image image = new Image(ClientController.getInstance().getCurrentUser().getImagePath());
-            System.out.println("bbbb");
-            System.out.println(image);
-            System.out.println("bbbb");
             ImageView userImage = new ImageView(image);
             userName.setOnMouseEntered(new EventHandler() {
                 @Override
@@ -799,8 +796,6 @@ public class Menu {
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.initStyle(StageStyle.UNDECORATED);
         popupwindow.setScene(scene1);
-        System.out.println(popupwindow == null);
-        System.out.println(stage == null);
         popupwindow.show();
     }
 

@@ -262,7 +262,6 @@ public class ManageProducts extends Menu {
                 }
             });
         }
-        System.out.println(gridPanes.size());
         ArrayList<GridPane> productsPages = new ArrayList<>();
         for (int j = 0; j < (gridPanes.size() / 12) + (gridPanes.size() % 12 == 0 ? 0 : 1); j++) {
             productsPages.add(new GridPane());
@@ -500,7 +499,6 @@ public class ManageProducts extends Menu {
                 public void handle(ActionEvent event) {
                     GridPane gridPane = new GridPane();
                     selectedCategory.setText(s);
-                    System.out.println(s);
                     Category category1 = new Category(null, null);
                     CategoryController.getInstance().updateAllCategories();
                     for (Category category : CategoryController.getInstance().getAllCategories()) {
@@ -698,6 +696,7 @@ public class ManageProducts extends Menu {
         popupwindow2.initStyle(StageStyle.UNDECORATED);
         popupwindow2.setScene(scene1);
         popupwindow2.show();
+
     }
 
 }

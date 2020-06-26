@@ -38,10 +38,8 @@ public abstract class UserAccount {
 
     public String getImagePath() {
         if(imagePath==null||imagePath.isEmpty()||imagePath.length()<4) {
-            System.out.println("file:src/user_icon.png");
             return "file:src/user_icon.png";
         }
-        System.out.println(imagePath);
         return imagePath;
     }
 
