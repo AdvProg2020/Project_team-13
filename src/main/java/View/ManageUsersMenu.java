@@ -4,7 +4,6 @@ import Controller.Client.ClientController;
 import Controller.Client.ManagerController;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
-import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -28,7 +27,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 public class ManageUsersMenu extends Menu {
     GridPane productsPages;
@@ -68,7 +66,6 @@ public class ManageUsersMenu extends Menu {
                 "    -fx-padding: 7 10 7 10;" +
                 "     -fx-background-radius: 40px;" +
                 "    -fx-border-radius: 20px;";
-        //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
         Text personalInfo = new Text("ali");
         Text pageTitle = new Text("Users Menu");
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
@@ -77,9 +74,7 @@ public class ManageUsersMenu extends Menu {
         ArrayList<GridPane> gridPanes = new ArrayList<>();
         ManagerController.getInstance().getAllUserFromServer();
         ArrayList<UserAccount> allUser = new ArrayList<>();
-        for (Seller seller1 : ManagerController.getInstance().getAllSellers()) {
-            allUser.add(seller1);
-        }
+        allUser.addAll(ManagerController.getInstance().getAllSellers());
         for (Customer seller1 : ManagerController.getInstance().getAllCustomers()) {
             allUser.add(seller1);
         }
@@ -114,9 +109,9 @@ public class ManageUsersMenu extends Menu {
             });
             deleteProduct.setOnMouseClicked(event -> {
                 System.out.println("1111111111111111111");
-                        ManagerController.getInstance().deleteUser(user.getUsername());
-                        System.out.println("aaaaaaaaa");
-                        System.out.println(user.getUsername());
+                ManagerController.getInstance().deleteUser(user.getUsername());
+                System.out.println("aaaaaaaaa");
+                System.out.println(user.getUsername());
             });
             photoPane.getRowConstraints().add(new RowConstraints(10, Control.USE_COMPUTED_SIZE, 10, Priority.NEVER, VPos.TOP, false));
 
@@ -216,14 +211,14 @@ public class ManageUsersMenu extends Menu {
         createNewManager.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.HAND); //Change cursor to hand
+                scene.setCursor(Cursor.HAND);
 
             }
         });
         createNewManager.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                scene.setCursor(Cursor.DEFAULT);
             }
         });
         createNewManager.setOnMouseClicked(new EventHandler() {
@@ -232,7 +227,7 @@ public class ManageUsersMenu extends Menu {
                 new ManagerRegisterMenu(stage).execute();
             }
         });
-        leftMenuGridPane.add(createNewManager,0,0,1,2);
+        leftMenuGridPane.add(createNewManager, 0, 0, 1, 2);
         centerGridPane.add(leftMenuGridPane, 0, 1, 1, 6);
         centerGridPane.add(pageTitle, 0, 0, 1, 1);
         if (productsPages.size() > 0) {
@@ -275,26 +270,5 @@ public class ManageUsersMenu extends Menu {
     public void execute() {
         stage.setScene(scene);
         stage.show();
-    }
-
-    private boolean checkPasswordIsvalid(String word) {
-        if (word.length() > 8 && word.length() < 18) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkNameIsvalid(String name) {
-        if (Pattern.matches("(([a-z]|[A-Z])+ )*(([a-z]|[A-Z])+)", name) && !name.isEmpty()) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkEmailIsvalid(String email) {
-        if (Pattern.matches("\\w+\\.?\\w*@\\w+\\.\\w+", email)) {
-            return true;
-        }
-        return false;
     }
 }

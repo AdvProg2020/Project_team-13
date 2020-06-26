@@ -19,10 +19,12 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -33,7 +35,6 @@ import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Menu {
     protected Scene scene;
@@ -49,7 +50,8 @@ public class Menu {
     protected AudioClip key4 = new AudioClip(new File("src\\key4.mp3").toURI().toString());
     protected AudioClip key5 = new AudioClip(new File("src\\key5.mp3").toURI().toString());
     protected AudioClip key6 = new AudioClip(new File("src\\key6.mp3").toURI().toString());
-    protected int soundNumber=0;
+    protected int soundNumber = 0;
+
     public Menu(Stage stage) {
         this.stage = stage;
         upGridPane = new GridPane();
@@ -62,7 +64,7 @@ public class Menu {
         scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                switch (soundNumber){
+                switch (soundNumber) {
                     case 0:
                         key1.play();
                         break;
@@ -89,7 +91,7 @@ public class Menu {
                         break;
                     case 8:
                         key6.play();
-                        soundNumber=-1;
+                        soundNumber = -1;
                         break;
 
                 }
@@ -769,17 +771,6 @@ public class Menu {
                     popupwindow.hide();
                     ClientController.getInstance().back();
                     scene.setFill(null);
-                    /*if (message.startsWith("Register Successful")) {
-                        new UserMenuScene(stage).execute();
-                    } else if (message.startsWith("Login successful")) {
-                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
-                            new UserMenuScene(stage).execute();
-                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
-                            new SellerMenuScene(stage).execute();
-                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
-                            new ManagerMenuScene(stage).execute();
-                        }
-                    }*/
                 }
             });
             button.setFill(Color.WHITE);
@@ -792,17 +783,6 @@ public class Menu {
                 public void handle(MouseEvent event) {
                     popupwindow.hide();
                     scene.setFill(null);
-//                    if (message.startsWith("Register Successful")) {
-//                        new UserMenuScene(stage).execute();
-//                    } else if (message.startsWith("Login successful")) {
-//                        if (ClientController.getInstance().getCurrentUser() instanceof Customer) {
-//                            new UserMenuScene(stage).execute();
-//                        } else if (ClientController.getInstance().getCurrentUser() instanceof Seller) {
-//                            new SellerMenuScene(stage).execute();
-//                        } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
-//                            new ManagerMenuScene(stage).execute();
-//                        }
-//                    }
                 }
             });
             Label error = new Label("Message");

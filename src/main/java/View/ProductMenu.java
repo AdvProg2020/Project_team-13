@@ -10,7 +10,6 @@ import Models.Product.Product;
 import Models.Score;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -31,12 +30,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class ProductMenu extends Menu {
@@ -46,7 +43,6 @@ public class ProductMenu extends Menu {
     ImageView star3 = new ImageView(new Image("file:src/gray_star.png"));
     ImageView star4 = new ImageView(new Image("file:src/gray_star.png"));
     ImageView star5 = new ImageView(new Image("file:src/gray_star.png"));
-    ImageView productZoomedImage;
     GridPane commentGridPane = new GridPane();
     private Image goldStar = new Image("file:src/gold_star.png");
     private Rectangle fiveStarBar = new Rectangle(), fourStarBar = new Rectangle(), threeStarBar = new Rectangle(), twoStarBar = new Rectangle(), oneStarBar = new Rectangle();
@@ -142,14 +138,14 @@ public class ProductMenu extends Menu {
         videoButton.setMinWidth(200);
         videoButton.setMinHeight(30);
         videoButton.setTextFill(Color.WHITE);
-        if(product.getVideoPath()==null||product.getVideoPath().equals("")){
+        if (product.getVideoPath() == null || product.getVideoPath().equals("")) {
             videoButton.setDisable(true);
         }
-        if(product.getNumberOfAvailableProducts()==0||!(ClientController.getInstance().getCurrentUser()==null||ClientController.getInstance().getCurrentUser() instanceof Customer)){
+        if (product.getNumberOfAvailableProducts() == 0 || !(ClientController.getInstance().getCurrentUser() == null || ClientController.getInstance().getCurrentUser() instanceof Customer)) {
             addToCartButton.setDisable(true);
         }
         productImage.setOnMouseEntered(e -> {
-           productZoomedImage.setVisible(true);
+            productZoomedImage.setVisible(true);
         });
         productImage.setOnMouseExited(e -> {
             productZoomedImage.setVisible(false);

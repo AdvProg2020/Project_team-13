@@ -30,14 +30,14 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.regex.Pattern;
 
-public class SellerMenuScene extends Menu{
+public class SellerMenuScene extends Menu {
     GridPane userInfoGridPane;
 
     public SellerMenuScene(Stage stage) {
         super(stage);
         this.stage = stage;
         userInfoGridPane = new GridPane();
-        if(ClientController.getInstance().getMediaPlayer()!=null)
+        if (ClientController.getInstance().getMediaPlayer() != null)
             ClientController.getInstance().getMediaPlayer().stop();
         ClientController.getInstance().setMediaPlayer(new MediaPlayer(usersSong));
         ClientController.getInstance().getMediaPlayer().setVolume(0.02);
@@ -55,8 +55,7 @@ public class SellerMenuScene extends Menu{
     }
 
     private void setCenterGridPane() {
-        //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
-        Seller seller =(Seller) ClientController.getInstance().getCurrentUser();
+        Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
         Text personalInfo = new Text(seller.viewPersonalInfo());
         Text pageTitle = new Text("User Menu");
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
@@ -279,7 +278,7 @@ public class SellerMenuScene extends Menu{
         salesHistoryButton.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
-                new SalesHistoryMenu(stage,0).execute();
+                new SalesHistoryMenu(stage, 0).execute();
             }
         });
         salesHistoryButton.setTextAlignment(TextAlignment.CENTER);

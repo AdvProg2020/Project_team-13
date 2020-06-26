@@ -228,7 +228,7 @@ public class UserMenuScene extends Menu {
         ordersButton.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
-                new OrdersMenu(stage,0).execute();
+                new OrdersMenu(stage, 0).execute();
             }
         });
         discountCodesButton.setOnMouseEntered(new EventHandler() {

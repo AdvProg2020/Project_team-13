@@ -1,4 +1,5 @@
 package View;
+
 import Controller.Client.ClientController;
 import Models.Log;
 import Models.UserAccount.Seller;
@@ -14,8 +15,9 @@ import javafx.scene.control.Pagination;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import java.util.HashMap;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,12 +53,12 @@ public class SalesHistoryMenu extends Menu {
 
 
     public void setScene(int pages) {
-        setSeller((Seller)ClientController.getInstance().getCurrentUser());
+        setSeller((Seller) ClientController.getInstance().getCurrentUser());
         if (!seller.getHistoryOfTransaction().isEmpty()) {
             pageGridPane.getChildren().remove(centerGridPane);
             pageGridPane.getChildren().remove(bottomGridPane);
-            setPages(seller.getHistoryOfTransaction().size()%4 == 0 ?
-                    seller.getHistoryOfTransaction().size()/4 : (seller.getHistoryOfTransaction().size()/4) + 1);
+            setPages(seller.getHistoryOfTransaction().size() % 4 == 0 ?
+                    seller.getHistoryOfTransaction().size() / 4 : (seller.getHistoryOfTransaction().size() / 4) + 1);
             allGridPanes = new ArrayList<>();
             for (int i = 0; i < page; i++) {
                 allGridPanes.add(null);
@@ -151,16 +153,16 @@ public class SalesHistoryMenu extends Menu {
         status.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         gridPane.setVgap(30);
         for (int i = 0; i < 6; i++) {
-            if(i==2){
+            if (i == 2) {
                 gridPane.getColumnConstraints().add(new ColumnConstraints(300,
                         Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
-            }else if(i==3){
+            } else if (i == 3) {
                 gridPane.getColumnConstraints().add(new ColumnConstraints(180,
                         Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
-            }else if(i==5) {
+            } else if (i == 5) {
                 gridPane.getColumnConstraints().add(new ColumnConstraints(100,
                         Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
-            }else{
+            } else {
                 gridPane.getColumnConstraints().add(new ColumnConstraints(110,
                         Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
             }

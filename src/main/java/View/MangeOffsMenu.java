@@ -1,8 +1,6 @@
 package View;
 
-import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
-import Controller.Client.DiscountController;
 import Models.Offer;
 import Models.UserAccount.Seller;
 import javafx.event.ActionEvent;
@@ -11,7 +9,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
@@ -23,7 +20,10 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
     private Map<String, ImageView> edits;
@@ -34,7 +34,6 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
     private int offerCounter;
     private List<GridPane> allGridPanes;
     private Pagination pagination;
-    private Button addOffer;
     private List<Offer> allOffers;
 
 
@@ -58,16 +57,16 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
     private void setScene(int pageNumber) {
         Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
         allOffers = seller.getAllOffer();
-        addOffer = new Button("Add Offer");
+        Button addOffer = new Button("Add Offer");
         addOffer.setStyle("-fx-background-color: #808080");
         addOffer.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 15));
         addOffer.setMaxHeight(20);
         addOffer.setOnAction(this);
-        if ( allOffers != null && !allOffers.isEmpty()) {
+        if (allOffers != null && !allOffers.isEmpty()) {
             pageGridPane.getChildren().remove(centerGridPane);
             pageGridPane.getChildren().remove(bottomGridPane);
-            this.setPages(allOffers.size()%4 == 0 ?
-                    allOffers.size()/4 : (allOffers.size()/4) + 1);
+            this.setPages(allOffers.size() % 4 == 0 ?
+                    allOffers.size() / 4 : (allOffers.size() / 4) + 1);
             allGridPanes = new ArrayList<>();
             for (int i = 0; i < pages; i++) {
                 allGridPanes.add(null);
@@ -90,7 +89,7 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
             addOffer.setTranslateY(18);
             borderPane.setTop(hBox);
             borderPane.setCenter(pagination);
-        }else{
+        } else {
             HBox hBox = new HBox();
             hBox.getChildren().add(addOffer);
             pageGridPane.getChildren().remove(centerGridPane);
@@ -108,9 +107,9 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
     }
 
     private GridPane createPage(Integer integer) {
-        if(integer.equals(pages-1)){
+        if (integer.equals(pages - 1)) {
             setTheCenterInfo(allOffers.size() - (integer * 4), integer);
-        }else{
+        } else {
             setTheCenterInfo(4, integer);
         }
         return getAllGridPanes().get(integer);
@@ -132,21 +131,21 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
         endDate.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         gridPane.setVgap(30);
         for (int i = 0; i < 6; i++) {
-            if(i==2 || i==3){
+            if (i == 2 || i == 3) {
                 gridPane.getColumnConstraints().add(new ColumnConstraints(250,
                         Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
-            }else if (i==4 || i==5){
+            } else if (i == 4 || i == 5) {
                 gridPane.getColumnConstraints().add(new ColumnConstraints(110,
                         Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
-            }else if(i==1){
+            } else if (i == 1) {
                 gridPane.getColumnConstraints().add(new ColumnConstraints(100,
                         Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
-            }else{
+            } else {
                 gridPane.getColumnConstraints().add(new ColumnConstraints(100,
-                            Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+                        Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
             }
         }
-        setOfferCounter(4*integer);
+        setOfferCounter(4 * integer);
         for (int i = 1; i <= counter; offerCounter++, i++) {
             setTheRows(i, allOffers.get(offerCounter).getOfferId(), String.valueOf(allOffers.get(offerCounter).getAmount()),
                     String.valueOf(allOffers.get(offerCounter)
@@ -170,7 +169,7 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
             int finalI1 = i;
             button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event){
+                public void handle(ActionEvent event) {
                     VBox vBox = new VBox();
                     vBox.setAlignment(Pos.CENTER);
                     vBox.setStyle("-fx-background-color: #afafaf");
@@ -200,9 +199,8 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
             imageView.setFitHeight(45);
             imageView.setFitWidth(45);
             imageView.setTranslateX(60);
-            int finalI1 = i;
             imageView.setOnMouseClicked(event -> {
-               new EditOffsMenu(this.stage).execute();
+                new EditOffsMenu(this.stage).execute();
             });
             imageView.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
             imageView.setOnMouseExited((EventHandler<Event>) event -> scene.setCursor(Cursor.DEFAULT));
@@ -211,7 +209,7 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
     }
 
 
-    private void setTheRows(int row, String offerId, String amount, String startTime, String endTime){
+    private void setTheRows(int row, String offerId, String amount, String startTime, String endTime) {
         Pane[] allPanes = new Pane[4];
         for (int i = 0; i < 4; i++) {
             allPanes[i] = new Pane();
@@ -219,16 +217,16 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
         }
         Label[] allLabels = labelMaker(offerId, amount, startTime, endTime);
         for (int i = 0; i < 4; i++) {
-            if(i == 0){
+            if (i == 0) {
                 allLabels[i].setTranslateX(15);
             }
-            if(i == 1){
+            if (i == 1) {
                 allLabels[i].setTranslateX(20);
             }
-            if(i == 2){
+            if (i == 2) {
                 allLabels[i].setTranslateX(0);
             }
-            if(i == 3){
+            if (i == 3) {
                 allLabels[i].setTranslateX(0);
             }
             allPanes[i].getChildren().add(allLabels[i]);

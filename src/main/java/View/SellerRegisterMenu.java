@@ -22,12 +22,10 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.regex.Pattern;
 
-public class SellerRegisterMenu extends Menu{
-    private TextField userName,firstName,lastName,email,credit,phoneNumber,company;
+public class SellerRegisterMenu extends Menu {
+    private TextField userName, firstName, lastName, email, credit, phoneNumber, company;
     private PasswordField passWord;
-    private Button loginButton;
-    private Hyperlink createNewAccount;
-    String imagePath="";
+    String imagePath = "";
     GridPane userInfoGridPane;
 
     public SellerRegisterMenu(Stage stage) {
@@ -46,14 +44,11 @@ public class SellerRegisterMenu extends Menu{
         setPageGridPain();
         setUpGridPane();
         setMenuBarGridPane();
-//           centerGridPane.getRowConstraints().add(new RowConstraints(600, Control.USE_COMPUTED_SIZE, 600, Priority.NEVER, VPos.CENTER, false));
-//               bottomGridPane.setStyle("-fx-background-color: rgba(45, 156, 240, 1);");
         setCenterGridPane();
-//        bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
         scene.setRoot(pageGridPane);
     }
 
-    public void setMenuBarGridPane()  {
+    public void setMenuBarGridPane() {
         menuBarGridPane.getChildren().clear();
         menuBarGridPane.getColumnConstraints().clear();
         menuBarGridPane.getRowConstraints().clear();
@@ -102,31 +97,31 @@ public class SellerRegisterMenu extends Menu{
         userInfoGridPane.setHgap(20);
         userInfoGridPane.setMinWidth(650);
         userInfoGridPane.setMinHeight(400);
-        userName=new TextField();
-        passWord=new PasswordField();
-        firstName=new TextField();
-        lastName=new TextField();
-        phoneNumber=new TextField();
-        email=new TextField();
-        credit=new TextField();
-        company=new TextField();
+        userName = new TextField();
+        passWord = new PasswordField();
+        firstName = new TextField();
+        lastName = new TextField();
+        phoneNumber = new TextField();
+        email = new TextField();
+        credit = new TextField();
+        company = new TextField();
 
-        GridPane leftGridPane= new GridPane();
-        GridPane upGridPane= new GridPane();
+        GridPane leftGridPane = new GridPane();
+        GridPane upGridPane = new GridPane();
         upGridPane.setMinHeight(50);
         leftGridPane.setMinWidth(100);
-        Text title=new Text("Seller Register");
-        ImageView userImage=new ImageView(new Image("file:src/user_icon.png"));
+        Text title = new Text("Seller Register");
+        ImageView userImage = new ImageView(new Image("file:src/user_icon.png"));
         userImage.setFitHeight(100);
         userImage.setFitWidth(100);
-        Text usernameText=new Text("Username");
-        Text passwordText=new Text("Password");
-        Text phonenumberText=new Text("Phone Number");
-        Text emailText=new Text("Email");
-        Text creditText=new Text("Credit");
-        Text companyText=new Text("Company");
-        Text firstNameText=new Text("First Name");
-        Text lastNameText=new Text("Last Name");
+        Text usernameText = new Text("Username");
+        Text passwordText = new Text("Password");
+        Text phonenumberText = new Text("Phone Number");
+        Text emailText = new Text("Email");
+        Text creditText = new Text("Credit");
+        Text companyText = new Text("Company");
+        Text firstNameText = new Text("First Name");
+        Text lastNameText = new Text("Last Name");
         title.setStyle("-fx-font-weight: bold;");
         title.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         Button editPhotoButton = new Button("Choose Photo");
@@ -134,7 +129,7 @@ public class SellerRegisterMenu extends Menu{
         signUp.setStyle("-fx-background-color: #E85D9E;");
         signUp.setMinWidth(100);
         signUp.setTextFill(Color.WHITE);
-        Text errorText=new Text();
+        Text errorText = new Text();
         errorText.setFill(Color.RED);
         editPhotoButton.setStyle("-fx-background-color: #E85D9E");
         editPhotoButton.setMinWidth(100);
@@ -143,22 +138,19 @@ public class SellerRegisterMenu extends Menu{
         EventHandler<ActionEvent> eventChoosePhoto = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 File selectedFile = fileChooser.showOpenDialog(stage);
-                if(selectedFile!=null) {
+                if (selectedFile != null) {
                     userImage.setImage(new Image("file:" + selectedFile.getAbsolutePath()));
-                    imagePath="file:"+selectedFile.getAbsolutePath();
+                    imagePath = "file:" + selectedFile.getAbsolutePath();
                 }
             }
         };
         editPhotoButton.setOnAction(eventChoosePhoto);
-        // userInfoGridPane.add(title,0,0);
-        HBox hBox=new HBox();
+        HBox hBox = new HBox();
         hBox.setMinWidth(230);
-        HBox hBox1=new HBox();
+        HBox hBox1 = new HBox();
         hBox1.setMinWidth(250);
-        //  userInfoGridPane.setGridLinesVisible(true);
-        upGridPane.add(hBox1,0,0,1,1);
-        // upGridPane.setGridLinesVisible(true);
-        upGridPane.add(title,1,0,1,1);
+        upGridPane.add(hBox1, 0, 0, 1, 1);
+        upGridPane.add(title, 1, 0, 1, 1);
         userName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         company.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         passWord.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
@@ -167,26 +159,26 @@ public class SellerRegisterMenu extends Menu{
         credit.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         firstName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         lastName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
-        userInfoGridPane.add(userImage,13,1,5,5);
-        userInfoGridPane.add(usernameText,5,9,3,1);
-        userInfoGridPane.add(passwordText,5,10,3,1);
-        userInfoGridPane.add(emailText,5,11,3,1);
-        userInfoGridPane.add(creditText,5,12,3,1);
-        userInfoGridPane.add(firstNameText,15,9,3,1);
-        userInfoGridPane.add(lastNameText,15,10,3,1);
-        userInfoGridPane.add(phonenumberText,15,11,3,1);
-        userInfoGridPane.add(companyText,15,12,3,1);
-        userInfoGridPane.add(userName,8,9,6,1);
-        userInfoGridPane.add(passWord,8,10,6,1);
-        userInfoGridPane.add(email,8,11,6,1);
-        userInfoGridPane.add(credit,8,12,6,1);
-        userInfoGridPane.add(firstName,19,9,6,1);
-        userInfoGridPane.add(lastName,19,10,6,1);
-        userInfoGridPane.add(phoneNumber,19,11,6,1);
-        userInfoGridPane.add(company,19,12,6,1);
-        userInfoGridPane.add(editPhotoButton,13,6,5,1);
-        userInfoGridPane.add(signUp,13,16,5,1);
-        userInfoGridPane.add(errorText,7,14,10,1);
+        userInfoGridPane.add(userImage, 13, 1, 5, 5);
+        userInfoGridPane.add(usernameText, 5, 9, 3, 1);
+        userInfoGridPane.add(passwordText, 5, 10, 3, 1);
+        userInfoGridPane.add(emailText, 5, 11, 3, 1);
+        userInfoGridPane.add(creditText, 5, 12, 3, 1);
+        userInfoGridPane.add(firstNameText, 15, 9, 3, 1);
+        userInfoGridPane.add(lastNameText, 15, 10, 3, 1);
+        userInfoGridPane.add(phonenumberText, 15, 11, 3, 1);
+        userInfoGridPane.add(companyText, 15, 12, 3, 1);
+        userInfoGridPane.add(userName, 8, 9, 6, 1);
+        userInfoGridPane.add(passWord, 8, 10, 6, 1);
+        userInfoGridPane.add(email, 8, 11, 6, 1);
+        userInfoGridPane.add(credit, 8, 12, 6, 1);
+        userInfoGridPane.add(firstName, 19, 9, 6, 1);
+        userInfoGridPane.add(lastName, 19, 10, 6, 1);
+        userInfoGridPane.add(phoneNumber, 19, 11, 6, 1);
+        userInfoGridPane.add(company, 19, 12, 6, 1);
+        userInfoGridPane.add(editPhotoButton, 13, 6, 5, 1);
+        userInfoGridPane.add(signUp, 13, 16, 5, 1);
+        userInfoGridPane.add(errorText, 7, 14, 10, 1);
         userInfoGridPane.setStyle("-fx-background-color: #ECD5DC;");
         centerGridPane.add(userInfoGridPane, 2, 2, 1, 1);
         centerGridPane.add(upGridPane, 1, 1, 2, 1);
@@ -206,24 +198,25 @@ public class SellerRegisterMenu extends Menu{
                     if (checkNameIsvalid(firstName.getText().trim())) {
                         if (checkNameIsvalid(lastName.getText().trim())) {
                             if (checkEmailIsvalid(email.getText().trim())) {
-                                if (Pattern.matches("\\d+", phoneNumber.getText().trim()) && phoneNumber.getText().trim().length() == 11&&phoneNumber.getText().charAt(0)=='0') {
-                                    if(checkUsernameIsvalid(userName.getText())) {
-                                        if(checkCreditIsvalid(credit.getText())) {
-                                            Seller seller = new Seller(userName.getText(), passWord.getText(), firstName.getText(), lastName.getText(), email.getText(), phoneNumber.getText(), Double.parseDouble(credit.getText()),company.getText(),false);
+                                if (Pattern.matches("\\d+", phoneNumber.getText().trim()) && phoneNumber.getText().trim().length() == 11 && phoneNumber.getText().charAt(0) == '0') {
+                                    if (checkUsernameIsvalid(userName.getText())) {
+                                        if (checkCreditIsvalid(credit.getText())) {
+                                            Seller seller = new Seller(userName.getText(), passWord.getText(), firstName.getText(), lastName.getText(), email.getText(), phoneNumber.getText(), Double.parseDouble(credit.getText()), company.getText(), false);
                                             seller.setImagePath(imagePath);
                                             RegisterController.getInstance().createNewUserAccount(seller);
-                                        }else{
+                                        } else {
                                             credit.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                                             errorText.setText("credit is not a number.");
                                         }
-                                    }else{
+                                    } else {
                                         userName.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                                         errorText.setText("Username is invalid. correct format 0-9 A-z");
                                     }
 
                                 } else {
                                     phoneNumber.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
-                                    errorText.setText("Phone number is invalid. Correct format:09xxxxxxxxx"); }
+                                    errorText.setText("Phone number is invalid. Correct format:09xxxxxxxxx");
+                                }
                             } else {
                                 email.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                                 errorText.setText("Email format is invalid. Correct Format: for@example.com");
@@ -250,7 +243,6 @@ public class SellerRegisterMenu extends Menu{
     }
 
 
-
     private boolean checkPasswordIsvalid(String word) {
         if (word.length() > 8 && word.length() < 18) {
             return true;
@@ -271,12 +263,14 @@ public class SellerRegisterMenu extends Menu{
         }
         return false;
     }
+
     private boolean checkUsernameIsvalid(String username) {
         if (Pattern.matches("\\w+", username)) {
             return true;
         }
         return false;
     }
+
     private boolean checkCreditIsvalid(String credit) {
         if (Pattern.matches("\\d+", credit)) {
             return true;

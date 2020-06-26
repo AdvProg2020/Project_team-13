@@ -2,7 +2,6 @@ package View;
 
 import Controller.Client.ClientController;
 import Controller.Client.RegisterController;
-import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -25,10 +24,12 @@ import java.util.regex.Pattern;
 
 public class ManagerRegisterMenu extends Menu{
 
-    private TextField userName,firstName,lastName,email,credit,phoneNumber;
+    private TextField userName;
+    private TextField firstName;
+    private TextField lastName;
+    private TextField email;
+    private TextField phoneNumber;
     private PasswordField passWord;
-    private Button loginButton;
-    private Hyperlink createNewAccount;
     String imagePath="";
     GridPane userInfoGridPane;
 
@@ -48,10 +49,7 @@ public class ManagerRegisterMenu extends Menu{
         setPageGridPain();
         setUpGridPane();
         setMenuBarGridPane();
-//           centerGridPane.getRowConstraints().add(new RowConstraints(600, Control.USE_COMPUTED_SIZE, 600, Priority.NEVER, VPos.CENTER, false));
-//               bottomGridPane.setStyle("-fx-background-color: rgba(45, 156, 240, 1);");
         setCenterGridPane();
-//        bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
         scene.setRoot(pageGridPane);
     }
 
@@ -110,7 +108,7 @@ public class ManagerRegisterMenu extends Menu{
         lastName=new TextField();
         phoneNumber=new TextField();
         email=new TextField();
-        credit=new TextField();
+        TextField credit = new TextField();
         GridPane leftGridPane= new GridPane();
         GridPane upGridPane= new GridPane();
         upGridPane.setMinHeight(50);
@@ -148,14 +146,11 @@ public class ManagerRegisterMenu extends Menu{
             }
         };
         editPhotoButton.setOnAction(eventChoosePhoto);
-        // userInfoGridPane.add(title,0,0);
         HBox hBox=new HBox();
         hBox.setMinWidth(230);
         HBox hBox1=new HBox();
         hBox1.setMinWidth(250);
-        //  userInfoGridPane.setGridLinesVisible(true);
         upGridPane.add(hBox1,0,0,1,1);
-        // upGridPane.setGridLinesVisible(true);
         upGridPane.add(title,1,0,1,1);
         userName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         passWord.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
@@ -193,12 +188,12 @@ public class ManagerRegisterMenu extends Menu{
                 firstName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                 lastName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                 errorText.setText("");
-                if (checkPasswordIsvalid(passWord.getText().trim())) {
-                    if (checkNameIsvalid(firstName.getText().trim())) {
-                        if (checkNameIsvalid(lastName.getText().trim())) {
-                            if (checkEmailIsvalid(email.getText().trim())) {
+                if (checkPasswordIsValid(passWord.getText().trim())) {
+                    if (checkNameIsValid(firstName.getText().trim())) {
+                        if (checkNameIsValid(lastName.getText().trim())) {
+                            if (checkEmailIsValid(email.getText().trim())) {
                                 if (Pattern.matches("\\d+", phoneNumber.getText().trim()) && phoneNumber.getText().trim().length() == 11&&phoneNumber.getText().charAt(0)=='0') {
-                                    if(checkUsernameIsvalid(userName.getText())) {
+                                    if(checkUsernameIsValid(userName.getText())) {
                                             Manager manager = new Manager(userName.getText(), passWord.getText(), firstName.getText(), lastName.getText(), email.getText(), phoneNumber.getText(), 0);
                                             manager.setImagePath(imagePath);
                                         System.out.println(imagePath);
@@ -235,27 +230,27 @@ public class ManagerRegisterMenu extends Menu{
         stage.setScene(scene);
         stage.show();
     }
-    private boolean checkPasswordIsvalid(String word) {
+    private boolean checkPasswordIsValid(String word) {
         if (word.length() > 8 && word.length() < 18) {
             return true;
         }
         return false;
     }
 
-    private boolean checkNameIsvalid(String name) {
+    private boolean checkNameIsValid(String name) {
         if (Pattern.matches("(([a-z]|[A-Z])+ )*(([a-z]|[A-Z])+)", name) && !name.isEmpty()) {
             return true;
         }
         return false;
     }
 
-    private boolean checkEmailIsvalid(String email) {
+    private boolean checkEmailIsValid(String email) {
         if (Pattern.matches("\\w+\\.?\\w*@\\w+\\.\\w+", email)) {
             return true;
         }
         return false;
     }
-    private boolean checkUsernameIsvalid(String username) {
+    private boolean checkUsernameIsValid(String username) {
         if (Pattern.matches("\\w+", username)) {
             return true;
         }
