@@ -251,7 +251,7 @@ public class CartMenu extends Menu {
                     GridPane commentPane = new GridPane();
                     gridPane.add(commentPane, 1, 1);
                     Text titleText = new Text("Phone Number:");
-                    Text contentText = new Text(":");
+                    Text contentText = new Text("Address:");
                     TextField getTitle = new TextField();
                     TextArea getContent = new TextArea();
                     getTitle.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
@@ -503,31 +503,19 @@ public class CartMenu extends Menu {
     }
 
     private boolean checkPasswordIsvalid(String word) {
-        if (word.length() > 8 && word.length() < 18) {
-            return true;
-        }
-        return false;
+        return word.length() > 8 && word.length() < 18;
     }
 
     private boolean checkNameIsvalid(String name) {
-        if (Pattern.matches("(([a-z]|[A-Z])+ )*(([a-z]|[A-Z])+)", name) && !name.isEmpty()) {
-            return true;
-        }
-        return false;
+        return Pattern.matches("(([a-z]|[A-Z])+ )*(([a-z]|[A-Z])+)", name) && !name.isEmpty();
     }
 
     private DiscountCode getDiscountCode(String discountCode) {
         DiscountCode discount = ((Customer) ClientController.getInstance().getCurrentUser()).findDiscountCodeWithCode(discountCode);
-        if (discount != null) {
-            return discount;
-        }
-        return null;
+        return discount;
     }
 
     private boolean checkEmailIsvalid(String email) {
-        if (Pattern.matches("\\w+\\.?\\w*@\\w+\\.\\w+", email)) {
-            return true;
-        }
-        return false;
+        return Pattern.matches("\\w+\\.?\\w*@\\w+\\.\\w+", email);
     }
 }

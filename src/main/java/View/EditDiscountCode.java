@@ -110,6 +110,9 @@ public class EditDiscountCode extends Menu {
 
 
     private void setCenterGridPane() {
+        allUsers = discountCode.getAllUserAccountsThatHaveDiscount();
+        maxUsingTime = discountCode.getMaxUsingTime();
+        remainingTimesForEachCustomer = discountCode.getRemainingTimesForEachCustomer();
         ComboBox comboBox = new ComboBox();
         comboBox.setEditable(true);
         for (Customer customer : UserController.getInstance().getAllCustomers()) {

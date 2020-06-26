@@ -86,7 +86,6 @@ public class CartCenter {
                 sellerAndProducts += seller + ": ";
                 double cost = 0;
                 for (Product product : cart.getAllproduct()) {
-                    cost = 0;
                     if (seller.equals(product.getSeller())) {
                         allProducts.add(product);
                         cost += product.getCostAfterOff();
