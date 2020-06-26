@@ -171,8 +171,8 @@ public class EditDiscountCode extends Menu {
         comboBox.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (discountCode.getAllUserAccountsThatHaveDiscount().contains((String) comboBox.getValue())) {
-                    lastName.setText(Integer.valueOf(discountCode.getRemainingTimesForEachCustomer().get((String) comboBox.getValue())).toString());
+                if (discountCode.getAllUserAccountsThatHaveDiscount().contains(comboBox.getValue())) {
+                    lastName.setText(Integer.valueOf(discountCode.getRemainingTimesForEachCustomer().get(comboBox.getValue())).toString());
                 }
             }
         });
@@ -217,17 +217,17 @@ public class EditDiscountCode extends Menu {
         adduser.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (!((String) comboBox.getValue()).equals("")) {
+                if (!comboBox.getValue().equals("")) {
                     if (lastName.getText().matches("\\d+")) {
                         if (UserController.getInstance().isThereCustomerWithThisUsername(((String) comboBox.getValue()))) {
-                            if (!allUsers.contains(((String) comboBox.getValue()))) {
+                            if (!allUsers.contains(comboBox.getValue())) {
                                 allUsers.add(((String) comboBox.getValue()));
                                 remainingTimesForEachCustomer.put(((String) comboBox.getValue()), Integer.parseInt(lastName.getText()));
                                 maxUsingTime.put(((String) comboBox.getValue()), Integer.parseInt(lastName.getText()));
                                 comboBox.setValue("");
                                 lastName.setText("");
                             } else {
-                                allUsers.set(allUsers.indexOf((String) comboBox.getValue()), (String) comboBox.getValue());
+                                allUsers.set(allUsers.indexOf(comboBox.getValue()), (String) comboBox.getValue());
                                 remainingTimesForEachCustomer.replace(((String) comboBox.getValue()), Integer.parseInt(lastName.getText()));
                                 maxUsingTime.replace(((String) comboBox.getValue()), Integer.parseInt(lastName.getText()));
                                 comboBox.setValue("");
@@ -248,6 +248,13 @@ public class EditDiscountCode extends Menu {
         signUp.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                discountCode.setDiscountPercent(Integer.parseInt(discountPercent.getText()));
+                discountCode.setMaxDiscountAmount(Double.parseDouble(maxAmount.getText()));
+                discountCode.setStartTime(Date.from(startDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                discountCode.setEndTime(Date.from(endDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                discountCode.setAllUserAccountsThatHaveDiscount(allUsers);
+                discountCode.setMaxUsingTime(maxUsingTime);
+                discountCode.setRemainingTimesForEachCustomer(remainingTimesForEachCustomer);
                 DiscountController.getInstance().editDiscountCode(discountCode);
             }
         });
@@ -259,46 +266,26 @@ public class EditDiscountCode extends Menu {
     }
 
     private boolean checkdiscountPercentIsvalid(String word) {
-        if (word.matches("\\d+") && Double.parseDouble(word) <= 100) {
-            return true;
-        }
-        return false;
+        return word.matches("\\d+") && Double.parseDouble(word) <= 100;
     }
 
     private boolean checkNameIsvalid(String name) {
-        if (Pattern.matches("\\w+", name) && !name.isEmpty()) {
-            return true;
-        }
-        return false;
+        return Pattern.matches("\\w+", name) && !name.isEmpty();
     }
 
     private boolean checkEmailIsvalid(String email) {
-        if (Pattern.matches("\\w+\\.?\\w*@\\w+\\.\\w+", email)) {
-            return true;
-        }
-        return false;
+        return Pattern.matches("\\w+\\.?\\w*@\\w+\\.\\w+", email);
     }
 
     private boolean checkmaxAmountIsvalid(String maxAmount) {
-        if (Pattern.matches("\\d+", maxAmount)) {
-            return true;
-        }
-        return false;
+        return Pattern.matches("\\d+", maxAmount);
     }
 
     private boolean checkEndTimeValid(Date endTime, Date startTime) {
-        if (endTime.after(new Date()) && endTime.after(startTime)) {
-            return true;
-        } else {
-            return false;
-        }
+        return endTime.after(new Date()) && endTime.after(startTime);
     }
 
     private boolean checkStartTimeValid(Date startTime) {
-        if (startTime.after(new Date())) {
-            return true;
-        } else {
-            return false;
-        }
+        return startTime.after(new Date());
     }
 }

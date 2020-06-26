@@ -1,4 +1,5 @@
 package View;
+
 import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
 import Models.Product.Category;
@@ -14,10 +15,11 @@ import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.scene.image.ImageView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -167,6 +169,7 @@ public class ManageCategoryMenu extends Menu implements EventHandler<ActionEvent
             int finalI1 = i;
             imageView.setOnMouseClicked(event -> {
                 CategoryController.getInstance().setCurrentCategory(allCategories.get(finalI1));
+                ClientController.getInstance().getMenus().remove(this);
                 new EditCategoryMenu(this.stage).execute();
             });
             imageView.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
@@ -261,6 +264,7 @@ public class ManageCategoryMenu extends Menu implements EventHandler<ActionEvent
 
     @Override
     public void handle(ActionEvent event) {
+        ClientController.getInstance().getMenus().remove(this);
         new CreateCategoryMenu(this.stage).execute();
     }
 }

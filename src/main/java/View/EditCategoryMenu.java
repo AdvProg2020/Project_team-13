@@ -3,7 +3,6 @@ package View;
 import Controller.Client.CategoryController;
 import Controller.Client.ClientController;
 import Models.Product.Category;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -18,10 +17,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -152,11 +149,11 @@ public class EditCategoryMenu extends Menu {
         comboBox.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
-                if (featureNamesComboBox.getValue() != null && !((String) featureNamesComboBox.getValue()).equals("")) {
+                if (featureNamesComboBox.getValue() != null && !featureNamesComboBox.getValue().equals("")) {
                     comboBox.getItems().remove(0, comboBox.getItems().size());
                     allModesOfFeature.clear();
-                    if (category.getFeatures().containsKey((String) featureNamesComboBox.getValue())) {
-                        for (String mode : category.getFeatures().get((String) featureNamesComboBox.getValue())) {
+                    if (category.getFeatures().containsKey(featureNamesComboBox.getValue())) {
+                        for (String mode : category.getFeatures().get(featureNamesComboBox.getValue())) {
                             comboBox.getItems().add(mode);
                             allModesOfFeature.add(mode);
                         }
@@ -174,9 +171,7 @@ public class EditCategoryMenu extends Menu {
         credit.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
         firstName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30;");
         lastName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30;");
-        userInfoGridPane.add(maxAmountText, 5, 9, 3, 1);
         userInfoGridPane.add(discountPercentText, 5, 10, 3, 1);
-        userInfoGridPane.add(maxAmount, 8, 9, 6, 1);
         userInfoGridPane.add(featureNamesComboBox, 8, 10, 6, 1);
         userInfoGridPane.add(comboBox, 15, 10, 6, 1);
         userInfoGridPane.add(addmode, 25, 10, 6, 1);
@@ -203,17 +198,17 @@ public class EditCategoryMenu extends Menu {
                 discountPercent.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30;");
                 comboBox.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
                 errorText.setText("");
-                if (!((String) comboBox.getValue()).equals("")) {
-                    if (!allModesOfFeature.contains((String) comboBox.getValue())) {
-                        if (category.getFeatures().containsKey((String) featureNamesComboBox.getValue())) {
-                            comboBox.getItems().add((String) comboBox.getValue());
-                            category.getFeatures().get((String) featureNamesComboBox.getValue()).add((String) comboBox.getValue());
+                if (!comboBox.getValue().equals("")) {
+                    if (!allModesOfFeature.contains(comboBox.getValue())) {
+                        if (category.getFeatures().containsKey(featureNamesComboBox.getValue())) {
+                            comboBox.getItems().add(comboBox.getValue());
+                            category.getFeatures().get(featureNamesComboBox.getValue()).add((String) comboBox.getValue());
                             CategoryController.getInstance().editCategoryFeatures(category, "adM");
                             comboBox.setValue("");
                         } else {
                             ArrayList<String> modes = new ArrayList<>();
                             modes.add((String) comboBox.getValue());
-                            featureNamesComboBox.getItems().add((String) featureNamesComboBox.getValue());
+                            featureNamesComboBox.getItems().add(featureNamesComboBox.getValue());
                             category.getFeatures().put((String) featureNamesComboBox.getValue(), modes);
                             CategoryController.getInstance().editCategoryFeatures(category, "add");
                             comboBox.setValue("");
