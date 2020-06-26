@@ -1,7 +1,7 @@
 package View;
 
 import Controller.Client.ClientController;
-import Controller.Client.ManagerController;
+import Controller.Client.UserController;
 import Controller.Client.OffsController;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
@@ -37,7 +37,7 @@ public class CreateOffsMenu extends Menu {
 
     public CreateOffsMenu(Stage stage) {
         super(stage);
-        ManagerController.getInstance().getAllUserFromServer();
+        UserController.getInstance().getAllUserFromServer();
         upGridPane = new GridPane();
         menuBarGridPane = new GridPane();
         centerGridPane = new GridPane();

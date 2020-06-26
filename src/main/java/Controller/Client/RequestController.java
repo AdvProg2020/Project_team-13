@@ -1,13 +1,14 @@
 package Controller.Client;
 
-import Models.*;
+import Models.Comment;
+import Models.Offer;
 import Models.Product.Product;
+import Models.Request;
+import Models.Score;
 import Models.UserAccount.Seller;
 import View.MessageKind;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class RequestController {
@@ -26,22 +27,6 @@ public class RequestController {
 
     public void getAllRequestsFromServer() {
         ClientController.getInstance().sendMessageToServer("@getAllRequests@");
-    }
-
-
-    public void printAllRequests(String json) {
-        Type requestListType = new TypeToken<ArrayList<Request>>() {
-        }.getType();
-        allRequests = new Gson().fromJson(json, requestListType);
-        String showAllRequests = "";
-        if (allRequests != null && !allRequests.isEmpty()) {
-            for (Request request : allRequests) {
-                if (request != null) {
-                    showAllRequests += request.getRequestId() + " " + request.getType() + "\n";
-                }
-            }
-        }
-        //   ClientController.getInstance().getCurrentMenu().showMessage(showAllRequests);
     }
 
     public String viewRequestDetail(String requestId) {

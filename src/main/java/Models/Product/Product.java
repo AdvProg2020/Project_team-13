@@ -147,10 +147,6 @@ public class Product {
         this.commentList.add(comment);
     }
 
-    public boolean isExistInOfferRegistered() {
-        return existInOfferRegistered;
-    }
-
     public void setExistInOfferRegistered(boolean existInOfferRegistered) {
         this.existInOfferRegistered = existInOfferRegistered;
     }
@@ -193,7 +189,6 @@ public class Product {
         }
         return this.costAfterOff;
     }
-
 
     public void setCommentList(ArrayList<Comment> commentList) {
         this.commentList = commentList;
@@ -283,24 +278,11 @@ public class Product {
         this.numberOfAvailableProducts = numberOfAvailableProducts;
     }
 
-    public void addFeaturesOfCategoryThatHas(String feature, String featureDetail) {
-        if (!this.featuresOfCategoryThatHas.containsKey(feature)) {
-            this.featuresOfCategoryThatHas.put(feature, featureDetail);
-        }
-    }
 
     public void deleteFeaturesOfCategoryThatHas(String feature) {
         if (!this.featuresOfCategoryThatHas.containsKey(feature)) {
             this.featuresOfCategoryThatHas.remove(feature);
         }
-    }
-
-    public String viewAllBuyers() {
-        String allBuyer = "";
-        for (Customer buyer : allBuyers) {
-            allBuyer += buyer.getUsername() + "\n";
-        }
-        return allBuyer;
     }
 
     public void addToAllBuyers(Customer buyer) {
@@ -322,9 +304,6 @@ public class Product {
         }
     }
 
-    public void setProductCompany(String productCompany) {
-        this.productCompany = productCompany;
-    }
 
     @Override
     public String toString() {
@@ -358,17 +337,6 @@ public class Product {
                 "numberOfAvailableProducts= " + numberOfAvailableProducts;
     }
 
-    public void showDigest() {
-        String digest = "";
-        digest += description + "\n";
-        digest += productCost + "\n";
-        if (getOffer() != null)
-            digest += getOffer().getAmount() + "%\n";
-        digest += productsCategory + "%\n";
-        digest += sellerUsername + "\n";
-        digest += getAverageScore() + "\n";
-        //   ClientController.getInstance().getCurrentMenu().showMessage(digest);
-    }
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
@@ -393,10 +361,6 @@ public class Product {
         }
         attributes += "ِDescriptions: " + getDescription() + "<br></html>";
         return attributes;
-        //  ClientController.getInstance().getCurrentMenu().showMessage(attributes);
     }
 
-    public void setFeaturesOfCategoryThatHas(HashMap<String, String> featuresOfCategoryThatHas) {
-        this.featuresOfCategoryThatHas = featuresOfCategoryThatHas;
-    }
 }

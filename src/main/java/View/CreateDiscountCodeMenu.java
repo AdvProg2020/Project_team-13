@@ -2,7 +2,7 @@ package View;
 
 import Controller.Client.ClientController;
 import Controller.Client.DiscountController;
-import Controller.Client.ManagerController;
+import Controller.Client.UserController;
 import Models.DiscountCode;
 import Models.UserAccount.Customer;
 import javafx.event.ActionEvent;
@@ -41,7 +41,7 @@ public class CreateDiscountCodeMenu extends Menu {
 
     public CreateDiscountCodeMenu(Stage stage) {
         super(stage);
-        ManagerController.getInstance().getAllUserFromServer();
+        UserController.getInstance().getAllUserFromServer();
         upGridPane = new GridPane();
         menuBarGridPane = new GridPane();
         centerGridPane = new GridPane();
@@ -110,7 +110,7 @@ public class CreateDiscountCodeMenu extends Menu {
     private void setCenterGridPane() {
         ComboBox comboBox = new ComboBox();
         comboBox.setEditable(true);
-        for (Customer customer : ManagerController.getInstance().getAllCustomers()) {
+        for (Customer customer : UserController.getInstance().getAllCustomers()) {
             comboBox.getItems().add(customer.getUsername());
         }
         userInfoGridPane.setVgap(10);
@@ -205,7 +205,7 @@ public class CreateDiscountCodeMenu extends Menu {
             public void handle(MouseEvent event) {
                 if (!((String) comboBox.getValue()).equals("")) {
                     if (lastName.getText().matches("\\d+")) {
-                        if (ManagerController.getInstance().isThereCustomerWithThisUsername(((String) comboBox.getValue()))) {
+                        if (UserController.getInstance().isThereCustomerWithThisUsername(((String) comboBox.getValue()))) {
                             if (!allUsers.contains(((String) comboBox.getValue()))) {
                                 allUsers.add(((String) comboBox.getValue()));
                                 remainingTimesForEachCustomer.put(((String) comboBox.getValue()), Integer.parseInt(lastName.getText()));

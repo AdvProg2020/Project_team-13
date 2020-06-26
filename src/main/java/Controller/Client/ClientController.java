@@ -13,13 +13,11 @@ import java.util.ArrayList;
 
 public class ClientController {
     private static ClientController clientController;
-    private View.Menu currentMenu;
     private UserAccount currentUser;
     private DiscountCode currentDiscountCode;
     private Product currentProduct;
     private ArrayList<View.Menu> menus = new ArrayList<>();
     private MediaPlayer mediaPlayer;
-    private String transactionMessage;
 
     public MediaPlayer getMediaPlayer() {
         return mediaPlayer;
@@ -49,7 +47,6 @@ public class ClientController {
 
     public void back() {
         if (menus.size() > 1) {
-            System.out.println(menus.size());
             menus.remove(menus.size() - 1);
             menus.get(menus.size() - 1).setMenuBarGridPane();
             menus.get(menus.size() - 1).execute();
@@ -99,7 +96,6 @@ public class ClientController {
     }
 
     public void sendMessageToServer(String message) {
-        transactionMessage = message;
         ServerController.getInstance().getMessageFromClient(message);
     }
 
@@ -112,9 +108,5 @@ public class ClientController {
             return (Seller) currentUser;
         }
         return null;
-    }
-
-    public String getTransactionMessage() {
-        return transactionMessage;
     }
 }

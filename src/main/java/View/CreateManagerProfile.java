@@ -1,8 +1,7 @@
 package View;
 
 import Controller.Client.ClientController;
-import Controller.Client.ManagerController;
-import Controller.Client.RegisterController;
+import Controller.Client.UserController;
 import Models.UserAccount.Manager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -198,7 +197,7 @@ public class CreateManagerProfile extends Menu{
                                     if(checkUsernameIsvalid(userName.getText())) {
                                         Manager manager = new Manager(userName.getText(), passWord.getText(), firstName.getText(), lastName.getText(), email.getText(), phoneNumber.getText(), 0);
                                         manager.setImagePath(imagePath);
-                                        ManagerController.getInstance().createManagerProfile(manager);
+                                        UserController.getInstance().createManagerProfile(manager);
                                     }else{
                                         userName.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                                         errorText.setText("Username is invalid. correct format 0-9 A-z");

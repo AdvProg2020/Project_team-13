@@ -3,9 +3,7 @@ package Controller.Client;
 import Models.DiscountCode;
 import View.MessageKind;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class DiscountController {
@@ -56,20 +54,6 @@ public class DiscountController {
     public String viewDiscountCode(String code) {
         DiscountCode discountCode = findDiscountCodeWithThisId(code);
         return discountCode.view();
-    }
-
-    public void printAllDiscountCodes(String json) {
-        Type discountCodeListType = new TypeToken<ArrayList<DiscountCode>>() {
-        }.getType();
-        allDiscountCodes = new Gson().fromJson(json, discountCodeListType);
-        String showAllDiscountCodes = "";
-        for (DiscountCode discountCode : allDiscountCodes) {
-            showAllDiscountCodes += "\u001B[34mCode: \u001B[0m" + discountCode.getDiscountCodeID() + "\n"
-                    + "\u001B[34mPercent: \u001B[0m" + discountCode.getDiscountPercent() + "%\n"
-                    + "\u001B[34mStart Time: \u001B[0m" + discountCode.getStartTime() + "\n"
-                    + "\u001B[34mEnd Time: \u001B[0m" + discountCode.getEndTime() + "\u001B[0m\n";
-        }
-       // ClientController.getInstance().getCurrentMenu().showMessage(showAllDiscountCodes);
     }
 
     public ArrayList<DiscountCode> getAllDiscountCodes() {

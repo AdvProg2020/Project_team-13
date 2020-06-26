@@ -37,7 +37,6 @@ public class DataBase {
             fileWriter.write(json);
             fileWriter.close();
         } catch (Exception e) {
-            System.out.println(e);
         }
     }
 
@@ -47,7 +46,6 @@ public class DataBase {
             fileWriter.write(json);
             fileWriter.close();
         } catch (Exception e) {
-            System.out.println(e);
         }
     }
 
@@ -57,7 +55,6 @@ public class DataBase {
             fileWriter.write(json);
             fileWriter.close();
         } catch (Exception e) {
-            System.out.println(e);
         }
     }
 
@@ -107,7 +104,6 @@ public class DataBase {
             fileWriter.write(json);
             fileWriter.close();
         } catch (Exception e) {
-            System.out.println(e);
         }
     }
 
@@ -139,7 +135,6 @@ public class DataBase {
             fileWriter.write(json);
             fileWriter.close();
         } catch (Exception e) {
-            System.out.println(e);
         }
     }
 
@@ -243,7 +238,6 @@ public class DataBase {
             fileWriter.write(json);
             fileWriter.close();
         } catch (Exception e) {
-            System.out.println(e);
         }
     }
 
@@ -253,7 +247,6 @@ public class DataBase {
             fileWriter.write(json);
             fileWriter.close();
         } catch (Exception e) {
-            System.out.println(e);
         }
     }
 
@@ -319,7 +312,6 @@ public class DataBase {
             fileWriter.write(lastRequestId);
             fileWriter.close();
         } catch (Exception e) {
-            System.out.println(e);
         }
     }
 
@@ -329,7 +321,6 @@ public class DataBase {
             fileWriter.write(lastDiscountCodeId);
             fileWriter.close();
         } catch (Exception e) {
-            System.out.println(e);
         }
     }
 
@@ -572,7 +563,6 @@ public class DataBase {
             fileWriter.write(lastOfferId);
             fileWriter.close();
         } catch (Exception e) {
-            System.out.println(e);
         }
     }
 

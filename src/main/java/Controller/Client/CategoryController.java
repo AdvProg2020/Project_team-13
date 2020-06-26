@@ -1,7 +1,6 @@
 package Controller.Client;
 
 import Models.Product.Category;
-import View.MessageKind;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -16,19 +15,6 @@ public class CategoryController {
 
     private CategoryController() {
         this.allCategories = new ArrayList<>();
-    }
-
-
-
-    public void getCategoriesStringForm() {
-        updateAllCategories();
-        String categoriesStringForm = "";
-        if (allCategories != null && !allCategories.isEmpty()) {
-            for (Category category : allCategories) {
-                categoriesStringForm += category.getName() + "\n";
-            }
-       //     ClientController.getInstance().getCurrentMenu().showMessage(categoriesStringForm);
-        }// else ClientController.getInstance().getCurrentMenu().printError(categoriesStringForm);
     }
 
     public static CategoryController getInstance() {
@@ -46,28 +32,6 @@ public class CategoryController {
         this.currentCategory = currentCategory;
     }
 
-    public void printAllCategories() {
-        updateAllCategories();
-        if (allCategories != null) {
-            String allCategories = "";
-            int categoryCount = 1;
-            for (Category category : this.allCategories) {
-                if (category.getAllProducts() != null) {
-                    allCategories += (categoryCount) + "." + category.getName() + "\t" + "Number of products in this category: " + category.getAllProducts().size() + " \n";
-                } else {
-                    allCategories += (categoryCount) + "." + category.getName() + "\t" + "Number of products in this category: " + "0" + " \n";
-                }
-                categoryCount++;
-            }
-            if (allCategories.length() != 0 && !allCategories.isEmpty()) {
-                allCategories = allCategories.substring(0, allCategories.length() - 1);
-            }
-       //     ClientController.getInstance().getCurrentMenu().showMessage(allCategories);
-        } else {
-            ClientController.getInstance().getCurrentMenu().showMessage("there is no category", MessageKind.ErrorWithoutBack);
-        }
-    }
-
     public void editCategoryFeatures(Category category, String kindOfEdit) {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("editCategory", kindOfEdit + new Gson().toJson(category)));
     }
@@ -78,21 +42,6 @@ public class CategoryController {
 
     public ArrayList<Category> getAllCategories() {
         return allCategories;
-    }
-
-    public boolean isThereCategoryWithThisName(String name) {
-        if (allCategories != null && !allCategories.isEmpty()) {
-            for (Category category : allCategories) {
-                if (category.getName().equals(name)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public void setAllCategories(ArrayList<Category> allCategories) {
-        this.allCategories = allCategories;
     }
 
     public void setAllCategories(String message) {

@@ -3,9 +3,6 @@ package Controller.Client;
 import Models.Product.Cart;
 import Models.Product.Product;
 import Models.UserAccount.Customer;
-import View2.MainMenu;
-import View2.Menu;
-import View2.UserMenu.Customer.CustomerMenu;
 import com.google.gson.Gson;
 
 public class CartController {
@@ -20,12 +17,8 @@ public class CartController {
     }
 
     public void payed(String json) {
-        System.out.println(json);
         ClientController.getInstance().setCurrentUser(new Gson().fromJson(json, Customer.class));
         setCurrentCart(new Cart());
-        //   Menu menu= new CustomerMenu(new MainMenu(null).setScanner(ClientController.getInstance().getCurrentMenu().getScanner())).setScanner(ClientController.getInstance().getCurrentMenu().getScanner());
-        //   ClientController.getInstance().setCurrentMenu(menu);
-        //  menu.execute();
     }
 
     public void setCurrentCart(Cart currentCart) {
@@ -49,7 +42,7 @@ public class CartController {
                 currentCart.getCountOfEachProduct().replace(product.getProductId(), currentCart.getCountOfEachProduct().get(product.getProductId()) - 1);
             } else {
                 for (Product product1 : currentCart.getAllproduct()) {
-                    if(product.getProductId().equals(product1.getProductId())) {
+                    if (product.getProductId().equals(product1.getProductId())) {
                         currentCart.getAllproduct().remove(product1);
                         currentCart.getCountOfEachProduct().remove(product.getProductId());
                         break;
@@ -58,7 +51,6 @@ public class CartController {
             }
         }
     }
-
 
     public double getTotalPriceOfProduct(Product product) {
         for (String s : cartController.getCurrentCart().getCountOfEachProduct().keySet()) {

@@ -1,6 +1,5 @@
 package Controller.Client;
 
-import Models.BuyLog;
 import Models.Log;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
@@ -39,15 +38,15 @@ public class MessageController {
         } else if (message.startsWith("@Successful@")) {
             message = message.substring(12, message.length());
             ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.MessageWithBack);
-        }else if (message.startsWith("@SuccessfulNotBack@")) {
+        } else if (message.startsWith("@SuccessfulNotBack@")) {
             message = message.substring(19);
             ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.MessageWithoutBack);
         } else if (message.startsWith("@payed@")) {
             message = message.substring(7, message.length());
             CartController.getInstance().payed(message);
-            int size=((Customer)ClientController.getInstance().getCurrentUser()).getHistoryOfTransaction().size();
-            Log buyLog= (ClientController.getInstance().getCurrentUser()).getHistoryOfTransaction().get(size-1);
-            ClientController.getInstance().getCurrentMenu().showMessage("Successfully purchase\ntotal price: "+buyLog.getPrice()+"\n"+buyLog.getDate(), MessageKind.MessageWithBack);
+            int size = ((Customer) ClientController.getInstance().getCurrentUser()).getHistoryOfTransaction().size();
+            Log buyLog = (ClientController.getInstance().getCurrentUser()).getHistoryOfTransaction().get(size - 1);
+            ClientController.getInstance().getCurrentMenu().showMessage("Successfully purchase\ntotal price: " + buyLog.getPrice() + "\n" + buyLog.getDate(), MessageKind.MessageWithBack);
         } else if (message.startsWith("@Login as Customer@")) {
             Gson gson = new Gson();
             message = message.substring(19, message.length());
@@ -70,21 +69,17 @@ public class MessageController {
             ClientController.getInstance().getCurrentMenu().showMessage(message.substring(17, message.length()), MessageKind.MessageWithBack);
         } else if (message.startsWith("@removedSuccessful@")) {
             ClientController.getInstance().getCurrentMenu().showMessage(message.substring(19, message.length()), MessageKind.MessageWithoutBack);
-        } else if (message.startsWith("@AllRequests@")) {
-            message = message.substring(13, message.length());
-            RequestController.getInstance().printAllRequests(message);
-        } else if (message.startsWith("@AllDiscountCodes@")) {
+        }  else if (message.startsWith("@AllDiscountCodes@")) {
             message = message.substring(18, message.length());
-            DiscountController.getInstance().printAllDiscountCodes(message);
         } else if (message.startsWith("@allCustomers@")) {
             message = message.substring(14, message.length());
-            ManagerController.getInstance().setAllCustomers(message);
+            UserController.getInstance().setAllCustomers(message);
         } else if (message.startsWith("@allSellers@")) {
             message = message.substring(12, message.length());
-            ManagerController.getInstance().setAllSellers(message);
+            UserController.getInstance().setAllSellers(message);
         } else if (message.startsWith("@allManagers@")) {
             message = message.substring(13);
-            ManagerController.getInstance().setAllManagers(message);
+            UserController.getInstance().setAllManagers(message);
         } else if (message.startsWith("@getAllProductsForManager@")) {
             message = message.substring(26);
             ProductController.getInstance().updateAllProducts(message);

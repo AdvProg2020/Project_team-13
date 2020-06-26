@@ -135,14 +135,14 @@ public class Menu {
             home.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             home.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             home.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -175,20 +175,14 @@ public class Menu {
             products.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             products.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
-                }
-            });
-            products.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-//                    ClientController.getInstance().back();
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             products.setStyle("-fx-background-color: rgba(45, 156, 240, 0.24);");
@@ -199,14 +193,14 @@ public class Menu {
             back.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             back.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
 
@@ -218,7 +212,6 @@ public class Menu {
             });
             leftGridPane.add(back, 0, 0);
             leftGridPane.add(home, 1, 0);
-            //  products.setTextFill(Color.WHITE);
             leftGridPane.add(products, 2, 0);
             leftGridPane.setHgap(5);
             GridPane rightGridPane = new GridPane();
@@ -226,14 +219,14 @@ public class Menu {
             login.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             login.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             login.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -250,14 +243,14 @@ public class Menu {
             register.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             register.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             register.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -348,13 +341,13 @@ public class Menu {
             image1.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
                 }
             });
             image1.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             image1.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -386,14 +379,14 @@ public class Menu {
             home.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             home.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             home.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -428,14 +421,14 @@ public class Menu {
             products.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             products.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             products.setStyle("-fx-background-color: rgba(45, 156, 240, 0.24);-fx-text-fill: White");
@@ -446,14 +439,14 @@ public class Menu {
             back.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             back.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             back.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -471,14 +464,14 @@ public class Menu {
             logout.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             logout.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             logout.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -490,34 +483,31 @@ public class Menu {
             });
             Label userName = new Label(ClientController.getInstance().getCurrentUser().getUsername().trim());
             Image image = new Image(ClientController.getInstance().getCurrentUser().getImagePath());
-            System.out.println("bbbb");
-            System.out.println(image);
-            System.out.println("bbbb");
             ImageView userImage = new ImageView(image);
             userName.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             userName.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             userImage.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             userImage.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             userName.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -548,14 +538,14 @@ public class Menu {
             image1.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             image1.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             image1.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -799,8 +789,6 @@ public class Menu {
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.initStyle(StageStyle.UNDECORATED);
         popupwindow.setScene(scene1);
-        System.out.println(popupwindow == null);
-        System.out.println(stage == null);
         popupwindow.show();
     }
 

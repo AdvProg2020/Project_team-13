@@ -335,7 +335,6 @@ public class UserCenter {
         allManager.remove(findManagerWithUsername(manager.getUsername()));
         allManager.add(index, manager);
         DataBase.getInstance().updateAllManagers(new Gson().toJson(allManager));
-        System.out.println("edited");
         ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@user successfully edited");
     }
 
