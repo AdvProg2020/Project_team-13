@@ -145,6 +145,7 @@ public class UserMenuScene extends Menu {
                                             customer.setPhoneNumber(phoneNumber.getText().trim());
                                             customer.setPassword(password.getText().trim());
                                             ClientController.getInstance().sendMessageToServer("@editCustomer@" + new Gson().toJson(customer));
+                                            personalInfo.setText(customer.viewPersonalInfo());
                                             popupwindow.close();
                                         } else {
                                             errors.setText("Phone number is invalid.\nCorrect format:09xxxxxxxxx");

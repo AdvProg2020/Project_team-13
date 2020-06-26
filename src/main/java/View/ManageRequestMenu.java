@@ -107,6 +107,7 @@ public class ManageRequestMenu extends Menu {
 
     private void setTheBeginning() {
         borderPane = new BorderPane();
+        RequestController.getInstance().getAllRequestsFromServer();
         ArrayList<Request> allRequests = RequestController.getInstance().getAllRequests();
         for (int i = 0; i < RequestController.getInstance().getAllRequests().size(); i++) {
             Button button = new Button("View Details");

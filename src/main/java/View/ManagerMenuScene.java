@@ -144,6 +144,7 @@ public class ManagerMenuScene extends Menu {
                                             manager.setPhoneNumber(phoneNumber.getText().trim());
                                             manager.setPassword(password.getText().trim());
                                             ClientController.getInstance().sendMessageToServer("@editManager@" + new Gson().toJson(manager));
+                                            personalInfo.setText(manager.viewPersonalInfo());
                                             popupwindow.close();
                                         } else {
                                             errors.setText("Phone number is invalid.\nCorrect format:09xxxxxxxxx");

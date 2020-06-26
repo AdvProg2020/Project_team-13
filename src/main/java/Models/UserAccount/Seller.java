@@ -211,41 +211,6 @@ public class Seller extends UserAccount {
         return history.toString();
     }
 
-    public String viewAllProducts() {
-        StringBuilder products = new StringBuilder();
-        if (allProducts != null && !allProducts.isEmpty()) {
-            for (Product product : this.allProducts) {
-                products.append(product.getProductId()).append(" ");
-                products.append(product.getProductName()).append(" ");
-                products.append(product.getProductCost()).append(" ");
-                products.append("\n");
-            }
-        }
-        return products.toString();
-    }
-
-    public String viewProduct(String productID) {
-        if (getProductByID(productID) == null) {
-            return "The Product Does Not Exist";
-        }
-        String productInfo = "";
-        Product product = getProductByID(productID);
-        productInfo += product.getProductId() + "\n";
-        productInfo += product.getProductName() + "\n";
-        productInfo += product.getProductCompany() + "\n";
-        productInfo += product.getProductCost() + "\n";
-        productInfo += product.getProductStatus() + "\n";
-        productInfo += product.getProductsCategory() + "\n";
-        productInfo += product.getNumberOfAvailableProducts() + "\n";
-        productInfo += product.getDescription() + "\n";
-        productInfo += product.getAverageScore() + "\n";
-        productInfo += product.getCostAfterOff() + "\n";
-
-        productInfo += product.getFeaturesOfCategoryThatHas() + "\n";
-        return productInfo;
-
-    }
-
     public Product getProductByID(String productID) {
         if (AnyOffer()) {
             return null;

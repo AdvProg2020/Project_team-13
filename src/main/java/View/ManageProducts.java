@@ -144,21 +144,21 @@ public class ManageProducts extends Menu {
                     }
                 }
             });
-
-            deleteProduct.setOnMouseEntered(new EventHandler() {
+            GridPane deleteProductPane = new GridPane();
+            deleteProductPane.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
                     scene.setCursor(Cursor.HAND); //Change cursor to hand
 
                 }
             });
-            deleteProduct.setOnMouseExited(new EventHandler() {
+            deleteProductPane.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
                     scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
                 }
             });
-            deleteProduct.setOnMouseClicked(new EventHandler() {
+            deleteProductPane.setOnMouseClicked(new EventHandler() {
                 @Override
                 public void handle(Event event) {
                     Gson gson = new Gson();
@@ -183,7 +183,7 @@ public class ManageProducts extends Menu {
             options.setHgap(2);
             options.add(addToAdds, 0, 0);
             options.add(editInfoPic, 1, 0);
-            options.add(deleteProduct, 2, 0);
+            options.add(deleteProductPane, 2, 0);
             gridPane.add(options, 0, 3, 2, 1);
             gridPanes.add(gridPane);
             gridPane.setStyle("-fx-background-color: #ECD5DC;-fx-background-radius: 20px;");

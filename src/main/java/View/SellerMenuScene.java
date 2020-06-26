@@ -153,6 +153,7 @@ public class SellerMenuScene extends Menu {
                                                 seller.setPassword(password.getText().trim());
                                                 seller.setCompanyName(companyName.getText().trim());
                                                 ClientController.getInstance().sendMessageToServer("@editSeller@" + new Gson().toJson(seller));
+                                                personalInfo.setText(seller.viewPersonalInfo());
                                                 popupwindow.close();
                                             } else {
                                                 errors.setText("Company name format is invalid\nuse alphabetical characters");
