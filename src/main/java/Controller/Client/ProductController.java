@@ -339,6 +339,9 @@ public class ProductController {
     }
 
     public ArrayList<Product> getAllProducts() {
+        if(allProducts==null) {
+            allProducts= new ArrayList<>();
+        }
         return allProducts;
     }
 

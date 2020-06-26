@@ -86,14 +86,10 @@ public class Product {
     public String getImagePath() {
         if (imagePath != null && !imagePath.isEmpty()) {
             if (numberOfAvailableProducts > 0) {
-                File file = new File(imagePath);
-                if (file == null || !file.exists()) {
-                    return "file:src/product_icon.png";
-                }
+               return imagePath;
             } else {
                 return "file:src/sold_out.png";
             }
-            return imagePath;
         }
         return "file:src/product_icon.png";
     }

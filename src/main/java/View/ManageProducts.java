@@ -121,19 +121,21 @@ public class ManageProducts extends Menu {
                     handle1();
                 }
             });
-            addToAdds.setOnMouseEntered(new EventHandler() {
+            GridPane addsGridPane = new GridPane();
+            addsGridPane.add(addToAdds,0,0);
+            addsGridPane.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
                     scene.setCursor(Cursor.HAND); //Change cursor to hand
                 }
             });
-            addToAdds.setOnMouseExited(new EventHandler() {
+            addsGridPane.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
                     scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
                 }
             });
-            addToAdds.setOnMouseClicked(new EventHandler() {
+            addsGridPane.setOnMouseClicked(new EventHandler() {
                 @Override
                 public void handle(Event event) {
                     if (seller.getCredit() >= 50) {
@@ -145,6 +147,7 @@ public class ManageProducts extends Menu {
                 }
             });
             GridPane deleteProductPane = new GridPane();
+            deleteProductPane.add(deleteProduct,0,0);
             deleteProductPane.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
@@ -181,7 +184,7 @@ public class ManageProducts extends Menu {
             options.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
             options.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, false));
             options.setHgap(2);
-            options.add(addToAdds, 0, 0);
+            options.add(addsGridPane, 0, 0);
             options.add(editInfoPic, 1, 0);
             options.add(deleteProductPane, 2, 0);
             gridPane.add(options, 0, 3, 2, 1);
