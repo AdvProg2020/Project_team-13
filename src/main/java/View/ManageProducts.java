@@ -398,28 +398,18 @@ public class ManageProducts extends Menu {
         stage.show();
     }
 
-    private boolean checkNameIsvalid(String name) {
+    private boolean checkNameIsValid(String name) {
         if (Pattern.matches("(\\w+)( \\w+)*", name) && !name.isEmpty()) {
             return true;
         }
         return false;
     }
 
-    private boolean checkCreditIsvalid(String credit) {
+    private boolean checkCreditIsValid(String credit) {
         if (Pattern.matches("\\d+\\.?\\d*", credit)) {
             return true;
         }
         return false;
-    }
-
-    private ArrayList<String> getCategoryName() {
-        CategoryController.getInstance().updateAllCategories();
-        ArrayList<Category> categories = CategoryController.getInstance().getAllCategories();
-        ArrayList<String> categoriesNames = new ArrayList<>();
-        for (Category category : categories) {
-            categoriesNames.add(category.getName());
-        }
-        return categoriesNames;
     }
 
     public void handle1() {
@@ -619,14 +609,11 @@ public class ManageProducts extends Menu {
         }
         menuButton.setStyle(menuBarStyle);
         editPhotoButton.setOnAction(eventChoosePhoto);
-        // userInfoGridPane.add(title,0,0);
         HBox hBox = new HBox();
         hBox.setMinWidth(230);
         HBox hBox1 = new HBox();
         hBox1.setMinWidth(250);
-        //  userInfoGridPane.setGridLinesVisible(true);
         upGridPane.add(hBox1, 0, 0, 1, 1);
-        // upGridPane.setGridLinesVisible(true);
         upGridPane.add(title, 1, 0, 1, 1);
         productName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
         companyName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
@@ -660,11 +647,11 @@ public class ManageProducts extends Menu {
                 cost.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                 availableNumbers.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                 errorText.setText("");
-                if (checkNameIsvalid(companyName.getText().trim())) {
+                if (checkNameIsValid(companyName.getText().trim())) {
                     if (Pattern.matches("\\d+", availableNumbers.getText().trim())) {
                         if (!(description.getText().trim()).isEmpty()) {
-                            if (checkNameIsvalid(productName.getText())) {
-                                if (checkCreditIsvalid(cost.getText())) {
+                            if (checkNameIsValid(productName.getText())) {
+                                if (checkCreditIsValid(cost.getText())) {
                                     if (categoryFeaturesForProduct.size() == CategoryController.getInstance().getCategoryWithName(selectedCategory.getText().trim()).getFeatures().size()) {
                                         Product product = new Product(companyNameText.getText().trim(), currentProduct.getProductId(), productName.getText().trim(),
                                                 (Seller) ClientController.getInstance().getCurrentUser(), Double.parseDouble(cost.getText().trim()), selectedCategory.getText().trim(), description.getText().trim(), Integer.parseInt(availableNumbers.getText().trim()), categoryFeaturesForProduct);

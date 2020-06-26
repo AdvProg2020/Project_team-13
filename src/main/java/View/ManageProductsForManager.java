@@ -23,14 +23,12 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
 public class ManageProductsForManager extends Menu {
     GridPane productsPages;
-    Product currentProduct;
 
     public ManageProductsForManager(Stage stage) {
         super(stage);
@@ -68,7 +66,6 @@ public class ManageProductsForManager extends Menu {
                 "    -fx-padding: 7 10 7 10;" +
                 "     -fx-background-radius: 40px;" +
                 "    -fx-border-radius: 20px;";
-        //  Customer customer=(Customer) ClientController.getInstance().getCurrentUser();
         Text personalInfo = new Text("ali");
         Text pageTitle = new Text("Manage Products");
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
@@ -97,20 +94,19 @@ public class ManageProductsForManager extends Menu {
             deleteProduct.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             deleteProduct.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             deleteProduct.setOnMouseClicked(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    Gson gson = new Gson();
                     ProductController.getInstance().removeProductForManager(product.getProductId());
                     setCenterGridPane();
                 }
@@ -134,14 +130,14 @@ public class ManageProductsForManager extends Menu {
             scoreGridPane.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             scoreGridPane.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             scoreGridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -158,14 +154,14 @@ public class ManageProductsForManager extends Menu {
             text.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             text.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             text.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -182,14 +178,14 @@ public class ManageProductsForManager extends Menu {
             imageView.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                    scene.setCursor(Cursor.HAND);
 
                 }
             });
             imageView.setOnMouseExited(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                    scene.setCursor(Cursor.DEFAULT);
                 }
             });
             imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {

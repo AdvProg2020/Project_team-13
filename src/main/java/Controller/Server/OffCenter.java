@@ -84,13 +84,14 @@ public class OffCenter {
             allOffers = new ArrayList<>();
         }
         allOffers.add(offer);
+        DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
+        System.out.println("aaaaaaaaaaaaa                                                      "+allOffers.size());
         UserCenter.getIncstance().addOfferToSeller(offer);
         for (String product : offer.getProducts()) {
             ProductCenter.getInstance().addOfferToProduct(product, offer);
             CategoryCenter.getIncstance().updateProductInCategory(ProductCenter.getInstance().getProductWithId(product));
             UserCenter.getIncstance().updateProductOfferInSeller(ProductCenter.getInstance().getProductWithId(product));
         }
-        DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
         ServerController.getInstance().sendMessageToClient("@Successful@add Offs request sent to Manager");
     }
 

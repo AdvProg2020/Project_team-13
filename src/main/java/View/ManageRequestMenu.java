@@ -179,7 +179,6 @@ public class ManageRequestMenu extends Menu {
         return requestIdForThis;
     }
 
-
     private String getTheIdForDetail(Map<String, Button> viewDetails, Button button) {
         String requestIdForThis = null;
         for (String requestId : viewDetails.keySet()) {
@@ -201,7 +200,7 @@ public class ManageRequestMenu extends Menu {
         for (int i = 0; i < 5; i++) {
             if (i == 1) {
                 gridPane.getColumnConstraints().add(new ColumnConstraints(180, Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
-            }else {
+            } else {
                 gridPane.getColumnConstraints().add(new ColumnConstraints(120,
                         Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
             }
@@ -216,7 +215,6 @@ public class ManageRequestMenu extends Menu {
         gridPane.add(type, 1, 0);
         allGridPanes.set(pages, gridPane);
     }
-
 
     private void setTheRows(int row, String ids, String types) {
         Pane[] allPanes = new Pane[2];

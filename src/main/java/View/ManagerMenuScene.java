@@ -40,7 +40,7 @@ public class ManagerMenuScene extends Menu {
         if (ClientController.getInstance().getMediaPlayer() != null)
             ClientController.getInstance().getMediaPlayer().stop();
         ClientController.getInstance().setMediaPlayer(new MediaPlayer(usersSong));
-        ClientController.getInstance().getMediaPlayer().setVolume(0.04);
+        ClientController.getInstance().getMediaPlayer().setVolume(0.02);
         ClientController.getInstance().getMediaPlayer().play();
         ClientController.getInstance().getMediaPlayer().setCycleCount(MediaPlayer.INDEFINITE);
         setScene();
@@ -304,7 +304,7 @@ public class ManagerMenuScene extends Menu {
         manageCategoriesButton.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
-                new ManageCategoryMenu(stage,0).execute();
+                new ManageCategoryMenu(stage, 0).execute();
             }
         });
         Button manageDiscountsButton = new Button("Manage Discount Codes");
@@ -358,7 +358,7 @@ public class ManagerMenuScene extends Menu {
 
         leftMenuGridPane.add(requestsButton, 0, 0, 2, 2);
         leftMenuGridPane.add(manageUsersButton, 0, 2, 2, 2);
-      //  leftMenuGridPane.add(createManagerButton, 0, 4, 2, 2);
+        //  leftMenuGridPane.add(createManagerButton, 0, 4, 2, 2);
         leftMenuGridPane.add(manageCategoriesButton, 0, 6, 2, 2);
         leftMenuGridPane.add(manageDiscountsButton, 0, 8, 2, 2);
         leftMenuGridPane.add(manageProductsButton, 0, 10, 2, 2);
