@@ -164,7 +164,7 @@ public class EditOffsMenu extends Menu{
         allProducts=offer.getProducts();
         startDatePicker.setValue(offer.getStartTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         endDatePicker.setValue(offer.getEndTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-        discountPercent.setText(Double.valueOf(offer.getOfferId()).toString());
+        discountPercent.setText(Double.valueOf(offer.getAmount()).toString());
         upGridPane.add(hBox1, 0, 0, 1, 1);
         upGridPane.add(title, 1, 0, 1, 1);
         maxAmount.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30;");

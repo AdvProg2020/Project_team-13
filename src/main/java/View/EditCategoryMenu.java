@@ -131,10 +131,6 @@ public class EditCategoryMenu extends Menu {
         title.setStyle("-fx-font-weight: bold;");
         title.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         Button editPhotoButton = new Button("Choose Photo");
-        Button signUp = new Button("Create Category");
-        signUp.setStyle("-fx-background-color: #E85D9E;");
-        signUp.setMinWidth(100);
-        signUp.setTextFill(Color.WHITE);
         Button adduser = new Button("Add Feature");
         adduser.setStyle("-fx-background-color: #E85D9E;");
         adduser.setMinWidth(100);
@@ -145,17 +141,6 @@ public class EditCategoryMenu extends Menu {
         addmode.setStyle("-fx-background-color: #E85D9E;");
         addmode.setMinWidth(100);
         addmode.setTextFill(Color.WHITE);
-        FileChooser fileChooser = new FileChooser();
-        EventHandler<ActionEvent> eventChoosePhoto = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                File selectedFile = fileChooser.showOpenDialog(stage);
-                if (selectedFile != null) {
-                    userImage.setImage(new Image("file:" + selectedFile.getAbsolutePath()));
-                    imagePath = "file:" + selectedFile.getAbsolutePath();
-                }
-            }
-        };
-        editPhotoButton.setOnAction(eventChoosePhoto);
         // userInfoGridPane.add(title,0,0);
         HBox hBox = new HBox();
         hBox.setMinWidth(230);
@@ -173,16 +158,18 @@ public class EditCategoryMenu extends Menu {
             public void handle(Event event) {
                 if (featureNamesComboBox.getValue() != null && !((String) featureNamesComboBox.getValue()).equals("")) {
                     comboBox.getItems().remove(0, comboBox.getItems().size());
-                    for (String mode : category.getFeatures().get((String) featureNamesComboBox.getValue())) {
-                        comboBox.getItems().add(mode);
+                    allModesOfFeature.clear();
+                    if(category.getFeatures().containsKey((String) featureNamesComboBox.getValue())) {
+                        for (String mode : category.getFeatures().get((String) featureNamesComboBox.getValue())) {
+                            comboBox.getItems().add(mode);
+                            allModesOfFeature.add(mode);
+                        }
                     }
                 }
             }
         });
-        //  userInfoGridPane.setGridLinesVisible(true);
         upGridPane.add(hBox1, 0, 0, 1, 1);
         maxAmount.setText(category.getName());
-        // upGridPane.setGridLinesVisible(true);
         upGridPane.add(title, 1, 0, 1, 1);
         maxAmount.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30;");
         discountPercent.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
@@ -193,12 +180,10 @@ public class EditCategoryMenu extends Menu {
         lastName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30;");
         userInfoGridPane.add(maxAmountText, 5, 9, 3, 1);
         userInfoGridPane.add(discountPercentText, 5, 10, 3, 1);
-        userInfoGridPane.add(adduser, 5, 11, 3, 1);
         userInfoGridPane.add(maxAmount, 8, 9, 6, 1);
         userInfoGridPane.add(featureNamesComboBox, 8, 10, 6, 1);
         userInfoGridPane.add(comboBox, 15, 10, 6, 1);
         userInfoGridPane.add(addmode, 25, 10, 6, 1);
-        //   userInfoGridPane.add(signUp, 13, 16, 5, 1);
         userInfoGridPane.add(errorText, 7, 14, 10, 1);
         userInfoGridPane.setStyle("-fx-background-color: #ECD5DC;");
         centerGridPane.add(userInfoGridPane, 2, 2, 1, 1);
@@ -208,22 +193,12 @@ public class EditCategoryMenu extends Menu {
             @Override
             public void handle(Event event) {
                 scene.setCursor(Cursor.HAND); //Change cursor to hand
-
             }
         });
         addmode.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
                 scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
-            }
-        });
-        featureNamesComboBox.setOnMouseClicked(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                String featrueName = (String) featureNamesComboBox.getValue();
-                if (featureNamesComboBox.getValue() != null && !(featrueName).equals("")) {
-                    allModesOfFeature = category.getFeatures().get(featrueName);
-                }
             }
         });
         addmode.setOnMouseClicked(new EventHandler() {
@@ -234,15 +209,18 @@ public class EditCategoryMenu extends Menu {
                 errorText.setText("");
                 if (!((String) comboBox.getValue()).equals("")) {
                     if (!allModesOfFeature.contains((String) comboBox.getValue())) {
-                        if (category.getFeatures().containsKey((String) comboBox.getValue())) {
-                            System.out.println("add mode!!: " + (String) comboBox.getValue());
+                        if (category.getFeatures().containsKey((String) featureNamesComboBox.getValue())) {
                             comboBox.getItems().add((String) comboBox.getValue());
                             category.getFeatures().get((String) featureNamesComboBox.getValue()).add((String) comboBox.getValue());
-                            comboBox.setValue("");
                             CategoryController.getInstance().editCategoryFeatures(category, "adM");
+                            comboBox.setValue("");
                         } else {
-                            featureNamesComboBox.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
-                            errorText.setText("you should add new feature before add modes to it");
+                            ArrayList<String> modes=new ArrayList<>();
+                            modes.add((String)comboBox.getValue());
+                            featureNamesComboBox.getItems().add((String) featureNamesComboBox.getValue());
+                            category.getFeatures().put((String) featureNamesComboBox.getValue(),modes);
+                            CategoryController.getInstance().editCategoryFeatures(category,"add");
+                            comboBox.setValue("");
                         }
                     } else {
                         comboBox.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
@@ -297,26 +275,6 @@ public class EditCategoryMenu extends Menu {
                     discountPercent.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                     errorText.setText("you should write feature's name before you add it");
 
-                }
-            }
-        });
-        signUp.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                maxAmount.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
-                discountPercent.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30;");
-                startDatePicker.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
-                phoneNumber.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30;");
-                comboBox.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
-                errorText.setText("");
-                if (!maxAmount.getText().equals("")) {
-                    if (featuresOfCategory.size() > 0) {
-
-                    } else
-                        ClientController.getInstance().getCurrentMenu().showMessage("you should add one feature to category at least", MessageKind.ErrorWithoutBack);
-                } else {
-                    maxAmount.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
-                    errorText.setText("Category name is empty");
                 }
             }
         });

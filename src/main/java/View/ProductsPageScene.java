@@ -51,7 +51,7 @@ public class ProductsPageScene extends Menu {
         if (ClientController.getInstance().getMediaPlayer() != null)
             ClientController.getInstance().getMediaPlayer().stop();
         ClientController.getInstance().setMediaPlayer(new MediaPlayer(productsSong));
-        ClientController.getInstance().getMediaPlayer().setVolume(0.04);
+        ClientController.getInstance().getMediaPlayer().setVolume(0.02);
         ClientController.getInstance().getMediaPlayer().play();
         ClientController.getInstance().getMediaPlayer().setCycleCount(MediaPlayer.INDEFINITE);
         setScene();
