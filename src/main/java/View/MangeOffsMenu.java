@@ -109,7 +109,7 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
 
     private GridPane createPage(Integer integer) {
         if(integer.equals(pages-1)){
-            setTheCenterInfo(DiscountController.getInstance().getAllDiscountCodes().size() - (integer * 4), integer);
+            setTheCenterInfo(allOffers.size() - (integer * 4), integer);
         }else{
             setTheCenterInfo(4, integer);
         }
@@ -131,16 +131,22 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
         startDate.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         endDate.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         gridPane.setVgap(30);
-        for (int i = 0; i < 5; i++) {
-            if(i==3){
-                gridPane.getColumnConstraints().add(new ColumnConstraints(200,
+        for (int i = 0; i < 6; i++) {
+            if(i==2 || i==3){
+                gridPane.getColumnConstraints().add(new ColumnConstraints(250,
                         Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
-            } else {
-                gridPane.getColumnConstraints().add(new ColumnConstraints(120,
+            }else if (i==4 || i==5){
+                gridPane.getColumnConstraints().add(new ColumnConstraints(110,
                         Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+            }else if(i==1){
+                gridPane.getColumnConstraints().add(new ColumnConstraints(100,
+                        Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
+            }else{
+                gridPane.getColumnConstraints().add(new ColumnConstraints(100,
+                            Control.USE_COMPUTED_SIZE, Double.POSITIVE_INFINITY, Priority.NEVER, HPos.CENTER, true));
             }
         }
-        setOfferCounter(4*pages);
+        setOfferCounter(4*integer);
         for (int i = 1; i <= counter; offerCounter++, i++) {
             setTheRows(i, allOffers.get(offerCounter).getOfferId(), String.valueOf(allOffers.get(offerCounter).getAmount()),
                     String.valueOf(allOffers.get(offerCounter)
@@ -152,7 +158,7 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
         gridPane.add(percent, 1, 0);
         gridPane.add(startDate, 2, 0);
         gridPane.add(endDate, 3, 0);
-        allGridPanes.set(pages-1, gridPane);
+        allGridPanes.set(integer, gridPane);
     }
 
     private void setTheBeginning() {
@@ -196,8 +202,7 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
             imageView.setTranslateX(60);
             int finalI1 = i;
             imageView.setOnMouseClicked(event -> {
-                //
-                //
+               new EditOffsMenu(this.stage).execute();
             });
             imageView.setOnMouseEntered((EventHandler<Event>) event -> scene.setCursor(Cursor.HAND));
             imageView.setOnMouseExited((EventHandler<Event>) event -> scene.setCursor(Cursor.DEFAULT));
@@ -218,13 +223,13 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
                 allLabels[i].setTranslateX(15);
             }
             if(i == 1){
-                allLabels[i].setTranslateX(40);
+                allLabels[i].setTranslateX(20);
             }
             if(i == 2){
-                allLabels[i].setTranslateX(10);
+                allLabels[i].setTranslateX(0);
             }
             if(i == 3){
-                allLabels[i].setTranslateX(1);
+                allLabels[i].setTranslateX(0);
             }
             allPanes[i].getChildren().add(allLabels[i]);
             allLabels[i].setTranslateY(1);
