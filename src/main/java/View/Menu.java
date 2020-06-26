@@ -43,7 +43,13 @@ public class Menu {
     protected Media mainSong = new Media(new File("src/DesertOfSadness.mp3").toURI().toString());
     protected Media productsSong = new Media(new File("src/If_I_Could_Tell_You.mp3").toURI().toString());
     protected Media usersSong = new Media(new File("src/InTHeMorningLight.mp3").toURI().toString());
-
+    protected AudioClip key1 = new AudioClip(new File("src\\key1.mp3").toURI().toString());
+    protected AudioClip key2 = new AudioClip(new File("src\\key2.mp3").toURI().toString());
+    protected AudioClip key3 = new AudioClip(new File("src\\key3.mp3").toURI().toString());
+    protected AudioClip key4 = new AudioClip(new File("src\\key4.mp3").toURI().toString());
+    protected AudioClip key5 = new AudioClip(new File("src\\key5.mp3").toURI().toString());
+    protected AudioClip key6 = new AudioClip(new File("src\\key6.mp3").toURI().toString());
+    protected int soundNumber=0;
     public Menu(Stage stage) {
         this.stage = stage;
         upGridPane = new GridPane();
@@ -53,6 +59,49 @@ public class Menu {
         pageGridPane = new GridPane();
         scene = new Scene(pageGridPane, 850, 600);
         ClientController.getInstance().addNewMenu(this);
+        scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                switch (soundNumber){
+                    case 0:
+                        key1.play();
+                        break;
+                    case 1:
+                        key2.play();
+                        break;
+                    case 2:
+                        key1.play();
+                        break;
+                    case 3:
+                        key2.play();
+                        break;
+                    case 4:
+                        key1.play();
+                        break;
+                    case 5:
+                        key3.play();
+                        break;
+                    case 6:
+                        key4.play();
+                        break;
+                    case 7:
+                        key5.play();
+                        break;
+                    case 8:
+                        key6.play();
+                        soundNumber=-1;
+                        break;
+
+                }
+                soundNumber++;
+            }
+        });
+        key1.setVolume(0.015);
+        key2.setVolume(0.015);
+        key3.setVolume(0.015);
+        key4.setVolume(0.015);
+        key5.setVolume(0.015);
+        key6.setVolume(0.015);
     }
 
     public void setScene() {
