@@ -152,7 +152,7 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
         gridPane.add(percent, 1, 0);
         gridPane.add(startDate, 2, 0);
         gridPane.add(endDate, 3, 0);
-        allGridPanes.set(pages, gridPane);
+        allGridPanes.set(pages-1, gridPane);
     }
 
     private void setTheBeginning() {
