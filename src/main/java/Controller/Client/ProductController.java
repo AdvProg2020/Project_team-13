@@ -67,6 +67,10 @@ public class ProductController {
     }
 
     public void filterProducts() {
+        getAllProductsFromServer();
+        if(allProducts==null) {
+            allProducts= new ArrayList<>();
+        }
         allProductsAfterFilter = new ArrayList<>(allProducts);
         filterByCategory();
         filterByCategoryFeatures();

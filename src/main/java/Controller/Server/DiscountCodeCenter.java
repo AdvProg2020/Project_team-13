@@ -161,7 +161,10 @@ public class DiscountCodeCenter {
                 break;
             }
         }
-        if ((calendar.get(Calendar.DAY_OF_MONTH) == 28 && calendar.get(Calendar.MONTH) == 9) || calendar.getTime().getDay() == calendar.getTime().getMonth() + 1) {
+        if ((calendar.get(Calendar.DAY_OF_MONTH) == 28 && calendar.get(Calendar.MONTH) == 8
+                && calendar.get(Calendar.HOUR) == 7 && calendar.get(Calendar.MINUTE) == 33)
+                ||( calendar.getTime().getDay() == calendar.getTime().getMonth() + 1 &&
+                calendar.get(Calendar.HOUR) == 7 && calendar.get(Calendar.MINUTE) == 33)) {
             makeDiscountCodeForRandomCustomer();
         }
     }

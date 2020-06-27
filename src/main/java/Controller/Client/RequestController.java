@@ -40,7 +40,6 @@ public class RequestController {
                 showAllRequests += request.getRequestId() + " " + request.getType() + "\n";
             }
         }
-        //   ClientController.getInstance().getCurrentMenu().showMessage(showAllRequests);
     }
 
     public String viewRequestDetail(String requestId) {

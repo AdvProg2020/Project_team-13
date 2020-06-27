@@ -86,7 +86,7 @@ public class Product {
     public String getImagePath() {
         if (imagePath != null && !imagePath.isEmpty()) {
             if (numberOfAvailableProducts > 0) {
-               return imagePath;
+                return imagePath;
             } else {
                 return "file:src/sold_out.png";
             }
@@ -163,6 +163,10 @@ public class Product {
         if (offers == null || offers.isEmpty()) {
             return null;
         } else {
+            for (Offer offer : offers) {
+                System.out.println(offer);
+            }
+            System.out.println(new Date());
             ArrayList<Offer> offers = new ArrayList<>();
             for (Offer offer : this.offers) {
                 if (offer.getStartTime().before(new Date()) && offer.getEndTime().after(new Date())) {
@@ -170,8 +174,12 @@ public class Product {
                 }
             }
             Offer offer = null;
+            int i = 0;
             for (Offer offer1 : offers) {
-                if (offer1.getAmount() > offer.getAmount()) {
+                if (i == 0) {
+                    offer = offer1;
+                    i++;
+                } else if (offer1.getAmount() > offer.getAmount()) {
                     offer = offer1;
                 }
             }
@@ -292,7 +300,7 @@ public class Product {
         if (offers == null) {
             offers = new ArrayList<>();
         }
-        if (offer == null) {
+        if (offer != null) {
             offers.add(offer);
         }
         if (getOffer() != null) {

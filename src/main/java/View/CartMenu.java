@@ -32,6 +32,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 public class CartMenu extends Menu {
@@ -309,7 +310,7 @@ public class CartMenu extends Menu {
                     addCommentButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
                         @Override
                         public void handle(MouseEvent event) {
-                            if (discountCode1 != null)
+                            if (discountCode1 != null && discountCode1.getStartTime().before(new Date()) && discountCode1.getEndTime().after(new Date()))
                                 CartController.getInstance().getCurrentCart().setDiscountCode(discountCode1);
                             if (!getContent.getText().equals("") && !getTitle.getText().equals("")) {
                                 if (getTitle.getText().matches("\\d\\d\\d\\d\\d\\d\\d\\d+")) {
@@ -337,9 +338,17 @@ public class CartMenu extends Menu {
                             if (!discountCode.getText().equals("")) {
                                 discountCode1 = getDiscountCode(discountCode.getText());
                                 if (discountCode1 != null) {
-                                    errorText.setText("");
-                                    discountCode.setStyle("-fx-background-color: #08ff00;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30;");
-                                } else {
+                                    if (discountCode1.getStartTime().before(new Date()) && discountCode1.getEndTime().after(new Date())) {
+                                        errorText.setText("");
+                                        discountCode.setStyle("-fx-background-color: #08ff00;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30;");
+                                    } else if (!discountCode1.getStartTime().before(new Date())) {
+                                        discountCode.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30;");
+                                        errorText.setText("start time of discount code have not started.");
+                                    } else if (!discountCode1.getEndTime().after(new Date())) {
+                                        discountCode.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30;");
+                                        errorText.setText("discountCode has been expired.");
+                                    }
+                                } else if (discountCode1 == null) {
                                     discountCode.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-background-radius: 30;");
                                     errorText.setText("you haven't any discount code with this code");
                                 }
