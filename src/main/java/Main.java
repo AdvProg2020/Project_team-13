@@ -1,7 +1,7 @@
 import Controller.Server.ServerController;
 import Controller.Server.UserCenter;
-import Models.Product.Cart;
-import View.*;
+import View.MainMenu;
+import View.ManagerRegisterMenu;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -11,7 +11,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         new ServerController().runServer();
         primaryStage.setTitle("Pms.com");
         if (UserCenter.getIncstance().getAllManager() != null

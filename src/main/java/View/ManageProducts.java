@@ -75,11 +75,8 @@ public class ManageProducts extends Menu {
                 "    -fx-padding: 7 10 7 10;" +
                 "     -fx-background-radius: 40px;" +
                 "    -fx-border-radius: 20px;";
-        Text personalInfo = new Text("ali");
         Text pageTitle = new Text("Manage Products");
-        personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
-        pageTitle.setStyle("-fx-font-weight: bold;");
-        pageTitle.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
+        pageTitle.setStyle("-fx-font-size: 24;-fx-font-weight: bold ");
         Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
         ArrayList<GridPane> gridPanes = new ArrayList<>();
         for (int kk = 0; kk < seller.getAllProducts().size(); kk++) {
@@ -375,14 +372,6 @@ public class ManageProducts extends Menu {
         }
     }
 
-    protected void setUpGridPane() {
-        Label label = new Label("        Pms.com");
-        label.setStyle("-fx-font-weight: bold;");
-        label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
-        upGridPane.getRowConstraints().add(new RowConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.ALWAYS, VPos.CENTER, true));
-        upGridPane.add(label, 0, 0);
-    }
-
     protected void setPageGridPain() {
         pageGridPane.getRowConstraints().add(new RowConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.NEVER, VPos.CENTER, false));
         pageGridPane.getRowConstraints().add(new RowConstraints(40, Control.USE_COMPUTED_SIZE, 40, Priority.ALWAYS, VPos.TOP, true));
@@ -462,8 +451,8 @@ public class ManageProducts extends Menu {
         Text descriptionText = new Text("Description");
         Text costText = new Text("Products Cost");
         Text availableNumbersText = new Text("Available numbers");
-        title.setStyle("-fx-font-weight: bold;");
-        title.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
+        title.setStyle("-fx-font-size: 24;-fx-font-weight: bold ");
+
         Button editPhotoButton = new Button("Choose Photo");
         Button editProduct = new Button("Edit Product");
         productName.setText(currentProduct.getProductName());

@@ -1,8 +1,8 @@
 package View;
 
 import Controller.Client.ClientController;
-import Controller.Client.UserController;
 import Controller.Client.OffsController;
+import Controller.Client.UserController;
 import Models.Offer;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
@@ -115,7 +115,7 @@ public class EditOffsMenu extends Menu{
         GridPane upGridPane = new GridPane();
         upGridPane.setMinHeight(50);
         leftGridPane.setMinWidth(100);
-        Text title = new Text("Create Offs");
+        Text title = new Text("Edit Offs");
         ImageView userImage = new ImageView(new Image("file:src/user_icon.png"));
         userImage.setFitHeight(100);
         userImage.setFitWidth(100);
@@ -127,7 +127,7 @@ public class EditOffsMenu extends Menu{
         title.setStyle("-fx-font-weight: bold;");
         title.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
         Button editPhotoButton = new Button("Choose Photo");
-        Button signUp = new Button("Create Offs");
+        Button signUp = new Button("Edit Offs");
         signUp.setStyle("-fx-background-color: #E85D9E;");
         signUp.setMinWidth(100);
         signUp.setTextFill(Color.WHITE);
@@ -188,7 +188,7 @@ public class EditOffsMenu extends Menu{
         adduser.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (!((String) choiceBox.getValue()).equals("")) {
+                if (!choiceBox.getValue().equals("")) {
                     allProducts.add(seller.getAllProducts().get(Integer.parseInt(((String) choiceBox.getValue()).substring(0, 1)) - 1).getProductId());
                     choiceBox.getItems().remove((choiceBox.getValue()));
                 } else {
@@ -239,25 +239,14 @@ public class EditOffsMenu extends Menu{
     }
 
     private boolean checkdiscountPercentIsvalid(String word) {
-        if (word.matches("\\d+") && Double.parseDouble(word) <= 100) {
-            return true;
-        }
-        return false;
+        return word.matches("\\d+") && Double.parseDouble(word) <= 100;
     }
 
     private boolean checkEndTimeValid(Date endTime, Date startTime) {
-        if (endTime.after(new Date()) && endTime.after(startTime)) {
-            return true;
-        } else {
-            return false;
-        }
+        return endTime.after(new Date()) && endTime.after(startTime);
     }
 
     private boolean checkStartTimeValid(Date startTime) {
-        if (startTime.after(new Date())) {
-            return true;
-        } else {
-            return false;
-        }
+        return startTime.after(new Date());
     }
 }

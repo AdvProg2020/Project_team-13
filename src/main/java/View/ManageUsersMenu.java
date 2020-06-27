@@ -66,11 +66,8 @@ public class ManageUsersMenu extends Menu {
                 "    -fx-padding: 7 10 7 10;" +
                 "     -fx-background-radius: 40px;" +
                 "    -fx-border-radius: 20px;";
-        Text personalInfo = new Text("ali");
         Text pageTitle = new Text("Users Menu");
-        personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
-        pageTitle.setStyle("-fx-font-weight: bold;");
-        pageTitle.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
+        pageTitle.setStyle("-fx-font-size: 24;-fx-font-weight: bold ");
         ArrayList<GridPane> gridPanes = new ArrayList<>();
         UserController.getInstance().getAllUserFromServer();
         ArrayList<UserAccount> allUser = new ArrayList<>();
@@ -241,14 +238,6 @@ public class ManageUsersMenu extends Menu {
             text.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 32));
             centerGridPane.add(gridPane, 3, 1, 1, 1);
         }
-    }
-
-    protected void setUpGridPane() {
-        Label label = new Label("        Pms.com");
-        label.setStyle("-fx-font-weight: bold;");
-        label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
-        upGridPane.getRowConstraints().add(new RowConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.ALWAYS, VPos.CENTER, true));
-        upGridPane.add(label, 0, 0);
     }
 
     protected void setPageGridPain() {

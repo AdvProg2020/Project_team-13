@@ -596,10 +596,8 @@ public class Menu {
     }
 
     protected void setUpGridPane() {
-        Label label = new Label("       Pms.com");
-        label.setStyle("-fx-font-weight: bold;");
-        Font font = Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28);
-        label.setFont(font);
+        Label label = new Label("     spm.com");
+        label.setStyle("-fx-font-size: 30;-fx-font-weight: bold ");
         upGridPane.getRowConstraints().add(new RowConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.ALWAYS, VPos.CENTER, true));
         upGridPane.add(label, 0, 0);
     }

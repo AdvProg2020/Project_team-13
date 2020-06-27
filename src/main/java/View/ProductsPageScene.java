@@ -85,14 +85,11 @@ public class ProductsPageScene extends Menu {
                 "    -fx-padding: 7 10 7 10;" +
                 "     -fx-background-radius: 40px;" +
                 "    -fx-border-radius: 20px;";
-        Text personalInfo = new Text("ali");
         System.out.println(ProductController.getInstance().getCurrentCategory()==null);
         CategoryController.getInstance().updateAllCategories();
         System.out.println(CategoryController.getInstance().getAllCategories().size());
         Text pageTitle = new Text(ProductController.getInstance().getCurrentCategory().getName() + "  Count of products: " + ProductController.getInstance().getCurrentCategory().getAllProducts().size());
-        personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
-        pageTitle.setStyle("-fx-font-weight: bold;");
-        pageTitle.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
+        pageTitle.setStyle("-fx-font-size: 24;-fx-font-weight: bold ");
         leftMenuGridPane.setMinHeight(400);
         leftMenuGridPane.setStyle("-fx-background-color:rgba(45, 156, 240, 1);");
         Button addProduct = new Button("Add product");
@@ -190,9 +187,8 @@ public class ProductsPageScene extends Menu {
             featuresGridPane.add(categoryFeatures.get(text), 1, k1 + 1);
             k1++;
         }
-        Text text11 = new Text("Filters");
-        text11.setStyle("-fx-font-weight: bold;");
-        text11.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
+        Text text11 = new Text("Filters    ");
+        text11.setStyle("-fx-font-size: 25;-fx-font-weight: bold ");
         featuresGridPane.add(text11, 1, 0);
         featuresGridPane.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, false));
         featuresGridPane.getColumnConstraints().add(new ColumnConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.ALWAYS, HPos.CENTER, false));
@@ -789,12 +785,13 @@ public class ProductsPageScene extends Menu {
             if (!addGridPane.getChildren().isEmpty()) {
                 centerGridPaneTosh.setVgap(5);
                 centerGridPaneTosh.add(addGridPane, 1, 1, 1, 1);
-                Text text = new Text(" Products");
-                text.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
+                Text text = new Text("    Products");
+                text.setStyle("-fx-font-size: 20;-fx-font-weight: bold ");
                 centerGridPaneTosh.add(text, 1, 2, 1, 1);
                 centerGridPaneTosh.add(productsPages.get(0), 1, 3, 1, 1);
             } else {
-                Text text = new Text(" Products");
+                Text text = new Text("    Products");
+                text.setStyle("-fx-font-size: 20;-fx-font-weight: bold ");
                 centerGridPaneTosh.add(text, 1, 1, 1, 1);
                 centerGridPaneTosh.add(productsPages.get(0), 1, 2, 1, 1);
             }
@@ -880,7 +877,7 @@ public class ProductsPageScene extends Menu {
         }
         buttons1.getColumnConstraints().add(new ColumnConstraints(310 - (buttons.size() / 2) * 20, Control.USE_COMPUTED_SIZE, 310 - (buttons.size() / 2) * 20, Priority.NEVER, HPos.LEFT, false));
         Text text = new Text(" Adds");
-        text.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
+        text.setStyle("-fx-font-size: 20;-fx-font-weight: bold ");
         gridPane.add(text, 0, 0);
         gridPane.add(productsPages.get(0), 0, 1);
     }
@@ -1101,14 +1098,6 @@ public class ProductsPageScene extends Menu {
                 }
             });
         }
-    }
-
-    protected void setUpGridPane() {
-        Label label = new Label("        Pms.com");
-        label.setStyle("-fx-font-weight: bold;");
-        label.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
-        upGridPane.getRowConstraints().add(new RowConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.ALWAYS, VPos.CENTER, true));
-        upGridPane.add(label, 0, 0);
     }
 
     protected void setPageGridPain() {
