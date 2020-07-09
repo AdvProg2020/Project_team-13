@@ -1,7 +1,4 @@
 package Controller.Server;
-
-import Controller.Client.ClientController;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -34,7 +31,7 @@ public class ServerController {
         }
         while (true) {
             System.out.println("Waiting for Client...");
-            Socket socket = null;
+            Socket socket;
             try {
                 socket = serverSocket.accept();
             } catch (IOException e) {
@@ -42,14 +39,11 @@ public class ServerController {
             }
             System.out.println("Client Connected!!!");
             Socket finalSocket = socket;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        getMessageFromClient(finalSocket);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            new Thread(() -> {
+                try {
+                    getMessageFromClient(finalSocket);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }).start();
         }
@@ -70,18 +64,17 @@ public class ServerController {
 
 
     public void getMessageFromClient(Socket socket) throws IOException {
-        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         while (true) {
+            DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+            DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            System.out.println("Hello Client...");
             String string;
             try {
-                string = dataInputStream.readUTF();
-                while (true) {
-                    if (!string.isEmpty()) {
-                        break;
-                    }
-                }
-                ServerMessageController.getInstance().processMessage(string, dataOutputStream);
+                do {
+                    string = dataInputStream.readUTF();
+                } while (string.isEmpty());
+              System.out.println(string);
+              ServerMessageController.getInstance().processMessage(string, dataOutputStream);
             } catch (IOException e) {
                 System.out.println("Error in Connection...");
                 try {
@@ -96,6 +89,7 @@ public class ServerController {
     }
 
     public void sendMessageToClient(String message, DataOutputStream dataOutputStream) {
+        System.out.println("@Sen" + message);
         try {
             dataOutputStream.writeUTF(message);
             dataOutputStream.flush();

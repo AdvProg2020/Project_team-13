@@ -1,1 +1,1 @@
-[{"username":"boss","password":"123456789","firstName":"ali","lastName":"ali","email":"boss@gmail.com","phoneNumber":"09356231144","type":"@Manager","credit":0.0,"historyOfTransaction":[],"imagePath":""}]
+[{"username":"sinam1379","password":"123456789","firstName":"sina","lastName":"mazaheri","email":"sinamazaheri1379@gmail.com","phoneNumber":"09120046758","type":"@Manager","credit":0.0,"historyOfTransaction":[],"imagePath":""}]
