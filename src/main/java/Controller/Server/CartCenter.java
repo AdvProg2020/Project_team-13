@@ -9,6 +9,7 @@ import Models.SellLog;
 import Models.UserAccount.Customer;
 import com.google.gson.Gson;
 
+import java.io.DataOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,35 +18,29 @@ public class CartCenter {
     private static CartCenter cartCenter;
     String lastLogId = "";
 
-    public String getLastLogId() {
-        return lastLogId;
-    }
-
     public void setLastLogId(String lastLogId) {
         this.lastLogId = lastLogId;
     }
 
-    private CartCenter() {
+    public static CartCenter getInstance(){
+        if(cartCenter == null){
+            synchronized (CartCenter.class) {
+                if(cartCenter == null){
+                    cartCenter = new CartCenter();
+                }
+            }
+        }
+        return cartCenter;
     }
 
-    public String makeLogID() {
+    public synchronized String makeLogID() {
         lastLogId = "@l" + (Integer.parseInt(lastLogId.substring(2, 7)) + 1);
         DataBase.getInstance().replaceLogId(lastLogId);
         return lastLogId;
     }
 
-    public static CartCenter getInstance() {
-        if (cartCenter == null) {
-            cartCenter = new CartCenter();
-        }
-        return cartCenter;
-    }
 
-    public void buyProduct(String productID, int count) {
-
-    }
-
-    public void pay(Cart cart) {
+    public synchronized void pay(Cart cart, DataOutputStream dataOutputStream) {
         System.out.println();
         System.out.println(UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID()));
         Customer customer = UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID());
@@ -63,7 +58,7 @@ public class CartCenter {
         }
         if (customer.getCredit() - price >= 0) {
             if (discountCode != null) {
-                DiscountCodeCenter.getIncstance().usedDiscountCode(discountCode.getDiscountCodeID(), customer.getUsername());
+                DiscountCodeCenter.getIncstance().usedDiscountCode(discountCode.getDiscountCodeID(), customer.getUsername(), dataOutputStream);
             }
             customer.setCredit(customer.getCredit() - price);
             customer.setTotalBuyAmount(customer.getTotalBuyAmount() + price);
@@ -106,13 +101,13 @@ public class CartCenter {
             DataBase.getInstance().updateAllProducts(new Gson().toJson(ProductCenter.getInstance().getAllProducts()));
             DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(DiscountCodeCenter.getIncstance().getAllDiscountCodes()));
             DataBase.getInstance().updateAllOffers(new Gson().toJson(OffCenter.getInstance().getAllOffers()));
-            ServerController.getInstance().sendMessageToClient("@payed@" + new Gson().toJson(customer));
+            ServerController.getInstance().sendMessageToClient("@payed@" + new Gson().toJson(customer), dataOutputStream);
         } else {
-            ServerController.getInstance().sendMessageToClient("@Error@You don't have enough credit");
+            ServerController.getInstance().sendMessageToClient("@Error@You don't have enough credit", dataOutputStream);
         }
     }
 
-    public void makeDiscountCodeForGift(String username) {
+    public synchronized void makeDiscountCodeForGift(String username) {
         Date endDate = new Date();
         endDate.setYear(60);
         ArrayList<String> alluser = new ArrayList<>();

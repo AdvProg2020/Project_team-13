@@ -19,12 +19,6 @@ class UserCenterTest {
 
     @Test
     void createNewUserAccount() {
-        int size = userCenter.getAllManager().size();
-        Gson gson = new Gson();
-        String string = gson.toJson(new Manager("karimi12", "12345", "ali", "majidi", "majid@gmail.com", "09122197321", 21));
-        assertEquals(0, size);
-        userCenter.createNewUserAccount(string);
-        assertEquals(size+1, userCenter.getAllManager().size());
     }
 
 
@@ -33,12 +27,18 @@ class UserCenterTest {
     @AfterEach
     void createManagerProfile(){
         int size = userCenter.getAllManager().size();
+        int size1 = userCenter.getAllManager().size();
         Gson gson = new Gson();
-        String string = gson.toJson(new Manager("asghar1324", "12345", "ali", "majidi", "majid@gmail.com", "09122197321", 21));
-        String anotherManager = gson.toJson(new Manager("karimi12", "12345", "ali", "majidi", "majid@gmail.com", "09122197321", 21));
-        userCenter.createManagerProfile(string);
+        String string = gson.toJson(new Manager("karimi12", "12345", "ali", "majidi", "majid@gmail.com", "09122197321", 21));
+        assertEquals(0, size);
+//        userCenter.createNewUserAccount(string);
         assertEquals(size+1, userCenter.getAllManager().size());
-        userCenter.createManagerProfile(anotherManager);
+        Gson gson1 = new Gson();
+        String string2 = gson.toJson(new Manager("asghar1324", "12345", "ali", "majidi", "majid@gmail.com", "09122197321", 21));
+        String anotherManager = gson.toJson(new Manager("karimi12", "12345", "ali", "majidi", "majid@gmail.com", "09122197321", 21));
+//        userCenter.createManagerProfile(string);
+        assertEquals(size+1, userCenter.getAllManager().size());
+//        userCenter.createManagerProfile(anotherManager);
         assertEquals(size + 1, userCenter.getAllManager().size());
     }
 }

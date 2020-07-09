@@ -4,6 +4,7 @@ import Models.DiscountCode;
 import Models.UserAccount.Customer;
 import com.google.gson.Gson;
 
+import java.io.DataOutputStream;
 import java.util.*;
 
 public class DiscountCodeCenter {
@@ -16,17 +17,21 @@ public class DiscountCodeCenter {
     }
 
     public static DiscountCodeCenter getIncstance() {
-        if (discountCodeCenter == null) {
-            discountCodeCenter = new DiscountCodeCenter();
+        if(discountCodeCenter == null){
+            synchronized (DiscountCodeCenter.class) {
+                if(discountCodeCenter == null){
+                    discountCodeCenter = new DiscountCodeCenter();
+                }
+            }
         }
         return discountCodeCenter;
     }
 
-    public void setAllDiscountCodes(ArrayList<DiscountCode> allDiscountCodes) {
+    public synchronized void setAllDiscountCodes(ArrayList<DiscountCode> allDiscountCodes) {
         this.allDiscountCodes = allDiscountCodes;
     }
 
-    public void createDiscountCode(String json) {
+    public synchronized void createDiscountCode(String json, DataOutputStream dataOutputStream) {
         DiscountCode discountCode = new Gson().fromJson(json, DiscountCode.class);
         discountCode.setDiscountCodeID(makeCode());
         allDiscountCodes.add(discountCode);
@@ -35,10 +40,10 @@ public class DiscountCodeCenter {
         }
         DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
         DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(allDiscountCodes));
-        ServerController.getInstance().sendMessageToClient("@Successful@discount code with code:" + lastDiscountCodeID + "\nsuccessfully created");
+        ServerController.getInstance().sendMessageToClient("@Successful@discount code with code:" + lastDiscountCodeID + "\nsuccessfully created", dataOutputStream);
     }
 
-    public void createDiscountCodeForGift(DiscountCode discountCode) {
+    public synchronized void createDiscountCodeForGift(DiscountCode discountCode) {
         discountCode.setDiscountCodeID(makeCode());
         allDiscountCodes.add(discountCode);
         for (String username : discountCode.getAllUserAccountsThatHaveDiscount()) {
@@ -52,7 +57,7 @@ public class DiscountCodeCenter {
         this.lastDiscountCodeID = lastDiscountCodeID;
     }
 
-    public void makeDiscountCodeForRandomCustomer() {
+    public synchronized void makeDiscountCodeForRandomCustomer() {
         Random random = new Random();
         String username = UserCenter.getIncstance().getAllCustomer().get(random.nextInt(UserCenter.getIncstance().getAllCustomer().size())).getUsername();
         Date endDate = new Date();
@@ -69,7 +74,7 @@ public class DiscountCodeCenter {
         return allDiscountCodes;
     }
 
-    public void editDiscountCode(DiscountCode discountCode) {
+    public synchronized void editDiscountCode(DiscountCode discountCode, DataOutputStream dataOutputStream) {
         DiscountCode oldDiscountCode = findDiscountCodeWithThisId(discountCode.getDiscountCodeID());
         int index = allDiscountCodes.indexOf(oldDiscountCode);
         allDiscountCodes.set(index, discountCode);
@@ -95,10 +100,10 @@ public class DiscountCodeCenter {
         if (customeradded) {
             DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
         }
-        ServerController.getInstance().sendMessageToClient("@Successful@discount code successfully edited");
+        ServerController.getInstance().sendMessageToClient("@Successful@discount code successfully edited", dataOutputStream);
     }
 
-    public void removeDiscountCode(String code) {
+    public synchronized void removeDiscountCode(String code, DataOutputStream dataOutputStream) {
         DiscountCode discountCode = findDiscountCodeWithThisId(code);
         for (String username : discountCode.getAllUserAccountsThatHaveDiscount()) {
             Customer customer = UserCenter.getIncstance().findCustomerWithUsername(username);
@@ -109,10 +114,10 @@ public class DiscountCodeCenter {
         allDiscountCodes.remove(discountCode);
         DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(allDiscountCodes));
         DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
-        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@discount code successfully removed");
+        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@discount code successfully removed", dataOutputStream);
     }
 
-    public void usedDiscountCode(String code, String username) {
+    public synchronized void usedDiscountCode(String code, String username, DataOutputStream dataOutputStream) {
         DiscountCode discountCode = findDiscountCodeWithThisId(code);
         if (discountCode != null) {
             System.out.println(discountCode.getRemainingTimesForEachCustomer());
@@ -121,7 +126,7 @@ public class DiscountCodeCenter {
                 discountCode.usedOneTime(username);
                 UserCenter.getIncstance().findCustomerWithUsername(username).useDiscountCode(code);
             } else {
-                removeDiscountCode(code);
+                removeDiscountCode(code, dataOutputStream);
             }
             allDiscountCodes.remove(discountCode);
             DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(allDiscountCodes));
@@ -138,7 +143,7 @@ public class DiscountCodeCenter {
         return null;
     }
 
-    private String makeCode() {
+    private synchronized String makeCode() {
         for (int i = 6; i >= 0; i--) {
             char character = lastDiscountCodeID.charAt(i);
             if (character < 'z') {
@@ -152,12 +157,12 @@ public class DiscountCodeCenter {
         return lastDiscountCodeID;
     }
 
-    public void passTime() {
+    public synchronized void passTime(DataOutputStream dataOutputStream) {
         Calendar calendar = Calendar.getInstance();
         DataBase.getInstance().setAllDiscountCodesListFromDateBase();
         for (DiscountCode discountCode : allDiscountCodes) {
             if (calendar.getTime().after(discountCode.getEndTime())) {
-                removeDiscountCode(discountCode.getDiscountCodeID());
+                removeDiscountCode(discountCode.getDiscountCodeID(), dataOutputStream);
                 break;
             }
         }

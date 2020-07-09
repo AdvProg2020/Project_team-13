@@ -11,6 +11,8 @@ import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 
+import java.io.DataOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 
 public class ServerMessageController {
@@ -23,8 +25,12 @@ public class ServerMessageController {
     }
 
     public static ServerMessageController getInstance() {
-        if (serverMessageController == null) {
-            serverMessageController = new ServerMessageController();
+        if(serverMessageController == null){
+            synchronized (ServerMessageController.class) {
+                if(serverMessageController == null){
+                    serverMessageController = new ServerMessageController();
+                }
+            }
         }
         return serverMessageController;
     }
@@ -33,115 +39,115 @@ public class ServerMessageController {
         return ("@" + type + "@" + command);
     }
 
-    public void processMessage(String message) {
-        ServerController.getInstance().passTime();
+    public void processMessage(String message, DataOutputStream dataOutputStream) {
+        ServerController.getInstance().passTime(dataOutputStream);
         if (message.startsWith("@Register@")) {
             this.message = message.substring(10);
-            UserCenter.getIncstance().createNewUserAccount(this.message);
+            UserCenter.getIncstance().createNewUserAccount(this.message, dataOutputStream);
         } else if (message.startsWith("@Login@")) {
             message = message.substring(7);
             String[] split = message.split("/");
-            UserCenter.getIncstance().login(split[0], split[1]);
+            UserCenter.getIncstance().login(split[0], split[1], dataOutputStream);
         } else if (message.equals("@getAllRequests@")) {
-            ServerController.getInstance().sendMessageToClient("@AllRequests@" + new Gson().toJson(RequestCenter.getIncstance().getAllRequests()));
+            ServerController.getInstance().sendMessageToClient("@AllRequests@" + new Gson().toJson(RequestCenter.getIncstance().getAllRequests()), dataOutputStream);
         } else if (message.startsWith("@acceptRequest@")) {
             message = message.substring(15);
-            RequestCenter.getIncstance().acceptRequest(message);
+            RequestCenter.getIncstance().acceptRequest(message, dataOutputStream);
         } else if (message.startsWith("@AddProduct@")) {
             message = message.substring(12);
             Gson gson = new Gson();
             Product product = gson.fromJson(message, Product.class);
-            ProductCenter.getInstance().createProductRequest(product);
+            ProductCenter.getInstance().createProductRequest(product, dataOutputStream);
         } else if (message.startsWith("@getAllUsers@")) {
-            DataBase.getInstance().getAllUsersListFromDateBase();
+            DataBase.getInstance().getAllUsersListFromDateBase(dataOutputStream);
         } else if (message.startsWith("@deleteCustomer@")) {
             UserCenter.getIncstance().removeCustomer(message.substring(16
-            ));
+            ), dataOutputStream);
         } else if (message.startsWith("@deleteSeller@")) {
-            UserCenter.getIncstance().removeSeller(message.substring(14));
+            UserCenter.getIncstance().removeSeller(message.substring(14), dataOutputStream);
         } else if (message.startsWith("@deleteManager@")) {
-            UserCenter.getIncstance().removeManager(message.substring(15));
+            UserCenter.getIncstance().removeManager(message.substring(15), dataOutputStream);
         } else if (message.startsWith("@createManagerProfile@")) {
-            UserCenter.getIncstance().createManagerProfile(message.substring(22));
+            UserCenter.getIncstance().createManagerProfile(message.substring(22), dataOutputStream);
         } else if (message.startsWith("@getAllProductsForManager@")) {
-            DataBase.getInstance().getAllProductsFromDataBase();
+            DataBase.getInstance().getAllProductsFromDataBase(dataOutputStream);
         } else if (message.startsWith("@getAllOffers@")) {
-            DataBase.getInstance().getAllOffersFromDataBase();
+            DataBase.getInstance().getAllOffersFromDataBase(dataOutputStream);
         } else if (message.startsWith("@removeProductForManager@")) {
             message = message.substring(25);
-            ProductCenter.getInstance().deleteProduct(message);
+            ProductCenter.getInstance().deleteProduct(message, dataOutputStream);
         } else if (message.startsWith("@getAllCategories@")) {
             CategoryCenter.getIncstance().updateAllCategories();
             ArrayList<Category> allCategories = CategoryCenter.getIncstance().getAllCategories();
             Gson gson = new Gson();
-            ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("setAllCategories", gson.toJson(allCategories)));
+            ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("setAllCategories", gson.toJson(allCategories)), dataOutputStream);
         } else if (message.startsWith("@updateAllCategories@")) {
             message = message.substring(21);
             DataBase.getInstance().updateAllCategories(message);
-            ServerController.getInstance().sendMessageToClient(MessageController.getInstance().makeMessage("category added", "category added"));
+            ServerController.getInstance().sendMessageToClient(MessageController.getInstance().makeMessage("category added", "category added"), dataOutputStream);
         } else if (message.startsWith("@removeCategory@")) {
             message = message.substring(16);
-            CategoryCenter.getIncstance().removeCategory(message);
+            CategoryCenter.getIncstance().removeCategory(message, dataOutputStream);
         } else if (message.startsWith("@createDiscountCode@")) {
             message = message.substring(20);
-            DiscountCodeCenter.getIncstance().createDiscountCode(message);
+            DiscountCodeCenter.getIncstance().createDiscountCode(message, dataOutputStream);
         } else if (message.equals("@getAllDiscountCodes@")) {
-            ServerController.getInstance().sendMessageToClient("@AllDiscountCodes@" + new Gson().toJson(DiscountCodeCenter.getIncstance().getAllDiscountCodes()));
+            ServerController.getInstance().sendMessageToClient("@AllDiscountCodes@" + new Gson().toJson(DiscountCodeCenter.getIncstance().getAllDiscountCodes()), dataOutputStream);
         } else if (message.startsWith("@editDiscountCode@")) {
             message = message.substring(18);
-            DiscountCodeCenter.getIncstance().editDiscountCode(new Gson().fromJson(message, DiscountCode.class));
+            DiscountCodeCenter.getIncstance().editDiscountCode(new Gson().fromJson(message, DiscountCode.class), dataOutputStream);
         } else if (message.startsWith("@AddOffer@")) {
             message = message.substring(10);
-            OffCenter.getInstance().createOfferRequest(message);
+            OffCenter.getInstance().createOfferRequest(message, dataOutputStream);
         } else if (message.startsWith("@removeDiscountCode@")) {
             message = message.substring(20);
-            DiscountCodeCenter.getIncstance().removeDiscountCode(message);
+            DiscountCodeCenter.getIncstance().removeDiscountCode(message, dataOutputStream);
         } else if (message.startsWith("@editManager@")) {
             message = message.substring(13);
-            UserCenter.getIncstance().editManager(new Gson().fromJson(message, Manager.class));
+            UserCenter.getIncstance().editManager(new Gson().fromJson(message, Manager.class), dataOutputStream);
         } else if (message.startsWith("@editCustomer@")) {
             message = message.substring(14);
-            UserCenter.getIncstance().editCustomer(new Gson().fromJson(message, Customer.class));
+            UserCenter.getIncstance().editCustomer(new Gson().fromJson(message, Customer.class), dataOutputStream);
         } else if (message.startsWith("@editSeller@")) {
             message = message.substring(12);
-            UserCenter.getIncstance().editSeller(new Gson().fromJson(message, Seller.class));
+            UserCenter.getIncstance().editSeller(new Gson().fromJson(message, Seller.class), dataOutputStream);
         } else if (message.startsWith("@editCategory@")) {
             message = message.substring(14);
             if (message.startsWith("add")) {
                 message = message.substring(3);
-                CategoryCenter.getIncstance().editCategory(new Gson().fromJson(message, Category.class));
+                CategoryCenter.getIncstance().editCategory(new Gson().fromJson(message, Category.class), dataOutputStream);
             } else if (message.startsWith("del")) {
                 message = message.substring(3);
                 CategoryCenter.getIncstance().deleteCategoryFeature(new Gson().fromJson(message, Category.class));
             } else if (message.startsWith("adM")) {
                 message = message.substring(3);
-                CategoryCenter.getIncstance().replaceCategory(new Gson().fromJson(message, Category.class));
+                CategoryCenter.getIncstance().replaceCategory(new Gson().fromJson(message, Category.class), dataOutputStream);
             }
         } else if (message.startsWith("@editOffer@")) {
             message = message.substring(11);
-            OffCenter.getInstance().createEditOfferRequest(new Gson().fromJson(message, Offer.class));
+            OffCenter.getInstance().createEditOfferRequest(new Gson().fromJson(message, Offer.class), dataOutputStream);
         } else if (message.startsWith("@editProduct@")) {
             message = message.substring(13);
-            ProductCenter.getInstance().createEditProductRequest(new Gson().fromJson(message, Product.class));
+            ProductCenter.getInstance().createEditProductRequest(new Gson().fromJson(message, Product.class), dataOutputStream);
         } else if (message.startsWith("@deleteProduct@")) {
             message = message.substring(15);
-            ProductCenter.getInstance().createDeleteProductRequest(new Gson().fromJson(message, Product.class));
+            ProductCenter.getInstance().createDeleteProductRequest(new Gson().fromJson(message, Product.class), dataOutputStream);
         } else if (message.startsWith("@pay@")) {
             message = message.substring(5);
-            CartCenter.getInstance().pay(new Gson().fromJson(message, Cart.class));
+            CartCenter.getInstance().pay(new Gson().fromJson(message, Cart.class), dataOutputStream);
         } else if (message.startsWith("@declineRequest@")) {
             message = message.substring(16);
-            RequestCenter.getIncstance().declineRequest(message);
+            RequestCenter.getIncstance().declineRequest(message, dataOutputStream);
         } else if (message.startsWith("@rate@")) {
             message = message.substring(6);
             ProductCenter.getInstance().rating(message);
         } else if (message.startsWith("@cmc@")) {
             message = message.substring(5);
-            ProductCenter.getInstance().addCommercialRequest(message);
+            ProductCenter.getInstance().addCommercialRequest(message, dataOutputStream);
         } else if (message.startsWith("@addComment@")) {
             message = message.substring(12);
             ProductCenter.getInstance().commenting(message);
-            ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@your comment sent to manager for accept");
+            ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@your comment sent to manager for accept", dataOutputStream);
         }
     }
 

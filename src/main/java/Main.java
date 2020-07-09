@@ -1,4 +1,4 @@
-import Controller.Server.ServerController;
+
 import Controller.Server.UserCenter;
 import View.MainMenu;
 import View.ManagerRegisterMenu;
@@ -12,7 +12,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        new ServerController().runServer();
         primaryStage.setTitle("Pms.com");
         if (UserCenter.getIncstance().getAllManager() != null
                 && !UserCenter.getIncstance().getAllManager().isEmpty()) {

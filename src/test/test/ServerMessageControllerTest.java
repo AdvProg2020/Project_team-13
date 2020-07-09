@@ -13,7 +13,7 @@ class ServerMessageControllerTest {
     void processMessage() {
         Gson gson = new Gson();
         String string = gson.toJson(new Manager("ali123", "12345", "ali", "majidi", "majid@gmail.com", "09122197321", 21));
-        serverMessageController.processMessage("@Register@" + string);
+//        serverMessageController.processMessage("@Register@" + string);
         assertEquals(string, serverMessageController.getMessage());
     }
 }

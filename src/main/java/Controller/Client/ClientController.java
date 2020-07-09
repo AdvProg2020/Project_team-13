@@ -9,6 +9,9 @@ import View.MainMenu;
 import View.Menu;
 import javafx.scene.media.MediaPlayer;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 
 public class ClientController {
@@ -19,6 +22,9 @@ public class ClientController {
     private ArrayList<View.Menu> menus = new ArrayList<>();
     private MediaPlayer mediaPlayer;
     private String message;
+    private Socket socket;
+    private DataInputStream dataInputStream;
+    private DataOutputStream dataOutputStream;
     public MediaPlayer getMediaPlayer() {
         return mediaPlayer;
     }
@@ -96,12 +102,11 @@ public class ClientController {
     }
 
     public void sendMessageToServer(String message) {
-        this.message = message;
-        ServerController.getInstance().getMessageFromClient(message);
+        //
     }
 
     public void getMessageFromServer(String message) {
-        MessageController.getInstance().processMessage(message);
+        //
     }
 
     public Seller getSeller() {
