@@ -9,6 +9,8 @@ import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import com.google.gson.Gson;
 
+import java.io.DataOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 
 public class UserCenter {
@@ -21,11 +23,11 @@ public class UserCenter {
 
     }
 
-    public void addCommercial(Product product) {
+    public synchronized void addCommercial(Product product, DataOutputStream dataOutputStream) {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equalsIgnoreCase(product.getSeller())) {
                 seller.setCommercializedProduct(product.getProductId());
-                ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@" + "Request accepted successfully");
+                ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@" + "Request accepted successfully", dataOutputStream);
                 break;
             }
         }
@@ -33,13 +35,17 @@ public class UserCenter {
     }
 
     public static UserCenter getIncstance() {
-        if (userCenter == null) {
-            userCenter = new UserCenter();
+        if(userCenter == null){
+            synchronized (UserCenter.class) {
+                if(userCenter == null){
+                    userCenter = new UserCenter();
+                }
+            }
         }
         return userCenter;
     }
 
-    public void reduceSellerCreditForAnAdd(Product product) {
+    public synchronized void reduceSellerCreditForAnAdd(Product product) {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(product.getSeller())) {
                 seller.setCredit(seller.getCredit() - 50);
@@ -48,7 +54,7 @@ public class UserCenter {
         }
     }
 
-    public void increaseSellerCreditForAnAdd(Product product) {
+    public synchronized void increaseSellerCreditForAnAdd(Product product) {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(product.getSeller())) {
                 seller.setCredit(seller.getCredit() + 50);
@@ -99,19 +105,19 @@ public class UserCenter {
         return null;
     }
 
-    public void setAllCustomer(ArrayList<Customer> allCustomer) {
+    public synchronized void setAllCustomer(ArrayList<Customer> allCustomer) {
         this.allCustomer = allCustomer;
     }
 
-    public void setAllSeller(ArrayList<Seller> allSeller) {
+    public synchronized void setAllSeller(ArrayList<Seller> allSeller) {
         this.allSeller = allSeller;
     }
 
-    public void setAllManager(ArrayList<Manager> allManager) {
+    public synchronized void setAllManager(ArrayList<Manager> allManager) {
         this.allManager = allManager;
     }
 
-    public void createNewUserAccount(String json) {
+    public synchronized void createNewUserAccount(String json, DataOutputStream dataOutputStream) {
         Gson gson = new Gson();
         if (json.contains("@Customer")) {
             Customer customer = gson.fromJson(json, Customer.class);
@@ -119,9 +125,9 @@ public class UserCenter {
                 allCustomer.add(customer);
                 String arrayData = gson.toJson(allCustomer);
                 DataBase.getInstance().updateAllCustomers(arrayData);
-                ServerController.getInstance().sendMessageToClient("@Successfulrc@" + new Gson().toJson(customer));
+                ServerController.getInstance().sendMessageToClient("@Successfulrc@" + new Gson().toJson(customer), dataOutputStream);
             } else {
-                ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username");
+                ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username", dataOutputStream);
             }
         } else if (json.contains("@Seller")) {
             Seller seller = gson.fromJson(json, Seller.class);
@@ -131,9 +137,9 @@ public class UserCenter {
                 DataBase.getInstance().updateAllSellers(arrayData);
                 Request request = RequestCenter.getIncstance().makeRequest("AcceptSellerAccount", gson.toJson(seller));
                 RequestCenter.getIncstance().addRequest(request);
-                ServerController.getInstance().sendMessageToClient("@Successful@Register was sent to Manager for review");
+                ServerController.getInstance().sendMessageToClient("@Successful@Register was sent to Manager for review", dataOutputStream);
             } else {
-                ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username");
+                ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username", dataOutputStream);
             }
         } else if (json.contains("@Manager")) {
             if (allManager.size() == 0) {
@@ -142,17 +148,17 @@ public class UserCenter {
                     allManager.add(manager);
                     String arrayData = gson.toJson(allManager);
                     DataBase.getInstance().updateAllManagers(arrayData);
-                    ServerController.getInstance().sendMessageToClient("@Successful@Register Successful");
+                    ServerController.getInstance().sendMessageToClient("@Successful@Register Successful", dataOutputStream);
                 } else {
-                    ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username");
+                    ServerController.getInstance().sendMessageToClient("@Error@ is a User With this username", dataOutputStream);
                 }
             } else {
-                ServerController.getInstance().sendMessageToClient("@Error@You can not Register as Manager");
+                ServerController.getInstance().sendMessageToClient("@Error@You can not Register as Manager", dataOutputStream);
             }
         }
     }
 
-    public void login(String username, String password) {
+    public void login(String username, String password, DataOutputStream dataOutputStream) {
         Gson gson = new Gson();
         if (isThereUserWithThisUsername(username)) {
             UserAccount userAccount = getUserWithUsername(username);
@@ -160,32 +166,32 @@ public class UserCenter {
                 switch (userAccount.getType()) {
                     case "@Customer": {
                         String user = gson.toJson(userAccount);
-                        ServerController.getInstance().sendMessageToClient("@Login as Customer@" + user);
+                        ServerController.getInstance().sendMessageToClient("@Login as Customer@" + user, dataOutputStream);
                         break;
                     }
                     case "@Seller": {
                         String user = gson.toJson(userAccount);
                         if (((Seller) userAccount).isAccepted())
-                            ServerController.getInstance().sendMessageToClient("@Login as Seller@" + user);
+                            ServerController.getInstance().sendMessageToClient("@Login as Seller@" + user, dataOutputStream);
                         else
-                            ServerController.getInstance().sendMessageToClient("@Error@" + "Seller registration request hasn't been accepted");
+                            ServerController.getInstance().sendMessageToClient("@Error@" + "Seller registration request hasn't been accepted", dataOutputStream);
                         break;
                     }
                     case "@Manager": {
                         String user = gson.toJson(userAccount);
-                        ServerController.getInstance().sendMessageToClient("@Login as Manager@" + user);
+                        ServerController.getInstance().sendMessageToClient("@Login as Manager@" + user, dataOutputStream);
                         break;
                     }
                 }
             } else {
-                ServerController.getInstance().sendMessageToClient("@Error@Password is incorrect");
+                ServerController.getInstance().sendMessageToClient("@Error@Password is incorrect", dataOutputStream);
             }
         } else {
-            ServerController.getInstance().sendMessageToClient("@Error@There is no User With this username");
+            ServerController.getInstance().sendMessageToClient("@Error@There is no User With this username", dataOutputStream);
         }
     }
 
-    public void addProductToSeller(Product product) {
+    public synchronized void addProductToSeller(Product product) {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(product.getSeller())) {
                 seller.addProduct(product);
@@ -195,7 +201,7 @@ public class UserCenter {
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
     }
 
-    public void addOfferToSeller(Offer offer) {
+    public synchronized void addOfferToSeller(Offer offer) {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(offer.getSeller())) {
                 seller.addOffer(offer);
@@ -205,7 +211,7 @@ public class UserCenter {
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
     }
 
-    public void updateProductOfferInSeller(Product product) {
+    public synchronized void updateProductOfferInSeller(Product product) {
         firstTag:
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(product.getSeller())) {
@@ -221,7 +227,7 @@ public class UserCenter {
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
     }
 
-    public void editOfferForSeller(Offer newOffer) {
+    public synchronized void editOfferForSeller(Offer newOffer) {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(newOffer.getSeller())) {
                 seller.editOffer(newOffer);
@@ -231,7 +237,7 @@ public class UserCenter {
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
     }
 
-    public void removeOfferForSeller(Offer offer) {
+    public synchronized void removeOfferForSeller(Offer offer) {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(offer.getSeller())) {
                 seller.removeOffer(offer);
@@ -241,7 +247,7 @@ public class UserCenter {
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
     }
 
-    public boolean canAcceptSellerRegister(String username) {
+    public synchronized boolean canAcceptSellerRegister(String username, DataOutputStream dataOutputStream) {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(username)) {
                 seller.setAccepted(true);
@@ -249,20 +255,20 @@ public class UserCenter {
                 return true;
             }
         }
-        ServerController.getInstance().sendMessageToClient("@Error@there is no seller with this username");
+        ServerController.getInstance().sendMessageToClient("@Error@there is no seller with this username", dataOutputStream);
         return false;
     }
 
-    public void removeCustomer(String username) {
+    public synchronized void removeCustomer(String username, DataOutputStream dataOutputStream) {
         for (Customer customer : allCustomer) {
             if (customer.getUsername().equals(username)) {
                 allCustomer.remove(customer);
                 DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
-                ServerController.getInstance().sendMessageToClient("@Successful@delete user successfully");
+                ServerController.getInstance().sendMessageToClient("@Successful@delete user successfully", dataOutputStream);
                 return;
             }
         }
-        ServerController.getInstance().sendMessageToClient("@Error@there is no user with this username");
+        ServerController.getInstance().sendMessageToClient("@Error@there is no user with this username", dataOutputStream);
     }
 
     public void removeProductFromSellerProductList(Product product) {
@@ -277,7 +283,7 @@ public class UserCenter {
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
     }
 
-    public void editProductInSeller(Product product) {
+    public synchronized void editProductInSeller(Product product) {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(product.getSeller())) {
                 seller.editProduct(product);
@@ -286,43 +292,43 @@ public class UserCenter {
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
     }
 
-    public void removeSeller(String username) {
+    public synchronized void removeSeller(String username, DataOutputStream dataOutputStream) {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equals(username)) {
                 allSeller.remove(seller);
                 for (Product product : seller.getAllProducts()) {
-                    ProductCenter.getInstance().removeProduct(ProductCenter.getInstance().findProductWithID(product.getProductId()));
+                    ProductCenter.getInstance().removeProduct(ProductCenter.getInstance().findProductWithID(product.getProductId()), dataOutputStream);
                 }
                 DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
                 DataBase.getInstance().updateAllProducts(new Gson().toJson(ProductCenter.getInstance().getAllProducts()));
-                ServerController.getInstance().sendMessageToClient("@Successful@delete user successfully");
+                ServerController.getInstance().sendMessageToClient("@Successful@delete user successfully", dataOutputStream);
                 return;
             }
         }
-        ServerController.getInstance().sendMessageToClient("@Error@there is no user with this username");
+        ServerController.getInstance().sendMessageToClient("@Error@there is no user with this username", dataOutputStream);
     }
 
-    public void removeManager(String username) {
+    public synchronized void removeManager(String username, DataOutputStream dataOutputStream) {
         for (Manager manager : allManager) {
             if (manager.getUsername().equals(username)) {
                 allManager.remove(manager);
                 DataBase.getInstance().updateAllManagers(new Gson().toJson(allManager));
-                ServerController.getInstance().sendMessageToClient("@Successful@delete user successfully");
+                ServerController.getInstance().sendMessageToClient("@Successful@delete user successfully", dataOutputStream);
                 return;
             }
         }
-        ServerController.getInstance().sendMessageToClient("@Error@there is no user with this username");
+        ServerController.getInstance().sendMessageToClient("@Error@there is no user with this username", dataOutputStream);
     }
 
-    public void createManagerProfile(String json) {
+    public synchronized void createManagerProfile(String json, DataOutputStream dataOutputStream) {
         Manager manager = new Gson().fromJson(json, Manager.class);
         if (!isThereUserWithThisUsername(manager.getUsername())) {
             allManager.add(manager);
             String arrayData = new Gson().toJson(allManager);
             DataBase.getInstance().updateAllManagers(arrayData);
-            ServerController.getInstance().sendMessageToClient("@Successful@Register Successful");
+            ServerController.getInstance().sendMessageToClient("@Successful@Register Successful", dataOutputStream);
         } else {
-            ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username");
+            ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username", dataOutputStream);
         }
     }
 
@@ -330,25 +336,25 @@ public class UserCenter {
         return allCustomer;
     }
 
-    public void editManager(Manager manager) {
+    public synchronized void editManager(Manager manager, DataOutputStream dataOutputStream) {
         int index = allManager.indexOf(findManagerWithUsername(manager.getUsername()));
         allManager.set(index, manager);
         DataBase.getInstance().updateAllManagers(new Gson().toJson(allManager));
-        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@user successfully edited");
+        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@user successfully edited", dataOutputStream);
     }
 
-    public void editCustomer(Customer customer) {
+    public synchronized void editCustomer(Customer customer, DataOutputStream dataOutputStream) {
         int index = allCustomer.indexOf(findCustomerWithUsername(customer.getUsername()));
         allCustomer.set(index, customer);
         DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
-        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@user successfully edited");
+        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@user successfully edited", dataOutputStream);
     }
 
-    public void editSeller(Seller seller) {
+    public synchronized void editSeller(Seller seller, DataOutputStream dataOutputStream) {
         int index = allSeller.indexOf(findSellerWithUsername(seller.getUsername()));
         allSeller.set(index, seller);
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
-        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@user successfully edited");
+        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@user successfully edited", dataOutputStream);
     }
 
     public Seller findSellerWithUsername(String username) {

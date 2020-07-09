@@ -83,8 +83,16 @@ public class MessageController {
             message = message.substring(12, message.length());
             UserController.getInstance().setAllSellers(message);
         } else if (message.startsWith("@allManagers@")) {
+            System.out.println(message);
             message = message.substring(13);
             UserController.getInstance().setAllManagers(message);
+        }else if (message.startsWith("@allUsers@")) {
+            System.out.println(message);
+            message = message.substring(10);
+            String[] split=message.split("&");
+            UserController.getInstance().setAllCustomers(split[0]);
+            UserController.getInstance().setAllSellers(split[1]);
+            UserController.getInstance().setAllManagers(split[2]);
         } else if (message.startsWith("@getAllProductsForManager@")) {
             message = message.substring(26);
             ProductController.getInstance().updateAllProducts(message);

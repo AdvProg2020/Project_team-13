@@ -5,6 +5,7 @@ import Models.OfferStatus;
 import Models.Product.Product;
 import com.google.gson.Gson;
 
+import java.io.DataOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -17,35 +18,39 @@ public class OffCenter {
     }
 
     public static OffCenter getInstance() {
-        if (offCenter == null) {
-            offCenter = new OffCenter();
+        if(offCenter == null){
+            synchronized (OffCenter.class) {
+                if(offCenter == null){
+                    offCenter = new OffCenter();
+                }
+            }
         }
         return offCenter;
     }
 
-    public void createOfferRequest(String message) {
+    public synchronized void createOfferRequest(String message, DataOutputStream dataOutputStream) {
         Gson gson = new Gson();
         Offer offer = gson.fromJson(message, Offer.class);
         offer.setOfferStatus(OfferStatus.onReviewForCreate);
         RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("AddOffer", gson.toJson(offer)));
-        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "The Offer Registered For Manager's Confirmation"));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "The Offer Registered For Manager's Confirmation"), dataOutputStream);
     }
 
-    public String getOfferIdForCreateInOffer() {
+    public synchronized String getOfferIdForCreateInOffer() {
         DataBase.getInstance().setLastOfferIdFromDataBase();
         this.lastOffId = "@o" + (Integer.parseInt(lastOffId.substring(2)) + 1);
         DataBase.getInstance().replaceOfferId(lastOffId);
         return this.lastOffId;
     }
 
-    public void setLastOffId(String lastOffId) {
+    public synchronized void setLastOffId(String lastOffId) {
         this.lastOffId = lastOffId;
     }
 
-    public void createEditOfferRequest(Offer offer) {
+    public synchronized void createEditOfferRequest(Offer offer, DataOutputStream dataOutputStream) {
         offer.setOfferStatus(OfferStatus.onReviewForEdit);
         RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("EditOffer", new Gson().toJson(offer)));
-        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("editOffer", "The Offer's Edition Is Saved For Manager's Confirmation "));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("editOffer", "The Offer's Edition Is Saved For Manager's Confirmation "), dataOutputStream);
     }
 
     public void setAllOffers(ArrayList<Offer> allOffers) {
@@ -67,8 +72,8 @@ public class OffCenter {
         return allOffers;
     }
 
-    public void removeProduct(String productID) {
-        DataBase.getInstance().getAllOffersFromDataBase();
+    public synchronized void removeProduct(String productID, DataOutputStream dataOutputStream) {
+        DataBase.getInstance().getAllOffersFromDataBase(dataOutputStream);
         for (Offer offer : allOffers) {
             offer.getProducts().removeIf(product -> product.equals(productID));
         }
@@ -76,7 +81,7 @@ public class OffCenter {
 
     }
 
-    public void createNewOff(Offer offer) {
+    public synchronized void createNewOff(Offer offer, DataOutputStream dataOutputStream) {
         offer.setOfferId(getOfferIdForCreateInOffer());
         offer.setOfferStatus(OfferStatus.accepted);
         if (allOffers == null) {
@@ -90,10 +95,10 @@ public class OffCenter {
             CategoryCenter.getIncstance().updateProductInCategory(ProductCenter.getInstance().getProductWithId(product));
             UserCenter.getIncstance().updateProductOfferInSeller(ProductCenter.getInstance().getProductWithId(product));
         }
-        ServerController.getInstance().sendMessageToClient("@Successful@add Offs request sent to Manager");
+        ServerController.getInstance().sendMessageToClient("@Successful@add Offs request sent to Manager", dataOutputStream);
     }
 
-    public void editOffer(Offer newOffer) {
+    public synchronized void editOffer(Offer newOffer) {
         Offer oldOffer = getOfferByOfferId(newOffer.getOfferId());
         newOffer.setOfferStatus(OfferStatus.accepted);
         allOffers.set(allOffers.indexOf(oldOffer), newOffer);
@@ -111,18 +116,7 @@ public class OffCenter {
         DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
     }
 
-    public void deleteOffer(Offer offer) {
-        allOffers.remove(offer);
-        for (String product : offer.getProducts()) {
-            ProductCenter.getInstance().addOfferToProduct(product, null);
-            CategoryCenter.getIncstance().updateProductInCategory(ProductCenter.getInstance().getProductWithId(product));
-            UserCenter.getIncstance().updateProductOfferInSeller(ProductCenter.getInstance().getProductWithId(product));
-        }
-        UserCenter.getIncstance().removeOfferForSeller(offer);
-        DataBase.getInstance().updateAllOffers(new Gson().toJson(allOffers));
-    }
-
-    public void setProductStatusForOffer(Offer offer) {
+    public synchronized void setProductStatusForOffer(Offer offer) {
         for (String product : offer.getProducts()) {
             ProductCenter.getInstance().getProductWithId(product).setExistInOfferRegistered(false);
         }
@@ -137,7 +131,7 @@ public class OffCenter {
         return null;
     }
 
-    public void passTime() {
+    public synchronized void passTime() {
         Calendar calendar = Calendar.getInstance();
         DataBase.getInstance().setAllOffersFromDatabase();
         for (Offer offer : allOffers) {

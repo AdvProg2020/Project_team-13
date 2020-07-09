@@ -1,1 +1,1 @@
-[{"offerId":"@o12361","amount":50.0,"seller":"ali3","productsId":["@p1030","@p1031"],"startTime":"Jul 5, 2020 12:00:00 AM","endTime":"Jul 7, 2020 12:00:00 AM","offerStatus":"accepted"},{"offerId":"@o12362","amount":50.0,"seller":"ali3","productsId":["@p1030"],"startTime":"Jul 5, 2020 12:00:00 AM","endTime":"Jul 15, 2020 12:00:00 AM","offerStatus":"accepted"}]
+[]

@@ -4,6 +4,7 @@ import Models.Product.Category;
 import Models.Product.Product;
 import com.google.gson.Gson;
 
+import java.io.DataOutputStream;
 import java.util.ArrayList;
 
 public class CategoryCenter {
@@ -13,14 +14,19 @@ public class CategoryCenter {
     private CategoryCenter() {
     }
 
+
     public static CategoryCenter getIncstance() {
-        if (categoryCenter == null) {
-            categoryCenter = new CategoryCenter();
+        if(categoryCenter == null){
+            synchronized (CategoryCenter.class) {
+                if(categoryCenter == null){
+                    categoryCenter = new CategoryCenter();
+                }
+            }
         }
         return categoryCenter;
     }
 
-    public void updateAllCategories() {
+    public synchronized void updateAllCategories() {
         DataBase.getInstance().setAllCategoriesFormDataBase();
     }
 
@@ -34,20 +40,15 @@ public class CategoryCenter {
         DataBase.getInstance().updateAllCategories(gson.toJson(this.allCategories));
     }
 
-    public void setAllCategories(ArrayList<Category> allCategories) {
-        this.allCategories = allCategories;
-        Gson gson = new Gson();
-        DataBase.getInstance().updateAllCategories(gson.toJson(this.allCategories));
-    }
 
-    public void removeCategory(String name) {
+    public synchronized void removeCategory(String name, DataOutputStream dataOutputStream) {
         updateAllCategories();
         for (Category category : allCategories) {
             if (category.getName().equals(name)) {
                 ProductCenter.getInstance().updateAllProducts();
                 if (category.getAllProducts() != null && !category.getAllProducts().isEmpty()) {
                     for (Product product : category.getAllProducts()) {
-                        ProductCenter.getInstance().removeProduct(product);
+                        ProductCenter.getInstance().removeProduct(product, dataOutputStream);
                     }
                 }
             }
@@ -62,10 +63,10 @@ public class CategoryCenter {
             }
         }
 
-        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("productRemoved", "productRemovesSuccessfully"));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("productRemoved", "productRemovesSuccessfully"), dataOutputStream);
     }
 
-    public void addProductToCategory(Product product) {
+    public synchronized void addProductToCategory(Product product) {
         for (Category category : allCategories) {
             if (category.getName().equals(product.getProductsCategory())) {
                 category.addProduct(product);
@@ -74,7 +75,7 @@ public class CategoryCenter {
         }
     }
 
-    public void editCategory(Category category) {
+    public synchronized void editCategory(Category category, DataOutputStream dataOutputStream) {
         for (int i = 0; i < allCategories.size(); i++) {
             if (allCategories.get(i).getName().equalsIgnoreCase(category.getName())) {
                 allCategories.set(i, category);
@@ -92,10 +93,10 @@ public class CategoryCenter {
             }
         }
         DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
-        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@Category successfully edited");
+        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@Category successfully edited", dataOutputStream);
     }
 
-    public void removeProductFromCategory(Product product) {
+    public synchronized void removeProductFromCategory(Product product) {
         for (Category category : allCategories) {
             if (category.getName().trim().equals(product.getProductsCategory().trim())) {
                 for (Product product1 : category.getAllProducts()) {
@@ -109,7 +110,7 @@ public class CategoryCenter {
         DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
     }
 
-    public void replaceCategory(Category category) {
+    public synchronized void replaceCategory(Category category, DataOutputStream dataOutputStream) {
         for (int i = 0; i < allCategories.size(); i++) {
             if (allCategories.get(i).getName().equals(category.getName())) {
                 allCategories.set(i, category);
@@ -117,10 +118,10 @@ public class CategoryCenter {
             }
         }
         DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
-        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@Category successfully edited");
+        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@Category successfully edited", dataOutputStream);
     }
 
-    public void deleteCategoryFeature(Category category) {
+    public synchronized void deleteCategoryFeature(Category category) {
         for (int i = 0; i < allCategories.size(); i++) {
             if (allCategories.get(i).getName().equalsIgnoreCase(category.getName())) {
                 allCategories.set(i, category);
@@ -145,7 +146,7 @@ public class CategoryCenter {
         DataBase.getInstance().updateAllCategories(new Gson().toJson(allCategories));
     }
 
-    public void updateProductInCategory(Product product) {
+    public synchronized void updateProductInCategory(Product product) {
         firstLoop:
         for (Category category : allCategories) {
             if (category.getName().equals(product.getProductsCategory())) {
@@ -162,7 +163,7 @@ public class CategoryCenter {
         }
     }
 
-    public void editProductInCategory(Product product) {
+    public synchronized void editProductInCategory(Product product) {
         if (allCategories != null) {
             for (Category category : allCategories) {
                 if (product.getProductsCategory().equals(category.getName())) {

@@ -5,6 +5,7 @@ import Models.Product.Product;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 
+import java.io.DataOutputStream;
 import java.util.ArrayList;
 
 public class RequestCenter {
@@ -17,25 +18,29 @@ public class RequestCenter {
     }
 
     public static RequestCenter getIncstance() {
-        if (requestCenter == null) {
-            requestCenter = new RequestCenter();
+        if(requestCenter == null){
+            synchronized (RequestCenter.class) {
+                if(requestCenter == null){
+                    requestCenter = new RequestCenter();
+                }
+            }
         }
         return requestCenter;
     }
 
-    public void addRequest(Request request) {
+    public synchronized void addRequest(Request request) {
         allRequests.add(request);
         String arrayData = new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);
     }
 
-    public String makeRequestID() {
+    public synchronized String makeRequestID() {
         lastRequestID = "@r" + (Integer.parseInt(lastRequestID.substring(2, 7)) + 1);
         DataBase.getInstance().replaceRequestId(lastRequestID);
         return lastRequestID;
     }
 
-    public Request makeRequest(String type, String details) {
+    public synchronized Request makeRequest(String type, String details) {
         switch (type) {
             case "AcceptSellerAccount":
                 return new Request(RequestType.sellerRegister, RequestStatus.onReview, makeRequestID(), details);
@@ -62,58 +67,58 @@ public class RequestCenter {
         return allRequests;
     }
 
-    public void acceptRequest(String requestID) {
+    public synchronized void acceptRequest(String requestID, DataOutputStream dataOutputStream) {
         Request request = findRequestWithID(requestID);
         if (request.getType() == RequestType.sellerRegister) {
-            acceptSellerRegisterRequest(request);
+            acceptSellerRegisterRequest(request, dataOutputStream);
         } else if (request.getType() == RequestType.addProduct) {
-            acceptAddProductRequest(request);
+            acceptAddProductRequest(request, dataOutputStream);
         } else if (request.getType().equals(RequestType.editOff)) {
-            acceptEditOfferRequest(request);
+            acceptEditOfferRequest(request, dataOutputStream);
         } else if (request.getType().equals(RequestType.addOff)) {
-            acceptAddOfferRequest(request);
+            acceptAddOfferRequest(request, dataOutputStream);
         } else if (request.getType().equals(RequestType.EditProduct)) {
-            acceptEdiProductRequest(request);
+            acceptEdiProductRequest(request, dataOutputStream);
         } else if (request.getType().equals(RequestType.commenting)) {
-            acceptCommentRequest(request);
+            acceptCommentRequest(request, dataOutputStream);
         } else if (request.getType().equals(RequestType.deleteProduct)) {
-            acceptDeleteProductRequest(request);
+            acceptDeleteProductRequest(request, dataOutputStream);
         } else if (request.getType().equals(RequestType.commercial)) {
-            acceptCommercialRequest(request);
+            acceptCommercialRequest(request, dataOutputStream);
         }
     }
 
-    public void acceptCommercialRequest(Request request) {
+    public synchronized void acceptCommercialRequest(Request request, DataOutputStream dataOutputStream) {
         allRequests.remove(request);
         ProductCenter.getInstance().createProduct(new Gson().fromJson(request.getDetails(), Product.class));
         String arrayData = new Gson().toJson(allRequests);
         Product product = new Gson().fromJson(request.getDetails(), Product.class);
         DataBase.getInstance().updateAllRequests(arrayData);
-        UserCenter.getIncstance().addCommercial(product);
+        UserCenter.getIncstance().addCommercial(product, dataOutputStream);
     }
 
-    public void acceptAddProductRequest(Request request) {
+    public synchronized void acceptAddProductRequest(Request request, DataOutputStream dataOutputStream) {
         allRequests.remove(request);
         ProductCenter.getInstance().createProduct(new Gson().fromJson(request.getDetails(), Product.class));
         String arrayData = new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);
-        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@" + "request accepted successfully");
+        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@" + "request accepted successfully", dataOutputStream);
     }
 
-    public void acceptCommentRequest(Request request) {
+    public synchronized void acceptCommentRequest(Request request, DataOutputStream dataOutputStream) {
         allRequests.remove(request);
-        ProductCenter.getInstance().addComment(new Gson().fromJson(request.getDetails(), Comment.class));
+        ProductCenter.getInstance().addComment(new Gson().fromJson(request.getDetails(), Comment.class), dataOutputStream);
         String arrayData = new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);
-        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@" + "request accepted successfully");
+        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@" + "request accepted successfully", dataOutputStream);
     }
 
-    public void acceptSellerRegisterRequest(Request request) {
-        if (UserCenter.getIncstance().canAcceptSellerRegister(new Gson().fromJson(request.getDetails(), Seller.class).getUsername())) {
+    public synchronized void acceptSellerRegisterRequest(Request request, DataOutputStream dataOutputStream) {
+        if (UserCenter.getIncstance().canAcceptSellerRegister(new Gson().fromJson(request.getDetails(), Seller.class).getUsername(), dataOutputStream)) {
             allRequests.remove(request);
             String arrayData = new Gson().toJson(allRequests);
             DataBase.getInstance().updateAllRequests(arrayData);
-            ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@" + "request accepted successfully");
+            ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@" + "request accepted successfully", dataOutputStream);
         }
     }
 
@@ -134,23 +139,23 @@ public class RequestCenter {
         this.lastRequestID = lastRequestID;
     }
 
-    public void acceptEditOfferRequest(Request request) {
+    public synchronized void acceptEditOfferRequest(Request request, DataOutputStream dataOutputStream) {
         allRequests.remove(request);
         OffCenter.getInstance().editOffer(new Gson().fromJson(request.getDetails(), Offer.class));
         String arrayData = new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);
-        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("SuccessfulNotBack", "Request accept successfully"));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("SuccessfulNotBack", "Request accept successfully"), dataOutputStream);
     }
 
-    public void acceptAddOfferRequest(Request request) {
+    public synchronized void acceptAddOfferRequest(Request request, DataOutputStream dataOutputStream) {
         allRequests.remove(request);
-        OffCenter.getInstance().createNewOff(new Gson().fromJson(request.getDetails(), Offer.class));
+        OffCenter.getInstance().createNewOff(new Gson().fromJson(request.getDetails(), Offer.class), dataOutputStream);
         String arrayData = new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);
-        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("SuccessfulNotBack", "Request accept successfully"));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("SuccessfulNotBack", "Request accept successfully"), dataOutputStream);
     }
 
-    public void acceptEdiProductRequest(Request request) {
+    public synchronized void acceptEdiProductRequest(Request request, DataOutputStream dataOutputStream) {
         Product product = new Gson().fromJson(request.getDetails(), Product.class);
         for (Product product1 : ProductCenter.getInstance().getAllProducts()) {
             if (product1.getProductId().equals(product.getProductId())) {
@@ -158,29 +163,29 @@ public class RequestCenter {
                 ProductCenter.getInstance().editProduct(product);
                 String arrayData = new Gson().toJson(allRequests);
                 DataBase.getInstance().updateAllRequests(arrayData);
-                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("SuccessfulNotBack", "Request accept successfully"));
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("SuccessfulNotBack", "Request accept successfully"), dataOutputStream);
                 return;
             }
         }
-        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Error", "There is no product with this Id."));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Error", "There is no product with this Id."), dataOutputStream);
     }
 
-    public void acceptDeleteProductRequest(Request request) {
+    public synchronized void acceptDeleteProductRequest(Request request, DataOutputStream dataOutputStream) {
         Product product = new Gson().fromJson(request.getDetails(), Product.class);
         for (Product product1 : ProductCenter.getInstance().getAllProducts()) {
             if (product1.getProductId().equals(product.getProductId())) {
                 allRequests.remove(request);
-                ProductCenter.getInstance().deleteProduct(product.getProductId());
+                ProductCenter.getInstance().deleteProduct(product.getProductId(), dataOutputStream);
                 String arrayData = new Gson().toJson(allRequests);
                 DataBase.getInstance().updateAllRequests(arrayData);
-                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("SuccessfulNotBack", "Request accept successfully"));
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("SuccessfulNotBack", "Request accept successfully"), dataOutputStream);
                 return;
             }
         }
-        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Error", "There is no product with this Id."));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Error", "There is no product with this Id."), dataOutputStream);
     }
 
-    public void declineRequest(String requestId) {
+    public synchronized void declineRequest(String requestId, DataOutputStream dataOutputStream) {
         Request request = findRequestWithID(requestId);
         allRequests.remove(request);
         if (request.getType().equals(RequestType.addOff) || request.getType().equals(RequestType.editOff)) {
@@ -190,6 +195,6 @@ public class RequestCenter {
         }
         String arrayData = new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);
-        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("SuccessfulNotBack", "Request declined successfully"));
+        ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("SuccessfulNotBack", "Request declined successfully"), dataOutputStream);
     }
 }

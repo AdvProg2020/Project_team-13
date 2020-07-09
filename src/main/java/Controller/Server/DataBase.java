@@ -72,7 +72,7 @@ public class DataBase {
             br.close();
             fileReader.close();
         } catch (IOException e) {
-
+            System.out.println(e.getMessage());
         }
     }
 
@@ -95,15 +95,17 @@ public class DataBase {
             br.close();
             fileReader.close();
         } catch (IOException | NullPointerException e) {
+            System.out.println(e.getMessage());
         }
     }
 
-    public void updateAllCategories(String json) {
+    public synchronized void updateAllCategories(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allCategories.txt");
             fileWriter.write(json);
             fileWriter.close();
         } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -396,9 +398,11 @@ public class DataBase {
         }
     }
 
-    public void getAllUsersListFromDateBase() {
+    public void getAllUsersListFromDateBase(DataOutputStream dataOutputStream) {
+        System.out.println("yes");
         FileReader fileReader = null;
         BufferedReader br;
+        String allJson="";
         try {
             fileReader = new FileReader("allCustomers.txt");
         } catch (FileNotFoundException e) {
@@ -408,7 +412,7 @@ public class DataBase {
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                ServerController.getInstance().sendMessageToClient("@allCustomers@" + json);
+                allJson+=json+"&";
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -428,7 +432,7 @@ public class DataBase {
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                ServerController.getInstance().sendMessageToClient("@allSellers@" + json);
+                allJson+=json+"&";
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -448,7 +452,8 @@ public class DataBase {
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                ServerController.getInstance().sendMessageToClient("@allManagers@" + json);
+                allJson+=json;
+                ServerController.getInstance().sendMessageToClient("@allUsers@" + allJson, dataOutputStream);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -461,7 +466,7 @@ public class DataBase {
         }
     }
 
-    public void getAllOffersFromDataBase() {
+    public void getAllOffersFromDataBase(DataOutputStream dataOutputStream) {
         FileReader fileReader = null;
         Scanner scanner;
         try {
@@ -476,9 +481,9 @@ public class DataBase {
                 json = scanner.nextLine();
             }
             if (json != null) {
-                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("getAllOffers", json));
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("getAllOffers", json), dataOutputStream);
             } else {
-                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Error", "There is no Product"));
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Error", "There is no Product"), dataOutputStream);
             }
         } finally {
             try {
@@ -490,7 +495,7 @@ public class DataBase {
         }
     }
 
-    public void getAllProductsFromDataBase() {
+    public void getAllProductsFromDataBase(DataOutputStream dataOutputStream) {
         FileReader fileReader = null;
         Scanner scanner;
         try {
@@ -505,9 +510,9 @@ public class DataBase {
                 json = scanner.nextLine();
             }
             if (json != null) {
-                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("getAllProductsForManager", json));
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("getAllProductsForManager", json), dataOutputStream);
             } else {
-                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Error", "There is no Product"));
+                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Error", "There is no Product"), dataOutputStream);
             }
         } finally {
             try {
