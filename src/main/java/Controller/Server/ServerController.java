@@ -86,6 +86,7 @@ public class ServerController {
                 System.out.println("Error in Connection...");
                 try {
                     dataInputStream.close();
+                    dataOutputStream.close();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -95,8 +96,11 @@ public class ServerController {
     }
 
     public void sendMessageToClient(String message, DataOutputStream dataOutputStream) {
-
-
+        try {
+            dataOutputStream.writeUTF(message);
+        } catch (IOException e) {
+            System.out.println("Error in Sending Packets...");
+        }
     }
 
     public synchronized void passTime(DataOutputStream dataOutputStream) {
