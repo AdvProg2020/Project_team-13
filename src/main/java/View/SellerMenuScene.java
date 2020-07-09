@@ -145,7 +145,7 @@ public class SellerMenuScene extends Menu {
                                 if (checkNameIsvalid(lastName.getText().trim())) {
                                     if (checkEmailIsvalid(email.getText().trim())) {
                                         if (Pattern.matches("\\d+", phoneNumber.getText().trim()) && phoneNumber.getText().trim().length() == 11 && phoneNumber.getText().charAt(0) == '0') {
-                                            if (checkEmailIsvalid(companyName.getText())) {
+                                            if (checkNameIsvalid(companyName.getText())) {
                                                 seller.setFirstName(firstName.getText().trim());
                                                 seller.setLastName(lastName.getText().trim());
                                                 seller.setEmail(email.getText().trim());
