@@ -9,9 +9,7 @@ import View.MainMenu;
 import View.Menu;
 import javafx.scene.media.MediaPlayer;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -29,6 +27,8 @@ public class ClientController {
     public void connectToServer(){
         try {
             socket=new Socket("127.0.0.1",8080);
+            dataOutputStream=new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            dataInputStream=new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         } catch (IOException e) {
             e.printStackTrace();
         }
