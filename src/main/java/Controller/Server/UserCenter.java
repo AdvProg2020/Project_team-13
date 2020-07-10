@@ -150,7 +150,7 @@ public class UserCenter {
                     DataBase.getInstance().updateAllManagers(arrayData);
                     ServerController.getInstance().sendMessageToClient("@Successful@Register Successful", dataOutputStream);
                 } else {
-                    ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username", dataOutputStream);
+                    ServerController.getInstance().sendMessageToClient("@Error@ is a User With this username", dataOutputStream);
                 }
             } else {
                 ServerController.getInstance().sendMessageToClient("@Error@You can not Register as Manager", dataOutputStream);

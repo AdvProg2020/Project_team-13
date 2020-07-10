@@ -399,8 +399,10 @@ public class DataBase {
     }
 
     public void getAllUsersListFromDateBase(DataOutputStream dataOutputStream) {
+        System.out.println("yes");
         FileReader fileReader = null;
         BufferedReader br;
+        String allJson="";
         try {
             fileReader = new FileReader("allCustomers.txt");
         } catch (FileNotFoundException e) {
@@ -410,7 +412,7 @@ public class DataBase {
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                ServerController.getInstance().sendMessageToClient("@allCustomers@" + json, dataOutputStream);
+                allJson+=json+"&";
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -430,7 +432,7 @@ public class DataBase {
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                ServerController.getInstance().sendMessageToClient("@allSellers@" + json, dataOutputStream);
+                allJson+=json+"&";
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -450,7 +452,8 @@ public class DataBase {
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                ServerController.getInstance().sendMessageToClient("@allManagers@" + json, dataOutputStream);
+                allJson+=json;
+                ServerController.getInstance().sendMessageToClient("@allUsers@" + allJson, dataOutputStream);
             }
         } catch (IOException e) {
             e.printStackTrace();

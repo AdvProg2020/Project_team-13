@@ -1,4 +1,5 @@
 import Controller.Client.ClientController;
+import Controller.Client.UserController;
 import Controller.Server.ServerController;
 import Controller.Server.UserCenter;
 import View.MainMenu;
@@ -16,12 +17,14 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         ClientController.getInstance().connectToServer();
-        primaryStage.setTitle("Pms.com");
-        if (UserCenter.getIncstance().getAllManager() != null
-                && !UserCenter.getIncstance().getAllManager().isEmpty()) {
+        primaryStage.setTitle("SPM.com");
+        UserController.getInstance().getAllUserFromServer();
+        System.out.println(UserController.getInstance().getAllManagers().size());
+        if (UserController.getInstance().getAllManagers().size()>0) {
             new MainMenu(primaryStage).execute();
         }else {
             new ManagerRegisterMenu(primaryStage).execute();
         }
+        System.out.println(UserController.getInstance().getAllManagers().size());
     }
 }
