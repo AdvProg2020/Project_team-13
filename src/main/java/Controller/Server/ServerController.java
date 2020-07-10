@@ -98,6 +98,7 @@ public class ServerController {
     public void sendMessageToClient(String message, DataOutputStream dataOutputStream) {
         try {
             dataOutputStream.writeUTF(message);
+            dataOutputStream.flush();
         } catch (IOException e) {
             System.out.println("Error in Sending Packets...");
         }

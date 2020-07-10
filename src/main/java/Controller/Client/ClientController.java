@@ -114,6 +114,7 @@ public class ClientController {
         try {
             dataOutputStream.writeUTF(message);
             dataOutputStream.flush();
+            getMessageFromServer(dataInputStream.readUTF());
         } catch (IOException e) {
             e.printStackTrace();
         }
