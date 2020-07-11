@@ -37,6 +37,7 @@ public class RequestController {
     public void printAllRequests(String json) {
         Type requestListType = new TypeToken<ArrayList<Request>>() {
         }.getType();
+        System.out.println(json);
         allRequests = new Gson().fromJson(json, requestListType);
         StringBuilder showAllRequests = new StringBuilder();
         if (allRequests != null && !allRequests.isEmpty()) {

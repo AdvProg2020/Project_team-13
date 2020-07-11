@@ -2,10 +2,17 @@ package Controller.Server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ServerController {
     private static ServerController serverController;
     private ServerSocket serverSocket;
+    private Map<DataOutputStream, String> allClients;
+
+    private ServerController(){
+        allClients = new HashMap<>();
+    }
 
     public static ServerController getInstance(){
         if(serverController == null){
@@ -64,42 +71,50 @@ public class ServerController {
 
 
     public void getMessageFromClient(Socket socket) throws IOException {
+        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         while (true) {
-            DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-            DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-            System.out.println("Hello Client...");
             String string;
             try {
                 do {
                     string = dataInputStream.readUTF();
                 } while (string.isEmpty());
-              System.out.println(string);
               ServerMessageController.getInstance().processMessage(string, dataOutputStream);
             } catch (IOException e) {
                 System.out.println("Error in Connection...");
-                try {
-                    dataInputStream.close();
-                    dataOutputStream.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
                 break;
             }
         }
+        dataInputStream.close();
+        dataOutputStream.close();
     }
 
     public void sendMessageToClient(String message, DataOutputStream dataOutputStream) {
-        System.out.println("@Sen" + message);
+        String codedMessage;
+        if (message.matches("@Login as \\w+@")) {
+            codedMessage = TokenGenerator.getInstance().getTheToken(ServerController.getInstance().getAllClients().get(dataOutputStream), message);
+        }else{
+            codedMessage = TokenGenerator.getInstance().getTheCodedMessage(dataOutputStream, message);
+        }
         try {
-            dataOutputStream.writeUTF(message);
+            dataOutputStream.writeUTF(codedMessage);
             dataOutputStream.flush();
         } catch (IOException e) {
             System.out.println("Error in Sending Packets...");
+            try {
+                dataOutputStream.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
     public synchronized void passTime(DataOutputStream dataOutputStream) {
         DiscountCodeCenter.getIncstance().passTime(dataOutputStream);
         OffCenter.getInstance().passTime();
+    }
+
+    public Map<DataOutputStream, String> getAllClients() {
+        return allClients;
     }
 }
