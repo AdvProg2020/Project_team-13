@@ -1,1 +1,1 @@
-[]
+[{"type":"addOff","status":"onReview","requestId":"@r10132","details":"{\"amount\":45.0,\"seller\":\"seller\",\"productsId\":[\"@p1031\"],\"startTime\":\"Jul 10, 2020 12:00:00 AM\",\"endTime\":\"Jul 30, 2020 12:00:00 AM\",\"offerStatus\":\"onReviewForCreate\"}"}]

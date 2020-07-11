@@ -69,6 +69,8 @@ public class ServerMessageController {
             UserCenter.getIncstance().removeManager(message.substring(15), dataOutputStream);
         } else if (message.startsWith("@createManagerProfile@")) {
             UserCenter.getIncstance().createManagerProfile(message.substring(22), dataOutputStream);
+        } else if (message.startsWith("@createSupporterProfile@")) {
+            UserCenter.getIncstance().createSupporterProfile(message.substring(24), dataOutputStream);
         } else if (message.startsWith("@getAllProductsForManager@")) {
             DataBase.getInstance().getAllProductsFromDataBase(dataOutputStream);
         } else if (message.startsWith("@getAllOffers@")) {

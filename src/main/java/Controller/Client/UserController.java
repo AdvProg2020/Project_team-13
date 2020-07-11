@@ -4,6 +4,7 @@ import Models.Product.Product;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
+import Models.UserAccount.Supporter;
 import View.MessageKind;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -177,5 +178,8 @@ public class UserController {
 
     public void createManagerProfile(Manager manager) {
         ClientController.getInstance().sendMessageToServer("@createManagerProfile@" + new Gson().toJson(manager));
+    }
+    public void createSupporterProfile(Supporter supporter) {
+        ClientController.getInstance().sendMessageToServer("@createSupporterProfile@" + new Gson().toJson(supporter));
     }
 }

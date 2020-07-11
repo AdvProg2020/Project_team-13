@@ -1,1 +1,1 @@
-[]
+[{"offerId":"@o12362","amount":45.0,"seller":"seller","productsId":["@p1031"],"startTime":"Jul 10, 2020 12:00:00 AM","endTime":"Jul 30, 2020 12:00:00 AM","offerStatus":"accepted"}]

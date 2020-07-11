@@ -8,6 +8,7 @@ import Models.Request;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
+import Models.UserAccount.Supporter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -52,6 +53,14 @@ public class DataBase {
     public void updateAllManagers(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allManagers.txt");
+            fileWriter.write(json);
+            fileWriter.close();
+        } catch (Exception e) {
+        }
+    }
+    public void updateAllSupporter(String json) {
+        try {
+            FileWriter fileWriter = new FileWriter("allSupporter.txt");
             fileWriter.write(json);
             fileWriter.close();
         } catch (Exception e) {
@@ -222,6 +231,31 @@ public class DataBase {
                 }.getType();
                 ArrayList<Manager> allUsers = gson.fromJson(json, userListType);
                 UserCenter.getIncstance().setAllManager(allUsers);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            fileReader = new FileReader("allSupporter.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        br = new BufferedReader(fileReader);
+        try {
+            String json;
+            while ((json = br.readLine()) != null) {
+                Gson gson = new Gson();
+                Type userListType = new TypeToken<ArrayList<Supporter>>() {
+                }.getType();
+                ArrayList<Supporter> allUsers = gson.fromJson(json, userListType);
+                UserCenter.getIncstance().setAllSupporter(allUsers);
             }
         } catch (IOException e) {
             e.printStackTrace();

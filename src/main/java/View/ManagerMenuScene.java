@@ -234,7 +234,7 @@ public class ManagerMenuScene extends Menu {
         manageUsersButton.setStyle("-fx-font-size: 14 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         manageUsersButton.setMinHeight(50);
         manageUsersButton.setMinWidth(150);
-        Button createManagerButton = new Button("Create Manager");
+        Button createManagerButton = new Button("Create Supporter");
         createManagerButton.setTextAlignment(TextAlignment.CENTER);
         createManagerButton.setStyle("-fx-font-size: 14 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         createManagerButton.setMinHeight(50);
@@ -258,13 +258,32 @@ public class ManagerMenuScene extends Menu {
                 new CreateManagerProfile(stage).execute();
             }
         });
-        createManagerButton.setOnMouseEntered(new EventHandler() {
+
+        Button createSupporterButton = new Button("Create Manager");
+        createSupporterButton.setTextAlignment(TextAlignment.CENTER);
+        createSupporterButton.setStyle("-fx-font-size: 14 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
+        createSupporterButton.setMinHeight(50);
+        createSupporterButton.setMinWidth(150);
+        createSupporterButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
                 scene.setCursor(Cursor.HAND);
 
             }
         });
+        createSupporterButton.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT);
+            }
+        });
+        createSupporterButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                new CreateSupporterMenu(stage).execute();
+            }
+        });
+
         requestsButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
@@ -362,6 +381,7 @@ public class ManagerMenuScene extends Menu {
         leftMenuGridPane.add(manageCategoriesButton, 0, 6, 2, 2);
         leftMenuGridPane.add(manageDiscountsButton, 0, 8, 2, 2);
         leftMenuGridPane.add(manageProductsButton, 0, 10, 2, 2);
+        leftMenuGridPane.add(createSupporterButton, 0, 12, 2, 2);
         centerGridPane.add(leftMenuGridPane, 0, 1, 1, 6);
         centerGridPane.add(pageTitle, 0, 0, 1, 1);
         centerGridPane.add(userInfoGridPane, 3, 1, 2, 2);

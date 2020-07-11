@@ -1,1 +1,1 @@
-[]
+[{"existInOfferRegistered":false,"productId":"@p1031","productStatus":"accepted","productName":"IphoneX","productCompany":"Company Name","sellerUsername":"seller","productCost":500.0,"costAfterOff":500.0,"productsCategory":"Phone","description":"good","numberOfAvailableProducts":60,"featuresOfCategoryThatHas":{"color":"blue","ram":"8"},"allBuyers":[],"offers":[],"imagePath":"","videoPath":""}]

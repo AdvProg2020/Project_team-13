@@ -3,10 +3,7 @@ package Controller.Server;
 import Models.Offer;
 import Models.Product.Product;
 import Models.Request;
-import Models.UserAccount.Customer;
-import Models.UserAccount.Manager;
-import Models.UserAccount.Seller;
-import Models.UserAccount.UserAccount;
+import Models.UserAccount.*;
 import com.google.gson.Gson;
 
 import java.io.DataOutputStream;
@@ -18,6 +15,7 @@ public class UserCenter {
     private ArrayList<Customer> allCustomer = new ArrayList<>();
     private ArrayList<Seller> allSeller = new ArrayList<>();
     private ArrayList<Manager> allManager = new ArrayList<>();
+    private ArrayList<Supporter> allSupporter = new ArrayList<>();
 
     private UserCenter() {
 
@@ -115,6 +113,10 @@ public class UserCenter {
 
     public synchronized void setAllManager(ArrayList<Manager> allManager) {
         this.allManager = allManager;
+    }
+
+    public void setAllSupporter(ArrayList<Supporter> allSupporter) {
+        this.allSupporter = allSupporter;
     }
 
     public synchronized void createNewUserAccount(String json, DataOutputStream dataOutputStream) {
@@ -326,6 +328,17 @@ public class UserCenter {
             allManager.add(manager);
             String arrayData = new Gson().toJson(allManager);
             DataBase.getInstance().updateAllManagers(arrayData);
+            ServerController.getInstance().sendMessageToClient("@Successful@Register Successful", dataOutputStream);
+        } else {
+            ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username", dataOutputStream);
+        }
+    }
+    public synchronized void createSupporterProfile(String json, DataOutputStream dataOutputStream) {
+        Supporter supporter = new Gson().fromJson(json, Supporter.class);
+        if (!isThereUserWithThisUsername(supporter.getUsername())) {
+            allSupporter.add(supporter);
+            String arrayData = new Gson().toJson(allSupporter);
+            DataBase.getInstance().updateAllSupporter(arrayData);
             ServerController.getInstance().sendMessageToClient("@Successful@Register Successful", dataOutputStream);
         } else {
             ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username", dataOutputStream);
