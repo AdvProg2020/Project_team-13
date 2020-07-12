@@ -9,6 +9,7 @@ import Models.Product.Product;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
+import Models.UserAccount.UserAccount;
 import com.google.gson.Gson;
 
 import java.io.DataOutputStream;
@@ -48,8 +49,15 @@ public class ServerMessageController {
             message = message.substring(7);
             String[] split = message.split("/");
             UserCenter.getIncstance().login(split[0], split[1], dataOutputStream);
+        }else if (message.startsWith("@sendChatMessage@")) {
+        //    ServerController.getInstance().sendMessageToClient("@successfulChat@",dataOutputStream);
+            message = message.substring(17);
+          //  UserCenter.getIncstance().sendChat(message,dataOutputStream);
         } else if (message.equals("@getAllRequests@")) {
             ServerController.getInstance().sendMessageToClient("@AllRequests@" + new Gson().toJson(RequestCenter.getIncstance().getAllRequests()), dataOutputStream);
+        }else if (message.equals("@getOnlineUsers@")) {
+
+            ServerController.getInstance().sendMessageToClient("@OnlineUsers@" + new Gson().toJson(ServerController.getInstance().getOnlineSupporters()), dataOutputStream);
         } else if (message.startsWith("@acceptRequest@")) {
             message = message.substring(15);
             RequestCenter.getIncstance().acceptRequest(message, dataOutputStream);
@@ -78,6 +86,11 @@ public class ServerMessageController {
         } else if (message.startsWith("@removeProductForManager@")) {
             message = message.substring(25);
             ProductCenter.getInstance().deleteProduct(message, dataOutputStream);
+        }else if (message.startsWith("@setSupporterPort@")) {
+            message = message.substring(18);
+            String[] split=message.split("&");
+            ServerController.getInstance().sendMessageToClient("@successfulchat@",dataOutputStream);
+            ServerController.getInstance().getOnlineSupporters().put(split[1],Integer.parseInt(split[0]));
         } else if (message.startsWith("@getAllCategories@")) {
             CategoryCenter.getIncstance().updateAllCategories();
             ArrayList<Category> allCategories = CategoryCenter.getIncstance().getAllCategories();

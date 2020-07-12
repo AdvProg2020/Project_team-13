@@ -1,12 +1,8 @@
 package View;
 
 import Controller.Client.ClientController;
-import Controller.Client.ProductController;
-import Controller.Client.UserController;
-import Models.Comment;
-import Models.CommentStatus;
-import Models.UserAccount.Customer;
-import Models.UserAccount.UserAccount;
+import Models.UserAccount.Seller;
+import Models.UserAccount.Supporter;
 import com.google.gson.Gson;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -31,22 +27,16 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.IOException;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.regex.Pattern;
 
-
-public class UserMenuScene extends Menu {
+public class SupporterMenuScene extends Menu {
     GridPane userInfoGridPane;
 
-    public UserMenuScene(Stage stage) {
+    public SupporterMenuScene(Stage stage) {
         super(stage);
+        this.stage = stage;
         userInfoGridPane = new GridPane();
         if (ClientController.getInstance().getMediaPlayer() != null)
             ClientController.getInstance().getMediaPlayer().stop();
@@ -62,21 +52,20 @@ public class UserMenuScene extends Menu {
         setUpGridPane();
         setMenuBarGridPane();
         setCenterGridPane();
-        bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, true));
-        scene.setRoot(pageGridPane);
+        bottomGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, false));
     }
 
     private void setCenterGridPane() {
-        Customer customer = (Customer) ClientController.getInstance().getCurrentUser();
-        Text personalInfo = new Text(customer.viewPersonalInfo());
+        Supporter supporter = (Supporter) ClientController.getInstance().getCurrentUser();
+        Text personalInfo = new Text(supporter.viewPersonalInfo());
         Text pageTitle = new Text("User Menu");
         personalInfo.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 16));
         pageTitle.setStyle("-fx-font-weight: bold;");
         pageTitle.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 28));
         userInfoGridPane.setStyle("-fx-background-color: #ECD5DC;");
         ImageView userIcon;
-        if (!customer.getImagePath().equals("")) {
-            userIcon = new ImageView(new Image(customer.getImagePath()));
+        if (!supporter.getImagePath().equals("")) {
+            userIcon = new ImageView(new Image(supporter.getImagePath()));
             if (userIcon.getImage().getHeight() == 0) {
                 userIcon.setImage(new Image("file:src/user_icon.png"));
             }
@@ -98,14 +87,14 @@ public class UserMenuScene extends Menu {
                 Stage popupwindow = new Stage();
                 popupwindow.initModality(Modality.APPLICATION_MODAL);
                 popupwindow.setTitle("Edit information.");
-                TextField password, firstName, lastName, email, phoneNumber;
-                Label firstName1, lastName1, email1, phoneNumber1, password1;
+                TextField password, firstName, lastName, email, phoneNumber, companyName;
+                Label firstName1, lastName1, email1, phoneNumber1, password1, companyName1;
                 password = new PasswordField();
-                password.setText(customer.getPassword());
-                firstName = new TextField(customer.getFirstName());
-                lastName = new TextField(customer.getLastName());
-                email = new TextField(customer.getEmail());
-                phoneNumber = new TextField(customer.getPhoneNumber());
+                password.setText(supporter.getPassword());
+                firstName = new TextField(supporter.getFirstName());
+                lastName = new TextField(supporter.getLastName());
+                email = new TextField(supporter.getEmail());
+                phoneNumber = new TextField(supporter.getPhoneNumber());
                 password.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 120px;");
                 firstName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width:120px;");
                 lastName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 120px;");
@@ -121,11 +110,13 @@ public class UserMenuScene extends Menu {
                 lastName1 = new Label("Last Name");
                 email1 = new Label("Email");
                 phoneNumber1 = new Label("Phone Number");
+                companyName1 = new Label("Company Name");
                 password1.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
                 firstName1.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
                 lastName1.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
                 phoneNumber1.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
                 email1.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
+                companyName1.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
                 Text errors = new Text();
                 errors.setFont(Font.loadFont("file:src/BalooBhai2-Regular.ttf", 15));
                 errors.setFill(Color.RED);
@@ -150,14 +141,14 @@ public class UserMenuScene extends Menu {
                                 if (checkNameIsvalid(lastName.getText().trim())) {
                                     if (checkEmailIsvalid(email.getText().trim())) {
                                         if (Pattern.matches("\\d+", phoneNumber.getText().trim()) && phoneNumber.getText().trim().length() == 11 && phoneNumber.getText().charAt(0) == '0') {
-                                            customer.setFirstName(firstName.getText().trim());
-                                            customer.setLastName(lastName.getText().trim());
-                                            customer.setEmail(email.getText().trim());
-                                            customer.setPhoneNumber(phoneNumber.getText().trim());
-                                            customer.setPassword(password.getText().trim());
-                                            ClientController.getInstance().sendMessageToServer("@editCustomer@" + new Gson().toJson(customer));
-                                            personalInfo.setText(customer.viewPersonalInfo());
-                                            popupwindow.close();
+                                                supporter.setFirstName(firstName.getText().trim());
+                                                supporter.setLastName(lastName.getText().trim());
+                                                supporter.setEmail(email.getText().trim());
+                                                supporter.setPhoneNumber(phoneNumber.getText().trim());
+                                                supporter.setPassword(password.getText().trim());
+                                                ClientController.getInstance().sendMessageToServer("@editSupporter@" + new Gson().toJson(supporter));
+                                                personalInfo.setText(supporter.viewPersonalInfo());
+                                                popupwindow.close();
                                         } else {
                                             errors.setText("Phone number is invalid.\nCorrect format:09xxxxxxxxx");
                                         }
@@ -176,15 +167,15 @@ public class UserMenuScene extends Menu {
                     }
                 });
                 button2.setStyle("-fx-text-fill: white;-fx-background-color:rgba(76, 170, 240, 1);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 28px;-fx-pref-width: 55px;");
-                for (int i = 0; i < 5; i++) {
+                for (int i = 0; i < 6; i++) {
                     gridPane.getRowConstraints().add(new RowConstraints(20, Control.USE_COMPUTED_SIZE, 20, Priority.NEVER, VPos.CENTER, true));
                 }
                 gridPane.getRowConstraints().add(new RowConstraints(50, Control.USE_COMPUTED_SIZE, 50, Priority.NEVER, VPos.TOP, true));
                 gridPane.getRowConstraints().add(new RowConstraints(20, Control.USE_COMPUTED_SIZE, 20, Priority.NEVER, VPos.CENTER, true));
-                gridPane.getColumnConstraints().add(new ColumnConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, HPos.CENTER, true));
+                gridPane.getColumnConstraints().add(new ColumnConstraints(120, Control.USE_COMPUTED_SIZE, 120, Priority.NEVER, HPos.CENTER, true));
                 gridPane.getColumnConstraints().add(new ColumnConstraints(135, Control.USE_COMPUTED_SIZE, 135, Priority.NEVER, HPos.CENTER, true));
-                gridPane.add(errors, 0, 5, 2, 2);
-                gridPane.add(button2, 0, 6, 2, 2);
+                gridPane.add(errors, 0, 6, 2, 2);
+                gridPane.add(button2, 0, 7, 2, 2);
                 gridPane.setVgap(10);
                 gridPane.setHgap(5);
                 gridPane.setStyle("-fx-background-color: #ECD5DC;");
@@ -201,8 +192,8 @@ public class UserMenuScene extends Menu {
             File selectedFile = fileChooser.showOpenDialog(stage);
             if (selectedFile != null) {
                 userIcon.setImage(new Image("file:" + selectedFile.getAbsolutePath()));
-                customer.setImagePath("file:" + selectedFile.getAbsolutePath());
-                ClientController.getInstance().sendMessageToServer("@editSeller@" + new Gson().toJson(customer));
+                supporter.setImagePath("file:" + selectedFile.getAbsolutePath());
+                ClientController.getInstance().sendMessageToServer("@editSupporter@" + new Gson().toJson(supporter));
             }
         });
         editPhotoButton.setGraphic(editPic);
@@ -217,155 +208,95 @@ public class UserMenuScene extends Menu {
         GridPane leftMenuGridPane = new GridPane();
         leftMenuGridPane.setMinHeight(400);
         leftMenuGridPane.setStyle("-fx-background-color:rgba(45, 156, 240, 1);");
-        Button discountCodesButton = new Button("Discount Codes");
-        discountCodesButton.setStyle("-fx-font-size:  18;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
-        discountCodesButton.setMinHeight(50);
-        discountCodesButton.setMinWidth(150);
-        Button ordersButton = new Button("Orders");
-        ordersButton.setOnMouseEntered(new EventHandler() {
+        Button manageChats = new Button("Manage Chats");
+        manageChats.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                new ChatSupporterMenu(stage).execute();
+            }
+        });
+        manageChats.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
                 scene.setCursor(Cursor.HAND);
             }
         });
-        ordersButton.setOnMouseExited(new EventHandler() {
+        manageChats.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
                 scene.setCursor(Cursor.DEFAULT);
             }
         });
-        ordersButton.setOnMouseClicked(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                new OrdersMenu(stage, 0).execute();
-            }
-        });
-
-        Button contatSupportButton = new Button("Contact Supporter");
-        contatSupportButton.setOnMouseEntered(new EventHandler() {
+        manageChats.setStyle("-fx-font-size:  16;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
+        manageChats.setMinHeight(50);
+        manageChats.setMinWidth(150);
+        Button offsButton = new Button("Offs");
+        offsButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
                 scene.setCursor(Cursor.HAND);
             }
         });
-        contatSupportButton.setOnMouseExited(new EventHandler() {
+        offsButton.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
                 scene.setCursor(Cursor.DEFAULT);
             }
         });
-        contatSupportButton.setOnMouseClicked(new EventHandler() {
+        offsButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(Event event) {
-                Stage popupwindow = new Stage();
-                GridPane gridPane = new GridPane();
-                gridPane.setStyle("-fx-background-color: Blue");
-                Button button = new Button("X");
-                button.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 25px; -fx-padding: 3,3,3,3;-fx-font-weight: bold;-fx-text-fill: Red");
-                button.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        popupwindow.hide();
-                        scene.setFill(null);
-                    }
-                });
-                gridPane.add(button, 0, 0);
-                gridPane.add(new Text(""), 1, 0);
-                gridPane.setStyle("-fx-background-color: rgba(255,145,200,0.85);");
-                GridPane commentPane = new GridPane();
-                gridPane.add(commentPane, 1, 1);
-                ChoiceBox choiceBox = new ChoiceBox();
-                UserController.getInstance().getAllOnilneUSerFromServer();
-                HashMap<String ,Integer> users= UserController.getInstance().getOnlineUsers();
-                for (String user : users.keySet()) {
-                        choiceBox.getItems().add(user);
-                }
-                Button chooseSupporter = new Button("Chat");
-                chooseSupporter.setStyle("-fx-background-color: #E85D9E;");
-                chooseSupporter.setMinWidth(100);
-                commentPane.setVgap(10);
-                commentPane.setHgap(10);
-                chooseSupporter.setTextFill(Color.WHITE);
-                commentPane.add(choiceBox, 0, 0);
-                commentPane.add(chooseSupporter, 1, 2);
-                chooseSupporter.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        if(!choiceBox.getValue().equals(null)) {
-                            UserController.getInstance().setCurrentChatUser((String) choiceBox.getValue());
-                            try {
-                                ClientController.getInstance().setCustomerSocket(new Socket("127.0.0.1",users.get((String) choiceBox.getValue())));
-                                new Thread(new Runnable() {
-                                    public void run() {
-                                        DataInputStream dataInputStream= null;
-                                        try {
-                                            dataInputStream = new DataInputStream(ClientController.getInstance().getCustomerSocket().getInputStream());
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        String input="";
-                                        while (true) {
-                                            try {
-                                                input = dataInputStream.readUTF();
-                                            } catch (IOException e) {
-                                                break;
-                                            }
-                                            UserController.getInstance().getChatMessage(input);
-                                        }
-                                    }
-                                }).start();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            new CustomerChatMenu(stage).execute();
-                            popupwindow.hide();
-                        }
-                    }
-                });
-                Scene scene1 = new Scene(gridPane, 400, 300);
-                popupwindow.initModality(Modality.APPLICATION_MODAL);
-                popupwindow.initStyle(StageStyle.UNDECORATED);
-                popupwindow.setScene(scene1);
-                popupwindow.showAndWait();
+            public void handle(MouseEvent event) {
+                new MangeOffsMenu(stage, 0).execute();
             }
         });
-
-        discountCodesButton.setOnMouseEntered(new EventHandler() {
+        offsButton.setTextAlignment(TextAlignment.CENTER);
+        offsButton.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
+        offsButton.setMinHeight(50);
+        offsButton.setMinWidth(150);
+        Button salesHistoryButton = new Button("Sales History");
+        salesHistoryButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
                 scene.setCursor(Cursor.HAND);
 
             }
         });
-        discountCodesButton.setOnMouseExited(new EventHandler() {
+        salesHistoryButton.setOnMouseExited(new EventHandler() {
             @Override
             public void handle(Event event) {
                 scene.setCursor(Cursor.DEFAULT);
             }
         });
-        discountCodesButton.setOnMouseClicked(new EventHandler() {
+        salesHistoryButton.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
-                new CustomerDiscountCodeMenu(stage).execute();
+                new SalesHistoryMenu(stage, 0).execute();
             }
         });
-        contatSupportButton.setTextAlignment(TextAlignment.CENTER);
-        contatSupportButton.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
-        contatSupportButton.setMinHeight(50);
-        contatSupportButton.setMinWidth(150);
-        ordersButton.setTextAlignment(TextAlignment.CENTER);
-        ordersButton.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
-        ordersButton.setMinHeight(50);
-        ordersButton.setMinWidth(150);
-        leftMenuGridPane.add(discountCodesButton, 0, 0, 2, 2);
-        leftMenuGridPane.add(ordersButton, 0, 2, 2, 2);
-        leftMenuGridPane.add(contatSupportButton, 0, 4, 2, 2);
+        salesHistoryButton.setTextAlignment(TextAlignment.CENTER);
+        salesHistoryButton.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
+        salesHistoryButton.setMinHeight(50);
+        salesHistoryButton.setMinWidth(150);
+        salesHistoryButton.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND);
+            }
+        });
+        salesHistoryButton.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT);
+            }
+        });
+        leftMenuGridPane.add(manageChats, 0, 0, 2, 2);
+//        leftMenuGridPane.add(offsButton, 0, 2, 2, 2);
+//        leftMenuGridPane.add(salesHistoryButton, 0, 6, 2, 2);
         centerGridPane.add(leftMenuGridPane, 0, 1, 1, 6);
         centerGridPane.add(pageTitle, 0, 0, 1, 1);
         centerGridPane.add(userInfoGridPane, 3, 1, 2, 2);
+
     }
-
-
 
     protected void setPageGridPain() {
         pageGridPane.getRowConstraints().add(new RowConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.NEVER, VPos.CENTER, false));

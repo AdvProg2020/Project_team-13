@@ -1,5 +1,6 @@
 package Controller.Server;
 
+import Models.ChatMessage;
 import Models.Offer;
 import Models.Product.Product;
 import Models.Request;
@@ -33,9 +34,9 @@ public class UserCenter {
     }
 
     public static UserCenter getIncstance() {
-        if(userCenter == null){
+        if (userCenter == null) {
             synchronized (UserCenter.class) {
-                if(userCenter == null){
+                if (userCenter == null) {
                     userCenter = new UserCenter();
                 }
             }
@@ -77,6 +78,11 @@ public class UserCenter {
                 return true;
             }
         }
+        for (Supporter supporter : allSupporter) {
+            if (supporter.getUsername().equals(username)) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -98,6 +104,11 @@ public class UserCenter {
         for (Manager manager : allManager) {
             if (manager.getUsername().equals(username)) {
                 return manager;
+            }
+        }
+        for (Supporter supporter : allSupporter) {
+            if (supporter.getUsername().equals(username)) {
+                return supporter;
             }
         }
         return null;
@@ -160,11 +171,24 @@ public class UserCenter {
         }
     }
 
+//    public void sendChat(String json , DataOutputStream dataOutputStream1) {
+//        System.out.println("inja");
+//        ChatMessage chatMessage= new Gson().fromJson(json,ChatMessage.class);
+//        DataOutputStream dataOutputStream=ServerController.getInstance().findDataStreamWithUsername(chatMessage.getReceiverUsername());
+//        if(dataOutputStream!=null){
+//            ServerController.getInstance().sendMessageToClient("@getChatMessage@"+new Gson().toJson(chatMessage),dataOutputStream);
+//        }
+//        ServerController.getInstance().sendMessageToClient("@successfulChat@",dataOutputStream1);
+//    }
+
     public void login(String username, String password, DataOutputStream dataOutputStream) {
         Gson gson = new Gson();
         if (isThereUserWithThisUsername(username)) {
             UserAccount userAccount = getUserWithUsername(username);
             if (userAccount.getPassword().equals(password)) {
+             //   if (ServerController.getInstance().findDataStreamWithUsername(userAccount.getUsername()) == null) {
+             //       ServerController.getInstance().getOnlineUsers().put(dataOutputStream, userAccount);
+            //    }
                 switch (userAccount.getType()) {
                     case "@Customer": {
                         String user = gson.toJson(userAccount);
@@ -182,6 +206,11 @@ public class UserCenter {
                     case "@Manager": {
                         String user = gson.toJson(userAccount);
                         ServerController.getInstance().sendMessageToClient("@Login as Manager@" + user, dataOutputStream);
+                        break;
+                    }
+                    case "@Supporter": {
+                        String user = gson.toJson(userAccount);
+                        ServerController.getInstance().sendMessageToClient("@Login as Supporter@" + user, dataOutputStream);
                         break;
                     }
                 }
@@ -333,6 +362,7 @@ public class UserCenter {
             ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username", dataOutputStream);
         }
     }
+
     public synchronized void createSupporterProfile(String json, DataOutputStream dataOutputStream) {
         Supporter supporter = new Gson().fromJson(json, Supporter.class);
         if (!isThereUserWithThisUsername(supporter.getUsername())) {

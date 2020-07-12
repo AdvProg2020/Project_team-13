@@ -10,6 +10,7 @@ import View.Menu;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -21,7 +22,8 @@ public class ClientController {
     private ArrayList<View.Menu> menus = new ArrayList<>();
     private MediaPlayer mediaPlayer;
     private String message;
-    private Socket socket;
+    private Socket socket,customerSocket;
+    private ServerSocket serverSocket;
     private DataOutputStream dataOutputStream;
     private DataInputStream dataInputStream;
     public void connectToServer(){
@@ -33,6 +35,23 @@ public class ClientController {
             e.printStackTrace();
         }
     }
+
+    public Socket getCustomerSocket() {
+        return customerSocket;
+    }
+
+    public void setCustomerSocket(Socket customerSocket) {
+        this.customerSocket = customerSocket;
+    }
+
+    public ServerSocket getServerSocket() {
+        return serverSocket;
+    }
+
+    public void setServerSocket(ServerSocket serverSocket) {
+        this.serverSocket = serverSocket;
+    }
+
     public MediaPlayer getMediaPlayer() {
         return mediaPlayer;
     }
@@ -117,7 +136,6 @@ public class ClientController {
             String string;
             do {
                 string = dataInputStream.readUTF();
-                System.out.println(string);
             } while (string.isEmpty());
             getMessageFromServer(string);
         } catch (IOException e) {

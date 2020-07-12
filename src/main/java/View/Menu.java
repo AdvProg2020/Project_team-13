@@ -7,6 +7,7 @@ import Models.Product.Category;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
+import Models.UserAccount.Supporter;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -526,6 +527,8 @@ public class Menu {
                             new UserMenuScene(stage).execute();
                         } else if (ClientController.getInstance().getCurrentUser() instanceof Manager) {
                             new ManagerMenuScene(stage).execute();
+                        }else if (ClientController.getInstance().getCurrentUser() instanceof Supporter) {
+                            new SupporterMenuScene(stage).execute();
                         }
                     }
                 }

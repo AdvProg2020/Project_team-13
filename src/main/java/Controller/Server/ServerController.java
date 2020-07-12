@@ -1,19 +1,23 @@
 package Controller.Server;
 
 import Controller.Client.ClientController;
+import Models.UserAccount.UserAccount;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ServerController {
     private static ServerController serverController;
     private ServerSocket serverSocket;
+    private HashMap<String, Integer> onlineSupporters = new HashMap<>();
 
-    public static ServerController getInstance(){
-        if(serverController == null){
+    public static ServerController getInstance() {
+        if (serverController == null) {
             synchronized (ServerController.class) {
-                if(serverController == null){
+                if (serverController == null) {
                     serverController = new ServerController();
                 }
             }
@@ -21,7 +25,11 @@ public class ServerController {
         return serverController;
     }
 
-    public static void main(String[] args){
+    public HashMap<String, Integer> getOnlineSupporters() {
+        return onlineSupporters;
+    }
+
+    public static void main(String[] args) {
         ServerController.getInstance().runServer();
         ServerController.getInstance().startProcess();
     }
@@ -55,7 +63,7 @@ public class ServerController {
         }
     }
 
-    public void runServer(){
+    public void runServer() {
         DataBase.getInstance().setAllUsersListFromDateBase();
         DataBase.getInstance().setAllRequestsListFromDateBase();
         DataBase.getInstance().setAllDiscountCodesListFromDateBase();
@@ -66,7 +74,6 @@ public class ServerController {
         DataBase.getInstance().setAllCategoriesFormDataBase();
         DataBase.getInstance().setAllOffersFromDatabase();
     }
-
 
 
     public void getMessageFromClient(Socket socket) throws IOException {
@@ -94,6 +101,8 @@ public class ServerController {
             }
         }
     }
+
+
 
     public void sendMessageToClient(String message, DataOutputStream dataOutputStream) {
         try {
