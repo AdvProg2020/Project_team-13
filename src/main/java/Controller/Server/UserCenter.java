@@ -1,6 +1,7 @@
 package Controller.Server;
 
 import Models.ChatMessage;
+import Models.Auction;
 import Models.Offer;
 import Models.Product.Product;
 import Models.Request;
@@ -22,6 +23,26 @@ public class UserCenter {
 
     }
 
+    public synchronized void addAuction(Auction auction, DataOutputStream dataOutputStream) {
+        for (Seller seller : allSeller) {
+            if (seller.getUsername().equalsIgnoreCase(auction.getSellerId())) {
+                seller.setAuction(auction);
+                ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@" + "Request accepted successfully", dataOutputStream);
+                break;
+            }
+        }
+        DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+    }
+    public synchronized void editAuction(Auction auction, DataOutputStream dataOutputStream) {
+        for (Seller seller : allSeller) {
+            if (seller.getUsername().equalsIgnoreCase(auction.getSellerId())) {
+                seller.setAuction(auction);
+                break;
+            }
+        }
+        DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+    }
+
     public synchronized void addCommercial(Product product, DataOutputStream dataOutputStream) {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equalsIgnoreCase(product.getSeller())) {
@@ -34,9 +55,9 @@ public class UserCenter {
     }
 
     public static UserCenter getIncstance() {
-        if (userCenter == null) {
+        if(userCenter == null){
             synchronized (UserCenter.class) {
-                if (userCenter == null) {
+                if(userCenter == null){
                     userCenter = new UserCenter();
                 }
             }
@@ -340,6 +361,20 @@ public class UserCenter {
             }
         }
         ServerController.getInstance().sendMessageToClient("@Error@there is no user with this username", dataOutputStream);
+    }
+
+    public synchronized void removeSellerWithNoAlert(String username, DataOutputStream dataOutputStream) {
+        for (Seller seller : allSeller) {
+            if (seller.getUsername().equals(username)) {
+                allSeller.remove(seller);
+                for (Product product : seller.getAllProducts()) {
+                    ProductCenter.getInstance().removeProduct(ProductCenter.getInstance().findProductWithID(product.getProductId()), dataOutputStream);
+                }
+                DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+                DataBase.getInstance().updateAllProducts(new Gson().toJson(ProductCenter.getInstance().getAllProducts()));
+                return;
+            }
+        }
     }
 
     public synchronized void removeManager(String username, DataOutputStream dataOutputStream) {

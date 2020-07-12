@@ -1,6 +1,7 @@
 package Models;
 
 public enum RequestType {
+
     sellerRegister,
     addProduct,
     deleteProduct,
@@ -9,5 +10,6 @@ public enum RequestType {
     editOff,
     scoring,
     commenting,
-    commercial
+    commercial,
+    addAuction;
 }

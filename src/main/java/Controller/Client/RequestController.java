@@ -76,8 +76,10 @@ public class RequestController {
     }
 
     public void acceptRequest(String requestId) {
+        System.out.println("aaaaaaaaaaaaaaaa");
         for (Request request : allRequests) {
             if (request.getRequestId().equals(requestId)) {
+                System.out.println("bbbbbbbbbbbbbbb");
                 ClientController.getInstance().sendMessageToServer("@acceptRequest@" + requestId);
                 allRequests.remove(request);
                 return;

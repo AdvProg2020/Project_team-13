@@ -22,10 +22,10 @@ public class CartCenter {
         this.lastLogId = lastLogId;
     }
 
-    public static CartCenter getInstance(){
-        if(cartCenter == null){
+    public static CartCenter getInstance() {
+        if (cartCenter == null) {
             synchronized (CartCenter.class) {
-                if(cartCenter == null){
+                if (cartCenter == null) {
                     cartCenter = new CartCenter();
                 }
             }

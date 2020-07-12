@@ -1,6 +1,7 @@
 package Models.UserAccount;
 
 import Controller.Client.ProductController;
+import Models.Auction;
 import Models.Log;
 import Models.Offer;
 import Models.Product.Product;
@@ -15,6 +16,7 @@ public class Seller extends UserAccount {
     private ArrayList<Offer> allOffer;
     private ArrayList<Request> allRequests;
     private String commercializedProduct;
+    private Auction auction;
 
     public Seller(String username, String password, String firstName, String lastName, String email, String phoneNumber, double credit, String companyName, boolean isAccepted) {
         super(username, password, firstName, lastName, email, phoneNumber, credit);
@@ -22,6 +24,14 @@ public class Seller extends UserAccount {
         this.isAccepted = isAccepted;
         this.type = "@Seller";
         allProducts = new ArrayList<>();
+    }
+
+    public void setAuction(Auction auction) {
+        this.auction = auction;
+    }
+
+    public Auction getAuction() {
+        return auction;
     }
 
     public String getCommercializedProduct() {

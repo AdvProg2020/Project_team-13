@@ -6,6 +6,7 @@ import Models.UserAccount.UserAccount;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashMap;
@@ -21,10 +22,10 @@ public class ServerController {
     }
     private HashMap<String, Integer> onlineSupporters = new HashMap<>();
 
-    public static ServerController getInstance() {
-        if (serverController == null) {
+    public static ServerController getInstance(){
+        if(serverController == null){
             synchronized (ServerController.class) {
-                if (serverController == null) {
+                if(serverController == null){
                     serverController = new ServerController();
                 }
             }
