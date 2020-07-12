@@ -8,10 +8,17 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ServerController {
     private static ServerController serverController;
     private ServerSocket serverSocket;
+    private Map<DataOutputStream, String> allClients;
+
+    private ServerController(){
+        allClients = new HashMap<>();
+    }
     private HashMap<String, Integer> onlineSupporters = new HashMap<>();
 
     public static ServerController getInstance() {
@@ -42,7 +49,7 @@ public class ServerController {
         }
         while (true) {
             System.out.println("Waiting for Client...");
-            Socket socket = null;
+            Socket socket;
             try {
                 socket = serverSocket.accept();
             } catch (IOException e) {
@@ -50,14 +57,11 @@ public class ServerController {
             }
             System.out.println("Client Connected!!!");
             Socket finalSocket = socket;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        getMessageFromClient(finalSocket);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            new Thread(() -> {
+                try {
+                    getMessageFromClient(finalSocket);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }).start();
         }
@@ -76,45 +80,52 @@ public class ServerController {
     }
 
 
+
     public void getMessageFromClient(Socket socket) throws IOException {
         DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         while (true) {
             String string;
             try {
-                string = dataInputStream.readUTF();
-                while (true) {
-                    if (!string.isEmpty()) {
-                        break;
-                    }
-                }
-                ServerMessageController.getInstance().processMessage(string, dataOutputStream);
+                do {
+                    string = dataInputStream.readUTF();
+                } while (string.isEmpty());
+              ServerMessageController.getInstance().processMessage(string, dataOutputStream);
             } catch (IOException e) {
                 System.out.println("Error in Connection...");
-                try {
-                    dataInputStream.close();
-                    dataOutputStream.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
                 break;
             }
         }
+        dataInputStream.close();
+        dataOutputStream.close();
     }
 
-
-
     public void sendMessageToClient(String message, DataOutputStream dataOutputStream) {
+        String codedMessage;
+        if (message.matches("@Login as \\w+@")) {
+            codedMessage = TokenGenerator.getInstance().getTheToken(ServerController.getInstance().getAllClients().get(dataOutputStream), message);
+        }else{
+            codedMessage = TokenGenerator.getInstance().getTheCodedMessage(dataOutputStream, message);
+        }
         try {
-            dataOutputStream.writeUTF(message);
+            dataOutputStream.writeUTF(codedMessage);
             dataOutputStream.flush();
         } catch (IOException e) {
             System.out.println("Error in Sending Packets...");
+            try {
+                dataOutputStream.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
     public synchronized void passTime(DataOutputStream dataOutputStream) {
         DiscountCodeCenter.getIncstance().passTime(dataOutputStream);
         OffCenter.getInstance().passTime();
+    }
+
+    public Map<DataOutputStream, String> getAllClients() {
+        return allClients;
     }
 }

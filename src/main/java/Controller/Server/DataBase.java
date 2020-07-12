@@ -26,13 +26,17 @@ public class DataBase {
     }
 
     public static DataBase getInstance() {
-        if (dataBase == null) {
-            dataBase = new DataBase();
+        if(dataBase == null){
+            synchronized (DataBase.class) {
+                if(dataBase == null){
+                    dataBase = new DataBase();
+                }
+            }
         }
         return dataBase;
     }
 
-    public void updateAllCustomers(String json) {
+    public synchronized void updateAllCustomers(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allCustomers.txt");
             fileWriter.write(json);
@@ -41,7 +45,7 @@ public class DataBase {
         }
     }
 
-    public void updateAllSellers(String json) {
+    public synchronized void updateAllSellers(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allSellers.txt");
             fileWriter.write(json);
@@ -50,7 +54,7 @@ public class DataBase {
         }
     }
 
-    public void updateAllManagers(String json) {
+    public synchronized void updateAllManagers(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allManagers.txt");
             fileWriter.write(json);
@@ -67,7 +71,7 @@ public class DataBase {
         }
     }
 
-    public void setLastProductIdFromDataBase() {
+    public synchronized void setLastProductIdFromDataBase() {
         FileReader fileReader = null;
         try {
             fileReader = new FileReader("lastProductId.txt");
@@ -85,7 +89,7 @@ public class DataBase {
         }
     }
 
-    public void setAllCategoriesFormDataBase() {
+    public synchronized void setAllCategoriesFormDataBase() {
         FileReader fileReader = null;
         try {
             fileReader = new FileReader("allCategories.txt");
@@ -118,7 +122,7 @@ public class DataBase {
         }
     }
 
-    public void setAllProductsFormDataBase() {
+    public synchronized void setAllProductsFormDataBase() {
         FileReader fileReader = null;
         try {
             fileReader = new FileReader("allProducts.txt");
@@ -140,7 +144,7 @@ public class DataBase {
         }
     }
 
-    public void updateAllProducts(String json) {
+    public synchronized void updateAllProducts(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allProducts.txt");
             fileWriter.write(json);
@@ -149,7 +153,7 @@ public class DataBase {
         }
     }
 
-    public void replaceProductId(String productId) {
+    public synchronized void replaceProductId(String productId) {
         try {
             FileWriter fileWriter = new FileWriter("lastProductId.txt");
             fileWriter.write(productId);
@@ -158,7 +162,7 @@ public class DataBase {
         }
     }
 
-    public void replaceLogId(String logId) {
+    public synchronized void replaceLogId(String logId) {
         try {
             FileWriter fileWriter = new FileWriter("lastLogId.txt");
             fileWriter.write(logId);
@@ -167,7 +171,7 @@ public class DataBase {
         }
     }
 
-    public void setAllUsersListFromDateBase() {
+    public synchronized void setAllUsersListFromDateBase() {
         FileReader fileReader = null;
         try {
             fileReader = new FileReader("allCustomers.txt");
@@ -268,7 +272,7 @@ public class DataBase {
         }
     }
 
-    public void updateAllRequests(String json) {
+    public synchronized void updateAllRequests(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allRequests.txt");
             fileWriter.write(json);
@@ -277,7 +281,7 @@ public class DataBase {
         }
     }
 
-    public void updateAllDiscountCode(String json) {
+    public synchronized void updateAllDiscountCode(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allDiscountCodes.txt");
             fileWriter.write(json);
@@ -286,7 +290,7 @@ public class DataBase {
         }
     }
 
-    public void setAllRequestsListFromDateBase() {
+    public synchronized void setAllRequestsListFromDateBase() {
         FileReader fileReader = null;
         try {
             fileReader = new FileReader("allRequests.txt");
@@ -314,7 +318,7 @@ public class DataBase {
         }
     }
 
-    public void setAllDiscountCodesListFromDateBase() {
+    public synchronized void setAllDiscountCodesListFromDateBase() {
         FileReader fileReader = null;
         try {
             fileReader = new FileReader("allDiscountCodes.txt");
@@ -342,7 +346,7 @@ public class DataBase {
         }
     }
 
-    public void replaceRequestId(String lastRequestId) {
+    public synchronized void replaceRequestId(String lastRequestId) {
         try {
             FileWriter fileWriter = new FileWriter("lastRequestId.txt");
             fileWriter.write(lastRequestId);
@@ -351,7 +355,7 @@ public class DataBase {
         }
     }
 
-    public void replaceDiscountCodeId(String lastDiscountCodeId) {
+    public synchronized void replaceDiscountCodeId(String lastDiscountCodeId) {
         try {
             FileWriter fileWriter = new FileWriter("lastDiscountCodeId.txt");
             fileWriter.write(lastDiscountCodeId);
@@ -360,7 +364,7 @@ public class DataBase {
         }
     }
 
-    public void setLastRequestId() {
+    public synchronized void setLastRequestId() {
         FileReader fileReader = null;
         try {
             fileReader = new FileReader("lastRequestID.txt");
@@ -384,7 +388,7 @@ public class DataBase {
         }
     }
 
-    public void setLastLogId() {
+    public synchronized void setLastLogId() {
         FileReader fileReader = null;
         try {
             fileReader = new FileReader("lastLogID.txt");
@@ -408,7 +412,7 @@ public class DataBase {
         }
     }
 
-    public void setLastDiscountCodeId() {
+    public synchronized void setLastDiscountCodeId() {
         FileReader fileReader = null;
         try {
             fileReader = new FileReader("lastDiscountCodeID.txt");
@@ -558,7 +562,7 @@ public class DataBase {
         }
     }
 
-    public void setLastOfferIdFromDataBase() {
+    public synchronized void setLastOfferIdFromDataBase() {
         FileReader fileReader = null;
         Scanner scanner = null;
         try {
@@ -596,7 +600,7 @@ public class DataBase {
 
     }
 
-    public void replaceOfferId(String lastOfferId) {
+    public synchronized void replaceOfferId(String lastOfferId) {
         try {
             FileWriter fileWriter = new FileWriter("lastOfferId.txt");
             fileWriter.write(lastOfferId);
@@ -605,7 +609,7 @@ public class DataBase {
         }
     }
 
-    public void updateAllOffers(String json) {
+    public synchronized void updateAllOffers(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allOffers.txt");
             fileWriter.write(json);
@@ -615,7 +619,7 @@ public class DataBase {
         }
     }
 
-    public void setAllOffersFromDatabase() {
+    public synchronized void setAllOffersFromDatabase() {
         FileReader fileReader = null;
         Scanner scanner = null;
         try {

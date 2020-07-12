@@ -1,1 +1,1 @@
-[]
+[{"name":"phone","features":{"Size":["12","15","14"]},"allProducts":[{"existInOfferRegistered":false,"productId":"@p1040","productStatus":"accepted","productName":"MAC OS","productCompany":"apple","sellerUsername":"seller1","productCost":13.0,"costAfterOff":13.0,"productsCategory":"phone","description":"description","numberOfAvailableProducts":2,"featuresOfCategoryThatHas":{"Size":"15"},"allBuyers":[],"offers":[],"imagePath":"","videoPath":""}]}]

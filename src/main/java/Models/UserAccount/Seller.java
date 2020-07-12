@@ -77,7 +77,6 @@ public class Seller extends UserAccount {
             allOffer = new ArrayList<>();
         }
         allOffer.add(offer);
-        ProductController.getInstance().getAllProductsFromServer();
         for (String product : offer.getProducts()) {
             this.getProductByID(product).setCostAfterOff(this.getProductByID(product).getProductCost() * (1 - (offer.getAmount() / 100)));
         }

@@ -89,6 +89,8 @@ public class Product {
             } else {
                 return "file:src/sold_out.png";
             }
+        }else if(numberOfAvailableProducts ==0) {
+            return "file:src/sold_out.png";
         }
         return "file:src/product_icon.png";
     }

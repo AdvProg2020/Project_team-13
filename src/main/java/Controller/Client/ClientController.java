@@ -1,18 +1,26 @@
 package Controller.Client;
 
-import Controller.Server.ServerController;
 import Models.DiscountCode;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import View.MainMenu;
 import View.Menu;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.sun.xml.internal.messaging.saaj.util.Base64;
+import io.fusionauth.jwt.JWTExpiredException;
 import javafx.scene.media.MediaPlayer;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ClientController {
     private static ClientController clientController;
@@ -26,9 +34,20 @@ public class ClientController {
     private ServerSocket serverSocket;
     private DataOutputStream dataOutputStream;
     private DataInputStream dataInputStream;
+    private Date expirationDate;
+    private static Algorithm algorithm;
+
+    static {
+        try {
+            algorithm = Algorithm.HMAC256(new String(Files.readAllBytes(Paths.get("secret.txt"))));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void connectToServer(){
         try {
-            socket=new Socket("127.0.0.1",8080);
+            socket=new Socket("localhost",8080);
             dataOutputStream=new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
             dataInputStream=new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         } catch (IOException e) {
@@ -130,6 +149,7 @@ public class ClientController {
 
     public void sendMessageToServer(String message) {
         this.message = message;
+        message = getTheEncodedMessage(message);
         try {
             dataOutputStream.writeUTF(message);
             dataOutputStream.flush();
@@ -156,5 +176,39 @@ public class ClientController {
 
     public String getTransactionMessage() {
         return message;
+    }
+
+    public String getTheEncodedMessage(String message){
+        return JWT.create().withIssuer("Client").withSubject(message).withExpiresAt(expirationDate).sign(algorithm);
+    }
+
+
+    public boolean isMessageValid(String token){
+        boolean flag = true;
+        try {
+            JWTVerifier jwt = JWT.require(algorithm).withIssuer("Server").build();
+            jwt.verify(token);
+        }catch (JWTVerificationException | JWTExpiredException e){
+            flag = false;
+        }
+        return flag;
+    }
+
+    public String getTheDecodedMessage(String message){
+        DecodedJWT decodedJWT = JWT.decode(message);
+        expirationDate = decodedJWT.getExpiresAt();
+        String message2 = new String(new Base64().decode(decodedJWT.getPayload().getBytes()));
+        String finalMessage = message2.substring(8, message2.lastIndexOf(",") - 1);
+        System.out.println(finalMessage);
+        if(finalMessage.contains("requestId")){
+            for (int i = 0; i < 2; i++) {
+                finalMessage = finalMessage.replace("\\\"", "\"");
+            }
+        }else {
+            while ((finalMessage.contains("\\\""))) {
+                finalMessage = finalMessage.replace("\\\"", "\"");
+            }
+        }
+        return finalMessage;
     }
 }
