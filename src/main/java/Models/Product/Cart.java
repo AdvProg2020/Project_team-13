@@ -54,10 +54,6 @@ public class Cart {
         return allproduct;
     }
 
-    public String getReceivingInformation() {
-        return receivingInformation;
-    }
-
     public void setDiscountCode(DiscountCode discountCode) {
         this.discountCode = discountCode;
     }
