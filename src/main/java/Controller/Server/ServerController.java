@@ -16,10 +16,20 @@ public class ServerController {
     private ServerSocket serverSocket;
     private Map<DataOutputStream, String> allClients;
 
-    private ServerController(){
+    private ServerController() {
         allClients = new HashMap<>();
     }
+
     private HashMap<String, Integer> onlineSupporters = new HashMap<>();
+
+    public DataOutputStream findDataStreamWithUsername(String username) {
+        for (DataOutputStream dataOutputStream : allClients.keySet()) {
+            if (allClients.get(dataOutputStream).equals(username)) {
+                return dataOutputStream;
+            }
+        }
+        return null;
+    }
 
     public static ServerController getInstance() {
         if (serverController == null) {
@@ -80,7 +90,6 @@ public class ServerController {
     }
 
 
-
     public void getMessageFromClient(Socket socket) throws IOException {
         DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
@@ -90,7 +99,7 @@ public class ServerController {
                 do {
                     string = dataInputStream.readUTF();
                 } while (string.isEmpty());
-              ServerMessageController.getInstance().processMessage(string, dataOutputStream);
+                ServerMessageController.getInstance().processMessage(string, dataOutputStream);
             } catch (IOException e) {
                 System.out.println("Error in Connection...");
                 break;
@@ -104,7 +113,7 @@ public class ServerController {
         String codedMessage;
         if (message.matches("@Login as \\w+@")) {
             codedMessage = TokenGenerator.getInstance().getTheToken(ServerController.getInstance().getAllClients().get(dataOutputStream), message);
-        }else{
+        } else {
             codedMessage = TokenGenerator.getInstance().getTheCodedMessage(dataOutputStream, message);
         }
         try {

@@ -51,6 +51,7 @@ public class ManageUsersMenu extends Menu {
     }
 
     private void setCenterGridPane() {
+        ClientController.getInstance().sendMessageToServer("@getOnlineUsers@");
         String buttomStyle = "  -fx-background-color: \n" +
                 "        #090a0c,\n" +
                 "        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),\n" +
@@ -83,7 +84,11 @@ public class ManageUsersMenu extends Menu {
             UserAccount user = allUser.get(kk);
             GridPane gridPane = new GridPane();
             ImageView imageView = new ImageView(new Image(user.getImagePath()));
-            Text text = new Text("   " + user.getUsername() + "\n" + "   " + user.getFirstName() + "\n" + "   " + user.getLastName());
+            Text text = new Text();
+            if (UserController.getInstance().getOnlineClients().contains(user.getUsername()))
+                text.setText("   " + user.getUsername() + " (Online)\n" + "   " + user.getFirstName() + "\n" + "   " + user.getLastName());
+            else
+                text.setText("   " + user.getUsername() + " (Offline)\n" + "   " + user.getFirstName() + "\n" + "   " + user.getLastName());
             Label label = new Label("   " + user.getCredit() + "$");
             imageView.setFitHeight(125);
             imageView.setFitWidth(125);

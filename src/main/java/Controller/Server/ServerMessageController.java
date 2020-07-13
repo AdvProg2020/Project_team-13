@@ -51,15 +51,24 @@ public class ServerMessageController {
                 message = message.substring(7);
                 String[] split = message.split("/");
                 UserCenter.getIncstance().login(split[0], split[1], dataOutputStream);
+            }else if (message.startsWith("@logout@")) {
+                message = message.substring(8);
+                ServerController.getInstance().sendMessageToClient("@successfulChat@",dataOutputStream);
+                ServerController.getInstance().getAllClients().remove(ServerController.getInstance().findDataStreamWithUsername(message));
             } else if (message.startsWith("@sendChatMessage@")) {
                 //    ServerController.getInstance().sendMessageToClient("@successfulChat@",dataOutputStream);
                 message = message.substring(17);
                 //  UserCenter.getIncstance().sendChat(message,dataOutputStream);
             } else if (message.equals("@getAllRequests@")) {
                 ServerController.getInstance().sendMessageToClient("@AllRequests@" + new Gson().toJson(RequestCenter.getIncstance().getAllRequests()), dataOutputStream);
-            } else if (message.equals("@getOnlineUsers@")) {
-
+            } else if (message.equals("@getOnlineSupporter@")) {
                 ServerController.getInstance().sendMessageToClient("@OnlineUsers@" + new Gson().toJson(ServerController.getInstance().getOnlineSupporters()), dataOutputStream);
+            }else if (message.equals("@getOnlineUsers@")) {
+                ArrayList<String> users=new ArrayList<>();
+                for (String value : ServerController.getInstance().getAllClients().values()) {
+                    users.add(value);
+                }
+                ServerController.getInstance().sendMessageToClient("@setOnlineUsers@" + new Gson().toJson(users), dataOutputStream);
             } else if (message.startsWith("@acceptRequest@")) {
                 message = message.substring(15);
                 RequestCenter.getIncstance().acceptRequest(message, dataOutputStream);
