@@ -71,6 +71,23 @@ public class DataBase {
         } catch (Exception e) {
         }
     }
+    public void setLastAuctionIdFromDataBase() {
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader("lastAuctionId.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader br = new BufferedReader(fileReader);
+        try {
+            String lastAuctionId = br.readLine().trim();
+            AuctionCenter.getInstance().setLastAuctionId(lastAuctionId);
+            br.close();
+            fileReader.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     public synchronized void setLastProductIdFromDataBase() {
         FileReader fileReader = null;
@@ -184,6 +201,16 @@ public class DataBase {
         }
     }
 
+
+    public synchronized void replaceAuctionId(String auctionId) {
+        try {
+            FileWriter fileWriter = new FileWriter("lastAuctionId.txt");
+            fileWriter.write(auctionId);
+            fileWriter.close();
+        } catch (IOException e) {
+        }
+    }
+
     public synchronized void replaceLogId(String logId) {
         try {
             FileWriter fileWriter = new FileWriter("lastLogId.txt");
@@ -267,7 +294,6 @@ public class DataBase {
                 e.printStackTrace();
             }
         }
-
         try {
             fileReader = new FileReader("allSupporter.txt");
         } catch (FileNotFoundException e) {

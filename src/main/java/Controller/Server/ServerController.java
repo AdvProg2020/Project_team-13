@@ -19,7 +19,6 @@ public class ServerController {
     private ServerController() {
         allClients = new HashMap<>();
     }
-
     private HashMap<String, Integer> onlineSupporters = new HashMap<>();
 
     public DataOutputStream findDataStreamWithUsername(String username) {
@@ -88,6 +87,7 @@ public class ServerController {
         DataBase.getInstance().setAllCategoriesFormDataBase();
         DataBase.getInstance().setAllOffersFromDatabase();
     }
+
 
 
     public void getMessageFromClient(Socket socket) throws IOException {

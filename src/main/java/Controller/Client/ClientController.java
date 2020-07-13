@@ -6,6 +6,7 @@ import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import View.MainMenu;
 import View.Menu;
+import com.sun.org.apache.xalan.internal.res.XSLTErrorResources;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -21,6 +22,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
+
+import static java.lang.Thread.sleep;
 
 public class ClientController {
     private static ClientController clientController;

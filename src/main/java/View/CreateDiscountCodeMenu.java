@@ -280,20 +280,6 @@ public class CreateDiscountCodeMenu extends Menu {
         return false;
     }
 
-    private boolean checkNameIsvalid(String name) {
-        if (Pattern.matches("\\w+", name) && !name.isEmpty()) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkEmailIsvalid(String email) {
-        if (Pattern.matches("\\w+\\.?\\w*@\\w+\\.\\w+", email)) {
-            return true;
-        }
-        return false;
-    }
-
     private boolean checkmaxAmountIsvalid(String maxAmount) {
         if (Pattern.matches("\\d+", maxAmount)) {
             return true;

@@ -21,9 +21,9 @@ public class ProductCenter {
     }
 
     public static ProductCenter getInstance() {
-        if(productCenter == null){
+        if (productCenter == null) {
             synchronized (ProductCenter.class) {
-                if(productCenter == null){
+                if (productCenter == null) {
                     productCenter = new ProductCenter();
                 }
             }
@@ -118,12 +118,10 @@ public class ProductCenter {
     public synchronized void createProduct(Product product) {
         product.setProductId(getProductIdForCreateInProduct());
         product.setProductStatus(ProductStatus.accepted);
-        if (allProducts != null) {
-            allProducts.add(product);
-        } else {
+        if (allProducts == null) {
             allProducts = new ArrayList<>();
-            allProducts.add(product);
         }
+        allProducts.add(product);
         UserCenter.getIncstance().addProductToSeller(product);
         CategoryCenter.getIncstance().addProductToCategory(product);
         DataBase.getInstance().updateAllProducts(new Gson().toJson(allProducts));

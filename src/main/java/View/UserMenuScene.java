@@ -217,11 +217,23 @@ public class UserMenuScene extends Menu {
         GridPane leftMenuGridPane = new GridPane();
         leftMenuGridPane.setMinHeight(400);
         leftMenuGridPane.setStyle("-fx-background-color:rgba(45, 156, 240, 1);");
+        Button auctionMenuButton = new Button("Auctions Menu");
         Button discountCodesButton = new Button("Discount Codes");
         discountCodesButton.setStyle("-fx-font-size:  18;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         discountCodesButton.setMinHeight(50);
         discountCodesButton.setMinWidth(150);
+        auctionMenuButton.setStyle("-fx-font-size:  18;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
+        auctionMenuButton.setMinHeight(50);
+        auctionMenuButton.setMinWidth(150);
         Button ordersButton = new Button("Orders");
+        auctionMenuButton.setOnMouseEntered((EventHandler) event -> scene.setCursor(Cursor.HAND));
+        auctionMenuButton.setOnMouseExited((EventHandler) event -> scene.setCursor(Cursor.DEFAULT));
+        auctionMenuButton.setOnMouseClicked(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                new AuctionsMenu(stage,0).execute();
+            }
+        });
         ordersButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
@@ -359,7 +371,8 @@ public class UserMenuScene extends Menu {
         ordersButton.setMinWidth(150);
         leftMenuGridPane.add(discountCodesButton, 0, 0, 2, 2);
         leftMenuGridPane.add(ordersButton, 0, 2, 2, 2);
-        leftMenuGridPane.add(contatSupportButton, 0, 4, 2, 2);
+        leftMenuGridPane.add(auctionMenuButton,0,4,2,2);
+        leftMenuGridPane.add(contatSupportButton, 0, 6, 2, 2);
         centerGridPane.add(leftMenuGridPane, 0, 1, 1, 6);
         centerGridPane.add(pageTitle, 0, 0, 1, 1);
         centerGridPane.add(userInfoGridPane, 3, 1, 2, 2);

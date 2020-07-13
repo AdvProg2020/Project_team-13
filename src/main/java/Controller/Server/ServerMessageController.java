@@ -1,6 +1,8 @@
 package Controller.Server;
 
 import Controller.Client.MessageController;
+import Controller.Client.UserController;
+import Models.Auction;
 import Models.DiscountCode;
 import Models.Offer;
 import Models.Product.Cart;
@@ -13,7 +15,7 @@ import Models.UserAccount.UserAccount;
 import com.google.gson.Gson;
 
 import java.io.DataOutputStream;
-import java.net.Socket;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ServerMessageController {
@@ -69,6 +71,14 @@ public class ServerMessageController {
                     users.add(value);
                 }
                 ServerController.getInstance().sendMessageToClient("@setOnlineUsers@" + new Gson().toJson(users), dataOutputStream);
+            }else if (message.startsWith("@AddAuction@")) {
+                message = message.substring(12);
+                try {
+                    dataOutputStream.writeUTF("123");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                AuctionCenter.getInstance().createNewAuctionRequest(message, dataOutputStream);
             } else if (message.startsWith("@acceptRequest@")) {
                 message = message.substring(15);
                 RequestCenter.getIncstance().acceptRequest(message, dataOutputStream);
@@ -137,7 +147,10 @@ public class ServerMessageController {
             } else if (message.startsWith("@editSeller@")) {
                 message = message.substring(12);
                 UserCenter.getIncstance().editSeller(new Gson().fromJson(message, Seller.class), dataOutputStream);
-            } else if (message.startsWith("@editCategory@")) {
+            } else if (message.startsWith("@editAuction@")) {
+                message = message.substring(13);
+                UserCenter.getIncstance().editAuction(new Gson().fromJson(message, Auction.class), dataOutputStream);
+            }  else if (message.startsWith("@editCategory@")) {
                 message = message.substring(14);
                 if (message.startsWith("add")) {
                     message = message.substring(3);
