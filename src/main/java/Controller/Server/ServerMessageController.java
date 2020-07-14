@@ -1,6 +1,8 @@
 package Controller.Server;
 
 import Controller.Client.MessageController;
+import Controller.Client.UserController;
+import Models.Auction;
 import Models.DiscountCode;
 import Models.Offer;
 import Models.Product.Cart;
@@ -13,7 +15,7 @@ import Models.UserAccount.UserAccount;
 import com.google.gson.Gson;
 
 import java.io.DataOutputStream;
-import java.net.Socket;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ServerMessageController {
@@ -51,16 +53,33 @@ public class ServerMessageController {
                 message = message.substring(7);
                 String[] split = message.split("/");
                 UserCenter.getIncstance().login(split[0], split[1], dataOutputStream);
+            }else if (message.startsWith("@logout@")) {
+                message = message.substring(8);
+                ServerController.getInstance().sendMessageToClient("@successfulChat@",dataOutputStream);
+                ServerController.getInstance().getAllClients().remove(ServerController.getInstance().findDataStreamWithUsername(message));
             } else if (message.startsWith("@sendChatMessage@")) {
                 //    ServerController.getInstance().sendMessageToClient("@successfulChat@",dataOutputStream);
                 message = message.substring(17);
                 //  UserCenter.getIncstance().sendChat(message,dataOutputStream);
             } else if (message.equals("@getAllRequests@")) {
                 ServerController.getInstance().sendMessageToClient("@AllRequests@" + new Gson().toJson(RequestCenter.getIncstance().getAllRequests()), dataOutputStream);
-            } else if (message.equals("@getOnlineUsers@")) {
-
+            } else if (message.equals("@getOnlineSupporter@")) {
                 ServerController.getInstance().sendMessageToClient("@OnlineUsers@" + new Gson().toJson(ServerController.getInstance().getOnlineSupporters()), dataOutputStream);
-            } else if (message.startsWith("@acceptRequest@")) {
+            }else if (message.equals("@getOnlineUsers@")) {
+                ArrayList<String> users=new ArrayList<>();
+                for (String value : ServerController.getInstance().getAllClients().values()) {
+                    users.add(value);
+                }
+                ServerController.getInstance().sendMessageToClient("@setOnlineUsers@" + new Gson().toJson(users), dataOutputStream);
+            }else if (message.startsWith("@AddAuction@")) {
+                message = message.substring(12);
+                try {
+                    dataOutputStream.writeUTF("123");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                AuctionCenter.getInstance().createNewAuctionRequest(message, dataOutputStream);
+            }else if (message.startsWith("@acceptRequest@")) {
                 message = message.substring(15);
                 RequestCenter.getIncstance().acceptRequest(message, dataOutputStream);
             } else if (message.startsWith("@AddProduct@")) {
@@ -128,7 +147,10 @@ public class ServerMessageController {
             } else if (message.startsWith("@editSeller@")) {
                 message = message.substring(12);
                 UserCenter.getIncstance().editSeller(new Gson().fromJson(message, Seller.class), dataOutputStream);
-            } else if (message.startsWith("@editCategory@")) {
+            } else if (message.startsWith("@editAuction@")) {
+                message = message.substring(13);
+                UserCenter.getIncstance().editAuction(new Gson().fromJson(message, Auction.class), dataOutputStream);
+            }  else if (message.startsWith("@editCategory@")) {
                 message = message.substring(14);
                 if (message.startsWith("add")) {
                     message = message.substring(3);

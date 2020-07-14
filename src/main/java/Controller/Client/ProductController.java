@@ -338,6 +338,7 @@ public class ProductController {
         return new ArrayList<>();
     }
 
+
     public ArrayList<String> getAllSellers() {
         if (currentCategory != null) {
             ArrayList<String> allSellers = new ArrayList<>();

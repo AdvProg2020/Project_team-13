@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 public class CustomerChatMenu extends Menu {
     GridPane userInfoGridPane;
     WebView chatMessages = new WebView();
+
     public CustomerChatMenu(Stage stage) {
         super(stage);
         this.stage = stage;
@@ -50,31 +51,31 @@ public class CustomerChatMenu extends Menu {
         setNewMessage();
         chatMessages.setMaxHeight(300);
         chatMessages.setMaxWidth(300);
-        GridPane chatPane=new GridPane();
-        TextField inputMessage=new TextField();
+        GridPane chatPane = new GridPane();
+        TextField inputMessage = new TextField();
         inputMessage.setPromptText("Enter your message...");
         inputMessage.setMinWidth(260);
-        Button sendMessageButton=new Button("Send");
+        Button sendMessageButton = new Button("Send");
         sendMessageButton.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
-                if(!inputMessage.getText().equals("")){
+                if (!inputMessage.getText().equals("")) {
                     UserController.getInstance().sendChatMessage(inputMessage.getText());
                     inputMessage.setText("");
                     setNewMessage();
                 }
             }
         });
-        chatPane.add(chatMessages,0,0,10,1);
-        chatPane.add(inputMessage,0,1,8,1);
-        chatPane.add(sendMessageButton,9,1,2,1);
-        centerGridPane.add(chatPane,1,0);
-
+        chatPane.add(chatMessages, 0, 0, 10, 1);
+        chatPane.add(inputMessage, 0, 1, 8, 1);
+        chatPane.add(sendMessageButton, 9, 1, 2, 1);
+        centerGridPane.add(chatPane, 1, 0);
     }
-    public void setNewMessage(){
-        String messages="<html style=\"background-color: #ECD5DC;\">";
-        ArrayList<ChatMessage> chats= UserController.getInstance().getChats().get(UserController.getInstance().getCurrentChatUser());
-        if(chats!=null) {
+
+    public void setNewMessage() {
+        String messages = "<html style=\"background-color: #ECD5DC;\">";
+        ArrayList<ChatMessage> chats = UserController.getInstance().getChats().get(UserController.getInstance().getCurrentChatUser());
+        if (chats != null) {
             for (ChatMessage chatMessage : chats) {
                 if (chatMessage.getUsername().equals(ClientController.getInstance().getCurrentUser().getUsername()))
                     messages += "<p style=\"background-color: rgb(0,150,200);text-align: right;font-size:12px;\">" + chatMessage.getUsername() + "<br>" + chatMessage.getContent() + "</p>";
@@ -83,11 +84,12 @@ public class CustomerChatMenu extends Menu {
 
             }
         }
-        messages+="</html>";
+        messages += "</html>";
         refreshChatMessages(messages);
     }
+
     public void refreshChatMessages(String messages) {
-        Platform.runLater(new Runnable(){
+        Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 chatMessages.getEngine().loadContent(messages);

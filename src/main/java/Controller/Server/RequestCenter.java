@@ -48,6 +48,8 @@ public class RequestCenter {
                 return new Request(RequestType.addProduct, RequestStatus.onReview, makeRequestID(), details);
             case "AddOffer":
                 return new Request(RequestType.addOff, RequestStatus.onReview, makeRequestID(), details);
+            case "AddAuction":
+                return new Request(RequestType.addAuction, RequestStatus.onReview, makeRequestID(), details);
             case "EditOffer":
                 return new Request(RequestType.editOff, RequestStatus.onReview, makeRequestID(), details);
             case "Commenting":
@@ -85,6 +87,8 @@ public class RequestCenter {
             acceptDeleteProductRequest(request, dataOutputStream);
         } else if (request.getType().equals(RequestType.commercial)) {
             acceptCommercialRequest(request, dataOutputStream);
+        } else if (request.getType().equals(RequestType.addAuction)) {
+            acceptAddAuctionRequest(request,dataOutputStream);
         }
     }
 
@@ -100,6 +104,14 @@ public class RequestCenter {
     public synchronized void acceptAddProductRequest(Request request, DataOutputStream dataOutputStream) {
         allRequests.remove(request);
         ProductCenter.getInstance().createProduct(new Gson().fromJson(request.getDetails(), Product.class));
+        String arrayData = new Gson().toJson(allRequests);
+        DataBase.getInstance().updateAllRequests(arrayData);
+        ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@" + "request accepted successfully", dataOutputStream);
+    }
+
+    public synchronized void acceptAddAuctionRequest(Request request, DataOutputStream dataOutputStream) {
+        allRequests.remove(request);
+        AuctionCenter.getInstance().createAuction(new Gson().fromJson(request.getDetails(), Auction.class),dataOutputStream);
         String arrayData = new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);
         ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@" + "request accepted successfully", dataOutputStream);
@@ -192,6 +204,9 @@ public class RequestCenter {
             OffCenter.getInstance().setProductStatusForOffer(new Gson().fromJson(request.getDetails(), Offer.class));
         }else if(request.getType().equals(RequestType.commercial)) {
             UserCenter.getIncstance().increaseSellerCreditForAnAdd(new Gson().fromJson(request.getDetails(),Product.class));
+        }else if(request.getType().equals(RequestType.sellerRegister)) {
+            Seller seller = new Gson().fromJson(request.getDetails(),Seller.class);
+            UserCenter.getIncstance().removeSellerWithNoAlert(seller.getUsername(),dataOutputStream);
         }
         String arrayData = new Gson().toJson(allRequests);
         DataBase.getInstance().updateAllRequests(arrayData);

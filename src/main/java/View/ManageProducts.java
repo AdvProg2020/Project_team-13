@@ -1,10 +1,11 @@
 package View;
 
-import Controller.Client.CategoryController;
-import Controller.Client.ClientController;
-import Controller.Client.ProductController;
+import Controller.Client.*;
+import Controller.Server.AuctionCenter;
+import Models.Auction;
 import Models.Product.Category;
 import Models.Product.Product;
+import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 import javafx.event.ActionEvent;
@@ -31,7 +32,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.File;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -99,6 +102,47 @@ public class ManageProducts extends Menu {
             ImageView editInfoPic = new ImageView(new Image("file:src/edit3.png"));
             ImageView deleteProduct = new ImageView(new Image("file:src/trash1.png"));
             ImageView addToAdds = new ImageView(new Image("file:src/add.png"));
+            ImageView auction = new ImageView(new Image("file:src/auction.png"));
+            GridPane auctionGridPane = new GridPane();
+            auctionGridPane.add(auction,0,0);
+            auctionGridPane.setOnMouseEntered(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.HAND); //Change cursor to hand
+                }
+            });
+            auctionGridPane.setOnMouseExited(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    scene.setCursor(Cursor.DEFAULT); //Change cursor to hand
+                }
+            });
+            auctionGridPane.setOnMouseClicked(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    Stage popupwindow = new Stage();
+                    currentProduct = product;
+                    Button button1 = new Button("X");
+                    button1.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 25px; -fx-padding: 3,3,3,3;-fx-font-weight: bold;-fx-text-fill: Red");
+                    button1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            popupwindow.hide();
+                            scene.setFill(null);
+                        }
+                    });
+                    GridPane gridPane1 = new GridPane() ;
+                    gridPane1.getRowConstraints().add(new RowConstraints(25, Control.USE_COMPUTED_SIZE, 25, Priority.NEVER, VPos.CENTER, true));
+                    gridPane1.add(button1,0,0);
+                    gridPane1.add(createAuctionPopup(),1,1);
+                    gridPane1.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);");
+                    Scene scene1 = new Scene(gridPane1, 500, 500);
+                    popupwindow.initModality(Modality.APPLICATION_MODAL);
+                    popupwindow.initStyle(StageStyle.UNDECORATED);
+                    popupwindow.setScene(scene1);
+                    popupwindow.showAndWait();
+                }
+            });
             editInfoPic.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
@@ -172,18 +216,22 @@ public class ManageProducts extends Menu {
             deleteProduct.setFitHeight(25);
             addToAdds.setFitWidth(25);
             addToAdds.setFitHeight(25);
+            auction.setFitWidth(25);
+            auction.setFitHeight(25);
             gridPane.add(imageView, 0, 0, 2, 1);
             gridPane.add(text, 0, 1, 1, 1);
             gridPane.add(scoreGridPane, 0, 2, 1, 1);
             GridPane options = new GridPane();
-            options.getColumnConstraints().add(new ColumnConstraints(87, Control.USE_COMPUTED_SIZE, 87, Priority.NEVER, HPos.RIGHT, false));
+            options.getColumnConstraints().add(new ColumnConstraints(57, Control.USE_COMPUTED_SIZE, 57, Priority.NEVER, HPos.RIGHT, false));
+            options.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
             options.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
             options.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, HPos.LEFT, false));
             options.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, false));
             options.setHgap(2);
-            options.add(addsGridPane, 0, 0);
-            options.add(editInfoPic, 1, 0);
-            options.add(deleteProductPane, 2, 0);
+            options.add(auctionGridPane, 0, 0);
+            options.add(addsGridPane, 1, 0);
+            options.add(editInfoPic, 2, 0);
+            options.add(deleteProductPane, 3, 0);
             gridPane.add(options, 0, 3, 2, 1);
             gridPanes.add(gridPane);
             gridPane.setStyle("-fx-background-color: #ECD5DC;-fx-background-radius: 20px;");
@@ -349,7 +397,83 @@ public class ManageProducts extends Menu {
         addProduct.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                new AddProductScene(stage).execute();
+                Stage popupwindow = new Stage();
+                GridPane gridPane = new GridPane();
+                scene.setFill(Color.GRAY);
+                popupwindow.setTitle("Edit information.");
+                gridPane.setStyle("-fx-background-color: Blue");
+                Button button = new Button("X");
+                button.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 25px; -fx-padding: 3,3,3,3;-fx-font-weight: bold;-fx-text-fill: Red");
+                button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        popupwindow.hide();
+                        scene.setFill(null);
+                    }
+                });
+                gridPane.add(button, 0, 0);
+                gridPane.add(new Text(""), 1, 0);
+                ImageView seller = new ImageView(new Image("file:src/product_icon.png"));
+                ImageView customer = new ImageView(new Image("file:src/other_file.png"));
+                customer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        popupwindow.hide();
+                        new AddFileScene(stage).execute();
+                    }
+                });
+                seller.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        popupwindow.hide();
+                        new AddProductScene(stage).execute();
+                    }
+                });
+                seller.setFitWidth(100);
+                customer.setFitWidth(100);
+                seller.setFitHeight(110);
+                customer.setFitHeight(110);
+                gridPane.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);");
+                GridPane photoGridPane = new GridPane();
+                photoGridPane.setVgap(20);
+                photoGridPane.setHgap(20);
+                photoGridPane.add(seller, 0, 0);
+                photoGridPane.add(customer, 1, 0);
+                gridPane.add(photoGridPane, 1, 1);
+                photoGridPane.setAlignment(Pos.CENTER);
+                gridPane.getRowConstraints().add(new RowConstraints(20, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.CENTER, true));
+                gridPane.getRowConstraints().add(new RowConstraints(200, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, true));
+                gridPane.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.ALWAYS, HPos.CENTER, true));
+                gridPane.getColumnConstraints().add(new ColumnConstraints(250, Control.USE_COMPUTED_SIZE, 250, Priority.NEVER, HPos.CENTER, true));
+                photoGridPane.getColumnConstraints().add(new ColumnConstraints(90, Control.USE_COMPUTED_SIZE, 200, Priority.ALWAYS, HPos.CENTER, false));
+                photoGridPane.getColumnConstraints().add(new ColumnConstraints(90, Control.USE_COMPUTED_SIZE, 200, Priority.ALWAYS, HPos.CENTER, false));
+                photoGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, true));
+                photoGridPane.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.CENTER, true));
+                Label customer1 = new Label("File");
+                customer1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        popupwindow.hide();
+                        new RegisterMenu(stage).execute();
+                    }
+                });
+                Label seller1 = new Label("Product");
+                customer1.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
+                seller1.setFont(Font.loadFont("file:src/Bangers.ttf", 24));
+                seller1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        popupwindow.hide();
+                        new SellerRegisterMenu(stage).execute();
+                    }
+                });
+                photoGridPane.add(seller1, 0, 1);
+                photoGridPane.add(customer1, 1, 1);
+                Scene scene1 = new Scene(gridPane, 320, 240);
+                popupwindow.initModality(Modality.APPLICATION_MODAL);
+                popupwindow.initStyle(StageStyle.UNDECORATED);
+                popupwindow.setScene(scene1);
+                popupwindow.showAndWait();
             }
         });
         leftMenuGridPane.add(addProduct, 0, 2, 2, 2);
@@ -689,6 +813,105 @@ public class ManageProducts extends Menu {
         popupwindow2.setScene(scene1);
         popupwindow2.show();
 
+    }
+
+    private DatePicker startDatePicker = new DatePicker();
+    private DatePicker endDatePicker = new DatePicker();
+    private ArrayList<String> allUsers = new ArrayList<>();
+    GridPane userInfoGridPane;
+
+    private GridPane createAuctionPopup() {
+        userInfoGridPane = new GridPane();
+        userInfoGridPane.setVgap(10);
+        userInfoGridPane.setHgap(20);
+        userInfoGridPane.setMinWidth(650);
+        userInfoGridPane.setMinHeight(400);
+        GridPane leftGridPane = new GridPane();
+        GridPane upGridPane = new GridPane();
+        upGridPane.setMinHeight(50);
+        leftGridPane.setMinWidth(25);
+        Text title = new Text("\t  Create Discount Code");
+        ImageView userImage = new ImageView(new Image("file:src/user_icon.png"));
+        userImage.setFitHeight(100);
+        userImage.setFitWidth(100);
+        Text startDateText = new Text("Start Date");
+        Text endDateText = new Text("End Date");
+        title.setStyle("-fx-font-weight: bold;");
+        title.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 20));
+        Button editPhotoButton = new Button("Choose Photo");
+        Button createAuction = new Button("Create Auction");
+        createAuction.setStyle("-fx-background-color: #E85D9E;");
+        createAuction.setMinWidth(100);
+        createAuction.setTextFill(Color.WHITE);
+        Text errorText = new Text();
+        errorText.setFill(Color.RED);
+        editPhotoButton.setStyle("-fx-background-color: #E85D9E");
+        editPhotoButton.setMinWidth(100);
+        editPhotoButton.setTextFill(Color.WHITE);
+        FileChooser fileChooser = new FileChooser();
+        EventHandler<ActionEvent> eventChoosePhoto = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                File selectedFile = fileChooser.showOpenDialog(stage);
+                if (selectedFile != null) {
+                    userImage.setImage(new Image("file:" + selectedFile.getAbsolutePath()));
+                }
+            }
+        };
+        editPhotoButton.setOnAction(eventChoosePhoto);
+        // userInfoGridPane.add(title,0,0);
+        HBox hBox = new HBox();
+        hBox.setMinWidth(230);
+        HBox hBox1 = new HBox();
+        hBox1.setMinWidth(250);
+        // userInfoGridPane.setGridLinesVisible(true);
+        upGridPane.add(hBox1, 0, 0, 1, 1);
+        // upGridPane.setGridLinesVisible(true);
+        upGridPane.add(title, 1, 0, 1, 1);
+        userInfoGridPane.add(startDateText, 5, 11, 3, 1);
+        userInfoGridPane.add(endDateText, 5, 12, 3, 1);
+        userInfoGridPane.add(startDatePicker, 8, 11, 6, 1);
+        userInfoGridPane.add(endDatePicker, 8, 12, 6, 1);
+        userInfoGridPane.add(createAuction, 13, 16, 5, 1);
+        userInfoGridPane.add(errorText, 7, 14, 10, 1);
+        userInfoGridPane.setStyle("-fx-background-color: #ECD5DC;");
+        createAuction.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                startDatePicker.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
+                endDatePicker.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; ");
+                errorText.setText("");
+                Date startdate = Date.from(startDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                Date enddate = Date.from(endDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                if (checkStartTimeValid(startdate)) {
+                    if (checkEndTimeValid(enddate, startdate)) {
+                        AuctionController.getInstance().createNewAuction(new Auction(startdate,enddate,currentProduct,ClientController.getInstance().getCurrentUser().getUsername()));
+                    } else {
+                        endDatePicker.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                        errorText.setText("End time is invalid.");
+                    }
+                } else {
+                    startDatePicker.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                    errorText.setText("Start date is invalid.");
+                }
+            }
+        });
+    return userInfoGridPane;
+    }
+
+    private boolean checkEndTimeValid(Date endTime, Date startTime) {
+        if (endTime.after(new Date()) && endTime.after(startTime)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean checkStartTimeValid(Date startTime) {
+        if (startTime.after(new Date())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

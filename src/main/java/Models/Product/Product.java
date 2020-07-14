@@ -27,7 +27,7 @@ public class Product {
     private HashMap<String, String> featuresOfCategoryThatHas;
     private ArrayList<Customer> allBuyers = new ArrayList<>();
     private ArrayList<Offer> offers = new ArrayList<>();
-    private String imagePath = "", videoPath = "";
+    private String imagePath = "", videoPath = "",filePath="";
 
     public Product(String productCompany, String productId, String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, HashMap<String, String> featuresOfCategoryThatHas) {
         this.productCompany = productCompany;
@@ -66,6 +66,14 @@ public class Product {
         this.costAfterOff = costAfterOff;
     }
 
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
     public boolean didUserBuyThis(String username) {
         for (Customer buyer : allBuyers) {
             if (buyer.getUsername().equals(username)) {
@@ -84,10 +92,10 @@ public class Product {
 
     public String getImagePath() {
         if (imagePath != null && !imagePath.isEmpty()) {
-            if (numberOfAvailableProducts > 0) {
-                return imagePath;
-            } else {
+            if (numberOfAvailableProducts == 0) {
                 return "file:src/sold_out.png";
+            } else {
+                return imagePath;
             }
         }else if(numberOfAvailableProducts ==0) {
             return "file:src/sold_out.png";

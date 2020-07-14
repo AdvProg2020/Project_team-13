@@ -15,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class DataBase {
@@ -26,9 +27,9 @@ public class DataBase {
     }
 
     public static DataBase getInstance() {
-        if(dataBase == null){
+        if (dataBase == null) {
             synchronized (DataBase.class) {
-                if(dataBase == null){
+                if (dataBase == null) {
                     dataBase = new DataBase();
                 }
             }
@@ -62,12 +63,31 @@ public class DataBase {
         } catch (Exception e) {
         }
     }
+
     public void updateAllSupporter(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allSupporter.txt");
             fileWriter.write(json);
             fileWriter.close();
         } catch (Exception e) {
+        }
+    }
+
+    public void setLastAuctionIdFromDataBase() {
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader("lastAuctionId.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader br = new BufferedReader(fileReader);
+        try {
+            String lastAuctionId = br.readLine().trim();
+            AuctionCenter.getInstance().setLastAuctionId(lastAuctionId);
+            br.close();
+            fileReader.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -104,6 +124,27 @@ public class DataBase {
             Type categoryListType = new TypeToken<ArrayList<Category>>() {
             }.getType();
             allCategories = gson.fromJson(allCategoriesInGsonForm, categoryListType);
+            if (allCategories == null) {
+                allCategories = new ArrayList<>();
+            }
+            int i = 0;
+            for (Category category : allCategories) {
+                if (category.getName().equals("File")) {
+                    i++;
+                    break;
+                }
+            }
+            if (i == 0) {
+                HashMap<String, ArrayList<String>> features = new HashMap<>();
+                ArrayList<String> modes = new ArrayList<>();
+                modes.add("TextFile");
+                modes.add("ImageFile");
+                modes.add("VideoFile");
+                modes.add("Other");
+                features.put("Format", modes);
+                allCategories.add(new Category("File", features));
+            }
+            updateAllCategories(new Gson().toJson(allCategories));
             CategoryCenter.getIncstance().setAllCategories(allCategories, true);
             br.close();
             fileReader.close();
@@ -157,6 +198,16 @@ public class DataBase {
         try {
             FileWriter fileWriter = new FileWriter("lastProductId.txt");
             fileWriter.write(productId);
+            fileWriter.close();
+        } catch (IOException e) {
+        }
+    }
+
+
+    public synchronized void replaceAuctionId(String auctionId) {
+        try {
+            FileWriter fileWriter = new FileWriter("lastAuctionId.txt");
+            fileWriter.write(auctionId);
             fileWriter.close();
         } catch (IOException e) {
         }
@@ -245,7 +296,6 @@ public class DataBase {
                 e.printStackTrace();
             }
         }
-
         try {
             fileReader = new FileReader("allSupporter.txt");
         } catch (FileNotFoundException e) {
@@ -440,7 +490,7 @@ public class DataBase {
         System.out.println("yes");
         FileReader fileReader = null;
         BufferedReader br;
-        String allJson="";
+        String allJson = "";
         try {
             fileReader = new FileReader("allCustomers.txt");
         } catch (FileNotFoundException e) {
@@ -450,7 +500,7 @@ public class DataBase {
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                allJson+=json+"&";
+                allJson += json + "&";
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -470,7 +520,7 @@ public class DataBase {
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                allJson+=json+"&";
+                allJson += json + "&";
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -490,7 +540,7 @@ public class DataBase {
         try {
             String json;
             while ((json = br.readLine()) != null) {
-                allJson+=json;
+                allJson += json;
                 ServerController.getInstance().sendMessageToClient("@allUsers@" + allJson, dataOutputStream);
             }
         } catch (IOException e) {

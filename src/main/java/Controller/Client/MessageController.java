@@ -1,5 +1,6 @@
 package Controller.Client;
 
+import Controller.Server.AuctionCenter;
 import Models.BuyLog;
 import Models.ChatMessage;
 import Models.Log;
@@ -119,6 +120,9 @@ public class MessageController {
             } else if (message.startsWith("@OnlineUsers@")) {
                 message = message.substring(13);
                 UserController.getInstance().setOnlineUsers(message);
+            }else if (message.startsWith("@setOnlineUsers@")) {
+                message = message.substring(16);
+                UserController.getInstance().setOnlineClients(message);
             } else if (message.startsWith("@AllDiscountCodes@")) {
                 message = message.substring(18, message.length());
                 DiscountController.getInstance().printAllDiscountCodes(message);
@@ -149,6 +153,8 @@ public class MessageController {
                 ClientController.getInstance().getCurrentMenu().showMessage("Category removed successfully", MessageKind.MessageWithoutBack);
             } else if (message.startsWith("getAllOffers")) {
                 OffsController.getInstance().updateAllOffer(message);
+            } else if (message.startsWith("@gSPOA@")) {
+                AuctionController.getInstance().connectChatInAuctionPage(Integer.parseInt(message.substring(7)));
             }
         }
     }
