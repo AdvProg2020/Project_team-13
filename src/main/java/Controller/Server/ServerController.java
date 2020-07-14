@@ -87,9 +87,7 @@ public class ServerController {
         while (true) {
             String string;
             try {
-                do {
-                    string = dataInputStream.readUTF();
-                } while (string.isEmpty());
+              string = dataInputStream.readUTF();
               ServerMessageController.getInstance().processMessage(string, dataOutputStream);
             } catch (IOException e) {
                 System.out.println("Error in Connection...");

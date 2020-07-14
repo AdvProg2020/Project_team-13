@@ -56,10 +56,10 @@ public class TokenGenerator {
 
 
 
-    public boolean isTokenVerified(String token){
+    public boolean isTokenVerified(String token, DataOutputStream dataOutputStream){
         boolean flag = true;
         try {
-            JWTVerifier jwt = JWT.require(algorithm).withIssuer("Client").build();
+            JWTVerifier jwt = JWT.require(algorithm).withIssuer(ServerController.getInstance().getAllClients().get(dataOutputStream)).build();
             jwt.verify(token);
         }catch (JWTVerificationException | JWTExpiredException e){
             flag = false;

@@ -150,17 +150,15 @@ public class ClientController {
     public void sendMessageToServer(String message) {
         this.message = message;
         message = getTheEncodedMessage(message);
+        String string = null;
         try {
             dataOutputStream.writeUTF(message);
             dataOutputStream.flush();
-            String string;
-            do {
-                string = dataInputStream.readUTF();
-            } while (string.isEmpty());
-            getMessageFromServer(string);
+            string = dataInputStream.readUTF();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        getMessageFromServer(string);
     }
 
     public void getMessageFromServer(String message) {
@@ -179,7 +177,10 @@ public class ClientController {
     }
 
     public String getTheEncodedMessage(String message){
-        return JWT.create().withIssuer("Client").withSubject(message).withExpiresAt(expirationDate).sign(algorithm);
+        if (currentUser == null) {
+            return JWT.create().withIssuer(null).withSubject(message).withExpiresAt(expirationDate).sign(algorithm);
+        }
+        return JWT.create().withIssuer(ClientController.getInstance().getCurrentUser().getUsername()).withSubject(message).withExpiresAt(expirationDate).sign(algorithm);
     }
 
 

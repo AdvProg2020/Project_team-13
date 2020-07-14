@@ -41,7 +41,7 @@ public class ServerMessageController {
     }
 
     public void processMessage(String message, DataOutputStream dataOutputStream) {
-        if(TokenGenerator.getInstance().isTokenVerified(message)) {
+        if(TokenGenerator.getInstance().isTokenVerified(message, dataOutputStream)) {
             message = TokenGenerator.getInstance().getTheDecodedMessage(message);
             ServerController.getInstance().passTime(dataOutputStream);
             if (message.startsWith("@Register@")) {
