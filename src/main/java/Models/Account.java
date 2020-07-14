@@ -13,7 +13,8 @@ public class Account {
    private List<Receipt> allReceipts;
    private String companyName;
 
-    public Account(String accountId, String firstName, String lastName, String username, String pasWord) {
+    public Account(String accountId, String firstName, String lastName, String username, String pasWord, double amount) {
+        this.amount = amount;
         this.accountId = accountId;
         this.firstName = firstName;
         this.lastName = lastName;

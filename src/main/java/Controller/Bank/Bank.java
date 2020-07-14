@@ -38,7 +38,6 @@ public class Bank {
 
     private Bank(){
         allAccounts = new ArrayList<>();
-        marketAccount = new Account("@a1209312@", "Market");
         try {
            algorithm = Algorithm.HMAC256(new String(Files.readAllBytes(Paths.get("secret.txt"))));
         } catch (IOException e) {
@@ -64,8 +63,7 @@ public class Bank {
     }
 
     public static void main(String[] args) throws IOException {
-      new Thread(() -> Bank.getInstance().handleClientsConnection()).start();
-      Bank.getInstance().handleServerConnection();
+      Bank.getInstance().handleClientsConnection();
     }
 
     private synchronized String createNewAccount(String firstName, String lastName, String userName, String passWord, String repeatedPassword){
@@ -76,18 +74,13 @@ public class Bank {
             return "password do not match";
         }
         String accountId = getTheLastAccountId();
-        allAccounts.add(new Account(accountId, firstName, lastName, userName, passWord));
+        allAccounts.add(new Account(accountId, firstName, lastName, userName, passWord, 100000000));
         updateAllAccounts(new Gson().toJson(allAccounts));
         return accountId;
     }
 
-    private void handleServerConnection() throws IOException {
-       marketServerSocket = new ServerSocket(5050);
-       Socket socket = marketServerSocket.accept();
-       DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-       DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-
-
+    public void setMarketAccount(Account marketAccount) {
+        this.marketAccount = marketAccount;
     }
 
     private boolean userExitsWithThisUserName(String userName){
@@ -145,12 +138,6 @@ public class Bank {
         }catch (IOException e){
             System.out.println("Error in Starting Connection...");
             return;
-        }
-        try {
-            dataOutputStream.writeUTF("Hello Client");
-            dataOutputStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         while (true) {
             try{
@@ -504,6 +491,13 @@ public class Bank {
             Type accountType = new TypeToken<ArrayList<Account>>() {
             }.getType();
             setAllAccounts(new Gson().fromJson(String.valueOf(stringBuilder), accountType));
+            Scanner scanner1 = new Scanner(new BufferedReader(new FileReader("marketAccount.txt")));
+            StringBuilder stringBuilder1 = new StringBuilder();
+            while (scanner1.hasNextLine()) {
+                stringBuilder1.append(scanner1.nextLine());
+            }
+            setMarketAccount(new Gson().fromJson(String.valueOf(stringBuilder1), Account.class));
+            scanner1.close();
         }catch (IOException e){
             System.out.println("Error in Database Connection...");
         }

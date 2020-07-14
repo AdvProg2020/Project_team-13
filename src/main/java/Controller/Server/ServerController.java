@@ -16,12 +16,27 @@ public class ServerController {
     private ServerSocket serverSocket;
     private Map<DataOutputStream, String> allClients;
     private HashMap<String, DataOutputStream> SellerSockets=new HashMap<>();
+    private Socket socket;
+    private DataInputStream dataInputStream;
+    private DataOutputStream dataOutputStream;
 
     public Map<String, DataOutputStream> getSellerSockets() {
         return SellerSockets;
     }
 
     private ServerController() {
+        socket = null;
+        try {
+            socket = new Socket("localhost", 3030);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try{
+            dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+        }
         allClients = new HashMap<>();
     }
     private HashMap<String, Integer> onlineSupporters = new HashMap<>();
@@ -55,6 +70,18 @@ public class ServerController {
     public static void main(String[] args) {
         ServerController.getInstance().runServer();
         ServerController.getInstance().startProcess();
+    }
+
+    public String handleBankConnection(String data){
+        String response = null;
+        try {
+            dataOutputStream.writeUTF(data);
+            dataOutputStream.flush();
+            response = dataInputStream.readUTF();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return response;
     }
 
     private void startProcess() {

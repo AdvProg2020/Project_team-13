@@ -44,11 +44,13 @@ public class MessageController {
                 ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.ErrorWithoutBack);
             } else if (message.startsWith("@Successfulrc@")) {
                 message = message.substring(14, message.length());
-                ClientController.getInstance().setCurrentUser(new Gson().fromJson(message, Customer.class));
-                ClientController.getInstance().getCurrentMenu().showMessage("Register Successful", MessageKind.MessageWithBack);
+                String[] split=message.split("&");
+                ClientController.getInstance().setCurrentUser(new Gson().fromJson(split[1], Customer.class));
+                ClientController.getInstance().getCurrentMenu().showMessage("Register Successful\nyour bank id is:"+split[0], MessageKind.MessageWithBack);
             } else if (message.startsWith("@Successful@")) {
                 message = message.substring(12, message.length());
-                ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.MessageWithBack);
+                String[] split=message.split("&");
+                ClientController.getInstance().getCurrentMenu().showMessage(split[1] + "\nyour bank id is: " + split[0], MessageKind.MessageWithBack);
             } else if (message.startsWith("@SuccessfulNotBack@")) {
                 message = message.substring(19);
                 ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.MessageWithoutBack);

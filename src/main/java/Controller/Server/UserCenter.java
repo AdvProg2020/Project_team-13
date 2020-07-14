@@ -213,7 +213,9 @@ public class UserCenter {
                 allCustomer.add(customer);
                 String arrayData = gson.toJson(allCustomer);
                 DataBase.getInstance().updateAllCustomers(arrayData);
-                ServerController.getInstance().sendMessageToClient("@Successfulrc@" + new Gson().toJson(customer), dataOutputStream);
+                String accountResponse = ServerController.getInstance().handleBankConnection("create_account " + customer.getFirstName() + " " +
+                        customer.getLastName() + " " + customer.getUsername() + " " + customer.getPassword() + " " + customer.getPassword());
+                ServerController.getInstance().sendMessageToClient("@Successfulrc@" + accountResponse + "&" + new Gson().toJson(customer), dataOutputStream);
             } else {
                 ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username", dataOutputStream);
             }
@@ -225,7 +227,9 @@ public class UserCenter {
                 DataBase.getInstance().updateAllSellers(arrayData);
                 Request request = RequestCenter.getIncstance().makeRequest("AcceptSellerAccount", gson.toJson(seller));
                 RequestCenter.getIncstance().addRequest(request);
-                ServerController.getInstance().sendMessageToClient("@Successful@Register was sent to Manager for review", dataOutputStream);
+                String accountResponse = ServerController.getInstance().handleBankConnection("create_account " + seller.getFirstName() + " " +
+                        seller.getLastName() + " " + seller.getUsername() + " " + seller.getPassword() + " " + seller.getPassword());
+                ServerController.getInstance().sendMessageToClient("@Successful@" + accountResponse + "&" + "Register was sent to Manager for review", dataOutputStream);
             } else {
                 ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username", dataOutputStream);
             }
