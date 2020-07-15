@@ -23,6 +23,7 @@ public class UserController {
     private ArrayList<Manager> allManagers = new ArrayList<>();
     private HashMap<String, ArrayList<ChatMessage>> chats = new HashMap<>();
     private HashMap<String,Integer> onlineUsers = new HashMap<>();
+    private ArrayList<String> onlineClients = new ArrayList<>();
     private HashMap<String, Socket> customerDataStreams=new HashMap<>();
     private String currentChatUser;
 
@@ -50,6 +51,15 @@ public class UserController {
         this.onlineUsers =  new Gson().fromJson(json, userListType);
     }
 
+    public ArrayList<String> getOnlineClients() {
+        return onlineClients;
+    }
+
+    public void setOnlineClients(String json) {
+        Type userListType = new TypeToken<ArrayList<String>>() {
+        }.getType();
+        this.onlineClients =  new Gson().fromJson(json, userListType);
+    }
     public void setCurrentChatUser(String currentChatUser) {
         this.currentChatUser = currentChatUser;
     }
@@ -69,7 +79,7 @@ public class UserController {
     }
 
     public void getAllOnilneUSerFromServer() {
-        ClientController.getInstance().sendMessageToServer("@getOnlineUsers@");
+        ClientController.getInstance().sendMessageToServer("@getOnlineSupporter@");
     }
 
     public void reduceSellerCreditForAnAdd(Product product) {

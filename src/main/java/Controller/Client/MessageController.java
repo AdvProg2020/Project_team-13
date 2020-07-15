@@ -120,6 +120,9 @@ public class MessageController {
             } else if (message.startsWith("@OnlineUsers@")) {
                 message = message.substring(13);
                 UserController.getInstance().setOnlineUsers(message);
+            }else if (message.startsWith("@setOnlineUsers@")) {
+                message = message.substring(16);
+                UserController.getInstance().setOnlineClients(message);
             } else if (message.startsWith("@AllDiscountCodes@")) {
                 message = message.substring(18, message.length());
                 DiscountController.getInstance().printAllDiscountCodes(message);

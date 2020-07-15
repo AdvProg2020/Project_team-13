@@ -6,7 +6,6 @@ import Models.UserAccount.UserAccount;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashMap;
@@ -17,15 +16,24 @@ public class ServerController {
     private ServerSocket serverSocket;
     private Map<DataOutputStream, String> allClients;
 
-    private ServerController(){
+    private ServerController() {
         allClients = new HashMap<>();
     }
     private HashMap<String, Integer> onlineSupporters = new HashMap<>();
 
-    public static ServerController getInstance(){
-        if(serverController == null){
+    public DataOutputStream findDataStreamWithUsername(String username) {
+        for (DataOutputStream dataOutputStream : allClients.keySet()) {
+            if (allClients.get(dataOutputStream).equals(username)) {
+                return dataOutputStream;
+            }
+        }
+        return null;
+    }
+
+    public static ServerController getInstance() {
+        if (serverController == null) {
             synchronized (ServerController.class) {
-                if(serverController == null){
+                if (serverController == null) {
                     serverController = new ServerController();
                 }
             }
@@ -92,7 +100,7 @@ public class ServerController {
                 do {
                     string = dataInputStream.readUTF();
                 } while (string.isEmpty());
-              ServerMessageController.getInstance().processMessage(string, dataOutputStream);
+                ServerMessageController.getInstance().processMessage(string, dataOutputStream);
             } catch (IOException e) {
                 System.out.println("Error in Connection...");
                 break;
@@ -106,7 +114,7 @@ public class ServerController {
         String codedMessage;
         if (message.matches("@Login as \\w+@")) {
             codedMessage = TokenGenerator.getInstance().getTheToken(ServerController.getInstance().getAllClients().get(dataOutputStream), message);
-        }else{
+        } else {
             codedMessage = TokenGenerator.getInstance().getTheCodedMessage(dataOutputStream, message);
         }
         try {

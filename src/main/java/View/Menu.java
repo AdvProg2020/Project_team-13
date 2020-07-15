@@ -478,6 +478,7 @@ public class Menu {
             logout.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
+                    ClientController.getInstance().sendMessageToServer("@logout@"+ClientController.getInstance().getCurrentUser().getUsername());
                     ClientController.getInstance().setCurrentUser(null);
                     ClientController.getInstance().resetMenuArray();
                 }
