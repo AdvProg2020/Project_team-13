@@ -1,1 +1,1 @@
-[{"discountCodeID":"aaaaafq","startTime":"Jul 13, 2020 12:00:00 AM","endTime":"Jul 19, 2020 12:00:00 AM","allUserAccountsThatHaveDiscount":["ali123"],"discountPercent":25,"maxDiscountAmount":25.0,"maxUsingTime":{"ali123":11},"remainingTimesForEachCustomer":{"ali123":11}}]
+[]

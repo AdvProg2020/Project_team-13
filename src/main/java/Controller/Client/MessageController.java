@@ -1,5 +1,6 @@
 package Controller.Client;
 
+import Controller.Server.AuctionCenter;
 import Models.BuyLog;
 import Models.ChatMessage;
 import Models.Log;
@@ -149,6 +150,8 @@ public class MessageController {
                 ClientController.getInstance().getCurrentMenu().showMessage("Category removed successfully", MessageKind.MessageWithoutBack);
             } else if (message.startsWith("getAllOffers")) {
                 OffsController.getInstance().updateAllOffer(message);
+            } else if (message.startsWith("@gSPOA@")) {
+                AuctionController.getInstance().connectChatInAuctionPage(Integer.parseInt(message.substring(7)));
             }
         }
     }

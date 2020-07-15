@@ -1,16 +1,17 @@
 package Controller.Server;
 
-import Models.ChatMessage;
 import Models.Auction;
+import Models.ChatMessage;
 import Models.Offer;
+import Models.Product.Cart;
 import Models.Product.Product;
 import Models.Request;
 import Models.UserAccount.*;
 import com.google.gson.Gson;
 
 import java.io.DataOutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class UserCenter {
     private static UserCenter userCenter;
@@ -33,10 +34,63 @@ public class UserCenter {
         }
         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
     }
+
+    public synchronized ArrayList<Auction> getAllAuctions() {
+        ArrayList<Auction> allAuctions = new ArrayList<>();
+        for (Seller seller : allSeller) {
+            if (seller.getAuction() != null) {
+                allAuctions.add(seller.getAuction());
+            }
+        }
+        return allAuctions;
+    }
+
+    public void passTime() {
+        for (Seller seller : allSeller) {
+            if (seller.getAuction() != null) {
+                if (new Date().after(seller.getAuction().getEndTime())) {
+                    System.out.println("aaaaaaaaaaaaa");
+                    String user = seller.getAuction().getBestOfferUser();
+                    double bestPrice = seller.getAuction().getBestOffer();
+                    Product product = seller.getAuction().getProduct();
+                    product.setProductCost(bestPrice);
+                    product.setOffer(null);
+                    for (Customer customer : getAllCustomer()) {
+                        if (customer.getUsername().equals(user)) {
+                            if (customer.getCredit() >= bestPrice) {
+                                Cart cart = new Cart();
+                                cart.setCustomerID(user);
+                                cart.addProduct(product);
+                                CartCenter.getInstance().pay(cart);
+                            }
+                            break;
+                        }
+                    }
+                    seller.setAuction(null);
+                    DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+                } else {
+                    System.out.println("bbbbbbb");
+                }
+            }
+        }
+    }
+
+
     public synchronized void editAuction(Auction auction, DataOutputStream dataOutputStream) {
         for (Seller seller : allSeller) {
             if (seller.getUsername().equalsIgnoreCase(auction.getSellerId())) {
                 seller.setAuction(auction);
+                ServerController.getInstance().sendMessageToClient("bloblo", dataOutputStream);
+                break;
+            }
+        }
+        DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+    }
+
+    public synchronized void editAuction(Auction auction, ChatMessage chatMessage) {
+        for (Seller seller : allSeller) {
+            if (seller.getUsername().equalsIgnoreCase(auction.getSellerId())) {
+                seller.getAuction().getChatMessages().add(chatMessage);
                 break;
             }
         }
@@ -55,9 +109,9 @@ public class UserCenter {
     }
 
     public static UserCenter getIncstance() {
-        if(userCenter == null){
+        if (userCenter == null) {
             synchronized (UserCenter.class) {
-                if(userCenter == null){
+                if (userCenter == null) {
                     userCenter = new UserCenter();
                 }
             }
@@ -159,7 +213,7 @@ public class UserCenter {
                 allCustomer.add(customer);
                 String arrayData = gson.toJson(allCustomer);
                 DataBase.getInstance().updateAllCustomers(arrayData);
-                ServerController.getInstance().sendMessageToClient( "@Successfulrc@" + new Gson().toJson(customer), dataOutputStream);
+                ServerController.getInstance().sendMessageToClient("@Successfulrc@" + new Gson().toJson(customer), dataOutputStream);
             } else {
                 ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username", dataOutputStream);
             }
@@ -171,9 +225,9 @@ public class UserCenter {
                 DataBase.getInstance().updateAllSellers(arrayData);
                 Request request = RequestCenter.getIncstance().makeRequest("AcceptSellerAccount", gson.toJson(seller));
                 RequestCenter.getIncstance().addRequest(request);
-                ServerController.getInstance().sendMessageToClient( "@Successful@Register was sent to Manager for review", dataOutputStream);
+                ServerController.getInstance().sendMessageToClient("@Successful@Register was sent to Manager for review", dataOutputStream);
             } else {
-                ServerController.getInstance().sendMessageToClient( "@Error@There is a User With this username", dataOutputStream);
+                ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username", dataOutputStream);
             }
         } else if (json.contains("@Manager")) {
             if (allManager.size() == 0) {
@@ -182,9 +236,9 @@ public class UserCenter {
                     allManager.add(manager);
                     String arrayData = gson.toJson(allManager);
                     DataBase.getInstance().updateAllManagers(arrayData);
-                    ServerController.getInstance().sendMessageToClient( "@Successful@Register Successful", dataOutputStream);
+                    ServerController.getInstance().sendMessageToClient("@Successful@Register Successful", dataOutputStream);
                 } else {
-                    ServerController.getInstance().sendMessageToClient( "@Error@ is a User With this username", dataOutputStream);
+                    ServerController.getInstance().sendMessageToClient("@Error@ is a User With this username", dataOutputStream);
                 }
             } else {
                 ServerController.getInstance().sendMessageToClient("@Error@You can not Register as Manager", dataOutputStream);
@@ -207,9 +261,9 @@ public class UserCenter {
         if (isThereUserWithThisUsername(username)) {
             UserAccount userAccount = getUserWithUsername(username);
             if (userAccount.getPassword().equals(password)) {
-             //   if (ServerController.getInstance().findDataStreamWithUsername(userAccount.getUsername()) == null) {
-             //       ServerController.getInstance().getOnlineUsers().put(dataOutputStream, userAccount);
-            //    }
+                //   if (ServerController.getInstance().findDataStreamWithUsername(userAccount.getUsername()) == null) {
+                //       ServerController.getInstance().getOnlineUsers().put(dataOutputStream, userAccount);
+                //    }
                 switch (userAccount.getType()) {
                     case "@Customer": {
                         String user = gson.toJson(userAccount);
@@ -222,8 +276,8 @@ public class UserCenter {
                         if (((Seller) userAccount).isAccepted()) {
                             ServerController.getInstance().getAllClients().put(dataOutputStream, userAccount.getUsername());
                             ServerController.getInstance().sendMessageToClient("@Login as Seller@" + user, dataOutputStream);
-                        }else
-                            ServerController.getInstance().sendMessageToClient( "@Error@" + "Seller registration request hasn't been accepted", dataOutputStream);
+                        } else
+                            ServerController.getInstance().sendMessageToClient("@Error@" + "Seller registration request hasn't been accepted", dataOutputStream);
                         break;
                     }
                     case "@Manager": {
@@ -239,10 +293,10 @@ public class UserCenter {
                     }
                 }
             } else {
-                ServerController.getInstance().sendMessageToClient( "@Error@Password is incorrect", dataOutputStream);
+                ServerController.getInstance().sendMessageToClient("@Error@Password is incorrect", dataOutputStream);
             }
         } else {
-            ServerController.getInstance().sendMessageToClient( "@Error@There is no User With this username", dataOutputStream);
+            ServerController.getInstance().sendMessageToClient("@Error@There is no User With this username", dataOutputStream);
         }
     }
 
@@ -310,7 +364,7 @@ public class UserCenter {
                 return true;
             }
         }
-        ServerController.getInstance().sendMessageToClient( "@Error@there is no seller with this username", dataOutputStream);
+        ServerController.getInstance().sendMessageToClient("@Error@there is no seller with this username", dataOutputStream);
         return false;
     }
 
@@ -323,7 +377,7 @@ public class UserCenter {
                 return;
             }
         }
-        ServerController.getInstance().sendMessageToClient( "@Error@there is no user with this username", dataOutputStream);
+        ServerController.getInstance().sendMessageToClient("@Error@there is no user with this username", dataOutputStream);
     }
 
     public void removeProductFromSellerProductList(Product product) {

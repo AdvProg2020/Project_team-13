@@ -59,7 +59,9 @@ public class ServerMessageController {
                 //  UserCenter.getIncstance().sendChat(message,dataOutputStream);
             } else if (message.equals("@getAllRequests@")) {
                 ServerController.getInstance().sendMessageToClient("@AllRequests@" + new Gson().toJson(RequestCenter.getIncstance().getAllRequests()), dataOutputStream);
-            } else if (message.equals("@getOnlineUsers@")) {
+            } else if (message.equals("@gSPOA")) {
+                ServerController.getInstance().sendMessageToClient("@gSPOA@", dataOutputStream);
+            }else if (message.equals("@getOnlineUsers@")) {
 
                 ServerController.getInstance().sendMessageToClient("@OnlineUsers@" + new Gson().toJson(ServerController.getInstance().getOnlineSupporters()), dataOutputStream);
             } else if (message.startsWith("@AddAuction@")) {

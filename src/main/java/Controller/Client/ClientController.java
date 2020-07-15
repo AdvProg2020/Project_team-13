@@ -15,6 +15,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.sun.xml.internal.messaging.saaj.util.Base64;
 import io.fusionauth.jwt.JWTExpiredException;
 import javafx.scene.media.MediaPlayer;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -33,7 +34,7 @@ public class ClientController {
     private ArrayList<View.Menu> menus = new ArrayList<>();
     private MediaPlayer mediaPlayer;
     private String message;
-    private Socket socket,customerSocket;
+    private Socket socket, customerSocket;
     private ServerSocket serverSocket;
     private DataOutputStream dataOutputStream;
     private DataInputStream dataInputStream;
@@ -48,11 +49,11 @@ public class ClientController {
         }
     }
 
-    public void connectToServer(){
+    public void connectToServer() {
         try {
-            socket=new Socket("localhost",8080);
-            dataOutputStream=new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-            dataInputStream=new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+            socket = new Socket("localhost", 8080);
+            dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -121,7 +122,6 @@ public class ClientController {
     }
 
 
-
     public void setCurrentDiscountCode(DiscountCode currentDiscountCode) {
         this.currentDiscountCode = currentDiscountCode;
     }
@@ -154,13 +154,33 @@ public class ClientController {
         this.message = message;
         message = getTheEncodedMessage(message);
         try {
+            System.out.println("a1111111111");
             dataOutputStream.writeUTF(message);
             dataOutputStream.flush();
             String string;
-            do {
-                string = dataInputStream.readUTF();
-            } while (string.isEmpty());
+            final int[] i = {1};
+            while ((string = dataInputStream.readUTF()).isEmpty()) {
+                System.out.println("1111111111");
+                if (i[0] == 1) {
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            i[0] = 2;
+                            try {
+                                sleep(5000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            i[0] = 1000;
+                        }
+                    }.start();
+                } else if (i[0] == 1000) {
+                    break;
+                }
+            }
+            System.out.println("b111111111111");
             getMessageFromServer(string);
+            System.out.println("c11111111111111");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -181,33 +201,33 @@ public class ClientController {
         return message;
     }
 
-    public String getTheEncodedMessage(String message){
+    public String getTheEncodedMessage(String message) {
         return JWT.create().withIssuer("Client").withSubject(message).withExpiresAt(expirationDate).sign(algorithm);
     }
 
 
-    public boolean isMessageValid(String token){
+    public boolean isMessageValid(String token) {
         boolean flag = true;
         try {
             JWTVerifier jwt = JWT.require(algorithm).withIssuer("Server").build();
             jwt.verify(token);
-        }catch (JWTVerificationException | JWTExpiredException e){
+        } catch (JWTVerificationException | JWTExpiredException e) {
             flag = false;
         }
         return flag;
     }
 
-    public String getTheDecodedMessage(String message){
+    public String getTheDecodedMessage(String message) {
         DecodedJWT decodedJWT = JWT.decode(message);
         expirationDate = decodedJWT.getExpiresAt();
         String message2 = new String(new Base64().decode(decodedJWT.getPayload().getBytes()));
         String finalMessage = message2.substring(8, message2.lastIndexOf(",") - 1);
         System.out.println(finalMessage);
-        if(finalMessage.contains("requestId")){
+        if (finalMessage.contains("requestId")) {
             for (int i = 0; i < 2; i++) {
                 finalMessage = finalMessage.replace("\\\"", "\"");
             }
-        }else {
+        } else {
             while ((finalMessage.contains("\\\""))) {
                 finalMessage = finalMessage.replace("\\\"", "\"");
             }
