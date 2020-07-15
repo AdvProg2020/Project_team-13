@@ -18,10 +18,30 @@ public class Cart {
 
     public Cart() {
         this.countOfEachProduct = new HashMap<>();
-        this.discountCode =null;
-        this.allproduct =new ArrayList<>();
+        this.discountCode = null;
+        this.allproduct = new ArrayList<>();
         this.totalPrice = 0.0;
         this.receivingInformation = null;
+    }
+
+    public HashMap<String ,ArrayList<String>> getAllSeller() {
+        System.out.println("hello i'm here");
+        System.out.println(allproduct);
+        HashMap<String ,ArrayList<String>> allSeller=new HashMap<>();
+        for (Product product : allproduct) {
+            System.out.println("product: "+product.getProductName());
+            if(!product.getFilePath().equals("")){
+                if(!allSeller.containsKey(product.getSeller())) {
+                    ArrayList<String> allFiles = new ArrayList<>();
+                    allFiles.add(product.getFilePath());
+                    System.out.println("cart product file: "+product.getFilePath());
+                    allSeller.put(product.getSeller(), allFiles);
+                }else{
+                    allSeller.get(product.getSeller()).add(product.getFilePath());
+                }
+            }
+        }
+        return allSeller;
     }
 
     public void setCustomerID(String customerID) {
@@ -29,11 +49,11 @@ public class Cart {
     }
 
     public void addProduct(Product product) {
-        if(findProductWithID(product.getProductId())==null) {
+        if (findProductWithID(product.getProductId()) == null) {
             countOfEachProduct.put(product.getProductId(), 1);
             allproduct.add(product);
             ClientController.getInstance().getCurrentMenu().showMessage("Product successfully added to cart", MessageKind.MessageWithoutBack);
-        }else{
+        } else {
             ClientController.getInstance().getCurrentMenu().showMessage("This product has already been added to the cart", MessageKind.ErrorWithoutBack);
         }
     }
@@ -59,7 +79,7 @@ public class Cart {
     }
 
     public void changeCountOfProduct(String productID, int count) {
-        if(findProductWithID(productID).getNumberOfAvailableProducts()-(count+countOfEachProduct.get(productID))>=0) {
+        if (findProductWithID(productID).getNumberOfAvailableProducts() - (count + countOfEachProduct.get(productID)) >= 0) {
             if (countOfEachProduct.get(productID) + count > 0) {
                 countOfEachProduct.replace(productID, countOfEachProduct.get(productID) + count);
                 ClientController.getInstance().getCurrentMenu().showMessage("The new number of this product is " + countOfEachProduct.get(productID), MessageKind.MessageWithoutBack);
@@ -71,8 +91,8 @@ public class Cart {
             } else if (countOfEachProduct.get(productID) + count < 0) {
                 ClientController.getInstance().getCurrentMenu().showMessage("You only have " + countOfEachProduct.get(productID) + " of this products in your cart", MessageKind.ErrorWithoutBack);
             }
-        }else{
-            ClientController.getInstance().getCurrentMenu().showMessage("there are no more than "+findProductWithID(productID).getNumberOfAvailableProducts()+" of this product in the store", MessageKind.ErrorWithoutBack);
+        } else {
+            ClientController.getInstance().getCurrentMenu().showMessage("there are no more than " + findProductWithID(productID).getNumberOfAvailableProducts() + " of this product in the store", MessageKind.ErrorWithoutBack);
         }
     }
 
@@ -93,12 +113,13 @@ public class Cart {
         }
         return null;
     }
-    public void showProducts(){
-        String show="";
+
+    public void showProducts() {
+        String show = "";
         for (Product product : allproduct) {
-            show += product.getProductId()+" "+ product.getProductName()+" "+countOfEachProduct.get(product.getProductId())+" "+product.getProductCost()+"\n";
+            show += product.getProductId() + " " + product.getProductName() + " " + countOfEachProduct.get(product.getProductId()) + " " + product.getProductCost() + "\n";
         }
-      //  ClientController.getInstance().getCurrentMenu().showMessage(show);
+        //  ClientController.getInstance().getCurrentMenu().showMessage(show);
     }
 
     public void setReceivingInformation(String receivingInformation) {

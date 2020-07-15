@@ -13,10 +13,13 @@ import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ServerMessageController {
     private static ServerMessageController serverMessageController;
@@ -28,9 +31,9 @@ public class ServerMessageController {
     }
 
     public static ServerMessageController getInstance() {
-        if(serverMessageController == null){
+        if (serverMessageController == null) {
             synchronized (ServerMessageController.class) {
-                if(serverMessageController == null){
+                if (serverMessageController == null) {
                     serverMessageController = new ServerMessageController();
                 }
             }
@@ -43,7 +46,7 @@ public class ServerMessageController {
     }
 
     public void processMessage(String message, DataOutputStream dataOutputStream) {
-        if(TokenGenerator.getInstance().isTokenVerified(message)) {
+        if (TokenGenerator.getInstance().isTokenVerified(message)) {
             message = TokenGenerator.getInstance().getTheDecodedMessage(message);
             ServerController.getInstance().passTime(dataOutputStream);
             if (message.startsWith("@Register@")) {
@@ -53,9 +56,9 @@ public class ServerMessageController {
                 message = message.substring(7);
                 String[] split = message.split("/");
                 UserCenter.getIncstance().login(split[0], split[1], dataOutputStream);
-            }else if (message.startsWith("@logout@")) {
+            } else if (message.startsWith("@logout@")) {
                 message = message.substring(8);
-                ServerController.getInstance().sendMessageToClient("@successfulChat@",dataOutputStream);
+                ServerController.getInstance().sendMessageToClient("@successfulChat@", dataOutputStream);
                 ServerController.getInstance().getAllClients().remove(ServerController.getInstance().findDataStreamWithUsername(message));
             } else if (message.startsWith("@sendChatMessage@")) {
                 //    ServerController.getInstance().sendMessageToClient("@successfulChat@",dataOutputStream);
@@ -65,13 +68,13 @@ public class ServerMessageController {
                 ServerController.getInstance().sendMessageToClient("@AllRequests@" + new Gson().toJson(RequestCenter.getIncstance().getAllRequests()), dataOutputStream);
             } else if (message.equals("@getOnlineSupporter@")) {
                 ServerController.getInstance().sendMessageToClient("@OnlineUsers@" + new Gson().toJson(ServerController.getInstance().getOnlineSupporters()), dataOutputStream);
-            }else if (message.equals("@getOnlineUsers@")) {
-                ArrayList<String> users=new ArrayList<>();
+            } else if (message.equals("@getOnlineUsers@")) {
+                ArrayList<String> users = new ArrayList<>();
                 for (String value : ServerController.getInstance().getAllClients().values()) {
                     users.add(value);
                 }
                 ServerController.getInstance().sendMessageToClient("@setOnlineUsers@" + new Gson().toJson(users), dataOutputStream);
-            }else if (message.startsWith("@AddAuction@")) {
+            } else if (message.startsWith("@AddAuction@")) {
                 message = message.substring(12);
                 try {
                     dataOutputStream.writeUTF("123");
@@ -112,6 +115,20 @@ public class ServerMessageController {
                 String[] split = message.split("&");
                 ServerController.getInstance().sendMessageToClient("@successfulchat@", dataOutputStream);
                 ServerController.getInstance().getOnlineSupporters().put(split[1], Integer.parseInt(split[0]));
+            } else if (message.startsWith("@setCustomerPort@")) {
+                message = message.substring(17);
+                System.out.println("THIS IS SERVER");
+                String[] split = message.split("&");
+                ServerController.getInstance().sendMessageToClient("@successfulchat@", dataOutputStream);
+                Type userListType = new TypeToken<HashMap<String, ArrayList<String>>>() {
+                }.getType();
+                HashMap<String, ArrayList<String>> allSeller = new Gson().fromJson(split[1], userListType);
+                for (String seller : allSeller.keySet()) {
+                    for (String filePath : allSeller.get(seller)) {
+                        System.out.println(seller + " " + filePath);
+                        ServerController.getInstance().sendMessageToClient("@setCustomerPort@" + split[0] + "&" + filePath, ServerController.getInstance().getSellerSockets().get(seller));
+                    }
+                }
             } else if (message.startsWith("@getAllCategories@")) {
                 CategoryCenter.getIncstance().updateAllCategories();
                 ArrayList<Category> allCategories = CategoryCenter.getIncstance().getAllCategories();
@@ -150,7 +167,7 @@ public class ServerMessageController {
             } else if (message.startsWith("@editAuction@")) {
                 message = message.substring(13);
                 UserCenter.getIncstance().editAuction(new Gson().fromJson(message, Auction.class), dataOutputStream);
-            }  else if (message.startsWith("@editCategory@")) {
+            } else if (message.startsWith("@editCategory@")) {
                 message = message.substring(14);
                 if (message.startsWith("add")) {
                     message = message.substring(3);
@@ -187,6 +204,12 @@ public class ServerMessageController {
                 message = message.substring(12);
                 ProductCenter.getInstance().commenting(message);
                 ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@your comment sent to manager for accept", dataOutputStream);
+            } else if (message.startsWith("@setSellerSocket@")) {
+                System.out.println("IN CVONTROLLER");
+                message = message.substring(17);
+                if (!ServerController.getInstance().getSellerSockets().containsKey(message)) {
+                    ServerController.getInstance().getSellerSockets().put(message, dataOutputStream);
+                }
             }
         }
     }

@@ -20,7 +20,7 @@ public class UserController {
     private static UserController managerController;
     private ArrayList<Seller> allSellers = new ArrayList<>();
     private ArrayList<Customer> allCustomers = new ArrayList<>();
-    private ArrayList<Manager> allManagers = new ArrayList<>();
+    private ArrayList<Manager> allManagers ;
     private HashMap<String, ArrayList<ChatMessage>> chats = new HashMap<>();
     private HashMap<String,Integer> onlineUsers = new HashMap<>();
     private ArrayList<String> onlineClients = new ArrayList<>();
@@ -119,10 +119,12 @@ public class UserController {
     }
 
     public void setAllManagers(String json) {
+        System.out.println("setting...");
         Type userListType = new TypeToken<ArrayList<Manager>>() {
         }.getType();
         ArrayList<Manager> managers = new Gson().fromJson(json, userListType);
         this.allManagers = managers;
+        System.out.println(allManagers);
 
     }
 

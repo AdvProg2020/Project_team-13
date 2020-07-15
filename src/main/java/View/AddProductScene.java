@@ -120,109 +120,111 @@ public class AddProductScene extends Menu {
         HashMap<String, String> categoryFeaturesForProduct = new HashMap<>();
         ArrayList<MenuItem> menuItemArrayList = new ArrayList<>();
         for (String s : getCategoryName()) {
-            MenuItem menuItem = new MenuItem("     1" + s);
-            menuItem.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    selectedCategory.setText(s);
-                    categoryFeaturesForProduct.clear();
+           if(!s.equals("File")) {
+                MenuItem menuItem = new MenuItem("     1" + s);
+                menuItem.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        selectedCategory.setText(s);
+                        categoryFeaturesForProduct.clear();
 
-                    Category category1 = new Category(null, null);
-                    for (Category category : CategoryController.getInstance().getAllCategories()) {
-                        if (category.getName().equals(s)) {
-                            category1 = category;
+                        Category category1 = new Category(null, null);
+                        for (Category category : CategoryController.getInstance().getAllCategories()) {
+                            if (category.getName().equals(s)) {
+                                category1 = category;
+                            }
                         }
-                    }
 
 
-                    HashMap<Text, MenuButton> categoryFeatures = new HashMap<>();
-                    ArrayList<MenuButton> menuButtons = new ArrayList<>();
-                    for (String s1 : category1.getFeatures().keySet()) {
-                        Text text = new Text(s1);
-                        ImageView imageView = new ImageView(new Image("file:src/standings.png"));
-                        imageView.setFitHeight(30);
-                        imageView.setFitWidth(30);
-                        MenuButton menuButton = new MenuButton(s1, imageView);
-                        ArrayList<MenuItem> menuItemArrayList1 = new ArrayList<>();
-                        for (String s2 : category1.getFeatures().get(s1)) {
-                            MenuItem menuItem1 = new MenuItem(s2);
-                            menuItemArrayList1.add(menuItem1);
-                            menuItem1.setOnAction(new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent event) {
-                                    if (categoryFeaturesForProduct.containsKey(s1)) {
-                                        categoryFeaturesForProduct.replace(s1, s2);
-                                    } else {
-                                        categoryFeaturesForProduct.put(s1, s2);
+                        HashMap<Text, MenuButton> categoryFeatures = new HashMap<>();
+                        ArrayList<MenuButton> menuButtons = new ArrayList<>();
+                        for (String s1 : category1.getFeatures().keySet()) {
+                            Text text = new Text(s1);
+                            ImageView imageView = new ImageView(new Image("file:src/standings.png"));
+                            imageView.setFitHeight(30);
+                            imageView.setFitWidth(30);
+                            MenuButton menuButton = new MenuButton(s1, imageView);
+                            ArrayList<MenuItem> menuItemArrayList1 = new ArrayList<>();
+                            for (String s2 : category1.getFeatures().get(s1)) {
+                                MenuItem menuItem1 = new MenuItem(s2);
+                                menuItemArrayList1.add(menuItem1);
+                                menuItem1.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent event) {
+                                        if (categoryFeaturesForProduct.containsKey(s1)) {
+                                            categoryFeaturesForProduct.replace(s1, s2);
+                                        } else {
+                                            categoryFeaturesForProduct.put(s1, s2);
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
+                            for (MenuItem item : menuItemArrayList1) {
+                                menuButton.getItems().add(item);
+                            }
+                            categoryFeatures.put(text, menuButton);
                         }
-                        for (MenuItem item : menuItemArrayList1) {
-                            menuButton.getItems().add(item);
-                        }
-                        categoryFeatures.put(text, menuButton);
-                    }
-                    Stage popupwindow = new Stage();
-                    GridPane gridPane = new GridPane();
-                    scene.setFill(Color.GRAY);
-                    popupwindow.setTitle("Category Features");
-                    gridPane.setStyle("-fx-background-color: Blue");
-                    Button button = new Button("X");
-                    button.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 25px; -fx-padding: 3,3,3,3;-fx-font-weight: bold;-fx-text-fill: Red");
-                    button.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent event) {
-                            popupwindow.hide();
-                            scene.setFill(null);
-                        }
-                    });
-                    gridPane.add(button, 0, 0);
-                    gridPane.add(new Text(""), 1, 0);
-                    gridPane.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);");
-                    GridPane featuresGridPane = new GridPane();
-                    gridPane.add(featuresGridPane, 1, 1, 1, 1);
-                    featuresGridPane.setAlignment(Pos.CENTER);
-                    int k1 = 0;
-                    for (Text text : categoryFeatures.keySet()) {
-                        categoryFeatures.get(text).setStyle(menuBarStyle);
-                        featuresGridPane.add(text, 0, k1);
-                        featuresGridPane.add(categoryFeatures.get(text), 1, k1);
-                        Text text1 = new Text("");
-                        featuresGridPane.add(text1, 2, k1);
-                        for (MenuItem item : categoryFeatures.get(text).getItems()) {
-                            item.setOnAction(new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent event) {
-                                    text1.setText(item.getText());
-                                    if (categoryFeaturesForProduct.containsKey(text.getText())) {
-                                        categoryFeaturesForProduct.replace(text.getText(), item.getText());
-                                    } else {
-                                        categoryFeaturesForProduct.put(text.getText(), item.getText());
+                        Stage popupwindow = new Stage();
+                        GridPane gridPane = new GridPane();
+                        scene.setFill(Color.GRAY);
+                        popupwindow.setTitle("Category Features");
+                        gridPane.setStyle("-fx-background-color: Blue");
+                        Button button = new Button("X");
+                        button.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 25px; -fx-padding: 3,3,3,3;-fx-font-weight: bold;-fx-text-fill: Red");
+                        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent event) {
+                                popupwindow.hide();
+                                scene.setFill(null);
+                            }
+                        });
+                        gridPane.add(button, 0, 0);
+                        gridPane.add(new Text(""), 1, 0);
+                        gridPane.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);");
+                        GridPane featuresGridPane = new GridPane();
+                        gridPane.add(featuresGridPane, 1, 1, 1, 1);
+                        featuresGridPane.setAlignment(Pos.CENTER);
+                        int k1 = 0;
+                        for (Text text : categoryFeatures.keySet()) {
+                            categoryFeatures.get(text).setStyle(menuBarStyle);
+                            featuresGridPane.add(text, 0, k1);
+                            featuresGridPane.add(categoryFeatures.get(text), 1, k1);
+                            Text text1 = new Text("");
+                            featuresGridPane.add(text1, 2, k1);
+                            for (MenuItem item : categoryFeatures.get(text).getItems()) {
+                                item.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent event) {
+                                        text1.setText(item.getText());
+                                        if (categoryFeaturesForProduct.containsKey(text.getText())) {
+                                            categoryFeaturesForProduct.replace(text.getText(), item.getText());
+                                        } else {
+                                            categoryFeaturesForProduct.put(text.getText(), item.getText());
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
+                            k1++;
                         }
-                        k1++;
+                        gridPane.getRowConstraints().add(new RowConstraints(20, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.CENTER, true));
+                        gridPane.getRowConstraints().add(new RowConstraints(200, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, true));
+                        gridPane.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.ALWAYS, HPos.CENTER, true));
+                        gridPane.getColumnConstraints().add(new ColumnConstraints(250, Control.USE_COMPUTED_SIZE, 250, Priority.NEVER, HPos.CENTER, true));
+                        featuresGridPane.getColumnConstraints().add(new ColumnConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.ALWAYS, HPos.CENTER, false));
+                        featuresGridPane.getColumnConstraints().add(new ColumnConstraints(120, Control.USE_COMPUTED_SIZE, 120, Priority.ALWAYS, HPos.LEFT, false));
+                        featuresGridPane.getColumnConstraints().add(new ColumnConstraints(90, Control.USE_COMPUTED_SIZE, 90, Priority.ALWAYS, HPos.LEFT, false));
+                        featuresGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, true));
+                        featuresGridPane.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.CENTER, true));
+                        featuresGridPane.setVgap(10);
+                        Scene scene1 = new Scene(gridPane, 320, categoryFeatures.size() * 50 + 200);
+                        popupwindow.initModality(Modality.APPLICATION_MODAL);
+                        popupwindow.initStyle(StageStyle.UNDECORATED);
+                        popupwindow.setScene(scene1);
+                        popupwindow.showAndWait();
                     }
-                    gridPane.getRowConstraints().add(new RowConstraints(20, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.CENTER, true));
-                    gridPane.getRowConstraints().add(new RowConstraints(200, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.TOP, true));
-                    gridPane.getColumnConstraints().add(new ColumnConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.ALWAYS, HPos.CENTER, true));
-                    gridPane.getColumnConstraints().add(new ColumnConstraints(250, Control.USE_COMPUTED_SIZE, 250, Priority.NEVER, HPos.CENTER, true));
-                    featuresGridPane.getColumnConstraints().add(new ColumnConstraints(45, Control.USE_COMPUTED_SIZE, 45, Priority.ALWAYS, HPos.CENTER, false));
-                    featuresGridPane.getColumnConstraints().add(new ColumnConstraints(120, Control.USE_COMPUTED_SIZE, 120, Priority.ALWAYS, HPos.LEFT, false));
-                    featuresGridPane.getColumnConstraints().add(new ColumnConstraints(90, Control.USE_COMPUTED_SIZE, 90, Priority.ALWAYS, HPos.LEFT, false));
-                    featuresGridPane.getRowConstraints().add(new RowConstraints(100, Control.USE_COMPUTED_SIZE, 100, Priority.NEVER, VPos.CENTER, true));
-                    featuresGridPane.getRowConstraints().add(new RowConstraints(30, Control.USE_COMPUTED_SIZE, 30, Priority.NEVER, VPos.CENTER, true));
-                    featuresGridPane.setVgap(10);
-                    Scene scene1 = new Scene(gridPane, 320, categoryFeatures.size() * 50 + 200);
-                    popupwindow.initModality(Modality.APPLICATION_MODAL);
-                    popupwindow.initStyle(StageStyle.UNDECORATED);
-                    popupwindow.setScene(scene1);
-                    popupwindow.showAndWait();
-                }
-            });
-            menuItemArrayList.add(menuItem);
+                });
+                menuItemArrayList.add(menuItem);
+            }
         }
         MediaView mediaView = new MediaView();
         Button chooseVideoButton = new Button("Choose video");

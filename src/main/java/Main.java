@@ -20,7 +20,7 @@ public class Main extends Application {
         ClientController.getInstance().connectToServer();
         primaryStage.setTitle("SPM.com");
         UserController.getInstance().getAllUserFromServer();
-        System.out.println(UserController.getInstance().getAllManagers().size());
+//        System.out.println(UserController.getInstance().getAllManagers().size());
         if (UserController.getInstance().getAllManagers().size()>0) {
             new MainMenu(primaryStage).execute();
         }else {

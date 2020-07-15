@@ -15,6 +15,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.sun.xml.internal.messaging.saaj.util.Base64;
 import io.fusionauth.jwt.JWTExpiredException;
 import javafx.scene.media.MediaPlayer;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -33,7 +34,7 @@ public class ClientController {
     private ArrayList<View.Menu> menus = new ArrayList<>();
     private MediaPlayer mediaPlayer;
     private String message;
-    private Socket socket,customerSocket;
+    private Socket socket, customerSocket;
     private ServerSocket serverSocket;
     private DataOutputStream dataOutputStream;
     private DataInputStream dataInputStream;
@@ -48,11 +49,11 @@ public class ClientController {
         }
     }
 
-    public void connectToServer(){
+    public void connectToServer() {
         try {
-            socket=new Socket("localhost",8080);
-            dataOutputStream=new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-            dataInputStream=new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+            socket = new Socket("localhost", 8080);
+            dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -121,7 +122,6 @@ public class ClientController {
     }
 
 
-
     public void setCurrentDiscountCode(DiscountCode currentDiscountCode) {
         this.currentDiscountCode = currentDiscountCode;
     }
@@ -129,6 +129,32 @@ public class ClientController {
     private ClientController() {
     }
 
+    public void setSellerSocket() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Socket socket = new Socket("127.0.0.1", 8080);
+                    DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                    DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+                    System.out.println("in thread");
+                    String sellerMessage="@setSellerSocket@" + currentUser.getUsername();
+                    sellerMessage=getTheEncodedMessage(sellerMessage);
+                    dataOutputStream.writeUTF(sellerMessage);
+                    System.out.println("AFTER SEND");
+                    while (true) {
+                      //  if(dataInputStream.available()>0) {
+                            String string = dataInputStream.readUTF();
+                            getMessageFromServer(string);
+                     //   }
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 
     public static ClientController getInstance() {
         if (clientController == null) {
@@ -156,11 +182,15 @@ public class ClientController {
         try {
             dataOutputStream.writeUTF(message);
             dataOutputStream.flush();
-            String string;
-            do {
+            String string = "";
+            try {
                 string = dataInputStream.readUTF();
-            } while (string.isEmpty());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             getMessageFromServer(string);
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -181,33 +211,33 @@ public class ClientController {
         return message;
     }
 
-    public String getTheEncodedMessage(String message){
+    public String getTheEncodedMessage(String message) {
         return JWT.create().withIssuer("Client").withSubject(message).withExpiresAt(expirationDate).sign(algorithm);
     }
 
 
-    public boolean isMessageValid(String token){
+    public boolean isMessageValid(String token) {
         boolean flag = true;
         try {
             JWTVerifier jwt = JWT.require(algorithm).withIssuer("Server").build();
             jwt.verify(token);
-        }catch (JWTVerificationException | JWTExpiredException e){
+        } catch (JWTVerificationException | JWTExpiredException e) {
             flag = false;
         }
         return flag;
     }
 
-    public String getTheDecodedMessage(String message){
+    public String getTheDecodedMessage(String message) {
         DecodedJWT decodedJWT = JWT.decode(message);
         expirationDate = decodedJWT.getExpiresAt();
         String message2 = new String(new Base64().decode(decodedJWT.getPayload().getBytes()));
         String finalMessage = message2.substring(8, message2.lastIndexOf(",") - 1);
         System.out.println(finalMessage);
-        if(finalMessage.contains("requestId")){
+        if (finalMessage.contains("requestId")) {
             for (int i = 0; i < 2; i++) {
                 finalMessage = finalMessage.replace("\\\"", "\"");
             }
-        }else {
+        } else {
             while ((finalMessage.contains("\\\""))) {
                 finalMessage = finalMessage.replace("\\\"", "\"");
             }

@@ -15,6 +15,11 @@ public class ServerController {
     private static ServerController serverController;
     private ServerSocket serverSocket;
     private Map<DataOutputStream, String> allClients;
+    private HashMap<String, DataOutputStream> SellerSockets=new HashMap<>();
+
+    public Map<String, DataOutputStream> getSellerSockets() {
+        return SellerSockets;
+    }
 
     private ServerController() {
         allClients = new HashMap<>();
@@ -24,9 +29,11 @@ public class ServerController {
     public DataOutputStream findDataStreamWithUsername(String username) {
         for (DataOutputStream dataOutputStream : allClients.keySet()) {
             if (allClients.get(dataOutputStream).equals(username)) {
+                System.out.println("found it!!!");
                 return dataOutputStream;
             }
         }
+        System.out.println("NOT found it!!!");
         return null;
     }
 
@@ -96,9 +103,7 @@ public class ServerController {
         while (true) {
             String string;
             try {
-                do {
                     string = dataInputStream.readUTF();
-                } while (string.isEmpty());
                 ServerMessageController.getInstance().processMessage(string, dataOutputStream);
             } catch (IOException e) {
                 System.out.println("Error in Connection...");

@@ -107,6 +107,7 @@ public class AddFileScene extends Menu {
                 File selectedFile = fileChooser.showOpenDialog(stage);
                 if (selectedFile != null) {
                     imagePath = selectedFile.toURI().toString();
+                    imagePath=imagePath.substring(6);
                 }
             }
         };

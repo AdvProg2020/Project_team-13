@@ -53,6 +53,7 @@ public class MessageController {
                 ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.MessageWithoutBack);
             } else if (message.startsWith("@payed@")) {
                 message = message.substring(7, message.length());
+                CartController.getInstance().waitForDownload();
                 CartController.getInstance().payed(message);
                 int size = ((Customer) ClientController.getInstance().getCurrentUser()).getHistoryOfTransaction().size();
                 Log buyLog = (ClientController.getInstance().getCurrentUser()).getHistoryOfTransaction().get(size - 1);
@@ -104,6 +105,7 @@ public class MessageController {
                 message = message.substring(17, message.length());
                 Seller seller = gson.fromJson(message, Seller.class);
                 ClientController.getInstance().setCurrentUser(seller);
+                ClientController.getInstance().setSellerSocket();
                 ClientController.getInstance().getCurrentMenu().showMessage("Login successful", MessageKind.MessageWithBack);
             } else if (message.startsWith("@getChatMessage@")) {
                 UserController.getInstance().getChatMessage(message.substring(16));
@@ -152,6 +154,11 @@ public class MessageController {
                 ClientController.getInstance().getCurrentMenu().showMessage("Category removed successfully", MessageKind.MessageWithoutBack);
             } else if (message.startsWith("getAllOffers")) {
                 OffsController.getInstance().updateAllOffer(message);
+            }else if (message.startsWith("@setCustomerPort@")) {
+                message = message.substring(17);
+                String[] split=message.split("&");
+                System.out.println("step3");
+                CartController.getInstance().sendFileToCustomer(Integer.parseInt(split[0]),split[1]);
             }
         }
     }
