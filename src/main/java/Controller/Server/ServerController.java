@@ -93,6 +93,7 @@ public class ServerController {
         DataBase.getInstance().setAllProductsFormDataBase();
         DataBase.getInstance().setAllCategoriesFormDataBase();
         DataBase.getInstance().setAllOffersFromDatabase();
+//        AuctionCenter.getInstance().runAuctionServerSockets();
     }
 
 
@@ -137,6 +138,7 @@ public class ServerController {
     public synchronized void passTime(DataOutputStream dataOutputStream) {
         DiscountCodeCenter.getIncstance().passTime(dataOutputStream);
         OffCenter.getInstance().passTime();
+        UserCenter.getIncstance().passTime();
     }
 
     public Map<DataOutputStream, String> getAllClients() {

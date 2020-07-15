@@ -1,5 +1,6 @@
 package Controller.Client;
 
+import Controller.Server.AuctionCenter;
 import Models.BuyLog;
 import Models.ChatMessage;
 import Models.Log;
@@ -159,6 +160,8 @@ public class MessageController {
                 String[] split=message.split("&");
                 System.out.println("step3");
                 CartController.getInstance().sendFileToCustomer(Integer.parseInt(split[0]),split[1]);
+            } else if (message.startsWith("@gSPOA@")) {
+                AuctionController.getInstance().connectChatInAuctionPage(Integer.parseInt(message.substring(7)));
             }
         }
     }

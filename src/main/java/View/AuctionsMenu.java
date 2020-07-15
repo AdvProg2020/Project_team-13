@@ -15,10 +15,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AuctionsMenu extends Menu {
     private Map<String, ImageView> edits;
@@ -109,10 +106,14 @@ public class AuctionsMenu extends Menu {
         AuctionController.getInstance().updateAllAuctions();
         ArrayList<Auction> allAuctions = AuctionController.getInstance().getAllAuctions();
         for (int i = 0; i < allAuctions.size(); i++) {
-            Button button = new Button("Details");
+            Button button = new Button("Enter");
             button.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 18));
             button.setTranslateX(0);
             int finalI = i;
+            if(new Date().before(allAuctions.get(finalI).getStartTime())) {
+                button.setDisable(true);
+                button.setText("Not active");
+            }
             button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {

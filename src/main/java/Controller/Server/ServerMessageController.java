@@ -46,7 +46,7 @@ public class ServerMessageController {
     }
 
     public void processMessage(String message, DataOutputStream dataOutputStream) {
-        if (TokenGenerator.getInstance().isTokenVerified(message)) {
+        if(TokenGenerator.getInstance().isTokenVerified(message, dataOutputStream)) {
             message = TokenGenerator.getInstance().getTheDecodedMessage(message);
             ServerController.getInstance().passTime(dataOutputStream);
             if (message.startsWith("@Register@")) {
@@ -82,7 +82,7 @@ public class ServerMessageController {
                     e.printStackTrace();
                 }
                 AuctionCenter.getInstance().createNewAuctionRequest(message, dataOutputStream);
-            } else if (message.startsWith("@acceptRequest@")) {
+            }else if (message.startsWith("@acceptRequest@")) {
                 message = message.substring(15);
                 RequestCenter.getIncstance().acceptRequest(message, dataOutputStream);
             } else if (message.startsWith("@AddProduct@")) {
