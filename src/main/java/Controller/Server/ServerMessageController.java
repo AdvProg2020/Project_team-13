@@ -137,7 +137,11 @@ public class ServerMessageController {
                 CategoryCenter.getIncstance().updateAllCategories();
                 ArrayList<Category> allCategories = CategoryCenter.getIncstance().getAllCategories();
                 Gson gson = new Gson();
+                System.out.println("aaaaaaaaaaaaaa123123");
+                System.out.println(message);
                 ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("setAllCategories", gson.toJson(allCategories)), dataOutputStream);
+                System.out.println("bbbbbbbbbbbbbb123123");
+
             } else if (message.startsWith("@updateAllCategories@")) {
                 message = message.substring(21);
                 DataBase.getInstance().updateAllCategories(message);

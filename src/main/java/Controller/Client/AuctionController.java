@@ -120,5 +120,6 @@ public class AuctionController {
         Gson gson = new Gson();
         String product0 = gson.toJson(auction);
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("AddAuction", product0));
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     }
 }

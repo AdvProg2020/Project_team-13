@@ -152,6 +152,7 @@ public class ServerController {
         try {
             dataOutputStream.writeUTF(codedMessage);
             dataOutputStream.flush();
+            System.out.println("cacaca");
         } catch (IOException e) {
             System.out.println("Error in Sending Packets...");
             try {

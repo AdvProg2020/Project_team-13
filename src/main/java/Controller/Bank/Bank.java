@@ -84,6 +84,9 @@ public class Bank {
     }
 
     private boolean userExitsWithThisUserName(String userName){
+        if(allAccounts==null) {
+            allAccounts = new ArrayList<>();
+        }
         for (Account account : allAccounts) {
             if (account.getUsername().equals(userName)) {
                 return true;

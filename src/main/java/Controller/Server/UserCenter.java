@@ -270,12 +270,15 @@ public class UserCenter {
                 //    }
                 switch (userAccount.getType()) {
                     case "@Customer": {
+                        System.out.println("aaaaa  ");
                         String user = gson.toJson(userAccount);
                         ServerController.getInstance().getAllClients().put(dataOutputStream, userAccount.getUsername());
                         ServerController.getInstance().sendMessageToClient("@Login as Customer@" + user, dataOutputStream);
                         break;
                     }
                     case "@Seller": {
+                        System.out.println("bbbbb  ");
+
                         String user = gson.toJson(userAccount);
                         if (((Seller) userAccount).isAccepted()) {
                             ServerController.getInstance().getAllClients().put(dataOutputStream, userAccount.getUsername());
@@ -285,12 +288,14 @@ public class UserCenter {
                         break;
                     }
                     case "@Manager": {
+                        System.out.println("cccccc");
                         String user = gson.toJson(userAccount);
                         ServerController.getInstance().getAllClients().put(dataOutputStream, userAccount.getUsername());
                         ServerController.getInstance().sendMessageToClient("@Login as Manager@" + user, dataOutputStream);
                         break;
                     }
                     case "@Supporter": {
+                        System.out.println("ddddddddd");
                         String user = gson.toJson(userAccount);
                         ServerController.getInstance().sendMessageToClient("@Login as Supporter@" + user, dataOutputStream);
                         break;
