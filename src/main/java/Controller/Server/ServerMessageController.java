@@ -62,15 +62,16 @@ public class ServerMessageController {
                 message = message.substring(8);
                 ServerController.getInstance().sendMessageToClient("@successfulChat@", dataOutputStream);
                 ServerController.getInstance().getAllClients().remove(dataOutputStream, message);
+                TokenGenerator.getInstance().getAllExpirationDates().remove(message, TokenGenerator.getInstance().getAllExpirationDates().get(message));
             } else if (message.startsWith("@sendChatMessage@")) {
                 //    ServerController.getInstance().sendMessageToClient("@successfulChat@",dataOutputStream);
                 message = message.substring(17);
                 //  UserCenter.getIncstance().sendChat(message,dataOutputStream);
-            } else if (message.equals("@getAllRequests@")) {
+            } else if (message.startsWith("@getAllRequests@")) {
                 ServerController.getInstance().sendMessageToClient("@AllRequests@" + new Gson().toJson(RequestCenter.getIncstance().getAllRequests()), dataOutputStream);
-            } else if (message.equals("@getOnlineSupporter@")) {
+            } else if (message.startsWith("@getOnlineSupporter@")) {
                 ServerController.getInstance().sendMessageToClient("@OnlineUsers@" + new Gson().toJson(ServerController.getInstance().getOnlineSupporters()), dataOutputStream);
-            } else if (message.equals("@getOnlineUsers@")) {
+            } else if (message.startsWith("@getOnlineUsers@")) {
                 ArrayList<String> users = new ArrayList<>();
                 for (String value : ServerController.getInstance().getAllClients().values()) {
                     users.add(value);

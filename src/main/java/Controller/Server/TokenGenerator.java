@@ -44,7 +44,7 @@ public class TokenGenerator {
     }
 
     public String getTheToken(String userName, String data){
-        Date expirationDate = new Date(new Date().getTime() + 360);
+        Date expirationDate = new Date(new Date().getTime() + 3600000);
         if(allExpirationDates.containsKey(userName)){
             allExpirationDates.remove(userName, expirationDate);
         }
@@ -59,6 +59,9 @@ public class TokenGenerator {
     }
 
 
+    public Map<String, Date> getAllExpirationDates() {
+        return allExpirationDates;
+    }
 
     public boolean isTokenVerified(String token, DataOutputStream dataOutputStream){
         boolean flag = true;

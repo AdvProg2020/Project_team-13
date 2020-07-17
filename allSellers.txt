@@ -1,1 +1,1 @@
-[{"companyName":"company","isAccepted":false,"allProducts":[],"username":"seller","password":"123456789","firstName":"sina","lastName":"mazaheri","email":"seller@gmail.com","phoneNumber":"09120046758","type":"@Seller","credit":0.0,"historyOfTransaction":[],"imagePath":""}]
+[]
