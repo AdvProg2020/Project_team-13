@@ -1,10 +1,11 @@
 package View;
 
-import Controller.Client.*;
-import Models.Auction;
+import Controller.Client.AuctionController;
+import Controller.Client.CategoryController;
+import Controller.Client.ClientController;
+import Controller.Client.ProductController;
 import Models.ChatMessage;
 import Models.Comment;
-import Models.CommentStatus;
 import Models.Product.Product;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Seller;
@@ -44,7 +45,7 @@ public class AuctionPage extends Menu {
 
     public AuctionPage(Stage stage) {
         super(stage);
-//        AuctionController.getInstance().getAuctionServerPort();
+        AuctionController.getInstance().getAuctionServerPort();
         AuctionController.getInstance().setAuctionPage(this);
         setScene();
     }
@@ -82,10 +83,12 @@ public class AuctionPage extends Menu {
         inputMessage.setPromptText("Enter your message...");
         inputMessage.setMinWidth(260);
         Button sendMessageButton = new Button("Send");
+        AuctionController.getInstance().sendMessageToAuctionChat("A");
         sendMessageButton.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
                 if (!inputMessage.getText().equals("")) {
+                    System.out.println("Client side message: " +inputMessage.getText().trim() );
                     AuctionController.getInstance().sendMessageToAuctionChat(inputMessage.getText().trim());
                     inputMessage.setText("");
                 }
@@ -228,7 +231,6 @@ public class AuctionPage extends Menu {
                 @Override
                 public void handle(Event event) {
                     scene.setCursor(Cursor.HAND);
-
                 }
             });
             gridPane.setOnMouseExited((EventHandler) event -> scene.setCursor(Cursor.DEFAULT));
@@ -249,7 +251,7 @@ public class AuctionPage extends Menu {
         productInfoGridPane.add(attributes, 12, 2, 5, 12);
         centerGridPane.add(title, 2, 0, 1, 4);
         centerGridPane.add(productInfoGridPane, 0, 5, 5, 5);
-        centerGridPane.add(setChatMessages(),0,10);
+        centerGridPane.add(setChatMessages(), 0, 10);
         Circle redCircle = new Circle();
         redCircle.setFill(Color.rgb(222, 0, 0));
         redCircle.setRadius(30);
