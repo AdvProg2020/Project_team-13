@@ -59,6 +59,9 @@ public class TokenGenerator {
     }
 
 
+    public Map<String, Date> getAllExpirationDates() {
+        return allExpirationDates;
+    }
 
     public boolean isTokenVerified(String token, DataOutputStream dataOutputStream){
         boolean flag = true;
@@ -75,7 +78,7 @@ public class TokenGenerator {
     public String getTheDecodedMessage(String message){
        DecodedJWT decodedJWT = JWT.decode(message);
        String message2 = new String(new Base64().decode(decodedJWT.getPayload().getBytes()));
-       String finalMessage = message2.substring(8, message2.lastIndexOf(",") - 1);
+       String finalMessage = message2.substring(8, message2.lastIndexOf(",\"iss\"") - 1);
        while ((finalMessage.contains("\\\""))) {
             finalMessage = finalMessage.replace("\\\"", "\"");
        }

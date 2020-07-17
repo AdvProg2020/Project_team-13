@@ -1,1 +1,1 @@
-[{"totalBuyAmount":0.0,"username":"customer","password":"123456789","firstName":"karim","lastName":"bagheri","email":"customer@gmail.com","phoneNumber":"09120046758","type":"@Customer","allDiscountCodes":[],"credit":0.0,"historyOfTransaction":[],"imagePath":""}]
+[]
