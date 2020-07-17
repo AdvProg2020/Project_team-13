@@ -445,6 +445,7 @@ public class UserMenuScene extends Menu {
         leftMenuGridPane.add(ordersButton, 0, 2, 2, 2);
         leftMenuGridPane.add(auctionMenuButton,0,4,2,2);
         leftMenuGridPane.add(contatSupportButton, 0, 6, 2, 2);
+        leftMenuGridPane.add(increaseCredit, 0, 8, 2, 2);
         centerGridPane.add(leftMenuGridPane, 0, 1, 1, 6);
         centerGridPane.add(pageTitle, 0, 0, 1, 1);
         centerGridPane.add(userInfoGridPane, 3, 1, 2, 2);

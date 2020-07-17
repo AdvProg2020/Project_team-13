@@ -26,6 +26,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.util.regex.Pattern;
@@ -194,6 +195,89 @@ public class SellerMenuScene extends Menu {
                 popupwindow.showAndWait();
             }
         });
+
+
+        Button increaseCredit = new Button("Change Credit");
+        increaseCredit.setStyle("-fx-font-size:  18;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
+        increaseCredit.setMinHeight(50);
+        increaseCredit.setMinWidth(150);
+        increaseCredit.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND);
+
+            }
+        });
+        increaseCredit.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT);
+            }
+        });
+        increaseCredit.setOnMouseClicked(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                Stage popupwindow = new Stage();
+                GridPane gridPane = new GridPane();
+                gridPane.setStyle("-fx-background-color: Blue");
+                Button button = new Button("X");
+                button.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 25px; -fx-padding: 3,3,3,3;-fx-font-weight: bold;-fx-text-fill: Red");
+                button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        popupwindow.hide();
+                        scene.setFill(null);
+                    }
+                });
+                gridPane.add(button, 0, 0);
+                gridPane.add(new Text(""), 1, 0);
+                gridPane.setStyle("-fx-background-color: rgba(255,145,200,0.85);");
+                GridPane commentPane = new GridPane();
+                gridPane.add(commentPane, 1, 1);
+                Text titleText = new Text("Amount:");
+                Text contentText = new Text("Account ID:");
+                TextField getTitle = new TextField();
+                TextField getContent = new TextField();
+                getTitle.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                getContent.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;");
+                getContent.setMaxWidth(300);
+
+                Button addCommentButton = new Button("Increase Credit");
+                addCommentButton.setStyle("-fx-background-color: #E85D9E;");
+                addCommentButton.setMinWidth(100);
+                Button decreaseCerdit = new Button("Decrease Credit");
+                decreaseCerdit.setStyle("-fx-background-color: #E85D9E;");
+                decreaseCerdit.setTextFill(Color.WHITE);
+                decreaseCerdit.setMinWidth(100);
+                commentPane.setVgap(10);
+                commentPane.setHgap(10);
+                addCommentButton.setTextFill(Color.WHITE);
+                commentPane.add(titleText, 0, 0);
+                commentPane.add(contentText, 0, 1);
+                commentPane.add(getTitle, 1, 0);
+                commentPane.add(getContent, 1, 1, 1, 5);
+                commentPane.add(addCommentButton, 1, 6);
+                commentPane.add(decreaseCerdit, 1, 7);
+                addCommentButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        popupwindow.hide();
+                    }
+                });
+                decreaseCerdit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        popupwindow.hide();
+                    }
+                });
+                Scene scene1 = new Scene(gridPane, 400, 300);
+                popupwindow.initModality(Modality.APPLICATION_MODAL);
+                popupwindow.initStyle(StageStyle.UNDECORATED);
+                popupwindow.setScene(scene1);
+                popupwindow.showAndWait();
+            }
+        });
+
         editInfoButton.setGraphic(editInfoPic);
         Button editPhotoButton = new Button("");
         FileChooser fileChooser = new FileChooser();
@@ -301,6 +385,7 @@ public class SellerMenuScene extends Menu {
         leftMenuGridPane.add(manageProducts, 0, 0, 2, 2);
         leftMenuGridPane.add(offsButton, 0, 2, 2, 2);
         leftMenuGridPane.add(salesHistoryButton, 0, 6, 2, 2);
+        leftMenuGridPane.add(increaseCredit, 0, 8, 2, 2);
         centerGridPane.add(leftMenuGridPane, 0, 1, 1, 6);
         centerGridPane.add(pageTitle, 0, 0, 1, 1);
         centerGridPane.add(userInfoGridPane, 3, 1, 2, 2);

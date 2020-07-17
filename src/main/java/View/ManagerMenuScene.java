@@ -259,7 +259,7 @@ public class ManagerMenuScene extends Menu {
             }
         });
 
-        Button createSupporterButton = new Button("Create Manager");
+        Button createSupporterButton = new Button("Create Supoorter");
         createSupporterButton.setTextAlignment(TextAlignment.CENTER);
         createSupporterButton.setStyle("-fx-font-size: 14 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         createSupporterButton.setMinHeight(50);
