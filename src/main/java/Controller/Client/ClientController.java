@@ -11,6 +11,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.sun.security.ntlm.Client;
 import com.sun.xml.internal.messaging.saaj.util.Base64;
 import io.fusionauth.jwt.JWTExpiredException;
 import javafx.scene.media.MediaPlayer;
@@ -181,7 +182,6 @@ public class ClientController {
         this.message = message;
         message = getTheEncodedMessage(message);
         try {
-            System.out.println("a1111111111");
             dataOutputStream.writeUTF(message);
             dataOutputStream.flush();
             String string = "";
@@ -214,7 +214,10 @@ public class ClientController {
     }
 
     public String getTheEncodedMessage(String message) {
-        return JWT.create().withIssuer("Client").withSubject(message).withExpiresAt(expirationDate).sign(algorithm);
+        if(ClientController.getInstance().getCurrentUser() != null){
+            return JWT.create().withIssuer(ClientController.getInstance().getCurrentUser().getUsername()).withSubject(message).withExpiresAt(expirationDate).sign(algorithm);
+        }
+        return JWT.create().withIssuer("Client").withSubject(message).sign(algorithm);
     }
 
 
@@ -233,7 +236,7 @@ public class ClientController {
         DecodedJWT decodedJWT = JWT.decode(message);
         expirationDate = decodedJWT.getExpiresAt();
         String message2 = new String(new Base64().decode(decodedJWT.getPayload().getBytes()));
-        String finalMessage = message2.substring(8, message2.lastIndexOf(",") - 1);
+        String finalMessage = message2.substring(8, message2.lastIndexOf(",\"iss\"") - 1);
         if (finalMessage.contains("requestId")) {
             for (int i = 0; i < 2; i++) {
                 finalMessage = finalMessage.replace("\\\"", "\"");
