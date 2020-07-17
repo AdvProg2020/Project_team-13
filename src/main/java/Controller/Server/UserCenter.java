@@ -229,7 +229,7 @@ public class UserCenter {
                 RequestCenter.getIncstance().addRequest(request);
                 String accountResponse = ServerController.getInstance().handleBankConnection("create_account " + seller.getFirstName() + " " +
                         seller.getLastName() + " " + seller.getUsername() + " " + seller.getPassword() + " " + seller.getPassword());
-                ServerController.getInstance().sendMessageToClient("@Successful@" + accountResponse + "&" + "Register was sent to Manager for review", dataOutputStream);
+                ServerController.getInstance().sendMessageToClient("@Successfulrs@" + accountResponse + "&" + "Register was sent to Manager for review", dataOutputStream);
             } else {
                 ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username", dataOutputStream);
             }

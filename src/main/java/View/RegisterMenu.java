@@ -238,14 +238,14 @@ public class RegisterMenu extends Menu {
         userInfoGridPane.add(usernameText, 5, 9, 3, 1);
         userInfoGridPane.add(passwordText, 5, 10, 3, 1);
         userInfoGridPane.add(emailText, 5, 11, 3, 1);
-        userInfoGridPane.add(creditText, 5, 12, 3, 1);
+   //     userInfoGridPane.add(creditText, 5, 12, 3, 1);
         userInfoGridPane.add(firstNameText, 15, 9, 3, 1);
         userInfoGridPane.add(lastNameText, 15, 10, 3, 1);
         userInfoGridPane.add(phonenumberText, 15, 11, 3, 1);
         userInfoGridPane.add(userName, 8, 9, 6, 1);
         userInfoGridPane.add(passWord, 8, 10, 6, 1);
         userInfoGridPane.add(email, 8, 11, 6, 1);
-        userInfoGridPane.add(credit, 8, 12, 6, 1);
+    //    userInfoGridPane.add(credit, 8, 12, 6, 1);
         userInfoGridPane.add(firstName, 19, 9, 6, 1);
         userInfoGridPane.add(lastName, 19, 10, 6, 1);
         userInfoGridPane.add(phoneNumber, 19, 11, 6, 1);
@@ -259,6 +259,7 @@ public class RegisterMenu extends Menu {
         signUp.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                credit.setText("0");
                 userName.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                 passWord.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                 email.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");

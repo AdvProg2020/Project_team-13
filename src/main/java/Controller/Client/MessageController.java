@@ -49,6 +49,9 @@ public class MessageController {
                 ClientController.getInstance().getCurrentMenu().showMessage("Register Successful\nyour bank id is:"+split[0], MessageKind.MessageWithBack);
             } else if (message.startsWith("@Successful@")) {
                 message = message.substring(12, message.length());
+                ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.MessageWithBack);
+            }else if (message.startsWith("@Successfulrs@")) {
+                message = message.substring(14, message.length());
                 String[] split=message.split("&");
                 ClientController.getInstance().getCurrentMenu().showMessage(split[1] + "\nyour bank id is: " + split[0], MessageKind.MessageWithBack);
             } else if (message.startsWith("@SuccessfulNotBack@")) {
