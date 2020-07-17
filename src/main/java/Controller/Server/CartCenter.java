@@ -17,9 +17,17 @@ import java.util.HashMap;
 public class CartCenter {
     private static CartCenter cartCenter;
     String lastLogId = "";
-
+    private double wage;
     public void setLastLogId(String lastLogId) {
         this.lastLogId = lastLogId;
+    }
+
+    public double getWage() {
+        return wage;
+    }
+
+    public void setWage(double wage) {
+        this.wage = wage;
     }
 
     public static CartCenter getInstance() {

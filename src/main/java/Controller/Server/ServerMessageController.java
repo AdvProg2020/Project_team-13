@@ -217,6 +217,11 @@ public class ServerMessageController {
                 if (!ServerController.getInstance().getSellerSockets().containsKey(message)) {
                     ServerController.getInstance().getSellerSockets().put(message, dataOutputStream);
                 }
+            } else if (message.startsWith("@setWage@")) {
+                message = message.substring(9);
+                System.out.println(message);
+                CartCenter.getInstance().setWage(Double.parseDouble(message));
+                ServerController.getInstance().sendMessageToClient("@Successful@wage successfully changed",dataOutputStream);
             }
         }else{
             ServerController.getInstance().sendMessageToClient("@Error@your token is invalid", dataOutputStream);
