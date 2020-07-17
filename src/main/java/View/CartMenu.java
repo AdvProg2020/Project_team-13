@@ -381,7 +381,11 @@ public class CartMenu extends Menu {
                                             addCommentButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                                 @Override
                                                 public void handle(MouseEvent event) {
-                                                    CartController.getInstance().payWithBankAccount(getTitle.getText());
+                                                    if(checkAmountIsValid(getTitle.getText())){
+                                                        CartController.getInstance().payWithBankAccount(getTitle.getText());
+                                                    }else {
+                                                        ClientController.getInstance().getCurrentMenu().showMessage("Your input is invalid", MessageKind.ErrorWithoutBack);
+                                                    }
                                                     popupwindow.hide();
                                                 }
                                             });
@@ -639,4 +643,8 @@ public class CartMenu extends Menu {
     private boolean checkEmailIsvalid(String email) {
         return Pattern.matches("\\w+\\.?\\w*@\\w+\\.\\w+", email);
     }
+    private boolean checkAmountIsValid(String amount){
+        return amount.matches("\\d+");
+    }
+
 }

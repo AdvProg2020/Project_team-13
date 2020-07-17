@@ -193,8 +193,9 @@ public class CartCenter {
 
             }
         }
+        int amount = (int) cart.getTotalPrice();
         String token = ServerController.getInstance().handleBankConnection("get_token " + cart.getCustomerID() + " " + UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID()).getPassword());
-        String response = ServerController.getInstance().handleBankConnection("create_receipt " + token + " " + String.valueOf(ReceiptType.MOVE).toLowerCase() + " " + String.valueOf(cart.getTotalPrice()) + " " +
+        String response = ServerController.getInstance().handleBankConnection("create_receipt " + token + " " + String.valueOf(ReceiptType.MOVE).toLowerCase() + " " + String.valueOf(amount) + " " +
         accountId + " " + "@a231234@" + " " + "NoDescription");
         response = ServerController.getInstance().handleBankConnection("pay " + response);
         if(response.equals("done successfully")){
