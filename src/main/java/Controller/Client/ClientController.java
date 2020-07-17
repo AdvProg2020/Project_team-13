@@ -234,7 +234,6 @@ public class ClientController {
         expirationDate = decodedJWT.getExpiresAt();
         String message2 = new String(new Base64().decode(decodedJWT.getPayload().getBytes()));
         String finalMessage = message2.substring(8, message2.lastIndexOf(",") - 1);
-        System.out.println(finalMessage);
         if (finalMessage.contains("requestId")) {
             for (int i = 0; i < 2; i++) {
                 finalMessage = finalMessage.replace("\\\"", "\"");

@@ -218,6 +218,8 @@ public class ServerMessageController {
                     ServerController.getInstance().getSellerSockets().put(message, dataOutputStream);
                 }
             }
+        }else{
+            ServerController.getInstance().sendMessageToClient("@Error@your token is invalid", dataOutputStream);
         }
     }
 
