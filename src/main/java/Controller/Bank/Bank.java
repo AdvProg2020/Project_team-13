@@ -437,13 +437,13 @@ public class Bank {
         if(!getReceiptById(receiptId).getReceiptType().equals(ReceiptType.DEPOSIT) && Objects.requireNonNull(getReceiptById(receiptId)).getMoney()> Objects.requireNonNull(getAccountById(Objects.requireNonNull(getReceiptById(receiptId)).getSourceId())).getAmount()){
             return "source account does not have enough money";
         }
-        switch (getReceiptById(receiptId).getReceiptType()){
+        switch (Objects.requireNonNull(getReceiptById(receiptId)).getReceiptType()){
             case MOVE:
                 Objects.requireNonNull(getAccountById(getReceiptById(receiptId).getSourceId())).setAmount(Objects.requireNonNull(getAccountById(getReceiptById(receiptId).getSourceId())).getAmount() - getReceiptById(receiptId).getMoney());
-                Objects.requireNonNull(getAccountById(getReceiptById(receiptId).getDestinationId())).setAmount(Objects.requireNonNull(getAccountById(getReceiptById(receiptId).getDestinationId())).getAmount() + getReceiptById(receiptId).getMoney());
+                Objects.requireNonNull(getAccountById(Objects.requireNonNull(getReceiptById(receiptId)).getDestinationId())).setAmount(Objects.requireNonNull(getAccountById(Objects.requireNonNull(getReceiptById(receiptId)).getDestinationId())).getAmount() + getReceiptById(receiptId).getMoney());
                 break;
             case DEPOSIT:
-                Objects.requireNonNull(getAccountById(Objects.requireNonNull(getReceiptById(receiptId)).getDestinationId())).setAmount(Objects.requireNonNull(getAccountById(getReceiptById(receiptId).getDestinationId())).getAmount() + getReceiptById(receiptId).getMoney());
+                Objects.requireNonNull(getAccountById(Objects.requireNonNull(getReceiptById(receiptId)).getDestinationId())).setAmount(Objects.requireNonNull(getAccountById(Objects.requireNonNull(getReceiptById(receiptId)).getDestinationId())).getAmount() + Objects.requireNonNull(getReceiptById(receiptId)).getMoney());
                 break;
             case WITHDRAW:
                 getAccountById(getReceiptById(receiptId).getSourceId()).setAmount(getAccountById(getReceiptById(receiptId).getSourceId()).getAmount() - getReceiptById(receiptId).getMoney());
@@ -452,7 +452,7 @@ public class Bank {
                 break;
 
         }
-        getReceiptById(receiptId).setPaid("1");
+        Objects.requireNonNull(getReceiptById(receiptId)).setPaid("1");
         updateAllAccounts(new Gson().toJson(allAccounts));
         return "done successfully";
     }
@@ -464,12 +464,15 @@ public class Bank {
             if (account != null) {
                 jwtVerifier = JWT.require(algorithm).withIssuer(tokenMapper.get(token) + "//" + account.getAccountId()).build();
             }
-            jwtVerifier.verify(token);
+            if (jwtVerifier != null) {
+                jwtVerifier.verify(token);
+            }
         }catch (TokenExpiredException e){
             return "token expired";
         }catch (JWTVerificationException | NullPointerException e){
             return "token is invalid";
         }
+        assert account != null;
         return String.valueOf(account.getAmount());
     }
 
@@ -540,6 +543,7 @@ public class Bank {
         if (printWriter != null) {
             printWriter.print(json);
         }
+        assert printWriter != null;
         printWriter.close();
     }
 

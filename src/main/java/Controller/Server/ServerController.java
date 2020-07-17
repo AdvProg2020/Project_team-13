@@ -144,7 +144,7 @@ public class ServerController {
 
     public void sendMessageToClient(String message, DataOutputStream dataOutputStream) {
         String codedMessage;
-        if (message.matches("@Login as \\w+@")) {
+        if (message.matches("@Login as \\w+@.*")) {
             codedMessage = TokenGenerator.getInstance().getTheToken(ServerController.getInstance().getAllClients().get(dataOutputStream), message);
         } else {
             codedMessage = TokenGenerator.getInstance().getTheCodedMessage(dataOutputStream, message);

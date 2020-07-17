@@ -45,9 +45,13 @@ public class TokenGenerator {
 
     public String getTheToken(String userName, String data){
         Date expirationDate = new Date(new Date().getTime() + 3600000);
+        if(allExpirationDates.containsKey(userName)){
+            allExpirationDates.remove(userName, expirationDate);
+        }
         allExpirationDates.put(userName, expirationDate);
         return JWT.create().withIssuer("Server").withSubject(data).withExpiresAt(expirationDate).sign(algorithm);
     }
+
 
     public String getTheCodedMessage(DataOutputStream dataOutputStream, String data){
         return JWT.create().withIssuer("Server").withSubject(data).withExpiresAt(
