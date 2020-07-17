@@ -38,6 +38,18 @@ public class AuctionCenter {
             if (new Date().after(auction.getStartTime()) && !auctionsChatBoxes.containsKey(auction.getAuctionId())) {
                 AuctionThread auctionThread = new AuctionThread(auction);
                 auctionThread.start();
+                if(-new Date().getTime()+auction.getEndTime().getTime()>0)
+                    new Thread(() -> {
+                    try {
+                        Thread.sleep(-new Date().getTime()+auction.getEndTime().getTime());
+                        if(allAuctions.contains(auction)) {
+                            allAuctions.remove(auction);
+                        }
+                        UserCenter.getIncstance().passTime();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
             }
         }
     }
@@ -64,6 +76,7 @@ public class AuctionCenter {
                 Socket socket = null;
                 try {
                     if (new Date().after(auction.getEndTime())) {
+                        UserCenter.getIncstance().passTime();
                         break;
                     }
                         socket = serverSocket.accept();
@@ -78,11 +91,9 @@ public class AuctionCenter {
                                 dataInputStream = new DataInputStream(new BufferedInputStream(finalSocket.getInputStream()));
                                 dataOutputStream1.writeUTF(new Gson().toJson(auction));
                                 dataOutputStream1.flush();
-
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-
                             while (true) {
                                 if (new Date().after(auction.getEndTime())) {
                                     break;

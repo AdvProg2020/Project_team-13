@@ -116,7 +116,7 @@ public class MessageController {
                 }).start();
             } else if (message.startsWith("@Login as Seller@")) {
                 Gson gson = new Gson();
-                message = message.substring(17, message.length());
+                message = message.substring(17);
                 Seller seller = gson.fromJson(message, Seller.class);
                 ClientController.getInstance().setCurrentUser(seller);
                 ClientController.getInstance().setSellerSocket();
