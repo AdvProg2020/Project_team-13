@@ -81,6 +81,10 @@ public class CartController {
         ClientController.getInstance().sendMessageToServer("@pay@" + new Gson().toJson(currentCart));
     }
 
+    public void payWithBankAccount(String accountId) {
+        ClientController.getInstance().sendMessageToServer("@payWithBankAccount@" + accountId + "//" + new Gson().toJson(currentCart));
+    }
+
     public void waitForDownload() {
         System.out.println("step1");
         new waitForSellerFile().start();

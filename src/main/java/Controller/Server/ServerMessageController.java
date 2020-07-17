@@ -195,6 +195,10 @@ public class ServerMessageController {
             } else if (message.startsWith("@pay@")) {
                 message = message.substring(5);
                 CartCenter.getInstance().pay(new Gson().fromJson(message, Cart.class), dataOutputStream);
+            } else if (message.startsWith("@payWithBankAccount@")) {
+                message = message.substring(5);
+                String[] commands = message.split("//");
+                CartCenter.getInstance().payWithBankAccount(commands[0], new Gson().fromJson(commands[1], Cart.class), dataOutputStream);
             } else if (message.startsWith("@declineRequest@")) {
                 message = message.substring(16);
                 RequestCenter.getIncstance().declineRequest(message, dataOutputStream);
