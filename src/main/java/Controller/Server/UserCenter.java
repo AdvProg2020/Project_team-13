@@ -1,11 +1,8 @@
 package Controller.Server;
 
-import Models.Auction;
-import Models.ChatMessage;
-import Models.Offer;
+import Models.*;
 import Models.Product.Cart;
 import Models.Product.Product;
-import Models.Request;
 import Models.UserAccount.*;
 import com.google.gson.Gson;
 
@@ -530,6 +527,36 @@ public class UserCenter {
 
     public ArrayList<Manager> getAllManager() {
         return allManager;
+    }
+
+    public void processIncreaseCredit(String userName, String passWord, String accountId, String amount, DataOutputStream dataOutputStream) {
+       String token = ServerController.getInstance().handleBankConnection("get_token " + userName + " " + passWord);
+       String response = ServerController.getInstance().handleBankConnection("create_receipt " + token + " " + String.valueOf(ReceiptType.WITHDRAW).toLowerCase() + " " + amount + " " +
+               accountId + " " + "-1" + " " + "No description");
+        if (response.matches("@r\\d{5}")) {
+            String receiptId = response;
+            String finalResponse = ServerController.getInstance().handleBankConnection("pay " + receiptId);
+            if (finalResponse.equals("done successfully")) {
+                finalResponse = ServerController.getInstance().handleBankConnection("processTransaction " + String.valueOf(ReceiptType.DEPOSIT).toLowerCase() + " " + amount);
+                if (finalResponse.equals("done successfully for market")) {
+                    UserAccount userAccount = getUserWithUsername(userName);
+                    userAccount.setCredit(userAccount.getCredit() + Double.parseDouble(amount));
+                    if(userAccount instanceof Seller){
+                        DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
+                    }
+                    if(userAccount instanceof Customer){
+                        DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
+                    }
+                    ServerController.getInstance().sendMessageToClient("@Successfulcredit@" + "Your Credit Has been charged!!" + "//" + amount, dataOutputStream);
+                }else{
+                    ServerController.getInstance().sendMessageToClient("@Error@" + finalResponse, dataOutputStream);
+                }
+            }else {
+                ServerController.getInstance().sendMessageToClient("@Error@" + finalResponse, dataOutputStream);
+            }
+        }else{
+            ServerController.getInstance().sendMessageToClient("@Error@" + response, dataOutputStream);
+        }
     }
 
 }

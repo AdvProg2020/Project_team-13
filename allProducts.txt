@@ -1,1 +1,1 @@
-[{"existInOfferRegistered":false,"productId":"@p1046","productStatus":"editing","productName":"Apple","productCompany":"Iphone","sellerUsername":"seller","productCost":123.0,"costAfterOff":123.0,"productsCategory":"Phone","description":"phone","numberOfAvailableProducts":123,"featuresOfCategoryThatHas":{"Ram":"123"},"allBuyers":[],"offers":[],"imagePath":"","videoPath":"","filePath":""}]
+[]
