@@ -1,1 +1,1 @@
-[]
+[{"companyName":"apple","isAccepted":true,"allProducts":[],"username":"seller","password":"123456789","firstName":"sina","lastName":"mazaheri","email":"seller@gmail.com","phoneNumber":"09120046758","type":"@Seller","credit":1100.0,"historyOfTransaction":[],"imagePath":""}]

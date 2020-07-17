@@ -236,6 +236,10 @@ public class ServerMessageController {
                 message = message.substring(16);
                 String[] details = message.split("//");
                 UserCenter.getIncstance().processIncreaseCredit(details[0], details[1], details[2], details[3], dataOutputStream);
+            }else if(message.startsWith("@decreaseCredit@")){
+                message = message.substring(16);
+                String[] commands = message.split("//");
+                UserCenter.getIncstance().processDecreaseAmountForSeller(commands[0], commands[1], commands[2], commands[3], dataOutputStream);
             }
         }else{
             ServerController.getInstance().sendMessageToClient("@Error@your token is invalid", dataOutputStream);
