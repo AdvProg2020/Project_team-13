@@ -44,7 +44,7 @@ public class TokenGenerator {
     }
 
     public String getTheToken(String userName, String data){
-        Date expirationDate = new Date(new Date().getTime() + 3600000);
+        Date expirationDate = new Date(new Date().getTime() + 360);
         if(allExpirationDates.containsKey(userName)){
             allExpirationDates.remove(userName, expirationDate);
         }
@@ -75,7 +75,7 @@ public class TokenGenerator {
     public String getTheDecodedMessage(String message){
        DecodedJWT decodedJWT = JWT.decode(message);
        String message2 = new String(new Base64().decode(decodedJWT.getPayload().getBytes()));
-       String finalMessage = message2.substring(8, message2.lastIndexOf(",") - 1);
+       String finalMessage = message2.substring(8, message2.lastIndexOf(",\"iss\"") - 1);
        while ((finalMessage.contains("\\\""))) {
             finalMessage = finalMessage.replace("\\\"", "\"");
        }

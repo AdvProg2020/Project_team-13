@@ -61,7 +61,7 @@ public class ServerMessageController {
             } else if (message.startsWith("@logout@")) {
                 message = message.substring(8);
                 ServerController.getInstance().sendMessageToClient("@successfulChat@", dataOutputStream);
-                ServerController.getInstance().getAllClients().remove(ServerController.getInstance().findDataStreamWithUsername(message));
+                ServerController.getInstance().getAllClients().remove(dataOutputStream, message);
             } else if (message.startsWith("@sendChatMessage@")) {
                 //    ServerController.getInstance().sendMessageToClient("@successfulChat@",dataOutputStream);
                 message = message.substring(17);

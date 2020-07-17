@@ -180,6 +180,7 @@ public class ClientController {
 
     public void sendMessageToServer(String message) {
         this.message = message;
+        System.out.println(message);
         message = getTheEncodedMessage(message);
         try {
             dataOutputStream.writeUTF(message);

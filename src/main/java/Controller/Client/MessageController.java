@@ -38,7 +38,6 @@ public class MessageController {
     public void processMessage(String message) {
         if(ClientController.getInstance().isMessageValid(message)) {
             message = ClientController.getInstance().getTheDecodedMessage(message);
-            System.out.println(message);
             if (message.startsWith("@Error@")) {
                 message = message.substring(7);
                 ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.ErrorWithoutBack);
