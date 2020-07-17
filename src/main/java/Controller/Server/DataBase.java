@@ -499,8 +499,18 @@ public class DataBase {
         br = new BufferedReader(fileReader);
         try {
             String json;
+            int i=0;
             while ((json = br.readLine()) != null) {
-                allJson += json + "&";
+                i++;
+                System.out.println("11111");
+                if (!json.isEmpty()) {
+                    allJson += json + "&";
+                }else {
+                    allJson += "[]" + "&";
+                }
+            }
+            if(i==0) {
+                allJson += "[]" + "&";
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -519,8 +529,18 @@ public class DataBase {
         br = new BufferedReader(fileReader);
         try {
             String json;
+            int i=0;
             while ((json = br.readLine()) != null) {
-                allJson += json + "&";
+                i++;
+                System.out.println("22222");
+
+                if (!json.isEmpty()) {
+                    allJson += json + "&";
+                }else {
+                    allJson += "[]" + "&";
+                }            }
+            if(i==0) {
+                allJson += "[]" + "&";
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -539,10 +559,20 @@ public class DataBase {
         br = new BufferedReader(fileReader);
         try {
             String json;
+            int i=0;
             while ((json = br.readLine()) != null) {
-                allJson += json;
-                ServerController.getInstance().sendMessageToClient("@allUsers@" + allJson, dataOutputStream);
+                i++;
+                System.out.println("33333");
+                if (!json.isEmpty()) {
+                    allJson += json;
+                }else {
+                    allJson += "[]";
+                }
             }
+            if(i==0) {
+                allJson += "[]";
+            }
+            ServerController.getInstance().sendMessageToClient("@allUsers@" + allJson, dataOutputStream);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

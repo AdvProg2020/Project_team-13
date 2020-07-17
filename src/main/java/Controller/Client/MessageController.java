@@ -142,13 +142,10 @@ public class MessageController {
             } else if (message.startsWith("@allUsers@")) {
                 message = message.substring(10);
                 String[] split = message.split("&");
-                if(split.length>2){UserController.getInstance().setAllCustomers(split[0]);
+                System.out.println("aaaaa        "+message);
+                UserController.getInstance().setAllCustomers(split[0]);
                 UserController.getInstance().setAllSellers(split[1]);
-                UserController.getInstance().setAllManagers(split[2]);}else{
-                    UserController.getInstance().setAllCustomers("[]");
-                    UserController.getInstance().setAllSellers("[]");
-                    UserController.getInstance().setAllManagers("[]");
-                }
+                UserController.getInstance().setAllManagers(split[2]);
             } else if (message.startsWith("@getAllProductsForManager@")) {
                 message = message.substring(26);
                 ProductController.getInstance().updateAllProducts(message);

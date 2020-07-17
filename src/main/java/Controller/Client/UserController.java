@@ -122,6 +122,7 @@ public class UserController {
         System.out.println("setting...");
         Type userListType = new TypeToken<ArrayList<Manager>>() {
         }.getType();
+        System.out.println("qqqqq" + json);;
         ArrayList<Manager> managers = new Gson().fromJson(json, userListType);
         this.allManagers = managers;
         System.out.println(allManagers);
