@@ -1,6 +1,5 @@
 package Models.UserAccount;
 
-import Controller.Client.ProductController;
 import Models.Auction;
 import Models.Log;
 import Models.Offer;

@@ -1,5 +1,6 @@
 package Controller.Server;
 
+import Controller.Client.AuctionController;
 import Controller.Client.MessageController;
 import Controller.Client.UserController;
 import Models.Auction;
@@ -17,6 +18,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,7 +76,8 @@ public class ServerMessageController {
                     users.add(value);
                 }
                 ServerController.getInstance().sendMessageToClient("@setOnlineUsers@" + new Gson().toJson(users), dataOutputStream);
-            } else if (message.startsWith("@AddAuction@")) {
+            }else if (message.startsWith("@AddAuction@")) {
+                System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa45489776jhg");
                 message = message.substring(12);
                 try {
                     dataOutputStream.writeUTF("123");
@@ -194,7 +197,11 @@ public class ServerMessageController {
             } else if (message.startsWith("@declineRequest@")) {
                 message = message.substring(16);
                 RequestCenter.getIncstance().declineRequest(message, dataOutputStream);
-            } else if (message.startsWith("@rate@")) {
+            } else if (message.startsWith("@gSPOA@")) {
+                message = message.substring(7);
+                ServerController.getInstance().sendMessageToClient("@gSPOA"
+                        + AuctionCenter.getInstance().getSocketPort(new Gson().fromJson(message,Auction.class)),dataOutputStream);
+            }else if (message.startsWith("@rate@")) {
                 message = message.substring(6);
                 ProductCenter.getInstance().rating(message);
             } else if (message.startsWith("@cmc@")) {

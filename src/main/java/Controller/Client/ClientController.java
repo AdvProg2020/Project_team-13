@@ -6,7 +6,6 @@ import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import View.MainMenu;
 import View.Menu;
-import com.sun.org.apache.xalan.internal.res.XSLTErrorResources;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -40,6 +39,7 @@ public class ClientController {
     private DataInputStream dataInputStream;
     private Date expirationDate;
     private static Algorithm algorithm;
+    private int qq = 0;
 
     static {
         try {
@@ -54,6 +54,7 @@ public class ClientController {
             socket = new Socket("localhost", 8080);
             dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
             dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -180,6 +181,7 @@ public class ClientController {
         this.message = message;
         message = getTheEncodedMessage(message);
         try {
+            System.out.println("a1111111111");
             dataOutputStream.writeUTF(message);
             dataOutputStream.flush();
             String string = "";

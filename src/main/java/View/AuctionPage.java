@@ -44,7 +44,7 @@ public class AuctionPage extends Menu {
 
     public AuctionPage(Stage stage) {
         super(stage);
-        AuctionController.getInstance().getAuctionServerPort();
+//        AuctionController.getInstance().getAuctionServerPort();
         AuctionController.getInstance().setAuctionPage(this);
         setScene();
     }
