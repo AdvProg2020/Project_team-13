@@ -1,0 +1,1 @@
+[{"companyName":"sdf","isAccepted":false,"allProducts":[],"username":"seller","password":"123456789","firstName":"af","lastName":"sdf","email":"a@f.com","phoneNumber":"09125632122","type":"@Seller","credit":0.0,"historyOfTransaction":[],"imagePath":""}]

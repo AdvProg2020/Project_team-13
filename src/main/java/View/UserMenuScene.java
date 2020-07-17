@@ -222,6 +222,11 @@ public class UserMenuScene extends Menu {
         discountCodesButton.setStyle("-fx-font-size:  18;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         discountCodesButton.setMinHeight(50);
         discountCodesButton.setMinWidth(150);
+        Button increaseCredit = new Button("Increase Credit");
+        increaseCredit.setStyle("-fx-font-size:  18;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
+        increaseCredit.setMinHeight(50);
+        increaseCredit.setMinWidth(150);
+
         auctionMenuButton.setStyle("-fx-font-size:  18;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         auctionMenuButton.setMinHeight(50);
         auctionMenuButton.setMinWidth(150);
@@ -342,6 +347,72 @@ public class UserMenuScene extends Menu {
             }
         });
 
+        increaseCredit.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND);
+
+            }
+        });
+        increaseCredit.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT);
+            }
+        });
+        increaseCredit.setOnMouseClicked(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                Stage popupwindow = new Stage();
+                GridPane gridPane = new GridPane();
+                gridPane.setStyle("-fx-background-color: Blue");
+                Button button = new Button("X");
+                button.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 25px; -fx-padding: 3,3,3,3;-fx-font-weight: bold;-fx-text-fill: Red");
+                button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        popupwindow.hide();
+                        scene.setFill(null);
+                    }
+                });
+                gridPane.add(button, 0, 0);
+                gridPane.add(new Text(""), 1, 0);
+                gridPane.setStyle("-fx-background-color: rgba(255,145,200,0.85);");
+                GridPane commentPane = new GridPane();
+                gridPane.add(commentPane, 1, 1);
+                Text titleText = new Text("Amount:");
+                Text contentText = new Text("Account ID:");
+                TextField getTitle = new TextField();
+                TextField getContent = new TextField();
+                getTitle.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                getContent.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;");
+                getContent.setMaxWidth(300);
+
+                Button addCommentButton = new Button("Increase Credit");
+                addCommentButton.setStyle("-fx-background-color: #E85D9E;");
+                addCommentButton.setMinWidth(100);
+                commentPane.setVgap(10);
+                commentPane.setHgap(10);
+                addCommentButton.setTextFill(Color.WHITE);
+                commentPane.add(titleText, 0, 0);
+                commentPane.add(contentText, 0, 1);
+                commentPane.add(getTitle, 1, 0);
+                commentPane.add(getContent, 1, 1, 1, 5);
+                commentPane.add(addCommentButton, 1, 6);
+                addCommentButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                       popupwindow.hide();
+                    }
+                });
+                Scene scene1 = new Scene(gridPane, 400, 300);
+                popupwindow.initModality(Modality.APPLICATION_MODAL);
+                popupwindow.initStyle(StageStyle.UNDECORATED);
+                popupwindow.setScene(scene1);
+                popupwindow.showAndWait();
+            }
+        });
+
         discountCodesButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
@@ -361,6 +432,7 @@ public class UserMenuScene extends Menu {
                 new CustomerDiscountCodeMenu(stage).execute();
             }
         });
+
         contatSupportButton.setTextAlignment(TextAlignment.CENTER);
         contatSupportButton.setStyle("-fx-font-size: 20 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         contatSupportButton.setMinHeight(50);
