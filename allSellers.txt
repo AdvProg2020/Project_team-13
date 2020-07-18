@@ -1,1 +1,1 @@
-[]
+[{"companyName":"ggf","isAccepted":true,"allProducts":[],"username":"seller","password":"123456789","firstName":"sdaf","lastName":"fg","email":"a@a.com","phoneNumber":"09125632211","type":"@Seller","credit":0.0,"historyOfTransaction":[],"imagePath":""}]

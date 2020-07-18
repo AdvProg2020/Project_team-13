@@ -231,7 +231,7 @@ public class ServerMessageController {
                 System.out.println(message);
                 CartCenter.getInstance().setAtLeastAmount(Double.parseDouble(message));
                 DataBase.getInstance().setAtLeastCredit();
-                ServerController.getInstance().sendMessageToClient("@Successful@wage successfully changed",dataOutputStream);
+                ServerController.getInstance().sendMessageToClient("@Successful@At Least Credit successfully changed",dataOutputStream);
             }else if(message.startsWith("@increaseCredit@")){
                 message = message.substring(16);
                 String[] details = message.split("//");
