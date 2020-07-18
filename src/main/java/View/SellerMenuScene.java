@@ -1,6 +1,8 @@
 package View;
 
+import Controller.Client.CartController;
 import Controller.Client.ClientController;
+import Controller.Client.MessageController;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 import javafx.event.Event;
@@ -261,12 +263,30 @@ public class SellerMenuScene extends Menu {
                 addCommentButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
+                        if(checkAccountIsValid(getContent.getText()) && checkAmountIsValid(getTitle.getText()))
+                        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("increaseCredit",  ClientController.getInstance().getCurrentUser().getUsername() + "//" + ClientController.getInstance().getCurrentUser().getPassword() +
+                                "//" + getContent.getText() + "//" + getTitle.getText()));
+                        else{
+                            ClientController.getInstance().getCurrentMenu().showMessage("your inout must be valid " + String.valueOf(CartController.getInstance().getAtLeastCredit()), MessageKind.ErrorWithoutBack);
+                        }
                         popupwindow.hide();
                     }
                 });
                 decreaseCerdit.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
+                        if(checkAccountIsValid(getContent.getText()) && checkAmountIsValid(getTitle.getText())) {
+                            CartController.getInstance().getAtLeastCreditFromServer();
+                            double net = ClientController.getInstance().getCurrentUser().getCredit() - Double.parseDouble(getTitle.getText());
+                            if (CartController.getInstance().getAtLeastCredit() <= net) {
+                                ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("decreaseCredit", ClientController.getInstance().getCurrentUser().getUsername() + "//" + ClientController.getInstance().getCurrentUser().getPassword() +
+                                        "//" + getContent.getText() + "//" + getTitle.getText()));
+                            } else {
+                                ClientController.getInstance().getCurrentMenu().showMessage("your credit must be at least " + String.valueOf(CartController.getInstance().getAtLeastCredit()), MessageKind.ErrorWithoutBack);
+                            }
+                        }else {
+                            ClientController.getInstance().getCurrentMenu().showMessage("your inout must be valid " + String.valueOf(CartController.getInstance().getAtLeastCredit()), MessageKind.ErrorWithoutBack);
+                        }
                         popupwindow.hide();
                     }
                 });
@@ -428,5 +448,13 @@ public class SellerMenuScene extends Menu {
             return true;
         }
         return false;
+    }
+
+    private boolean checkAmountIsValid(String amount){
+        return amount.matches("\\d+");
+    }
+
+    private boolean checkAccountIsValid(String account){
+        return account.matches("@a\\d{5}");
     }
 }

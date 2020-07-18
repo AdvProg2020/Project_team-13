@@ -40,7 +40,12 @@ public class MessageController {
                 message = message.substring(7);
                 String finalMessage = message;
                 ClientController.getInstance().getCurrentMenu().showMessage(finalMessage, MessageKind.ErrorWithoutBack);
-            } else if (message.startsWith("@Successfulrc@")) {
+            }else if(message.startsWith("@decreaseCredit@")){
+                message = message.substring(16);
+                String[] commands = message.split("//");
+                ClientController.getInstance().getCurrentUser().setCredit(ClientController.getInstance().getCurrentUser().getCredit() - Double.parseDouble(commands[1]));
+                ClientController.getInstance().getCurrentMenu().showMessage(commands[0], MessageKind.MessageWithBack);
+            }else if (message.startsWith("@Successfulrc@")) {
                 message = message.substring(14, message.length());
                 String[] split = message.split("&");
                 ClientController.getInstance().setCurrentUser(new Gson().fromJson(split[1], Customer.class));
@@ -170,6 +175,7 @@ public class MessageController {
                 System.out.println("step3");
                 CartController.getInstance().sendFileToCustomer(Integer.parseInt(split[0]), split[1]);
             } else if (message.startsWith("@gSPOA@")) {
+                System.out.println("helllllllllllloooooooooooooooooo auccccccccccccccccction");
                 AuctionController.getInstance().connectChatInAuctionPage(Integer.parseInt(message.substring(7)));
             }else if (message.startsWith("@getAtLeastCredit@")) {
                 message = message.substring(18);

@@ -6,16 +6,13 @@ import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import View.MainMenu;
 import View.Menu;
-import View.MessageKind;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.sun.security.ntlm.Client;
 import com.sun.xml.internal.messaging.saaj.util.Base64;
 import io.fusionauth.jwt.JWTExpiredException;
-import javafx.application.Platform;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.*;
@@ -25,8 +22,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
-
-import static java.lang.Thread.sleep;
 
 public class ClientController {
     private static ClientController clientController;
@@ -189,7 +184,7 @@ public class ClientController {
             dataOutputStream.writeUTF(message);
             dataOutputStream.flush();
             String string = "";
-            do{
+            do {
                 try {
                     string = dataInputStream.readUTF();
                 } catch (IOException e) {
@@ -197,9 +192,7 @@ public class ClientController {
                 }
                 System.out.println("check depth of: " + dataInputStream.available());
                 getMessageFromServer(string);
-            }while (dataInputStream.available() > 0);
-
-
+            } while (dataInputStream.available() > 0);
         } catch (IOException e) {
             e.printStackTrace();
         }
