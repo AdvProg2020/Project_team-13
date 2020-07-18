@@ -38,6 +38,7 @@ public class CategoryController {
 
     public void updateAllCategories() {
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("getAllCategories", "getAllCategories"));
+        System.out.println("secondleve11111111111");
     }
 
     public ArrayList<Category> getAllCategories() {
@@ -48,7 +49,7 @@ public class CategoryController {
         Type categoryListType = new TypeToken<ArrayList<Category>>() {
         }.getType();
         Gson gson = new Gson();
-        if (!message.isEmpty() && message != null) {
+        if (message != null&& !message.isEmpty() ) {
             ArrayList<Category> allCategories = gson.fromJson(message, categoryListType);
             this.allCategories = allCategories;
         }

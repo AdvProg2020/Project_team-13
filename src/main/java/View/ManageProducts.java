@@ -104,7 +104,7 @@ public class ManageProducts extends Menu {
             ImageView addToAdds = new ImageView(new Image("file:src/add.png"));
             ImageView auction = new ImageView(new Image("file:src/auction.png"));
             GridPane auctionGridPane = new GridPane();
-            auctionGridPane.add(auction,0,0);
+            auctionGridPane.add(auction, 0, 0);
             auctionGridPane.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
@@ -131,10 +131,10 @@ public class ManageProducts extends Menu {
                             scene.setFill(null);
                         }
                     });
-                    GridPane gridPane1 = new GridPane() ;
+                    GridPane gridPane1 = new GridPane();
                     gridPane1.getRowConstraints().add(new RowConstraints(25, Control.USE_COMPUTED_SIZE, 25, Priority.NEVER, VPos.CENTER, true));
-                    gridPane1.add(button1,0,0);
-                    gridPane1.add(createAuctionPopup(),1,1);
+                    gridPane1.add(button1, 0, 0);
+                    gridPane1.add(createAuctionPopup(popupwindow), 1, 1);
                     gridPane1.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);");
                     Scene scene1 = new Scene(gridPane1, 500, 500);
                     popupwindow.initModality(Modality.APPLICATION_MODAL);
@@ -163,7 +163,7 @@ public class ManageProducts extends Menu {
                 }
             });
             GridPane addsGridPane = new GridPane();
-            addsGridPane.add(addToAdds,0,0);
+            addsGridPane.add(addToAdds, 0, 0);
             addsGridPane.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
@@ -188,7 +188,7 @@ public class ManageProducts extends Menu {
                 }
             });
             GridPane deleteProductPane = new GridPane();
-            deleteProductPane.add(deleteProduct,0,0);
+            deleteProductPane.add(deleteProduct, 0, 0);
             deleteProductPane.setOnMouseEntered(new EventHandler() {
                 @Override
                 public void handle(Event event) {
@@ -820,7 +820,7 @@ public class ManageProducts extends Menu {
     private ArrayList<String> allUsers = new ArrayList<>();
     GridPane userInfoGridPane;
 
-    private GridPane createAuctionPopup() {
+    private GridPane createAuctionPopup(Stage stage) {
         userInfoGridPane = new GridPane();
         userInfoGridPane.setVgap(10);
         userInfoGridPane.setHgap(20);
@@ -884,7 +884,8 @@ public class ManageProducts extends Menu {
                 Date enddate = Date.from(endDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
                 if (checkStartTimeValid(startdate)) {
                     if (checkEndTimeValid(enddate, startdate)) {
-                        AuctionController.getInstance().createNewAuction(new Auction(startdate,enddate,currentProduct,ClientController.getInstance().getCurrentUser().getUsername()));
+                        AuctionController.getInstance().createNewAuction(new Auction(startdate, enddate, currentProduct, ClientController.getInstance().getCurrentUser().getUsername()));
+                        stage.close();
                     } else {
                         endDatePicker.setStyle("-fx-background-color: red;-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
                         errorText.setText("End time is invalid.");
@@ -895,7 +896,7 @@ public class ManageProducts extends Menu {
                 }
             }
         });
-    return userInfoGridPane;
+        return userInfoGridPane;
     }
 
     private boolean checkEndTimeValid(Date endTime, Date startTime) {

@@ -84,6 +84,9 @@ public class Bank {
     }
 
     private boolean userExitsWithThisUserName(String userName){
+        if(allAccounts==null) {
+            allAccounts = new ArrayList<>();
+        }
         for (Account account : allAccounts) {
             if (account.getUsername().equals(userName)) {
                 return true;
@@ -140,60 +143,63 @@ public class Bank {
             return;
         }
         while (true) {
-            try{
-               String response = "";
-               String command = dataInputStream.readUTF();
-               if(command.startsWith("create_account")){
-                 String[] commands = command.split("\\s");
-                 if(commands.length == 6){
-                     response = createNewAccount(commands[1], commands[2], commands[3], commands[4], commands[5]);
-                 }else{
-                     response = "invalid input";
-                 }
-               }else if(command.startsWith("get_token")){
-                 String[] commands = command.split("\\s");
-                   if(commands.length == 3){
-                       response = getToken(commands[1], commands[2]);
-                   }else{
-                       response = "invalid input";
-                   }
-               }else if(command.startsWith("create_receipt")){
-                 String[] commands = command.split("\\s");
-                   if(commands.length == 7){
-                       response = createReceipt(commands[1], commands[2], commands[3], commands[4], commands[5], commands[6]);
-                   }else{
-                       response = "invalid input";
-                   }
-               }else if(command.startsWith("get_transactions")){
-                 String[] commands = command.split("\\s");
-                   if(commands.length == 4){
-                       response = getTheTransactions(commands[1], commands[2], commands[3]);
-                   }else if(commands.length == 3){
-                       response = getTheTransactions(commands[1], commands[2], "");
-                   }else{
-                       response = "invalid input";
-                   }
-               }else if(command.startsWith("pay")){
-                 String[] commands = command.split("\\s");
-                   if(commands.length == 2){
-                       response = pay(commands[1]);
-                   }else{
-                       response = "invalid input";
-                   }
-               }else if(command.startsWith("get_balance")){
-                 String[] commands = command.split("\\s");
-                   if(commands.length == 2){
-                       response = getBalance(commands[1]);
-                   }else{
-                       response = "invalid input";
-                   }
-               }else if(command.startsWith("exit")){
-                   exit();
-               }else {
+            try {
+                String response = "";
+                String command = dataInputStream.readUTF();
+                if (command.startsWith("create_account")) {
+                    String[] commands = command.split("\\s");
+                    if (commands.length == 6) {
+                        response = createNewAccount(commands[1], commands[2], commands[3], commands[4], commands[5]);
+                    } else {
+                        response = "invalid input";
+                    }
+                } else if (command.startsWith("get_token")) {
+                    String[] commands = command.split("\\s");
+                    if (commands.length == 3) {
+                        response = getToken(commands[1], commands[2]);
+                    } else {
+                        response = "invalid input";
+                    }
+                } else if (command.startsWith("create_receipt")) {
+                    String[] commands = command.split("\\s");
+                    if (commands.length == 7) {
+                        response = createReceipt(commands[1], commands[2], commands[3], commands[4], commands[5], commands[6]);
+                    } else {
+                        response = "invalid input";
+                    }
+                } else if (command.startsWith("get_transactions")) {
+                    String[] commands = command.split("\\s");
+                    if (commands.length == 4) {
+                        response = getTheTransactions(commands[1], commands[2], commands[3]);
+                    } else if (commands.length == 3) {
+                        response = getTheTransactions(commands[1], commands[2], "");
+                    } else {
+                        response = "invalid input";
+                    }
+                } else if (command.startsWith("pay")) {
+                    String[] commands = command.split("\\s");
+                    if (commands.length == 2) {
+                        response = pay(commands[1]);
+                    } else {
+                        response = "invalid input";
+                    }
+                } else if (command.startsWith("get_balance")) {
+                    String[] commands = command.split("\\s");
+                    if (commands.length == 2) {
+                        response = getBalance(commands[1]);
+                    } else {
+                        response = "invalid input";
+                    }
+                } else if (command.startsWith("exit")) {
+                    exit();
+                }else if(command.startsWith("processTransaction")){
+                    String[] commands = command.split("\\s");
+                    response = processTransactionForMarket(commands[1], commands[2]);
+                }else {
                  response = "invalid input";
-               }
-               dataOutputStream.writeUTF(response);
-               dataOutputStream.flush();
+                }
+                dataOutputStream.writeUTF(response);
+                dataOutputStream.flush();
             }catch (IOException e){
                 System.out.println(e.getMessage());
                 break;
@@ -207,7 +213,31 @@ public class Bank {
         }
     }
 
+    private String processTransactionForMarket(String type, String amount) {
+        switch (ReceiptType.valueOf(type.toUpperCase())){
+            case WITHDRAW:
+                marketAccount.setAmount(marketAccount.getAmount() - Double.parseDouble(amount));
+                break;
+            case DEPOSIT:
+                marketAccount.setAmount(marketAccount.getAmount() + Double.parseDouble(amount));
+                break;
+            default:
+                break;
 
+        }
+        updateMarketAccount(new Gson().toJson(marketAccount));
+        return "done successfully for market";
+    }
+
+    private void updateMarketAccount(String json) {
+        try {
+            PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter("marketAccount.txt")));
+            printWriter.print(json);
+            printWriter.close();
+        } catch (IOException e) {
+            System.out.println("Error in Database...");
+        }
+    }
 
 
     private String getToken(String userName, String passWord){

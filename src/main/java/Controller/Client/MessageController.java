@@ -1,7 +1,5 @@
 package Controller.Client;
 
-import Controller.Server.AuctionCenter;
-import Models.BuyLog;
 import Models.ChatMessage;
 import Models.Log;
 import Models.UserAccount.Customer;
@@ -36,22 +34,28 @@ public class MessageController {
     }
 
     public void processMessage(String message) {
-        if(ClientController.getInstance().isMessageValid(message)) {
+        if (ClientController.getInstance().isMessageValid(message)) {
             message = ClientController.getInstance().getTheDecodedMessage(message);
             if (message.startsWith("@Error@")) {
                 message = message.substring(7);
-                ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.ErrorWithoutBack);
+                String finalMessage = message;
+                ClientController.getInstance().getCurrentMenu().showMessage(finalMessage, MessageKind.ErrorWithoutBack);
             } else if (message.startsWith("@Successfulrc@")) {
                 message = message.substring(14, message.length());
-                String[] split=message.split("&");
+                String[] split = message.split("&");
                 ClientController.getInstance().setCurrentUser(new Gson().fromJson(split[1], Customer.class));
-                ClientController.getInstance().getCurrentMenu().showMessage("Register Successful\nyour bank id is:"+split[0], MessageKind.MessageWithBack);
-            } else if (message.startsWith("@Successful@")) {
+                ClientController.getInstance().getCurrentMenu().showMessage("Register Successful\nyour bank id is:" + split[0], MessageKind.MessageWithBack);
+            }else if(message.startsWith("@Successfulcredit@")){
+                message = message.substring(18);
+                String[] strings = message.split("//");
+                ClientController.getInstance().getCurrentUser().setCredit(ClientController.getInstance().getCurrentUser().getCredit() + Double.parseDouble(strings[1]));
+                ClientController.getInstance().getCurrentMenu().showMessage(strings[0], MessageKind.MessageWithBack);
+            }else if (message.startsWith("@Successful@")) {
                 message = message.substring(12, message.length());
                 ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.MessageWithBack);
-            }else if (message.startsWith("@Successfulrs@")) {
+            } else if (message.startsWith("@Successfulrs@")) {
                 message = message.substring(14, message.length());
-                String[] split=message.split("&");
+                String[] split = message.split("&");
                 ClientController.getInstance().getCurrentMenu().showMessage(split[1] + "\nyour bank id is: " + split[0], MessageKind.MessageWithBack);
             } else if (message.startsWith("@SuccessfulNotBack@")) {
                 message = message.substring(19);
@@ -71,7 +75,7 @@ public class MessageController {
                 ClientController.getInstance().getCurrentMenu().showMessage("Login successful", MessageKind.MessageWithBack);
             } else if (message.startsWith("@Login as Manager@")) {
                 Gson gson = new Gson();
-                message = message.substring(18, message.length());
+                message = message.substring(18);
                 Manager manager = gson.fromJson(message, Manager.class);
                 ClientController.getInstance().setCurrentUser(manager);
                 ClientController.getInstance().getCurrentMenu().showMessage("Login successful", MessageKind.MessageWithBack);
@@ -126,7 +130,7 @@ public class MessageController {
             } else if (message.startsWith("@OnlineUsers@")) {
                 message = message.substring(13);
                 UserController.getInstance().setOnlineUsers(message);
-            }else if (message.startsWith("@setOnlineUsers@")) {
+            } else if (message.startsWith("@setOnlineUsers@")) {
                 message = message.substring(16);
                 UserController.getInstance().setOnlineClients(message);
             } else if (message.startsWith("@AllDiscountCodes@")) {
@@ -144,7 +148,7 @@ public class MessageController {
             } else if (message.startsWith("@allUsers@")) {
                 message = message.substring(10);
                 String[] split = message.split("&");
-                System.out.println("aaaaa        "+message);
+                System.out.println("aaaaa        " + message);
                 UserController.getInstance().setAllCustomers(split[0]);
                 UserController.getInstance().setAllSellers(split[1]);
                 UserController.getInstance().setAllManagers(split[2]);
@@ -160,42 +164,43 @@ public class MessageController {
                 ClientController.getInstance().getCurrentMenu().showMessage("Category removed successfully", MessageKind.MessageWithoutBack);
             } else if (message.startsWith("getAllOffers")) {
                 OffsController.getInstance().updateAllOffer(message);
-            }else if (message.startsWith("@setCustomerPort@")) {
+            } else if (message.startsWith("@setCustomerPort@")) {
                 message = message.substring(17);
-                String[] split=message.split("&");
+                String[] split = message.split("&");
                 System.out.println("step3");
-                CartController.getInstance().sendFileToCustomer(Integer.parseInt(split[0]),split[1]);
+                CartController.getInstance().sendFileToCustomer(Integer.parseInt(split[0]), split[1]);
             } else if (message.startsWith("@gSPOA@")) {
                 AuctionController.getInstance().connectChatInAuctionPage(Integer.parseInt(message.substring(7)));
             }
         }
     }
+
     class ClientHandeler extends Thread {
         private Socket clientSocket;
         private DataInputStream dataInputStream;
         private DataOutputStream dataOutputStream;
 
-        public ClientHandeler( Socket clientSocket) {
+        public ClientHandeler(Socket clientSocket) {
             this.clientSocket = clientSocket;
             try {
                 this.dataInputStream = new DataInputStream(new BufferedInputStream(clientSocket.getInputStream()));
-                this. dataOutputStream = new DataOutputStream(new BufferedOutputStream(clientSocket.getOutputStream()));
+                this.dataOutputStream = new DataOutputStream(new BufferedOutputStream(clientSocket.getOutputStream()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
         private void waitForClient() {
-            String input="";
+            String input = "";
             while (true) {
                 try {
                     input = dataInputStream.readUTF();
                 } catch (IOException e) {
                     break;
                 }
-                ChatMessage chatMessage=new Gson().fromJson(input,ChatMessage.class);
-                if(!UserController.getInstance().getCustomerDataStreams().containsKey(chatMessage.getUsername()))
-                    UserController.getInstance().getCustomerDataStreams().put(chatMessage.getUsername(),clientSocket);
+                ChatMessage chatMessage = new Gson().fromJson(input, ChatMessage.class);
+                if (!UserController.getInstance().getCustomerDataStreams().containsKey(chatMessage.getUsername()))
+                    UserController.getInstance().getCustomerDataStreams().put(chatMessage.getUsername(), clientSocket);
                 UserController.getInstance().getChatMessage(input);
             }
         }

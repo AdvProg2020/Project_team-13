@@ -172,7 +172,6 @@ public class DataBase {
                 features.put("Format", modes);
                 allCategories.add(new Category("File", features));
             }
-            updateAllCategories(new Gson().toJson(allCategories));
             CategoryCenter.getIncstance().setAllCategories(allCategories, true);
             br.close();
             fileReader.close();

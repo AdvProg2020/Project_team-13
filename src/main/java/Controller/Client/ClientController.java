@@ -6,6 +6,7 @@ import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import View.MainMenu;
 import View.Menu;
+import View.MessageKind;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -14,6 +15,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.sun.security.ntlm.Client;
 import com.sun.xml.internal.messaging.saaj.util.Base64;
 import io.fusionauth.jwt.JWTExpiredException;
+import javafx.application.Platform;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.*;
@@ -140,15 +142,15 @@ public class ClientController {
                     DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
                     DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
                     System.out.println("in thread");
-                    String sellerMessage="@setSellerSocket@" + currentUser.getUsername();
-                    sellerMessage=getTheEncodedMessage(sellerMessage);
+                    String sellerMessage = "@setSellerSocket@" + currentUser.getUsername();
+                    sellerMessage = getTheEncodedMessage(sellerMessage);
                     dataOutputStream.writeUTF(sellerMessage);
                     System.out.println("AFTER SEND");
                     while (true) {
-                      //  if(dataInputStream.available()>0) {
-                            String string = dataInputStream.readUTF();
-                            getMessageFromServer(string);
-                     //   }
+                        //  if(dataInputStream.available()>0) {
+                        String string = dataInputStream.readUTF();
+                        getMessageFromServer(string);
+                        //   }
                     }
 
                 } catch (IOException e) {
@@ -183,15 +185,19 @@ public class ClientController {
         System.out.println(message);
         message = getTheEncodedMessage(message);
         try {
+            System.out.println("a1111111111");
             dataOutputStream.writeUTF(message);
             dataOutputStream.flush();
             String string = "";
-            try {
-                string = dataInputStream.readUTF();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            getMessageFromServer(string);
+            do{
+                try {
+                    string = dataInputStream.readUTF();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("check depth of: " + dataInputStream.available());
+                getMessageFromServer(string);
+            }while (dataInputStream.available() > 0);
 
 
         } catch (IOException e) {
@@ -215,8 +221,8 @@ public class ClientController {
     }
 
     public String getTheEncodedMessage(String message) {
-        if(ClientController.getInstance().getCurrentUser() != null){
-            return JWT.create().withIssuer(ClientController.getInstance().getCurrentUser().getUsername()).withSubject(message).withExpiresAt(expirationDate).sign(algorithm);
+        if (getCurrentUser() != null) {
+            return JWT.create().withIssuer(getCurrentUser().getUsername()).withSubject(message).withExpiresAt(expirationDate).sign(algorithm);
         }
         return JWT.create().withIssuer("Client").withSubject(message).sign(algorithm);
     }

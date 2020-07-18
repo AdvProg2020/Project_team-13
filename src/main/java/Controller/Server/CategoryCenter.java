@@ -37,7 +37,6 @@ public class CategoryCenter {
     public void setAllCategories(ArrayList<Category> allCategories, boolean a) {
         this.allCategories = allCategories;
         Gson gson = new Gson();
-        DataBase.getInstance().updateAllCategories(gson.toJson(this.allCategories));
     }
 
 
@@ -53,7 +52,6 @@ public class CategoryCenter {
                 }
             }
         }
-
         for (Category category : allCategories) {
             if (category.getName().equals(name)) {
                 allCategories.remove(category);

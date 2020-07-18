@@ -120,6 +120,7 @@ public class AuctionCenter {
     public synchronized void createNewAuctionRequest(String message, DataOutputStream dataOutputStream) {
         RequestCenter.getIncstance().addRequest(RequestCenter.getIncstance().makeRequest("AddAuction", message));
         ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Successful", "The Auction Registered For Manager's Confirmation"), dataOutputStream);
+        System.out.println("bbbbbbbbbbbbbbbbbb123123123123123");
     }
 
     public synchronized void createAuction(Auction auction, DataOutputStream dataOutputStream) {

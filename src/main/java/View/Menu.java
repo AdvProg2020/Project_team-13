@@ -108,7 +108,6 @@ public class Menu {
     }
 
     public void setScene() {
-        this.stage = stage;
         upGridPane = new GridPane();
         menuBarGridPane = new GridPane();
         centerGridPane = new GridPane();
@@ -125,6 +124,7 @@ public class Menu {
     }
 
     public void setMenuBarGridPane() {
+        ArrayList<String> categoriesInStringForm=getCategoryName();
         menuBarGridPane.getChildren().clear();
         menuBarGridPane.getColumnConstraints().clear();
         menuBarGridPane.getRowConstraints().clear();
@@ -156,7 +156,7 @@ public class Menu {
                 }
             });
             ArrayList<MenuItem> menuItemArrayList = new ArrayList<>();
-            for (String s : getCategoryName()) {
+            for (String s : categoriesInStringForm) {
                 MenuItem menuItem = new MenuItem("       " + s);
                 menuItem.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -401,7 +401,7 @@ public class Menu {
 
 
             ArrayList<MenuItem> menuItemArrayList = new ArrayList<>();
-            for (String s : getCategoryName()) {
+            for (String s : categoriesInStringForm) {
                 MenuItem menuItem = new MenuItem("       " + s);
                 menuItem.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -586,12 +586,17 @@ public class Menu {
     }
 
     private ArrayList<String> getCategoryName() {
+        System.out.println("!11111111111aab  ");
         CategoryController.getInstance().updateAllCategories();
+        System.out.println("!2222222aab  ");
         ArrayList<Category> categories = CategoryController.getInstance().getAllCategories();
+        System.out.println("!33333333aab  ");
         ArrayList<String> categoriesNames = new ArrayList<>();
         for (Category category : categories) {
             categoriesNames.add(category.getName());
         }
+        System.out.println("!444444444aab  ");
+
         return categoriesNames;
     }
 

@@ -223,7 +223,11 @@ public class ServerMessageController {
                 System.out.println(message);
                 CartCenter.getInstance().setWage(Double.parseDouble(message));
                 DataBase.getInstance().setWagePercent();
-                ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@wage successfully changed",dataOutputStream);
+                ServerController.getInstance().sendMessageToClient("@Successful@wage successfully changed",dataOutputStream);
+            }else if(message.startsWith("@increaseCredit@")){
+                message = message.substring(16);
+                String[] details = message.split("//");
+                UserCenter.getIncstance().processIncreaseCredit(details[0], details[1], details[2], details[3], dataOutputStream);
             }
         }else{
             ServerController.getInstance().sendMessageToClient("@Error@your token is invalid", dataOutputStream);
