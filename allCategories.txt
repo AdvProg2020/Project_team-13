@@ -1,1 +1,1 @@
-[{"name":"File","features":{"Format":["TextFile","ImageFile","VideoFile","Other"]},"allProducts":[]},{"name":"Phone","features":{"color":["red","blue"]},"allProducts":[{"existInOfferRegistered":false,"productId":"@p1046","productStatus":"accepted","productName":"A50","productCompany":"samsung","sellerUsername":"seller","productCost":100.0,"costAfterOff":100.0,"productsCategory":"Phone","description":"a good phone","numberOfAvailableProducts":60,"featuresOfCategoryThatHas":{"color":"red"},"allBuyers":[],"offers":[],"imagePath":"","videoPath":"","filePath":""}]}]
+[]

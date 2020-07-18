@@ -404,7 +404,7 @@ public class UserMenuScene extends Menu {
                 addCommentButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("@increaseCredit@",  ClientController.getInstance().getCurrentUser().getUsername() + "//" + ClientController.getInstance().getCurrentUser().getPassword() +
+                        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("increaseCredit",  ClientController.getInstance().getCurrentUser().getUsername() + "//" + ClientController.getInstance().getCurrentUser().getPassword() +
                                 "//" + contentText.getText() + "//" + titleText.getText()));
                         //
                         popupwindow.hide();
