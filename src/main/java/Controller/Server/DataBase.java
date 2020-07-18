@@ -46,6 +46,15 @@ public class DataBase {
         }
     }
 
+    public synchronized void setWagePercent() {
+        try {
+            FileWriter fileWriter = new FileWriter("wage.txt");
+            fileWriter.write(String.valueOf(CartCenter.getInstance().getWage()));
+            fileWriter.close();
+        } catch (Exception e) {
+        }
+    }
+
     public synchronized void updateAllSellers(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allSellers.txt");
@@ -90,6 +99,25 @@ public class DataBase {
             System.out.println(e.getMessage());
         }
     }
+
+    public void getWagePercent() {
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader("wage.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader br = new BufferedReader(fileReader);
+        try {
+            String wage = br.readLine().trim();
+            CartCenter.getInstance().setWage(Double.parseDouble(wage));
+            br.close();
+            fileReader.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
     public synchronized void setLastProductIdFromDataBase() {
         FileReader fileReader = null;
@@ -499,17 +527,17 @@ public class DataBase {
         br = new BufferedReader(fileReader);
         try {
             String json;
-            int i=0;
+            int i = 0;
             while ((json = br.readLine()) != null) {
                 i++;
                 System.out.println("11111");
                 if (!json.isEmpty()) {
                     allJson += json + "&";
-                }else {
+                } else {
                     allJson += "[]" + "&";
                 }
             }
-            if(i==0) {
+            if (i == 0) {
                 allJson += "[]" + "&";
             }
         } catch (IOException e) {
@@ -529,17 +557,18 @@ public class DataBase {
         br = new BufferedReader(fileReader);
         try {
             String json;
-            int i=0;
+            int i = 0;
             while ((json = br.readLine()) != null) {
                 i++;
                 System.out.println("22222");
 
                 if (!json.isEmpty()) {
                     allJson += json + "&";
-                }else {
+                } else {
                     allJson += "[]" + "&";
-                }            }
-            if(i==0) {
+                }
+            }
+            if (i == 0) {
                 allJson += "[]" + "&";
             }
         } catch (IOException e) {
@@ -559,17 +588,17 @@ public class DataBase {
         br = new BufferedReader(fileReader);
         try {
             String json;
-            int i=0;
+            int i = 0;
             while ((json = br.readLine()) != null) {
                 i++;
                 System.out.println("33333");
                 if (!json.isEmpty()) {
                     allJson += json;
-                }else {
+                } else {
                     allJson += "[]";
                 }
             }
-            if(i==0) {
+            if (i == 0) {
                 allJson += "[]";
             }
             ServerController.getInstance().sendMessageToClient("@allUsers@" + allJson, dataOutputStream);

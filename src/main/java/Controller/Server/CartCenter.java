@@ -153,7 +153,7 @@ public class CartCenter {
                         sellerAndProducts += product.getProductId() + " ";
                     }
                 }
-                UserCenter.getIncstance().findSellerWithUsername(seller).setCredit(UserCenter.getIncstance().findSellerWithUsername(seller).getCredit() + cost);
+                UserCenter.getIncstance().findSellerWithUsername(seller).setCredit(UserCenter.getIncstance().findSellerWithUsername(seller).getCredit() + (cost-wage*cost/100));
                 sellerAndProducts += "\n";
                 SellLog sellLog = new SellLog(makeLogID(), new Date(), seller, customer.getUsername(), allProducts, ReceivingStatus.DeliveredToThePost, reducedPrice);
                 sellLog.setPrice(price + reducedPrice);

@@ -402,6 +402,7 @@ public class UserMenuScene extends Menu {
                 addCommentButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
+
                        popupwindow.hide();
                     }
                 });

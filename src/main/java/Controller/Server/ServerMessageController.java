@@ -222,7 +222,8 @@ public class ServerMessageController {
                 message = message.substring(9);
                 System.out.println(message);
                 CartCenter.getInstance().setWage(Double.parseDouble(message));
-                ServerController.getInstance().sendMessageToClient("@Successful@wage successfully changed",dataOutputStream);
+                DataBase.getInstance().setWagePercent();
+                ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@wage successfully changed",dataOutputStream);
             }
         }else{
             ServerController.getInstance().sendMessageToClient("@Error@your token is invalid", dataOutputStream);
