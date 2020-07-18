@@ -405,7 +405,7 @@ public class UserMenuScene extends Menu {
                     @Override
                     public void handle(MouseEvent event) {
                         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("increaseCredit",  ClientController.getInstance().getCurrentUser().getUsername() + "//" + ClientController.getInstance().getCurrentUser().getPassword() +
-                                "//" + contentText.getText() + "//" + titleText.getText()));
+                                "//" + getContent.getText() + "//" + getTitle.getText()));
                         //
                         popupwindow.hide();
                     }

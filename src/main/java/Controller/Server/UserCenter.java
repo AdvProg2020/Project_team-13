@@ -532,7 +532,7 @@ public class UserCenter {
     public void processIncreaseCredit(String userName, String passWord, String accountId, String amount, DataOutputStream dataOutputStream) {
        String token = ServerController.getInstance().handleBankConnection("get_token " + userName + " " + passWord);
        String response = ServerController.getInstance().handleBankConnection("create_receipt " + token + " " + String.valueOf(ReceiptType.WITHDRAW).toLowerCase() + " " + amount + " " +
-               accountId + " " + "-1" + " " + "No description");
+               accountId + " " + "-1" + " " + "NoDescription");
         if (response.matches("@r\\d{5}")) {
             String receiptId = response;
             String finalResponse = ServerController.getInstance().handleBankConnection("pay " + receiptId);

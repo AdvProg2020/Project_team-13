@@ -1,1 +1,1 @@
-[{"totalBuyAmount":0.0,"username":"customer","password":"123456789","firstName":"asdf","lastName":"sdf","email":"af@a.co","phoneNumber":"09369856322","type":"@Customer","allDiscountCodes":[],"credit":0.0,"historyOfTransaction":[],"imagePath":""}]
+[{"totalBuyAmount":0.0,"username":"customer","password":"123456789","firstName":"sina","lastName":"mazaheri","email":"customer@gmail.com","phoneNumber":"09120046758","type":"@Customer","allDiscountCodes":[],"credit":13500.0,"historyOfTransaction":[],"imagePath":""}]
