@@ -1,1 +1,1 @@
-[]
+[{"name":"File","features":{"Format":["TextFile","ImageFile","VideoFile","Other"]},"allProducts":[{"existInOfferRegistered":false,"productId":"@p1047","productStatus":"accepted","productName":"ali","productCompany":"af","sellerUsername":"seller","productCost":10.0,"costAfterOff":10.0,"productsCategory":"File","description":"asfd","numberOfAvailableProducts":-1,"featuresOfCategoryThatHas":{"Format":"TextFile"},"allBuyers":[],"offers":[],"imagePath":"file:src/text_file.png","videoPath":"","filePath":"C:/Users/USER/Desktop/HELLO.txt"}]}]
