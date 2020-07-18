@@ -195,10 +195,11 @@ public class CartCenter {
         }
         int amount = (int) cart.getTotalPrice();
         String token = ServerController.getInstance().handleBankConnection("get_token " + cart.getCustomerID() + " " + UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID()).getPassword());
-        String response = ServerController.getInstance().handleBankConnection("create_receipt " + token + " " + String.valueOf(ReceiptType.MOVE).toLowerCase() + " " + String.valueOf(amount) + " " +
-        accountId + " " + "@a231234@" + " " + "NoDescription");
+        String response = ServerController.getInstance().handleBankConnection("create_receipt " + token + " " + String.valueOf(ReceiptType.WITHDRAW).toLowerCase() + " " + String.valueOf(amount) + " " +
+        accountId + " " + "-1" + " " + "NoDescription");
         response = ServerController.getInstance().handleBankConnection("pay " + response);
-        if(response.equals("done successfully")){
+        response = ServerController.getInstance().handleBankConnection("processTransaction " + String.valueOf(ReceiptType.DEPOSIT).toLowerCase() + " " + amount );
+        if(response.equals("done successfully for market")){
          if (discountCode != null) {
                 DiscountCodeCenter.getIncstance().usedDiscountCode(discountCode.getDiscountCodeID(), customer.getUsername(), dataOutputStream);
             }
