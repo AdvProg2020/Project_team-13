@@ -54,7 +54,14 @@ public class DataBase {
         } catch (Exception e) {
         }
     }
-
+    public synchronized void setAtLeastCredit() {
+        try {
+            FileWriter fileWriter = new FileWriter("atLeastCredit.txt");
+            fileWriter.write(String.valueOf(CartCenter.getInstance().getAtLeastAmount()));
+            fileWriter.close();
+        } catch (Exception e) {
+        }
+    }
     public synchronized void updateAllSellers(String json) {
         try {
             FileWriter fileWriter = new FileWriter("allSellers.txt");

@@ -351,6 +351,75 @@ public class ManagerMenuScene extends Menu {
             }
         });
 
+
+
+        Button atLeastCreditAmountButton = new Button("At Least Credit");
+        atLeastCreditAmountButton.setTextAlignment(TextAlignment.CENTER);
+        atLeastCreditAmountButton.setStyle("-fx-font-size: 12 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
+        atLeastCreditAmountButton.setMinHeight(50);
+        atLeastCreditAmountButton.setMinWidth(150);
+        atLeastCreditAmountButton.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND);
+
+            }
+        });
+        atLeastCreditAmountButton.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT);
+            }
+        });
+        atLeastCreditAmountButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Stage popupwindow = new Stage();
+                GridPane gridPane = new GridPane();
+                gridPane.setStyle("-fx-background-color: Blue");
+                Button button = new Button("X");
+                button.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 25px; -fx-padding: 3,3,3,3;-fx-font-weight: bold;-fx-text-fill: Red");
+                button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        popupwindow.hide();
+                        scene.setFill(null);
+                    }
+                });
+                gridPane.add(button, 0, 0);
+                gridPane.add(new Text(""), 1, 0);
+                gridPane.setStyle("-fx-background-color: rgba(255,145,200,0.85);");
+                GridPane commentPane = new GridPane();
+                gridPane.add(commentPane, 1, 1);
+                Text titleText = new Text("At Least Amount:");
+                TextField getTitle = new TextField();
+                getTitle.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                Button addCommentButton = new Button("Change Wage");
+                addCommentButton.setStyle("-fx-background-color: #E85D9E;");
+                addCommentButton.setMinWidth(100);
+                commentPane.setVgap(10);
+                commentPane.setHgap(10);
+                addCommentButton.setTextFill(Color.WHITE);
+                commentPane.add(titleText, 0, 0);
+                commentPane.add(getTitle, 1, 0);
+                commentPane.add(addCommentButton, 1, 6);
+                addCommentButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        ClientController.getInstance().sendMessageToServer("@setAtLeastCredit@" + getTitle.getText());
+                        popupwindow.hide();
+                    }
+                });
+                Scene scene1 = new Scene(gridPane, 400, 300);
+                popupwindow.initModality(Modality.APPLICATION_MODAL);
+                popupwindow.initStyle(StageStyle.UNDECORATED);
+                popupwindow.setScene(scene1);
+                popupwindow.showAndWait();
+            }
+        });
+
+
+
         requestsButton.setOnMouseEntered(new EventHandler() {
             @Override
             public void handle(Event event) {
@@ -450,6 +519,7 @@ public class ManagerMenuScene extends Menu {
         leftMenuGridPane.add(manageProductsButton, 0, 10, 2, 2);
         leftMenuGridPane.add(createSupporterButton, 0, 12, 2, 2);
         leftMenuGridPane.add(wageButton, 0, 14, 2, 2);
+        leftMenuGridPane.add(atLeastCreditAmountButton, 0, 16, 2, 2);
         centerGridPane.add(leftMenuGridPane, 0, 1, 1, 6);
         centerGridPane.add(pageTitle, 0, 0, 1, 1);
         centerGridPane.add(userInfoGridPane, 3, 1, 2, 2);

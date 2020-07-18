@@ -171,6 +171,9 @@ public class MessageController {
                 CartController.getInstance().sendFileToCustomer(Integer.parseInt(split[0]), split[1]);
             } else if (message.startsWith("@gSPOA@")) {
                 AuctionController.getInstance().connectChatInAuctionPage(Integer.parseInt(message.substring(7)));
+            }else if (message.startsWith("@getAtLeastCredit@")) {
+                message = message.substring(18);
+                CartController.getInstance().setAtLeastCredit(Double.parseDouble(message));
             }
         }
     }

@@ -224,6 +224,14 @@ public class ServerMessageController {
                 CartCenter.getInstance().setWage(Double.parseDouble(message));
                 DataBase.getInstance().setWagePercent();
                 ServerController.getInstance().sendMessageToClient("@Successful@wage successfully changed",dataOutputStream);
+            }else if (message.startsWith("@getAtLeastCredit@")) {
+                ServerController.getInstance().sendMessageToClient("@getAtLeastCredit@"+CartCenter.getInstance().getAtLeastAmount(),dataOutputStream);
+            }else if (message.startsWith("@setAtLeastCredit@")) {
+                message = message.substring(18);
+                System.out.println(message);
+                CartCenter.getInstance().setAtLeastAmount(Double.parseDouble(message));
+                DataBase.getInstance().setAtLeastCredit();
+                ServerController.getInstance().sendMessageToClient("@Successful@wage successfully changed",dataOutputStream);
             }else if(message.startsWith("@increaseCredit@")){
                 message = message.substring(16);
                 String[] details = message.split("//");
