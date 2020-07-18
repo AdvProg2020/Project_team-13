@@ -59,7 +59,7 @@ public class UserCenter {
                                 System.out.println("\u001B[35m" + "This is test to see suction finishd" + "\u001B[0m");
                                 Cart cart = new Cart();
                                 cart.setCustomerID(user);
-                                cart.addProduct(product);
+                                cart.addProduct(product,true);
                                 CartCenter.getInstance().pay(cart);
                             }
                             break;
