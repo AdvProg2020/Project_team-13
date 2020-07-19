@@ -163,20 +163,66 @@ public class DataBase {
     }
 
     public synchronized void updateAllManagers(String json) {
+        Type type = new TypeToken<ArrayList<Manager>>(){}.getType();
+        ArrayList<Manager> allManagers = new Gson().fromJson(json, type);
         try {
-            FileWriter fileWriter = new FileWriter("allManagers.txt");
-            fileWriter.write(json);
-            fileWriter.close();
-        } catch (Exception e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
+            Connection connection = DriverManager.getConnection(url);
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM allManagers");
+            preparedStatement.execute();
+            PreparedStatement preparedStatementForInsertCustomer = connection.prepareStatement("INSERT INTO allCustomers (userName, passWord, firstName, lastName, email, phoneNumber, TYPETYPE, credit, allDiscountCodes, historyOfTransactions, totalBuyAmount)" +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            for (Manager manager : allManagers) {
+                preparedStatementForInsertCustomer.setString(1, manager.getUsername());
+                preparedStatementForInsertCustomer.setString(2, manager.getPassword());
+                preparedStatementForInsertCustomer.setString(3, manager.getFirstName());
+                preparedStatementForInsertCustomer.setString(4, manager.getLastName());
+                preparedStatementForInsertCustomer.setString(5, manager.getEmail());
+                preparedStatementForInsertCustomer.setString(6, manager.getPhoneNumber());
+                preparedStatementForInsertCustomer.setString(7, manager.getType());
+                preparedStatementForInsertCustomer.setString(8, String.valueOf(manager.getCredit()));
+                preparedStatementForInsertCustomer.setString(9, new Gson().toJson(manager.getAllDiscountCodes()));
+                preparedStatementForInsertCustomer.setString(10, new Gson().toJson(manager.getHistoryOfTransaction()));
+                preparedStatementForInsertCustomer.executeUpdate();
+            }
+            preparedStatement.close();
+            preparedStatementForInsertCustomer.close();
+            connection.close();
+        }catch (ClassNotFoundException | SQLException e){
+            e.printStackTrace();
         }
     }
 
     public void updateAllSupporter(String json) {
+        Type type = new TypeToken<ArrayList<Supporter>>(){}.getType();
+        ArrayList<Supporter> allSupporters = new Gson().fromJson(json, type);
         try {
-            FileWriter fileWriter = new FileWriter("allSupporter.txt");
-            fileWriter.write(json);
-            fileWriter.close();
-        } catch (Exception e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
+            Connection connection = DriverManager.getConnection(url);
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM allSupporters");
+            preparedStatement.execute();
+            PreparedStatement preparedStatementForInsertCustomer = connection.prepareStatement("INSERT INTO allSupporters (userName, passWord, firstName, lastName, email, phoneNumber, TYPETYPE, credit, allDiscountCodes, historyOfTransactions, totalBuyAmount)" +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            for (Supporter supporter : allSupporters) {
+                preparedStatementForInsertCustomer.setString(1, supporter.getUsername());
+                preparedStatementForInsertCustomer.setString(2, supporter.getPassword());
+                preparedStatementForInsertCustomer.setString(3, supporter.getFirstName());
+                preparedStatementForInsertCustomer.setString(4, supporter.getLastName());
+                preparedStatementForInsertCustomer.setString(5, supporter.getEmail());
+                preparedStatementForInsertCustomer.setString(6, supporter.getPhoneNumber());
+                preparedStatementForInsertCustomer.setString(7, supporter.getType());
+                preparedStatementForInsertCustomer.setString(8, String.valueOf(supporter.getCredit()));
+                preparedStatementForInsertCustomer.setString(9, new Gson().toJson(supporter.getAllDiscountCodes()));
+                preparedStatementForInsertCustomer.setString(10, new Gson().toJson(supporter.getHistoryOfTransaction()));
+                preparedStatementForInsertCustomer.executeUpdate();
+            }
+            preparedStatement.close();
+            preparedStatementForInsertCustomer.close();
+            connection.close();
+        }catch (ClassNotFoundException | SQLException e){
+            e.printStackTrace();
         }
     }
 
@@ -522,9 +568,38 @@ public class DataBase {
                 allManagers.add(manager1);
             }
             UserCenter.getIncstance().setAllManager(allManagers);
+            //
+            //
+            Statement statement3 = connection.createStatement();
+            ResultSet resultSet3 = statement3.executeQuery("SELECT * FROM allSupporters");
+            int column3 = resultSet3.getMetaData().getColumnCount();
+            ArrayList<Supporter> allSupporters = new ArrayList<>();
+            while (resultSet3.next()) {
+                String supporter = "";
+                for (int i = 1; i <= column3; i++) {
+                    supporter += resultSet3.getObject(i) + "&&";
+                }
+                String[] data4 = supporter.split("&&");
+                Supporter supporter1 = new Supporter(data4[0], data4[1], data4[2], data4[3], data4[4], data4[5], data4[7].equals("null") ? 0 : Double.parseDouble(data4[7]));
+                if(!data4[8].equals("null")){
+                    Type discountType = new TypeToken<ArrayList<DiscountCode>>(){
+                    }.getType();
+                    supporter1.setAllDiscountCodes(new Gson().fromJson(data4[8], discountType));
+                }
+                if(!data4[9].equals("null")){
+                    Type logType = new TypeToken<ArrayList<Log>>(){
+                    }.getType();
+                    supporter1.setHistoryOfTransaction(new Gson().fromJson(data4[9], logType));
+                }
+                allSupporters.add(supporter1);
+            }
+            UserCenter.getIncstance().setAllSupporter(allSupporters);
+            //
+            //
+            //
             resultSet.close();
             resultSet1.close();
-            resultSet2.close();
+            resultSet3.close();
             statement.close();
             statement1.close();
             statement2.close();
