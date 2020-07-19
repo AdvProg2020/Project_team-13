@@ -17,6 +17,10 @@ import com.google.gson.reflect.TypeToken;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -44,7 +48,7 @@ public class ServerMessageController {
         return ("@" + type + "@" + command);
     }
 
-    public void processMessage(String message, DataOutputStream dataOutputStream) {
+    public void processMessage(String message, DataOutputStream dataOutputStream, Socket socket) {
         if (TokenGenerator.getInstance().isTokenVerified(message, dataOutputStream)) {
             message = TokenGenerator.getInstance().getTheDecodedMessage(message);
             ServerController.getInstance().passTime(dataOutputStream);

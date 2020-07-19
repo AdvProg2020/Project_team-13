@@ -1,6 +1,7 @@
 package Controller.Client;
 
 import Models.DiscountCode;
+import Models.Message;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
@@ -11,6 +12,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.google.gson.Gson;
 import com.sun.xml.internal.messaging.saaj.util.Base64;
 import io.fusionauth.jwt.JWTExpiredException;
 import javafx.scene.media.MediaPlayer;
@@ -177,7 +179,13 @@ public class ClientController {
 
     public void sendMessageToServer(String message) {
         this.message = message;
-        System.out.println(message);
+//        System.out.println(message);
+//        if(currentUser==null) {
+//            message=new Gson().toJson(new Message(message,"null",""));
+//        }else {
+//            message=new Gson().toJson(new Message(message,currentUser.getUsername(),currentUser.getPassword()));
+//
+//        }
         message = getTheEncodedMessage(message);
         try {
             System.out.println("a1111111111");
