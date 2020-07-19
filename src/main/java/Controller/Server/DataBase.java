@@ -345,9 +345,25 @@ public class DataBase {
             ArrayList<Product> allProducts = new ArrayList<>();
             while (resultSet.next()) {
                 String product = "";
-                for (int i = 1; i <= column; i++) {
-                    product += resultSet.getObject(i) + "&&";
-                }
+                product += resultSet.getString("productId") + "&&";
+                product += resultSet.getString("productStatus") + "&&";
+                product += resultSet.getString("productName") + "&&";
+                product += resultSet.getString("productCompany") + "&&";
+                product += resultSet.getString("seller") + "&&";
+                product += resultSet.getString("allScores") + "&&";
+                product += resultSet.getString("productCost") + "&&";
+                product += resultSet.getString("costAfterOff") + "&&";
+                product += resultSet.getString("productsCategory") + "&&";
+                product += resultSet.getString("description") + "&&";
+                product += resultSet.getString("commentList") + "&&";
+                product += resultSet.getString("numberOfAvailableProducts") + "&&";
+                product += resultSet.getString("featuresOfCategroy") + "&&";
+                product += resultSet.getString("allBuyers") + "&&";
+                product += resultSet.getString("offers") + "&&";
+                product += resultSet.getString("imagePath") + "&&";
+                product += resultSet.getString("videoPath") + "&&";
+                product += resultSet.getString("filePath") + "&&";
+                product += resultSet.getString("existInOfferRegistered");
                 String[] data = product.split("&&");
                 Type features = new TypeToken<HashMap<String, String>>() {
                 }.getType();
@@ -484,9 +500,17 @@ public class DataBase {
             ArrayList<Customer> allCustomers = new ArrayList<>();
             while (resultSet.next()) {
                 String customer = "";
-                for (int i = 1; i <= column; i++) {
-                    customer += resultSet.getObject(i) + "&&";
-                }
+                customer += resultSet.getString("userName") + "&&";
+                customer += resultSet.getString("passWord") + "&&";
+                customer += resultSet.getString("firstName") + "&&";
+                customer += resultSet.getString("lastName") + "&&";
+                customer += resultSet.getString("email") + "&&";
+                customer += resultSet.getString("phoneNumber") + "&&";
+                customer += resultSet.getString("TypeType") + "&&";
+                customer += resultSet.getString("credit") + "&&";
+                customer += resultSet.getString("allDiscountCodes") + "&&";
+                customer += resultSet.getString("historyOfTransactions") + "&&";
+                customer += resultSet.getString("totalBuyAmount");
                 String[] data = customer.split("&&");
                 Customer customer1 = new Customer(data[0], data[1], data[2], data[3], data[4], data[5], data[7].equals("null") ? 0 : Double.parseDouble(data[7]));
                 if(!data[8].equals("null")){
@@ -513,9 +537,22 @@ public class DataBase {
             ArrayList<Seller> allSeller = new ArrayList<>();
             while (resultSet1.next()) {
                 String seller = "";
-                for (int i = 1; i <= column1; i++) {
-                    seller += resultSet1.getObject(i) + "&&";
-                }
+                seller += resultSet.getString("userName") + "&&";
+                seller += resultSet.getString("passWord") + "&&";
+                seller += resultSet.getString("firstName") + "&&";
+                seller += resultSet.getString("lastName") + "&&";
+                seller += resultSet.getString("email") + "&&";
+                seller += resultSet.getString("phoneNumber") + "&&";
+                seller += resultSet.getString("TypeType") + "&&";
+                seller += resultSet.getString("credit") + "&&";
+                seller += resultSet.getString("allDiscountCodes") + "&&";
+                seller += resultSet.getString("historyOfTransactions") + "&&";
+                seller += resultSet.getString("companyName") + "&&";
+                seller += resultSet.getString("isAccepted") + "&&";
+                seller += resultSet.getString("allProducts") + "&&";
+                seller += resultSet.getString("allRequests") + "&&";
+                seller += resultSet.getString("commercializedProduct") + "&&";
+                seller += resultSet.getString("auction");
                 String[] data1 = seller.split("&&");
                 Seller seller1 = new Seller(data1[0], data1[1], data1[2], data1[3], data1[4], data1[5], data1[7].equals("null") ? 0 : Double.parseDouble(data1[7]), data1[10], data1[11].equals("true"));
                 if(!data1[12].equals("null")){
@@ -550,9 +587,16 @@ public class DataBase {
             ArrayList<Manager> allManagers = new ArrayList<>();
             while (resultSet2.next()) {
                 String manager = "";
-                for (int i = 1; i <= column2; i++) {
-                    manager += resultSet2.getObject(i) + "&&";
-                }
+                manager += resultSet.getString("userName") + "&&";
+                manager += resultSet.getString("passWord") + "&&";
+                manager += resultSet.getString("firstName") + "&&";
+                manager += resultSet.getString("lastName") + "&&";
+                manager += resultSet.getString("email") + "&&";
+                manager += resultSet.getString("phoneNumber") + "&&";
+                manager += resultSet.getString("TypeType") + "&&";
+                manager += resultSet.getString("credit") + "&&";
+                manager += resultSet.getString("allDiscountCodes") + "&&";
+                manager += resultSet.getString("historyOfTransactions");
                 String[] data2 = manager.split("&&");
                 Manager manager1 = new Manager(data2[0], data2[1], data2[2], data2[3], data2[4], data2[5], data2[7].equals("null") ? 0 : Double.parseDouble(data2[7]));
                 if(!data2[8].equals("null")){
@@ -576,9 +620,16 @@ public class DataBase {
             ArrayList<Supporter> allSupporters = new ArrayList<>();
             while (resultSet3.next()) {
                 String supporter = "";
-                for (int i = 1; i <= column3; i++) {
-                    supporter += resultSet3.getObject(i) + "&&";
-                }
+                supporter += resultSet.getString("userName") + "&&";
+                supporter += resultSet.getString("passWord") + "&&";
+                supporter += resultSet.getString("firstName") + "&&";
+                supporter += resultSet.getString("lastName") + "&&";
+                supporter += resultSet.getString("email") + "&&";
+                supporter += resultSet.getString("phoneNumber") + "&&";
+                supporter += resultSet.getString("TypeType") + "&&";
+                supporter += resultSet.getString("credit") + "&&";
+                supporter += resultSet.getString("allDiscountCodes") + "&&";
+                supporter += resultSet.getString("historyOfTransactions");
                 String[] data4 = supporter.split("&&");
                 Supporter supporter1 = new Supporter(data4[0], data4[1], data4[2], data4[3], data4[4], data4[5], data4[7].equals("null") ? 0 : Double.parseDouble(data4[7]));
                 if(!data4[8].equals("null")){
@@ -785,12 +836,19 @@ public class DataBase {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM allCustomers");
             int column = resultSet.getMetaData().getColumnCount();
-
             while (resultSet.next()) {
                 String customer = "";
-                for (int i = 1; i <= column; i++) {
-                    customer += resultSet.getObject(i) + "&&";
-                }
+                customer += resultSet.getString("userName") + "&&";
+                customer += resultSet.getString("passWord") + "&&";
+                customer += resultSet.getString("firstName") + "&&";
+                customer += resultSet.getString("lastName") + "&&";
+                customer += resultSet.getString("email") + "&&";
+                customer += resultSet.getString("phoneNumber") + "&&";
+                customer += resultSet.getString("TypeType") + "&&";
+                customer += resultSet.getString("credit") + "&&";
+                customer += resultSet.getString("allDiscountCodes") + "&&";
+                customer += resultSet.getString("historyOfTransactions") + "&&";
+                customer += resultSet.getString("totalBuyAmount");
                 String[] data = customer.split("&&");
                 Customer customer1 = new Customer(data[0], data[1], data[2], data[3], data[4], data[5], data[7].equals("null") ? 0 : Double.parseDouble(data[7]));
                 if(!data[8].equals("null")){
@@ -814,12 +872,24 @@ public class DataBase {
             Statement statement1 = connection.createStatement();
             ResultSet resultSet1 = statement1.executeQuery("SELECT * FROM allSellers");
             int column1 = resultSet1.getMetaData().getColumnCount();
-
             while (resultSet1.next()) {
                 String seller = "";
-                for (int i = 1; i <= column1; i++) {
-                    seller += resultSet1.getObject(i) + "&&";
-                }
+                seller += resultSet.getString("userName") + "&&";
+                seller += resultSet.getString("passWord") + "&&";
+                seller += resultSet.getString("firstName") + "&&";
+                seller += resultSet.getString("lastName") + "&&";
+                seller += resultSet.getString("email") + "&&";
+                seller += resultSet.getString("phoneNumber") + "&&";
+                seller += resultSet.getString("TypeType") + "&&";
+                seller += resultSet.getString("credit") + "&&";
+                seller += resultSet.getString("allDiscountCodes") + "&&";
+                seller += resultSet.getString("historyOfTransactions") + "&&";
+                seller += resultSet.getString("companyName") + "&&";
+                seller += resultSet.getString("isAccepted") + "&&";
+                seller += resultSet.getString("allProducts") + "&&";
+                seller += resultSet.getString("allRequests") + "&&";
+                seller += resultSet.getString("commercializedProduct") + "&&";
+                seller += resultSet.getString("auction");
                 String[] data1 = seller.split("&&");
                 Seller seller1 = new Seller(data1[0], data1[1], data1[2], data1[3], data1[4], data1[5], data1[7].equals("null") ? 0 : Double.parseDouble(data1[7]), data1[10], data1[11].equals("true"));
                 if(!data1[12].equals("null")){
@@ -851,12 +921,18 @@ public class DataBase {
             Statement statement2 = connection.createStatement();
             ResultSet resultSet2 = statement2.executeQuery("SELECT * FROM allManagers");
             int column2 = resultSet2.getMetaData().getColumnCount();
-
             while (resultSet2.next()) {
                 String manager = "";
-                for (int i = 1; i <= column2; i++) {
-                    manager += resultSet2.getObject(i) + "&&";
-                }
+                manager += resultSet.getString("userName") + "&&";
+                manager += resultSet.getString("passWord") + "&&";
+                manager += resultSet.getString("firstName") + "&&";
+                manager += resultSet.getString("lastName") + "&&";
+                manager += resultSet.getString("email") + "&&";
+                manager += resultSet.getString("phoneNumber") + "&&";
+                manager += resultSet.getString("TypeType") + "&&";
+                manager += resultSet.getString("credit") + "&&";
+                manager += resultSet.getString("allDiscountCodes") + "&&";
+                manager += resultSet.getString("historyOfTransactions");
                 String[] data2 = manager.split("&&");
                 Manager manager1 = new Manager(data2[0], data2[1], data2[2], data2[3], data2[4], data2[5], data2[7].equals("null") ? 0 : Double.parseDouble(data2[7]));
                 if(!data2[8].equals("null")){
@@ -872,9 +948,45 @@ public class DataBase {
                 allManagers.add(manager1);
             }
             UserCenter.getIncstance().setAllManager(allManagers);
+            //
+            //
+            Statement statement3 = connection.createStatement();
+            ResultSet resultSet3 = statement3.executeQuery("SELECT * FROM allSupporters");
+            int column3 = resultSet3.getMetaData().getColumnCount();
+            ArrayList<Supporter> allSupporters = new ArrayList<>();
+            while (resultSet3.next()) {
+                String supporter = "";
+                supporter += resultSet.getString("userName") + "&&";
+                supporter += resultSet.getString("passWord") + "&&";
+                supporter += resultSet.getString("firstName") + "&&";
+                supporter += resultSet.getString("lastName") + "&&";
+                supporter += resultSet.getString("email") + "&&";
+                supporter += resultSet.getString("phoneNumber") + "&&";
+                supporter += resultSet.getString("TypeType") + "&&";
+                supporter += resultSet.getString("credit") + "&&";
+                supporter += resultSet.getString("allDiscountCodes") + "&&";
+                supporter += resultSet.getString("historyOfTransactions");
+                String[] data4 = supporter.split("&&");
+                Supporter supporter1 = new Supporter(data4[0], data4[1], data4[2], data4[3], data4[4], data4[5], data4[7].equals("null") ? 0 : Double.parseDouble(data4[7]));
+                if(!data4[8].equals("null")){
+                    Type discountType = new TypeToken<ArrayList<DiscountCode>>(){
+                    }.getType();
+                    supporter1.setAllDiscountCodes(new Gson().fromJson(data4[8], discountType));
+                }
+                if(!data4[9].equals("null")){
+                    Type logType = new TypeToken<ArrayList<Log>>(){
+                    }.getType();
+                    supporter1.setHistoryOfTransaction(new Gson().fromJson(data4[9], logType));
+                }
+                allSupporters.add(supporter1);
+            }
+            UserCenter.getIncstance().setAllSupporter(allSupporters);
+            //
+            //
+            //
             resultSet.close();
             resultSet1.close();
-            resultSet2.close();
+            resultSet3.close();
             statement.close();
             statement1.close();
             statement2.close();
@@ -929,9 +1041,25 @@ public class DataBase {
             int column = resultSet.getMetaData().getColumnCount();
             while (resultSet.next()) {
                 String product = "";
-                for (int i = 1; i <= column; i++) {
-                    product += resultSet.getObject(i) + "&&";
-                }
+                product += resultSet.getString("productId") + "&&";
+                product += resultSet.getString("productStatus") + "&&";
+                product += resultSet.getString("productName") + "&&";
+                product += resultSet.getString("productCompany") + "&&";
+                product += resultSet.getString("seller") + "&&";
+                product += resultSet.getString("allScores") + "&&";
+                product += resultSet.getString("productCost") + "&&";
+                product += resultSet.getString("costAfterOff") + "&&";
+                product += resultSet.getString("productsCategory") + "&&";
+                product += resultSet.getString("description") + "&&";
+                product += resultSet.getString("commentList") + "&&";
+                product += resultSet.getString("numberOfAvailableProducts") + "&&";
+                product += resultSet.getString("featuresOfCategory") + "&&";
+                product += resultSet.getString("allBuyers") + "&&";
+                product += resultSet.getString("offers") + "&&";
+                product += resultSet.getString("imagePath") + "&&";
+                product += resultSet.getString("videoPath") + "&&";
+                product += resultSet.getString("filePath") + "&&";
+                product += resultSet.getString("existInOfferRegistered");
                 String[] data = product.split("&&");
                 Type features = new TypeToken<HashMap<String, String>>() {
                 }.getType();

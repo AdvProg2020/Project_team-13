@@ -187,6 +187,7 @@ public class ClientController {
 //
 //        }
         message = getTheEncodedMessage(message);
+        System.out.println(message);
         try {
             System.out.println("a1111111111");
             dataOutputStream.writeUTF(message);
