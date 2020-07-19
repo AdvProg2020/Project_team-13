@@ -1,21 +1,23 @@
 package Controller.Server;
 
-import Models.DiscountCode;
-import Models.Offer;
+import Models.*;
 import Models.Product.Category;
 import Models.Product.Product;
-import Models.Request;
+import Models.Product.ProductStatus;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
 import Models.UserAccount.Supporter;
+import com.fasterxml.jackson.databind.type.ArrayType;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class DataBase {
@@ -198,24 +200,67 @@ public class DataBase {
     }
 
     public synchronized void setAllProductsFormDataBase() {
-        FileReader fileReader = null;
         try {
-            fileReader = new FileReader("allProducts.txt");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        BufferedReader br = new BufferedReader(fileReader);
-        try {
-            String allProductsInGsonForm = br.readLine().trim();
-            Gson gson = new Gson();
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM allProducts");
+            int column = resultSet.getMetaData().getColumnCount();
             ArrayList<Product> allProducts = new ArrayList<>();
-            Type productListType = new TypeToken<ArrayList<Product>>() {
-            }.getType();
-            allProducts = gson.fromJson(allProductsInGsonForm, productListType);
+            while (resultSet.next()) {
+                String product = "";
+                for (int i = 1; i <= column; i++) {
+                    product += resultSet.getObject(i) + "&&";
+                }
+                String[] data = product.split("&&");
+                Type features = new TypeToken<HashMap<String, String>>() {
+                }.getType();
+                Product product1 = new Product(data[3], data[0], data[2], new Gson().fromJson(data[4], Seller.class), Double.parseDouble(data[6]), data[8], data[9],
+                        Integer.parseInt(data[11]), new Gson().fromJson(data[12], features));
+                if(!data[1].equals("null")){
+                  product1.setProductStatus(ProductStatus.valueOf(data[1]));
+                }
+                if(!data[5].equals("null")){
+                  Type scoreType = new TypeToken<ArrayList<Score>>(){
+                  }.getType();
+                  product1.setAllScores(new Gson().fromJson(data[5], scoreType));
+                }
+                if(!data[6].equals("null")){
+                  product1.setProductCost(Double.parseDouble(data[6]));
+                }
+                if(!data[7].equals("null")){
+                  product1.setCostAfterOff(Double.parseDouble(data[7]));
+                }
+                if(!data[11].equals("null")){
+                    Type commentType = new TypeToken<ArrayList<Comment>>(){
+                    }.getType();
+                  product1.setCommentList(new Gson().fromJson(data[11], commentType));
+                }
+                if(!data[14].equals("null")){
+                    Type customer = new TypeToken<ArrayList<Customer>>(){
+                    }.getType();
+                    product1.setAllBuyers(new Gson().fromJson(data[14], customer));
+                }
+                if(!data[15].equals("null")){
+                   Type offerType = new TypeToken<ArrayList<Offer>>(){
+                   }.getType();
+                   product1.setOffers(new Gson().fromJson(data[15], offerType));
+                }
+                if(!data[16].equals("null")){
+                   product1.setImagePath(data[16]);
+                }
+                if(!data[17].equals("null")){
+                   product1.setVideoPath(data[17]);
+                }
+                if(!data[18].equals("null")){
+                  product1.setFilePath(data[18]);
+                }
+                allProducts.add(product1);
+            }
             ProductCenter.getInstance().setAllProducts(allProducts);
-            br.close();
-            fileReader.close();
-        } catch (IOException | NullPointerException ignored) {
+        }catch (ClassNotFoundException | SQLException e){
+            e.printStackTrace();
         }
     }
 
@@ -256,105 +301,113 @@ public class DataBase {
         }
     }
 
-    public synchronized void setAllUsersListFromDateBase() {
-        FileReader fileReader = null;
+    public void setAllUsersListFromDateBase() {
         try {
-            fileReader = new FileReader("allCustomers.txt");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        BufferedReader br = new BufferedReader(fileReader);
-        try {
-            String json;
-            while ((json = br.readLine()) != null) {
-                Gson gson = new Gson();
-                Type userListType = new TypeToken<ArrayList<Customer>>() {
-                }.getType();
-                ArrayList<Customer> allUsers = gson.fromJson(json, userListType);
-                UserCenter.getIncstance().setAllCustomer(allUsers);
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM allCustomers");
+            int column = resultSet.getMetaData().getColumnCount();
+            ArrayList<Customer> allCustomers = new ArrayList<>();
+            while (resultSet.next()) {
+                String customer = "";
+                for (int i = 1; i <= column; i++) {
+                    customer += resultSet.getObject(i) + "&&";
+                }
+                String[] data = customer.split("&&");
+                Customer customer1 = new Customer(data[0], data[1], data[2], data[3], data[4], data[5], data[7].equals("null") ? 0 : Double.parseDouble(data[7]));
+                if(!data[8].equals("null")){
+                    Type discountType = new TypeToken<ArrayList<DiscountCode>>(){
+                    }.getType();
+                    customer1.setAllDiscountCodes(new Gson().fromJson(data[8], discountType));
+                }
+                if(!data[9].equals("null")){
+                    Type logType = new TypeToken<ArrayList<Log>>(){
+                    }.getType();
+                    customer1.setHistoryOfTransaction(new Gson().fromJson(data[9], logType));
+                }
+                if(!data[10].equals("null")){
+                    customer1.setTotalBuyAmount(Double.parseDouble(data[10]));
+                }
+                allCustomers.add(customer1);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            UserCenter.getIncstance().setAllCustomer(allCustomers);
+            //
+            //
+            Statement statement1 = connection.createStatement();
+            ResultSet resultSet1 = statement1.executeQuery("SELECT * FROM allSellers");
+            int column1 = resultSet1.getMetaData().getColumnCount();
+            ArrayList<Seller> allSeller = new ArrayList<>();
+            while (resultSet1.next()) {
+                String seller = "";
+                for (int i = 1; i <= column1; i++) {
+                    seller += resultSet1.getObject(i) + "&&";
+                }
+                String[] data1 = seller.split("&&");
+                Seller seller1 = new Seller(data1[0], data1[1], data1[2], data1[3], data1[4], data1[5], data1[7].equals("null") ? 0 : Double.parseDouble(data1[7]), data1[8], data1[9].equals("true"));
+                if(!data1[10].equals("null")){
+                  Type allProducts = new TypeToken<ArrayList<Product>>(){
+                  }.getType();
+                  seller1.setAllProducts(new Gson().fromJson(data1[10], allProducts));
+                }
+                if(!data1[11].equals("null")){
+                    Type allOffers = new TypeToken<ArrayList<Offer>>(){
+                    }.getType();
+                    seller1.setAllOffer(new Gson().fromJson(data1[11], allOffers));
+                }
+                if(!data1[12].equals("null")){
+                    Type allRequest = new TypeToken<ArrayList<Request>>(){
+                    }.getType();
+                    seller1.setAllRequests(new Gson().fromJson(data1[12], allRequest));
+                }
+                if(!data1[13].equals("null")){
+                    seller1.setCommercializedProduct(data1[13]);
+                }
+                if(!data1[14].equals("null")){
+                    seller1.setAuction(new Gson().fromJson(data1[14], Auction.class));
+                }
+                allSeller.add(seller1);
             }
-        }
-        try {
-            fileReader = new FileReader("allSellers.txt");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        br = new BufferedReader(fileReader);
-        try {
-            String json;
-            while ((json = br.readLine()) != null) {
-                Gson gson = new Gson();
-                Type userListType = new TypeToken<ArrayList<Seller>>() {
-                }.getType();
-                ArrayList<Seller> allUsers = gson.fromJson(json, userListType);
-                UserCenter.getIncstance().setAllSeller(allUsers);
+            UserCenter.getIncstance().setAllSeller(allSeller);
+            //
+            //
+            Statement statement2 = connection.createStatement();
+            ResultSet resultSet2 = statement2.executeQuery("SELECT * FROM allManagers");
+            int column2 = resultSet2.getMetaData().getColumnCount();
+            ArrayList<Manager> allManagers = new ArrayList<>();
+            while (resultSet2.next()) {
+                String manager = "";
+                for (int i = 1; i <= column2; i++) {
+                    manager += resultSet2.getObject(i) + "&&";
+                }
+                String[] data2 = manager.split("&&");
+                Manager manager1 = new Manager(data2[0], data2[1], data2[2], data2[3], data2[4], data2[5], data2[7].equals("null") ? 0 : Double.parseDouble(data2[7]));
+                if(!data2[8].equals("null")){
+                    Type discountType = new TypeToken<ArrayList<DiscountCode>>(){
+                    }.getType();
+                    manager1.setAllDiscountCodes(new Gson().fromJson(data2[8], discountType));
+                }
+                if(!data2[9].equals("null")){
+                    Type logType = new TypeToken<ArrayList<Log>>(){
+                    }.getType();
+                    manager1.setHistoryOfTransaction(new Gson().fromJson(data2[9], logType));
+                }
+                allManagers.add(manager1);
             }
-        } catch (IOException e) {
+            UserCenter.getIncstance().setAllManager(allManagers);
+            resultSet.close();
+            resultSet1.close();
+            resultSet2.close();
+            statement.close();
+            statement1.close();
+            statement2.close();
+            connection.close();
+        }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        try {
-            fileReader = new FileReader("allManagers.txt");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        br = new BufferedReader(fileReader);
-        try {
-            String json;
-            while ((json = br.readLine()) != null) {
-                Gson gson = new Gson();
-                Type userListType = new TypeToken<ArrayList<Manager>>() {
-                }.getType();
-                ArrayList<Manager> allUsers = gson.fromJson(json, userListType);
-                UserCenter.getIncstance().setAllManager(allUsers);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        try {
-            fileReader = new FileReader("allSupporter.txt");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        br = new BufferedReader(fileReader);
-        try {
-            String json;
-            while ((json = br.readLine()) != null) {
-                Gson gson = new Gson();
-                Type userListType = new TypeToken<ArrayList<Supporter>>() {
-                }.getType();
-                ArrayList<Supporter> allUsers = gson.fromJson(json, userListType);
-                UserCenter.getIncstance().setAllSupporter(allUsers);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
+
 
     public synchronized void updateAllRequests(String json) {
         try {

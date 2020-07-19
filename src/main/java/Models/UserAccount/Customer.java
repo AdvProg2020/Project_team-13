@@ -113,4 +113,6 @@ public class Customer extends UserAccount {
         }
      //   ClientController.getInstance().getCurrentMenu().showMessage(showAllDiscountCodes);
     }
+
+
 }
