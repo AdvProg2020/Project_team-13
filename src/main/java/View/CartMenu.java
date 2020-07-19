@@ -381,7 +381,7 @@ public class CartMenu extends Menu {
                                             addCommentButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                                 @Override
                                                 public void handle(MouseEvent event) {
-                                                    if(checkAmountIsValid(getTitle.getText())){
+                                                    if(checkAccountIsValid(getTitle.getText())){
                                                         CartController.getInstance().payWithBankAccount(getTitle.getText());
                                                     }else {
                                                         ClientController.getInstance().getCurrentMenu().showMessage("Your input is invalid", MessageKind.ErrorWithoutBack);
@@ -646,5 +646,7 @@ public class CartMenu extends Menu {
     private boolean checkAmountIsValid(String amount){
         return amount.matches("\\d+");
     }
-
+    private boolean checkAccountIsValid(String account){
+        return account.matches("@a\\d{5}");
+    }
 }

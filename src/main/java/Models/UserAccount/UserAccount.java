@@ -136,4 +136,7 @@ public abstract class UserAccount {
 
     public abstract String viewPersonalInfo();
 
+    public void setAllDiscountCodes(ArrayList<DiscountCode> allDiscountCodes) {
+        this.allDiscountCodes = allDiscountCodes;
+    }
 }
