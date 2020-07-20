@@ -1,10 +1,7 @@
 package Controller.Server;
 
 import Controller.Client.MessageController;
-import Models.Auction;
-import Models.DiscountCode;
-import Models.Log;
-import Models.Offer;
+import Models.*;
 import Models.Product.Cart;
 import Models.Product.Category;
 import Models.Product.Product;
@@ -17,12 +14,12 @@ import com.google.gson.reflect.TypeToken;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ServerMessageController {
     private static ServerMessageController serverMessageController;
@@ -50,11 +47,27 @@ public class ServerMessageController {
 
     public void processMessage(String message, DataOutputStream dataOutputStream, Socket socket) {
         if (TokenGenerator.getInstance().isTokenVerified(message, dataOutputStream)) {
-            message = TokenGenerator.getInstance().getTheDecodedMessage(message);
             ServerController.getInstance().passTime(dataOutputStream);
+            message = TokenGenerator.getInstance().getTheDecodedMessage(message);
+            System.out.println(message);
+            long date = 0;
+                Pattern pattern = Pattern.compile("(\\d+)@.*");
+                Matcher matcher = pattern.matcher(message);
+                if(matcher.find()) {
+                    String date1 = matcher.group(1);
+                    message= message.substring(date1.length());
+                    date = Long.parseLong(date1);
+                }
+
+            if (new Date().getTime() - date > 2000 && !message.startsWith("@getTime@")) {
+                ServerController.getInstance().sendMessageToClient("@Error@InvalidMessage", dataOutputStream);
+                return;
+            }
             if (message.startsWith("@Register@")) {
                 this.message = message.substring(10);
                 UserCenter.getIncstance().createNewUserAccount(this.message, dataOutputStream);
+            } else if (message.startsWith("@getTime@")) {
+                ServerController.getInstance().sendMessageToClient("@Time@" + new Date().getTime(), dataOutputStream);
             } else if (message.startsWith("@Login@")) {
                 message = message.substring(7);
                 String[] split = message.split("/");
@@ -92,7 +105,7 @@ public class ServerMessageController {
                 RequestCenter.getIncstance().acceptRequest(message, dataOutputStream);
             } else if (message.startsWith("@editLog@")) {
                 message = message.substring(9);
-                UserCenter.getIncstance().updateLog(new Gson().fromJson(message, Log.class),dataOutputStream);
+                UserCenter.getIncstance().updateLog(new Gson().fromJson(message, Log.class), dataOutputStream);
             } else if (message.startsWith("@getAllOrders@")) {
                 ServerController.getInstance().sendMessageToClient("@setAllOrders@" + new Gson().toJson(UserCenter.getIncstance().getAllOrdersLogs()), dataOutputStream);
             } else if (message.startsWith("@AddProduct@")) {

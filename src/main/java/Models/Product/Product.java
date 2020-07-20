@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class Product {
+    private boolean existInOfferRegistered;
     //
     private String productId;
     //
@@ -51,6 +52,18 @@ public class Product {
         this.description = description;
         this.numberOfAvailableProducts = numberOfAvailableProducts;
         this.featuresOfCategoryThatHas = featuresOfCategoryThatHas;
+    }
+
+    public boolean isExistInOfferRegistered() {
+        return existInOfferRegistered;
+    }
+
+    public void setExistInOfferRegistered(boolean existInOfferRegistered) {
+        this.existInOfferRegistered = existInOfferRegistered;
+    }
+
+    public ArrayList<Offer> getOffers() {
+        return offers;
     }
 
     public Product(Product product) {
