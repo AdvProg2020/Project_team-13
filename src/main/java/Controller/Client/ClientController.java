@@ -40,6 +40,7 @@ public class ClientController {
     private Date expirationDate;
     private static Algorithm algorithm;
     private int qq = 0;
+    private long time;
 
     static {
         try {
@@ -186,8 +187,24 @@ public class ClientController {
 //            message=new Gson().toJson(new Message(message,currentUser.getUsername(),currentUser.getPassword()));
 //
 //        }
-        message = getTheEncodedMessage(message);
-        System.out.println(message);
+
+        String message1 = getTheEncodedMessage("0@getTime@");
+        try {
+            System.out.println("a1111111111");
+            dataOutputStream.writeUTF(message1);
+            dataOutputStream.flush();
+            String string = "";
+                try {
+                    string = dataInputStream.readUTF();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("check depth of: " + dataInputStream.available());
+                getMessageFromServer(string);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        message = getTheEncodedMessage(String.valueOf(time) + message);
         try {
             System.out.println("a1111111111");
             dataOutputStream.writeUTF(message);
@@ -260,5 +277,9 @@ public class ClientController {
 
     public void getAllOrdersFromServer() {
         sendMessageToServer("@getAllOrders@");
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }

@@ -2,23 +2,18 @@ package Models;
 
 public class Message {
     private String content;
-    private String userName,passWord;
+    private String date;
 
-    public Message(String content, String userName, String passWord) {
+    public Message(String content, String date) {
         this.content = content;
-        this.userName = userName;
-        this.passWord = passWord;
+        this.date = date;
     }
 
     public String getContent() {
         return content;
     }
 
-    public String getPassWord() {
-        return passWord;
-    }
-
-    public String getUserName() {
-        return userName;
+    public String getDate() {
+        return date;
     }
 }

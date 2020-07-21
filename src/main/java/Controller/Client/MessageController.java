@@ -2,6 +2,7 @@ package Controller.Client;
 
 import Models.ChatMessage;
 import Models.Log;
+import Models.Message;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
@@ -30,7 +31,6 @@ public class MessageController {
 
     public String makeMessage(String messageType, String command) {
         return "@" + messageType + "@" + command;
-
     }
 
     public void processMessage(String message) {
@@ -183,6 +183,8 @@ public class MessageController {
             }else if (message.startsWith("@getAtLeastCredit@")) {
                 message = message.substring(18);
                 CartController.getInstance().setAtLeastCredit(Double.parseDouble(message));
+            }else if(message.startsWith("@Time@")) {
+                ClientController.getInstance().setTime(Long.parseLong(message.substring(6)));
             }
         }
     }
