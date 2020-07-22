@@ -282,6 +282,44 @@ public class DataBase {
     }
 
     public synchronized void setAllCategoriesFormDataBase() {
+        //////
+        try {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM allCategories");
+            int column = resultSet.getMetaData().getColumnCount();
+            ArrayList<Category> allCategories = new ArrayList<>();
+            while (resultSet.next()) {
+                String category = "";
+                category += resultSet.getString("name") + "&&";
+                category += resultSet.getString("features") + "&&";
+                category += resultSet.getString("allProducts");
+                String[] data = category.split("&&");
+                Type features = new TypeToken<HashMap<String, ArrayList<String>>>() {
+                }.getType();
+                Category category1 = new Category(data[0], new Gson().fromJson(data[1], features));
+                if(!data[2].equals("null")){
+                    Type allProductType = new TypeToken<HashMap<String, ArrayList<String>>>() {
+                    }.getType();
+                    category1.setAllProducts(new Gson().fromJson(data[2], allProductType));
+                }
+            }
+            statement.close();
+            connection.close();
+            CategoryCenter.getIncstance().setAllCategories(allCategories, true);
+        }catch (ClassNotFoundException | SQLException e){
+            e.printStackTrace();
+        }
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
         FileReader fileReader = null;
         try {
             fileReader = new FileReader("allCategories.txt");

@@ -8,18 +8,18 @@ public class Account {
    private String firstName;
    private String lastName;
    private String username;
-   private String pasWord;
+   private String passWord;
    private double amount;
    private List<Receipt> allReceipts;
    private String companyName;
 
-    public Account(String accountId, String firstName, String lastName, String username, String pasWord, double amount) {
+    public Account(String accountId, String firstName, String lastName, String username, String passWord, double amount) {
         this.amount = amount;
         this.accountId = accountId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
-        this.pasWord = pasWord;
+        this.passWord = passWord;
         allReceipts = new ArrayList<>();
     }
 
@@ -36,8 +36,8 @@ public class Account {
         return username;
     }
 
-    public String getPasWord() {
-        return pasWord;
+    public String getPassWord() {
+        return passWord;
     }
 
     public Account(String accountId, String companyName) {

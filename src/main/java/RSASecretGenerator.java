@@ -131,7 +131,7 @@ public class RSASecretGenerator {
 
     public boolean isVerified(String message) {
         String serverMessage=getTheDecodedMessageViaRSA(message.split(" /// ")[0]);
-        String signature=getTheDecodedMessageViaRSA(message.split(" /// ")[1]);
+        String signature=message.split(" /// ")[1];
         Type keyType = new TypeToken<Key<BigInteger,BigInteger>>() {
         }.getType();
         Key<BigInteger,BigInteger> publicKey=new Gson().fromJson(message.split(" /// ")[2], keyType);
