@@ -1,1 +1,1 @@
-{"accountId":"@a231234@","amount":15196.0,"allReceipts":[],"companyName":"Market"}
+{"accountId":"@a231234@","amount":16896.0,"allReceipts":[],"companyName":"Market"}

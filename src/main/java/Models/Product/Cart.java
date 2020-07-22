@@ -125,7 +125,7 @@ public class Cart {
         for (Product product : allproduct) {
             show += product.getProductId() + " " + product.getProductName() + " " + countOfEachProduct.get(product.getProductId()) + " " + product.getProductCost() + "\n";
         }
-        //  ClientController.getInstance().getCurrentMenu().showMessage(show);
+       //   ClientController.getInstance().getCurrentMenu().showMessage(show);
     }
 
     public void setReceivingInformation(String receivingInformation) {

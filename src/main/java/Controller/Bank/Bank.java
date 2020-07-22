@@ -99,7 +99,7 @@ public class Bank {
 
     private boolean passWordIsValid(String userName, String passWord) {
         for (Account account : allAccounts) {
-            if (account.getUsername().equals(userName) && account.getPasWord().equals(passWord)) {
+            if (account.getUsername().equals(userName) && account.getPassWord().equals(passWord)) {
                 return true;
             }
         }

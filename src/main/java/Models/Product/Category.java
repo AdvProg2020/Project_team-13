@@ -22,6 +22,10 @@ public class Category {
         }
     }
 
+    public void setAllProducts(ArrayList<Product> allProducts) {
+        this.allProducts = allProducts;
+    }
+
     public HashMap<String, ArrayList<String>> getFeatures() {
         return features;
     }
