@@ -15,10 +15,8 @@ import com.google.gson.reflect.TypeToken;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.Date;
 
 public class DataBase {
     private static DataBase dataBase;
@@ -196,34 +194,34 @@ public class DataBase {
 
     public void updateAllSupporter(String json) {
         Type type = new TypeToken<ArrayList<Supporter>>(){}.getType();
-        ArrayList<Supporter> allSupporters = new Gson().fromJson(json, type);
-        try {
-            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-            final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
-            Connection connection = DriverManager.getConnection(url);
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM allSupporters");
-            preparedStatement.execute();
-            PreparedStatement preparedStatementForInsertCustomer = connection.prepareStatement("INSERT INTO allSupporters (userName, passWord, firstName, lastName, email, phoneNumber, TYPETYPE, credit, allDiscountCodes, historyOfTransactions, totalBuyAmount)" +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            for (Supporter supporter : allSupporters) {
-                preparedStatementForInsertCustomer.setString(1, supporter.getUsername());
-                preparedStatementForInsertCustomer.setString(2, supporter.getPassword());
-                preparedStatementForInsertCustomer.setString(3, supporter.getFirstName());
-                preparedStatementForInsertCustomer.setString(4, supporter.getLastName());
-                preparedStatementForInsertCustomer.setString(5, supporter.getEmail());
-                preparedStatementForInsertCustomer.setString(6, supporter.getPhoneNumber());
-                preparedStatementForInsertCustomer.setString(7, supporter.getType());
-                preparedStatementForInsertCustomer.setString(8, String.valueOf(supporter.getCredit()));
-                preparedStatementForInsertCustomer.setString(9, new Gson().toJson(supporter.getAllDiscountCodes()));
-                preparedStatementForInsertCustomer.setString(10, new Gson().toJson(supporter.getHistoryOfTransaction()));
-                preparedStatementForInsertCustomer.executeUpdate();
+            ArrayList<Supporter> allSupporters = new Gson().fromJson(json, type);
+            try {
+                Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+                final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
+                Connection connection = DriverManager.getConnection(url);
+                PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM allSupporters");
+                preparedStatement.execute();
+                PreparedStatement preparedStatementForInsertCustomer = connection.prepareStatement("INSERT INTO allSupporters (userName, passWord, firstName, lastName, email, phoneNumber, TYPETYPE, credit, allDiscountCodes, historyOfTransactions, totalBuyAmount)" +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                for (Supporter supporter : allSupporters) {
+                    preparedStatementForInsertCustomer.setString(1, supporter.getUsername());
+                    preparedStatementForInsertCustomer.setString(2, supporter.getPassword());
+                    preparedStatementForInsertCustomer.setString(3, supporter.getFirstName());
+                    preparedStatementForInsertCustomer.setString(4, supporter.getLastName());
+                    preparedStatementForInsertCustomer.setString(5, supporter.getEmail());
+                    preparedStatementForInsertCustomer.setString(6, supporter.getPhoneNumber());
+                    preparedStatementForInsertCustomer.setString(7, supporter.getType());
+                    preparedStatementForInsertCustomer.setString(8, String.valueOf(supporter.getCredit()));
+                    preparedStatementForInsertCustomer.setString(9, new Gson().toJson(supporter.getAllDiscountCodes()));
+                    preparedStatementForInsertCustomer.setString(10, new Gson().toJson(supporter.getHistoryOfTransaction()));
+                    preparedStatementForInsertCustomer.executeUpdate();
+                }
+                preparedStatement.close();
+                preparedStatementForInsertCustomer.close();
+                connection.close();
+            }catch (ClassNotFoundException | SQLException e){
+                e.printStackTrace();
             }
-            preparedStatement.close();
-            preparedStatementForInsertCustomer.close();
-            connection.close();
-        }catch (ClassNotFoundException | SQLException e){
-            e.printStackTrace();
-        }
     }
 
     public void setLastAuctionIdFromDataBase() {
@@ -282,8 +280,6 @@ public class DataBase {
     }
 
     public synchronized void setAllCategoriesFormDataBase() {
-
-        //////
         try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
             final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
@@ -302,7 +298,7 @@ public class DataBase {
                 }.getType();
                 Category category1 = new Category(data[0], new Gson().fromJson(data[1], features));
                 if(!data[2].equals("null")){
-                    Type allProductType = new TypeToken<HashMap<String, ArrayList<String>>>() {
+                    Type allProductType = new TypeToken<ArrayList<String>>() {
                     }.getType();
                     category1.setAllProducts(new Gson().fromJson(data[2], allProductType));
                 }
@@ -313,23 +309,29 @@ public class DataBase {
         }catch (ClassNotFoundException | SQLException e){
             e.printStackTrace();
         }
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
     }
 
     public synchronized void updateAllCategories(String json) {
+        Type categoryType = new TypeToken<ArrayList<Category>>(){}.getType();
+        ArrayList<Category> allCategories = new Gson().fromJson(json, categoryType);
         try {
-            FileWriter fileWriter = new FileWriter("allCategories.txt");
-            fileWriter.write(json);
-            fileWriter.close();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
+            Connection connection = DriverManager.getConnection(url);
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM allCategories");
+            preparedStatement.executeUpdate();
+            PreparedStatement preparedStatement1 = connection.prepareStatement("INSERT INTO allCategories (name, features, allProducts) VALUES (?, ?, ?)");
+            for (Category category : allCategories) {
+                preparedStatement1.setString(1, category.getName());
+                preparedStatement1.setString(2, new Gson().toJson(category.getFeatures()));
+                preparedStatement1.setString(3, new Gson().toJson(category.getAllProducts()));
+                preparedStatement1.executeUpdate();
+            }
+            preparedStatement.close();
+            preparedStatement1.close();
+            connection.close();
+        }catch (ClassNotFoundException | SQLException e){
+            e.printStackTrace();
         }
     }
 
@@ -549,6 +551,7 @@ public class DataBase {
                 seller += resultSet1.getString("companyName") + "&&";
                 seller += resultSet1.getString("isAccepted") + "&&";
                 seller += resultSet1.getString("allProducts") + "&&";
+                seller += resultSet1.getString("allOffers") + "&&";
                 seller += resultSet1.getString("allRequests") + "&&";
                 seller += resultSet1.getString("commercializedProduct") + "&&";
                 seller += resultSet1.getString("auction");
@@ -661,76 +664,120 @@ public class DataBase {
 
 
     public synchronized void updateAllRequests(String json) {
+       Type requestType = new TypeToken<ArrayList<Request>>(){}.getType();
+       ArrayList<Request> allRequests = new Gson().fromJson(json, requestType);
+       try{
+           Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+           final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
+           Connection connection = DriverManager.getConnection(url);
+           PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM allRequests");
+           preparedStatement.executeUpdate();
+           PreparedStatement preparedStatement1 = connection.prepareStatement("INSERT INTO allRequests (requestId, TypeType, status, details) VALUES (?, ?, ?, ?)");
+           for (Request request : allRequests) {
+               preparedStatement1.setString(1, request.getRequestId());
+               preparedStatement1.setString(2, String.valueOf(request.getType()));
+               preparedStatement1.setString(3, String.valueOf(request.getStatus()));
+               preparedStatement1.setString(4, request.getDetails());
+               preparedStatement1.executeUpdate();
+           }
+           preparedStatement.close();
+           preparedStatement1.close();
+           connection.close();
+       }catch (SQLException | ClassNotFoundException e){
+           e.printStackTrace();
+       }
+    }
+
+    public void setAllRequestsListFromDateBase() {
         try {
-            FileWriter fileWriter = new FileWriter("allRequests.txt");
-            fileWriter.write(json);
-            fileWriter.close();
-        } catch (Exception e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM allRequests");
+            ArrayList<Request> allRequests = new ArrayList<>();
+            while (resultSet.next()) {
+                String request = "";
+                request += resultSet.getString("requestId") + "&&";
+                request += resultSet.getString("TypeType") + "&&";
+                request += resultSet.getString("status") + "&&";
+                request += resultSet.getString("details");
+                String[] data = request.split("&&");
+                Request request1 = new Request(RequestType.valueOf(data[1]), RequestStatus.valueOf(data[2]), data[0], data[3]);
+                allRequests.add(request1);
+            }
+            statement.close();
+            connection.close();
+            RequestCenter.getIncstance().setAllRequests(allRequests);
+        }catch (ClassNotFoundException | SQLException e){
+            e.printStackTrace();
         }
     }
 
     public synchronized void updateAllDiscountCode(String json) {
-        try {
-            FileWriter fileWriter = new FileWriter("allDiscountCodes.txt");
-            fileWriter.write(json);
-            fileWriter.close();
-        } catch (Exception e) {
+        Type type = new TypeToken<ArrayList<DiscountCode>>(){}.getType();
+        ArrayList<DiscountCode> allDiscountCodes = new Gson().fromJson(json, type);
+        try{
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
+            Connection connection = DriverManager.getConnection(url);
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE * FROM allDiscountCodes");
+            preparedStatement.executeUpdate();
+            PreparedStatement preparedStatement1 = connection.prepareStatement("INSERT INTO allDiscountCodes (discountCodeId, startTime, endTime, allUserAccountsThatHaveDiscount, discountPercent, maxDiscountAmount, maxUsingTime, remainingTimesForEachCustomer) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            for (DiscountCode discountCode : allDiscountCodes) {
+                preparedStatement1.setString(1, discountCode.getDiscountCodeID());
+                preparedStatement1.setString(2, new Gson().toJson(discountCode.getStartTime()));
+                preparedStatement1.setString(3, new Gson().toJson(discountCode.getEndTime()));
+                preparedStatement1.setString(4, new Gson().toJson(discountCode.getAllUserAccountsThatHaveDiscount()));
+                preparedStatement1.setString(5, String.valueOf(discountCode.getDiscountPercent()));
+                preparedStatement1.setString(6, String.valueOf(discountCode.getMaxDiscountAmount()));
+                preparedStatement1.setString(7, new Gson().toJson(discountCode.getMaxUsingTime()));
+                preparedStatement1.setString(8, new Gson().toJson(discountCode.getRemainingTimesForEachCustomer()));
+                preparedStatement1.executeUpdate();
+            }
+            preparedStatement.close();
+            preparedStatement1.close();
+            connection.close();
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 
-    public synchronized void setAllRequestsListFromDateBase() {
-        FileReader fileReader = null;
-        try {
-            fileReader = new FileReader("allRequests.txt");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        BufferedReader br = new BufferedReader(fileReader);
-        try {
-            String json;
-            while ((json = br.readLine()) != null) {
-                Gson gson = new Gson();
-                Type requestListType = new TypeToken<ArrayList<Request>>() {
-                }.getType();
-                ArrayList<Request> allRequests = gson.fromJson(json, requestListType);
-                RequestCenter.getIncstance().setAllRequests(allRequests);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
-    public synchronized void setAllDiscountCodesListFromDateBase() {
-        FileReader fileReader = null;
+    public void setAllDiscountCodesListFromDateBase() {
         try {
-            fileReader = new FileReader("allDiscountCodes.txt");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        BufferedReader br = new BufferedReader(fileReader);
-        try {
-            String json;
-            while ((json = br.readLine()) != null) {
-                Gson gson = new Gson();
-                Type discountCodeListType = new TypeToken<ArrayList<DiscountCode>>() {
-                }.getType();
-                ArrayList<DiscountCode> allDiscountCodes = gson.fromJson(json, discountCodeListType);
-                DiscountCodeCenter.getIncstance().setAllDiscountCodes(allDiscountCodes);
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM allDiscountCodes");
+            ArrayList<DiscountCode> allDiscountCodes = new ArrayList<>();
+            while (resultSet.next()) {
+                String discountCode = "";
+                discountCode += resultSet.getString("discountCodeId") + "&&";
+                discountCode += resultSet.getString("startTime") + "&&";
+                discountCode += resultSet.getString("endTime") + "&&";
+                discountCode += resultSet.getString("allUserAccountsThatHaveDiscount") + "&&";
+                discountCode += resultSet.getString("discountPercent") + "&&";
+                discountCode += resultSet.getString("maxDiscountAmount") + "&&";
+                discountCode += resultSet.getString("maxUsingTime") + "&&";
+                discountCode += resultSet.getString("remainingTimesForEachCustomer");
+                String[] data = discountCode.split("&&");
+                Type type = new TypeToken<ArrayList<String>>(){}.getType();
+                Type type1 = new TypeToken<HashMap<String, Integer>>(){}.getType();
+                Type type2 = new TypeToken<HashMap<String, Integer>>(){}.getType();
+                DiscountCode discountCode1 = new DiscountCode(new Gson().fromJson(data[1], Date.class), new Gson().fromJson(data[2], Date.class),
+                        new Gson().fromJson(data[3], type), Integer.parseInt(data[4]), Double.parseDouble(data[5]), new Gson().fromJson(data[6], type1), new Gson().fromJson(data[7], type2));
+                if(!data[0].equals("null")){
+                    discountCode1.setDiscountCodeID(data[0]);
+                }
+                allDiscountCodes.add(discountCode1);
             }
-        } catch (IOException e) {
+            statement.close();
+            connection.close();
+            DiscountCodeCenter.getIncstance().setAllDiscountCodes(allDiscountCodes);
+        }catch (ClassNotFoundException | SQLException e){
             e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -886,6 +933,7 @@ public class DataBase {
                 seller += resultSet1.getString("companyName") + "&&";
                 seller += resultSet1.getString("isAccepted") + "&&";
                 seller += resultSet1.getString("allProducts") + "&&";
+                seller += resultSet1.getString("allOffers") + "&&";
                 seller += resultSet1.getString("allRequests") + "&&";
                 seller += resultSet1.getString("commercializedProduct") + "&&";
                 seller += resultSet1.getString("auction");
@@ -1001,31 +1049,43 @@ public class DataBase {
     }
 
     public void getAllOffersFromDataBase(DataOutputStream dataOutputStream) {
-        FileReader fileReader = null;
-        Scanner scanner;
+        ArrayList<Offer> allOffers = new ArrayList<>();
         try {
-            fileReader = new FileReader("allOffers.txt");
-        } catch (FileNotFoundException e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM allOffers");
+            while (resultSet.next()) {
+                String offer = "";
+                offer += resultSet.getString("offerId") + "&&";
+                offer += resultSet.getString("amount") + "&&";
+                offer += resultSet.getString("seller") + "&&";
+                offer += resultSet.getString("productsId") + "&&";
+                offer += resultSet.getString("startTime") + "&&";
+                offer += resultSet.getString("endTime") + "&&";
+                offer += resultSet.getString("offerStatus");
+                String[] data = offer.split("&&");
+                Type arrayList = new TypeToken<ArrayList<String>>(){}.getType();
+                Offer offer1 = new Offer(Double.parseDouble(data[1]), data[2], new Gson().fromJson(data[3], arrayList), new Gson().fromJson(data[4], Date.class), new Gson().fromJson(data[5], Date.class));
+                if(!data[0].equals("null")){
+                    offer1.setOfferId(data[0]);
+                }
+                if(!data[6].equals("null")){
+                    offer1.setOfferStatus(OfferStatus.valueOf(data[6]));
+                }
+                allOffers.add(offer1);
+            }
+            statement.close();
+            connection.close();
+            OffCenter.getInstance().setAllOffers(allOffers);
+        }catch (ClassNotFoundException | SQLException e){
             e.printStackTrace();
         }
-        scanner = new Scanner(fileReader);
-        try {
-            String json = null;
-            while (scanner.hasNextLine()) {
-                json = scanner.nextLine();
-            }
-            if (json != null) {
-                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("getAllOffers", json), dataOutputStream);
-            } else {
-                ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Error", "There is no Product"), dataOutputStream);
-            }
-        } finally {
-            try {
-                fileReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            scanner.close();
+        if(!allOffers.isEmpty()){
+            ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("getAllOffers", new Gson().toJson(allOffers)), dataOutputStream);
+        }else{
+            ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("Error", "There is no Product"), dataOutputStream);
         }
     }
 
@@ -1169,51 +1229,66 @@ public class DataBase {
     }
 
     public synchronized void updateAllOffers(String json) {
+        Type type = new TypeToken<ArrayList<Offer>>(){}.getType();
+        ArrayList<Offer> allOffers = new Gson().fromJson(json, type);
         try {
-            FileWriter fileWriter = new FileWriter("allOffers.txt");
-            fileWriter.write(json);
-            fileWriter.close();
-        } catch (IOException e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
+            Connection connection = DriverManager.getConnection(url);
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM allOffers");
+            preparedStatement.execute();
+            PreparedStatement preparedStatement1 = connection.prepareStatement("INSERT INTO allOffers (offerId, amount, seller, productsId, startTime, endTime, offerStatus) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            for (Offer offer : allOffers) {
+              preparedStatement1.setString(1, offer.getOfferId());
+              preparedStatement1.setString(2, String.valueOf(offer.getAmount()));
+              preparedStatement1.setString(3, offer.getSeller());
+              preparedStatement1.setString(4, new Gson().toJson(offer.getProducts()));
+              preparedStatement1.setString(5, new Gson().toJson(offer.getStartTime()));
+              preparedStatement1.setString(6, new Gson().toJson(offer.getEndTime()));
+              preparedStatement1.setString(7, String.valueOf(offer.getOfferStatus()));
+              preparedStatement1.executeUpdate();
+            }
+            preparedStatement.close();
+            preparedStatement1.close();
+            connection.close();
+        }catch (ClassNotFoundException | SQLException e){
             e.printStackTrace();
         }
     }
 
-    public synchronized void setAllOffersFromDatabase() {
-        FileReader fileReader = null;
-        Scanner scanner = null;
+    public void setAllOffersFromDatabase() {
         try {
-            fileReader = new FileReader("allOffers.txt");
-        } catch (FileNotFoundException e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM allOffers");
+            ArrayList<Offer> allOffers = new ArrayList<>();
+            while (resultSet.next()) {
+                String offer = "";
+                offer += resultSet.getString("offerId") + "&&";
+                offer += resultSet.getString("amount") + "&&";
+                offer += resultSet.getString("seller") + "&&";
+                offer += resultSet.getString("productsId") + "&&";
+                offer += resultSet.getString("startTime") + "&&";
+                offer += resultSet.getString("endTime") + "&&";
+                offer += resultSet.getString("offerStatus");
+                String[] data = offer.split("&&");
+                Type arrayList = new TypeToken<ArrayList<String>>(){}.getType();
+                Offer offer1 = new Offer(Double.parseDouble(data[1]), data[2], new Gson().fromJson(data[3], arrayList), new Gson().fromJson(data[4], Date.class), new Gson().fromJson(data[5], Date.class));
+                if(!data[0].equals("null")){
+                    offer1.setOfferId(data[0]);
+                }
+                if(!data[6].equals("null")){
+                    offer1.setOfferStatus(OfferStatus.valueOf(data[6]));
+                }
+                allOffers.add(offer1);
+            }
+            statement.close();
+            connection.close();
+            OffCenter.getInstance().setAllOffers(allOffers);
+        }catch (ClassNotFoundException | SQLException e){
             e.printStackTrace();
-        }
-        try {
-            scanner = new Scanner(fileReader);
-        } catch (NullPointerException nullPointer) {
-            nullPointer.getCause();
-        }
-        try {
-            String json;
-            while (scanner.hasNextLine()) {
-                String read = scanner.nextLine();
-                Gson gson = new Gson();
-                Type allOffersList = new TypeToken<ArrayList<Offer>>() {
-                }.getType();
-                ArrayList<Offer> allOffers = gson.fromJson(read, allOffersList);
-                OffCenter.getInstance().setAllOffers(allOffers);
-            }
-        } catch (NullPointerException e) {
-            e.getCause();
-        } finally {
-            try {
-                fileReader.close();
-            } catch (IOException | NullPointerException e) {
-                e.printStackTrace();
-            }
-            try {
-                scanner.close();
-            } catch (NullPointerException e) {
-                e.getCause();
-            }
         }
     }
 }
