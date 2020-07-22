@@ -1,8 +1,14 @@
+import Models.UserAccount.Manager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -83,7 +89,7 @@ public class RSASecretGenerator {
             m = (char) j;
             encrypted += m;
         }
-        return encrypted += " /// " + getTheSign(message) + " /// " + this.publicKey.toString();
+        return encrypted += " /// " + getTheSign(message) + " /// " + new Gson().toJson(this.publicKey);
     }
 
     public String getTheDecodedMessageViaRSA(String message) {
@@ -123,14 +129,19 @@ public class RSASecretGenerator {
         return sign;
     }
 
-    public boolean isVerified(String message, String signature, Key<BigInteger, BigInteger> publicKey) {
+    public boolean isVerified(String message) {
+        String serverMessage=getTheDecodedMessageViaRSA(message.split(" /// ")[0]);
+        String signature=getTheDecodedMessageViaRSA(message.split(" /// ")[1]);
+        Type keyType = new TypeToken<Key<BigInteger,BigInteger>>() {
+        }.getType();
+        Key<BigInteger,BigInteger> publicKey=new Gson().fromJson(message.split(" /// ")[2], keyType);
         String hashMessage = "";
         String expectedHashed = "";
         BigInteger e = publicKey.getKeyNum();
         BigInteger n = publicKey.getNumber();
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(message.getBytes(StandardCharsets.UTF_8));
+            md.update(serverMessage.getBytes(StandardCharsets.UTF_8));
             byte[] digest = md.digest();
             hashMessage = String.format("%064x", new BigInteger(1, digest));
         } catch (NoSuchAlgorithmException ex) {
@@ -152,9 +163,7 @@ public class RSASecretGenerator {
     public static void main(String[] args) {
         String encodedMessage = RSASecretGenerator.getInstance().getTheEncodedWithRSA("My message", RSASecretGenerator.getInstance().publicKey);
         System.out.println(encodedMessage);
-        String decodedMessage = RSASecretGenerator.getInstance().getTheDecodedMessageViaRSA(encodedMessage.split(" /// ")[0]);
-        System.out.println(decodedMessage);
-        boolean result = RSASecretGenerator.getInstance().isVerified(decodedMessage, encodedMessage.split(" /// ")[1], RSASecretGenerator.getInstance().publicKey);
+        boolean result = RSASecretGenerator.getInstance().isVerified(encodedMessage);
         System.out.println(result);
     }
 
