@@ -58,7 +58,6 @@ public class ServerMessageController {
                     message= message.substring(date1.length());
                     date = Long.parseLong(date1);
                 }
-
             if (new Date().getTime() - date > 2000 && !message.startsWith("@getTime@")) {
                 ServerController.getInstance().sendMessageToClient("@Error@InvalidMessage", dataOutputStream);
                 return;

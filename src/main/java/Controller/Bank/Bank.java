@@ -13,8 +13,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -32,6 +31,12 @@ public class Bank {
     private Algorithm algorithm;
     private Map<String, String> tokenMapper;
     private String lastReceiptId;
+    private HashMap<String, ArrayList<Long>> ipDosChecker = new HashMap<>();
+    private HashMap<Socket, String> socketIp = new HashMap<>();
+    private HashMap<DataOutputStream, Socket> socketDataOutputStreamHashMap = new HashMap<>();
+    private ArrayList<String> blackList = new ArrayList<>();
+    private HashMap<String, Long> temporaryBlackList = new HashMap<>();
+    private HashMap<String, ArrayList<Long>> errorCounterForIp = new HashMap<>();
 
     private Bank() {
         allAccounts = new ArrayList<>();
@@ -71,6 +76,7 @@ public class Bank {
             return "password do not match";
         }
         String accountId = getTheLastAccountId();
+        if (allAccounts == null) allAccounts = new ArrayList<>();
         allAccounts.add(new Account(accountId, firstName, lastName, userName, passWord, 100000000));
         updateAllAccounts(new Gson().toJson(allAccounts));
         return accountId;
@@ -81,6 +87,7 @@ public class Bank {
     }
 
     private boolean userExitsWithThisUserName(String userName) {
+        if (allAccounts == null) allAccounts = new ArrayList<>();
         for (Account account : allAccounts) {
             if (account.getUsername().equals(userName)) {
                 return true;
@@ -117,6 +124,15 @@ public class Bank {
         while (true) {
             try {
                 Socket socket = clientsServerSocket.accept();
+                InetSocketAddress sockaddr = (InetSocketAddress) socket.getRemoteSocketAddress();
+                InetAddress inaddr = sockaddr.getAddress();
+                Inet4Address in4addr = (Inet4Address) inaddr;
+                String ip4string = in4addr.toString();
+                socketIp.put(socket, ip4string);
+                if (!ipDosChecker.containsKey(socketIp.get(socket)))
+                    ipDosChecker.put(socketIp.get(socket), new ArrayList<Long>());
+                if (!errorCounterForIp.containsKey(socketIp.get(socket)))
+                    errorCounterForIp.put(socketIp.get(socket), new ArrayList<>());
                 new Thread(() -> handleClientRequests(socket)).start();
             } catch (IOException e) {
                 System.out.println("Error in Client's Acceptance ...");
@@ -140,60 +156,33 @@ public class Bank {
             try {
                 String response = "";
                 String command = dataInputStream.readUTF();
-                if (command.startsWith("create_account")) {
-                    String[] commands = command.split("\\s");
-                    if (commands.length == 6) {
-                        response = createNewAccount(commands[1], commands[2], commands[3], commands[4], commands[5]);
-                    } else {
-                        response = "invalid input";
+                long time = new Date().getTime();
+                ipDosChecker.get(socketIp.get(socket)).add(time);
+                System.out.println("               algorithm");
+                System.out.println("\u001B[35m" + time + "\u001B[0m");
+                if (checkDosAttack(socketIp.get(socket))) {
+                    if (!blackList.contains(socketIp.get(socket))) {
+                        blackList.add(socketIp.get(socket));
                     }
-                } else if (command.startsWith("get_token")) {
-                    String[] commands = command.split("\\s");
-                    if (commands.length == 3) {
-                        response = getToken(commands[1], commands[2]);
+                    response = "@Errors@" + "You are rushing take it easy little boy.";
+                    socket.close();
+                } else if (blackList.contains(socketIp.get(socket))) {
+                    response = "@Errors@" + "You are rushing take it easy little boy.";
+                    socket.close();
+                } else if (temporaryBlackList.containsKey(socketIp.get(socket))) {
+                    if (new Date().getTime() - temporaryBlackList.get(socketIp.get(socket)) > 300000) {
+                        temporaryBlackList.remove(socketIp.get(socket));
+                        errorCounterForIp.get(socketIp.get(socket)).clear();
+                        response = processMessage(command);
                     } else {
-                        response = "invalid input";
+                        response = "@Errors@You are temporary banned for " + (300000 - (new Date().getTime() - temporaryBlackList.get(socketIp.get(socket)))) + " milliseconds";
                     }
-                } else if (command.startsWith("create_receipt")) {
-                    String[] commands = command.split("\\s");
-                    if (commands.length == 7) {
-                        response = createReceipt(commands[1], commands[2], commands[3], commands[4], commands[5], commands[6]);
-                    } else {
-                        response = "invalid input";
-                    }
-                } else if (command.startsWith("get_transactions")) {
-                    String[] commands = command.split("\\s");
-                    if (commands.length == 4) {
-                        response = getTheTransactions(commands[1], commands[2], commands[3]);
-                    } else if (commands.length == 3) {
-                        response = getTheTransactions(commands[1], commands[2], "");
-                    } else {
-                        response = "invalid input";
-                    }
-                } else if (command.startsWith("pay")) {
-                    String[] commands = command.split("\\s");
-                    if (commands.length == 2) {
-                        response = pay(commands[1]);
-                    } else {
-                        response = "invalid input";
-                    }
-                } else if (command.startsWith("get_balance")) {
-                    String[] commands = command.split("\\s");
-                    if (commands.length == 2) {
-                        response = getBalance(commands[1]);
-                    } else {
-                        response = "invalid input";
-                    }
-                } else if (command.startsWith("exit")) {
-                    exit();
-                } else if (command.startsWith("processTransaction")) {
-                    String[] commands = command.split("\\s");
-                    response = processTransactionForMarket(commands[1], commands[2]);
                 } else {
-                    response = "invalid input";
+                    response = processMessage(command);
                 }
                 dataOutputStream.writeUTF(response);
                 dataOutputStream.flush();
+
             } catch (IOException e) {
                 System.out.println(e.getMessage());
                 break;
@@ -205,6 +194,102 @@ public class Bank {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean checkDosAttack(String ip) {
+        if (ipDosChecker.get(ip).size() > 10) {
+            if (ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 1) - ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 9) < 1000) {
+                System.out.println("\u001B[35m" + (ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 1) - ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 9)) + "\u001B[0m");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkBruteForce(String ip) {
+        if (errorCounterForIp.get(ip).size() > 10) {
+            if (errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 1) - errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 9) < 20000) {
+                System.out.println("\u001B[32m" + (errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 1) - errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 9)) + "\u001B[0m");
+                if (!temporaryBlackList.containsKey(ip))
+                    temporaryBlackList.put(ip, new Date().getTime());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String processMessage(String command) throws IOException {
+        String response = "";
+        long date = 0;
+        Pattern pattern = Pattern.compile("(\\d+)@.*");
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            String date1 = matcher.group(1);
+            command = command.substring(date1.length());
+            if (command.charAt(0) == '@') {
+                command = command.substring(1);
+            }
+            date = Long.parseLong(date1);
+        }
+        if (new Date().getTime() - date > 2000 && !command.startsWith("@getTime@")) {
+            return "@Errors@InvalidMessage";
+        }
+        if (command.startsWith("create_account")) {
+            String[] commands = command.split("\\s");
+            if (commands.length == 6) {
+                response = createNewAccount(commands[1], commands[2], commands[3], commands[4], commands[5]);
+            } else {
+                response = "invalid input";
+            }
+        } else if (command.startsWith("get_token")) {
+            String[] commands = command.split("\\s");
+            if (commands.length == 3) {
+                response = getToken(commands[1], commands[2]);
+            } else {
+                response = "invalid input";
+            }
+        } else if (command.startsWith("create_receipt")) {
+            String[] commands = command.split("\\s");
+            if (commands.length == 7) {
+                response = createReceipt(commands[1], commands[2], commands[3], commands[4], commands[5], commands[6]);
+            } else {
+                response = "invalid input";
+            }
+        } else if (command.startsWith("get_transactions")) {
+            String[] commands = command.split("\\s");
+            if (commands.length == 4) {
+                response = getTheTransactions(commands[1], commands[2], commands[3]);
+            } else if (commands.length == 3) {
+                response = getTheTransactions(commands[1], commands[2], "");
+            } else {
+                response = "invalid input";
+            }
+        } else if (command.startsWith("pay")) {
+            String[] commands = command.split("\\s");
+            if (commands.length == 2) {
+                response = pay(commands[1]);
+            } else {
+                response = "invalid input";
+            }
+        } else if (command.startsWith("get_balance")) {
+            String[] commands = command.split("\\s");
+            if (commands.length == 2) {
+                response = getBalance(commands[1]);
+            } else {
+                response = "invalid input";
+            }
+        } else if (command.startsWith("exit")) {
+            exit();
+        } else if (command.startsWith("processTransaction")) {
+            String[] commands = command.split("\\s");
+            response = processTransactionForMarket(commands[1], commands[2]);
+        } else if (command.startsWith("@getTime@")) {
+            response = String.valueOf(new Date().getTime());
+        } else {
+            response = "invalid input";
+        }
+        System.out.println("\u001B[35m" + response + "\u001B[0m");
+        return response;
     }
 
     private String processTransactionForMarket(String type, String amount) {

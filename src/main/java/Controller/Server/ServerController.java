@@ -80,7 +80,10 @@ public class ServerController {
     public String handleBankConnection(String data) {
         String response = null;
         try {
-            dataOutputStream.writeUTF(data);
+            dataOutputStream.writeUTF("0@@getTime@");
+            dataOutputStream.flush();
+            String time = dataInputStream.readUTF();
+            dataOutputStream.writeUTF(time + "@" + data);
             dataOutputStream.flush();
             response = dataInputStream.readUTF();
         } catch (IOException e) {
@@ -190,6 +193,7 @@ public class ServerController {
         }
         return false;
     }
+
     public boolean checkBruteForce(String ip) {
         if (errorCounterForIp.get(ip).size() > 10) {
             if (errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 1) - errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 9) < 20000) {
