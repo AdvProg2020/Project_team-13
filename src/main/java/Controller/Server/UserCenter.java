@@ -633,4 +633,8 @@ public class UserCenter {
         System.out.println("bbbbbbbbbbbbbbbb");
         ServerController.getInstance().sendMessageToClient("@Error@", dataOutputStream);
     }
+
+    public int getCountOfManager() {
+        return allManager.size();
+    }
 }

@@ -1,5 +1,6 @@
 package Controller.Bank;
 
+import Controller.Server.TokenGenerator;
 import Models.Account;
 import Models.Receipt;
 import Models.ReceiptType;
@@ -13,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.math.BigInteger;
 import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -148,10 +150,12 @@ public class Bank {
         try {
             dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            socketDataOutputStreamHashMap.put(dataOutputStream,socket);
         } catch (IOException e) {
             System.out.println("Error in Starting Connection...");
             return;
         }
+        int i= 0;
         while (true) {
             try {
                 String response = "";
@@ -160,6 +164,18 @@ public class Bank {
                 ipDosChecker.get(socketIp.get(socket)).add(time);
                 System.out.println("               algorithm");
                 System.out.println("\u001B[35m" + time + "\u001B[0m");
+                if(i==0)  {
+                    Type keyType = new TypeToken<Key<BigInteger,BigInteger>>(){}.getType();
+                    RSASecretGenerator.getInstance().setAnotherPublicKey(new Gson().fromJson(command,keyType));
+                    System.out.println("aaaaaaaaaaaa");
+                    dataOutputStream.writeUTF(new Gson().toJson(RSASecretGenerator.getInstance().getPublicKey()));
+                    dataOutputStream.flush();
+                    i++;
+                    continue;
+                }
+                command = RSASecretGenerator.getInstance().getTheDecodedMessageViaRSA(command.split(" /// ")[0]);
+                System.out.println("Receiving message from server "  + command);
+                System.out.println("aaaaaaaaaaaaa123");
                 if (checkDosAttack(socketIp.get(socket))) {
                     if (!blackList.contains(socketIp.get(socket))) {
                         blackList.add(socketIp.get(socket));
@@ -180,6 +196,25 @@ public class Bank {
                 } else {
                     response = processMessage(command);
                 }
+                if(response.startsWith("@Error")&&!temporaryBlackList.containsKey(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream)))){
+                    errorCounterForIp.get(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream))).add(new Date().getTime());
+                    if(checkBruteForce(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream)))) {
+                        try {
+                            dataOutputStream.writeUTF(response);
+                            dataOutputStream.flush();
+                            return;
+                        } catch (IOException e) {
+                            System.out.println("Error in Sending Packets...");
+                            try {
+                                dataOutputStream.close();
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+                }
+                response = RSASecretGenerator.getInstance().getTheEncodedWithRSA(response,RSASecretGenerator.getInstance().getAnotherPublicKey());
+                System.out.println("QQQQQQQQQQ");
                 dataOutputStream.writeUTF(response);
                 dataOutputStream.flush();
 
@@ -221,7 +256,8 @@ public class Bank {
     private String processMessage(String command) throws IOException {
         String response = "";
         long date = 0;
-        Pattern pattern = Pattern.compile("(\\d+)@.*");
+        System.out.println("pro fuck: " + command);
+        Pattern pattern = Pattern.compile("(\\d+)@?.*");
         Matcher matcher = pattern.matcher(command);
         if (matcher.find()) {
             String date1 = matcher.group(1);
@@ -231,7 +267,10 @@ public class Bank {
             }
             date = Long.parseLong(date1);
         }
-        if (new Date().getTime() - date > 2000 && !command.startsWith("@getTime@")) {
+        System.out.println("fukh");
+        System.out.println(date);
+        if (new Date().getTime() - date > 20000 && !command.startsWith("@getTime@")) {
+            System.out.println("fuck php");
             return "@Errors@InvalidMessage";
         }
         if (command.startsWith("create_account")) {
@@ -318,7 +357,6 @@ public class Bank {
         }
     }
 
-
     private String getToken(String userName, String passWord) {
         if (!userExitsWithThisUserName(userName)) {
             return "username is invalid";
@@ -344,7 +382,6 @@ public class Bank {
         }
         return null;
     }
-
 
     private boolean userAlreadyHasThisToken(String userName, String passWord) {
         for (String token : tokenMapper.keySet()) {
@@ -422,7 +459,6 @@ public class Bank {
 
     }
 
-
     private String getTheLastReceiptId() {
         try {
             Scanner scanner = new Scanner(new BufferedReader(new FileReader("lastReceiptId.txt")));
@@ -441,7 +477,6 @@ public class Bank {
         }
         return lastReceiptId;
     }
-
 
     private boolean isValidAccount(String accountId) {
         for (Account account : allAccounts) {

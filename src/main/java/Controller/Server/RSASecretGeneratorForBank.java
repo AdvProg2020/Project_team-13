@@ -1,4 +1,5 @@
-import Models.UserAccount.Manager;
+package Controller.Server;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -8,11 +9,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class RSASecretGenerator {
+public class RSASecretGeneratorForBank {
     private static final SecureRandom secureRandom = new SecureRandom();
     private BigInteger p;
     private BigInteger q;
@@ -23,11 +22,15 @@ public class RSASecretGenerator {
     private BigInteger rand2;
     private BigInteger rnd3;
     private final BigInteger e;
-    private static RSASecretGenerator rsaSecretGenerator;
+    private static RSASecretGeneratorForBank rsaSecretGenerator;
     private final Key<BigInteger, BigInteger> privateKey;
     private final Key<BigInteger, BigInteger> publicKey;
+    private Key<BigInteger,BigInteger> anotherPublicKey;
 
-    private RSASecretGenerator() {
+
+
+
+    private RSASecretGeneratorForBank() {
         BigInteger q1;
         BigInteger p1;
         do {
@@ -64,9 +67,9 @@ public class RSASecretGenerator {
         return x == 1;
     }
 
-    public static RSASecretGenerator getInstance() {
+    public static RSASecretGeneratorForBank getInstance() {
         if (rsaSecretGenerator == null) {
-            rsaSecretGenerator = new RSASecretGenerator();
+            rsaSecretGenerator = new RSASecretGeneratorForBank();
         }
         return rsaSecretGenerator;
     }
@@ -104,6 +107,14 @@ public class RSASecretGenerator {
             decrypted += c;
         }
         return decrypted;
+    }
+
+    public void setAnotherPublicKey(Key<BigInteger, BigInteger> anotherPublicKey) {
+        this.anotherPublicKey = anotherPublicKey;
+    }
+
+    public Key<BigInteger, BigInteger> getAnotherPublicKey() {
+        return anotherPublicKey;
     }
 
     private String getTheSign(String message) {
@@ -160,14 +171,6 @@ public class RSASecretGenerator {
     }
 
 
-    public static void main(String[] args) {
-        String encodedMessage = RSASecretGenerator.getInstance().getTheEncodedWithRSA("My message", RSASecretGenerator.getInstance().publicKey);
-        System.out.println(encodedMessage);
-        boolean result = RSASecretGenerator.getInstance().isVerified(encodedMessage);
-        System.out.println(result);
-    }
-
-
 }
 
 
@@ -192,7 +195,7 @@ class Key<E, T> {
 
     @Override
     public String toString() {
-        return "Key{" +
+        return "Controller.Bank.Key{" +
                 "keyNum=" + keyNum.toString() +
                 ", number=" + number.toString() +
                 '}';

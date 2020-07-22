@@ -180,17 +180,8 @@ public class ClientController {
 
     public void sendMessageToServer(String message) {
         this.message = message;
-//        System.out.println(message);
-//        if(currentUser==null) {
-//            message=new Gson().toJson(new Message(message,"null",""));
-//        }else {
-//            message=new Gson().toJson(new Message(message,currentUser.getUsername(),currentUser.getPassword()));
-//
-//        }
-
         String message1 = getTheEncodedMessage("0@getTime@");
         try {
-            System.out.println("a1111111111");
             dataOutputStream.writeUTF(message1);
             dataOutputStream.flush();
             String string = "";
@@ -199,29 +190,23 @@ public class ClientController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                System.out.println("check depth of: " + dataInputStream.available());
                 getMessageFromServer(string);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        message = getTheEncodedMessage(String.valueOf(time) + message);
-        try {
-            System.out.println("a1111111111");
+            message = getTheEncodedMessage(time + message);
             dataOutputStream.writeUTF(message);
             dataOutputStream.flush();
-            String string = "";
+            String string1 = "";
             do {
                 try {
-                    string = dataInputStream.readUTF();
+                    string1 = dataInputStream.readUTF();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                System.out.println("check depth of: " + dataInputStream.available());
-                getMessageFromServer(string);
+                getMessageFromServer(string1);
             } while (dataInputStream.available() > 0);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public void getMessageFromServer(String message) {

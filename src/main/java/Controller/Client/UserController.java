@@ -29,6 +29,7 @@ public class UserController {
     private HashMap<String, Socket> customerDataStreams=new HashMap<>();
     private String currentChatUser;
     private ArrayList<Log> orders = new ArrayList<>();
+    private int managerCount = 0;
 
     public HashMap<String, Socket> getCustomerDataStreams() {
         return customerDataStreams;
@@ -46,6 +47,10 @@ public class UserController {
 
     public void getAllUserFromServer() {
         ClientController.getInstance().sendMessageToServer("@getAllUsers@");
+    }
+
+    public void getCountOfManagerUsers() {
+        ClientController.getInstance().sendMessageToServer("@getManagerCount@");
     }
 
     public void setOnlineUsers(String json) {
@@ -289,5 +294,13 @@ public class UserController {
 
     public ArrayList<Log> getOrders() {
         return orders;
+    }
+
+    public void setManagersCount(int parseInt) {
+        managerCount = parseInt;
+    }
+
+    public int getManagerCount() {
+        return managerCount;
     }
 }

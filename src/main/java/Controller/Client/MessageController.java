@@ -1,5 +1,6 @@
 package Controller.Client;
 
+import Controller.Server.UserCenter;
 import Models.ChatMessage;
 import Models.Log;
 import Models.Message;
@@ -153,6 +154,9 @@ public class MessageController {
             }  else if (message.startsWith("@setAllOrders@")) {
                 message = message.substring(14);
                 UserController.getInstance().setAllOrders(message);
+            }  else if (message.startsWith("@AllManagerCount@")) {
+                message = message.substring(17);
+                UserController.getInstance().setManagersCount(Integer.parseInt(message));
             } else if (message.startsWith("@allUsers@")) {
                 message = message.substring(10);
                 String[] split = message.split("&");

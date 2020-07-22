@@ -11,6 +11,7 @@ import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import javax.xml.crypto.Data;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -114,7 +115,10 @@ public class ServerMessageController {
                 ProductCenter.getInstance().createProductRequest(product, dataOutputStream);
             } else if (message.startsWith("@getAllUsers@")) {
                 DataBase.getInstance().getAllUsersListFromDateBase(dataOutputStream);
-            } else if (message.startsWith("@deleteCustomer@")) {
+            }else if (message.startsWith("@getManagerCount@")) {
+                DataBase.getInstance().setAllUsersListFromDateBase();
+                ServerController.getInstance().sendMessageToClient("@AllManagerCount@" + UserCenter.getIncstance().getCountOfManager() ,dataOutputStream);
+            }  else if (message.startsWith("@deleteCustomer@")) {
                 UserCenter.getIncstance().removeCustomer(message.substring(16
                 ), dataOutputStream);
             } else if (message.startsWith("@deleteSeller@")) {

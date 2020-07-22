@@ -19,13 +19,13 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         ClientController.getInstance().connectToServer();
         primaryStage.setTitle("SPM.com");
-        UserController.getInstance().getAllUserFromServer();
+        UserController.getInstance().getCountOfManagerUsers();
 //        System.out.println(UserController.getInstance().getAllManagers().size());
-        if (UserController.getInstance().getAllManagers().size()>0) {
+        if (UserController.getInstance().getManagerCount()>0) {
             new MainMenu(primaryStage).execute();
-        }else {
+        } else {
             new ManagerRegisterMenu(primaryStage).execute();
         }
-        System.out.println(UserController.getInstance().getAllManagers().size());
+        System.out.println(UserController.getInstance().getManagerCount());
     }
 }

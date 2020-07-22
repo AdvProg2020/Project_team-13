@@ -1,8 +1,11 @@
 package Controller.Server;
 
-import org.omg.CORBA.LongHolder;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
+import java.lang.reflect.Type;
+import java.math.BigInteger;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +41,7 @@ public class ServerController {
         try {
             dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
             dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+            handleBankConnection("sendKey");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -79,15 +83,49 @@ public class ServerController {
 
     public String handleBankConnection(String data) {
         String response = null;
-        try {
-            dataOutputStream.writeUTF("0@@getTime@");
-            dataOutputStream.flush();
-            String time = dataInputStream.readUTF();
-            dataOutputStream.writeUTF(time + "@" + data);
-            dataOutputStream.flush();
-            response = dataInputStream.readUTF();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (data.equals("sendKey")) {
+            try {
+                data = new Gson().toJson(RSASecretGeneratorForBank.getInstance().getPublicKey());
+                dataOutputStream.writeUTF(data);
+                dataOutputStream.flush();
+                System.out.println("aaaaaaaaaaaaaaaaa");
+                response = dataInputStream.readUTF();
+                System.out.println("bbbbbbbbbbb");
+                Type keyType = new TypeToken<Key<BigInteger, BigInteger>>() {
+                }.getType();
+                RSASecretGeneratorForBank.getInstance().setAnotherPublicKey(new Gson().fromJson(response, keyType));
+                String string = RSASecretGeneratorForBank.getInstance()
+                        .getTheEncodedWithRSA("0@@getTime@",RSASecretGeneratorForBank.getInstance().getAnotherPublicKey());
+                System.out.println("ServerSideMessageSending");
+                System.out.println(string);
+                System.out.println("ServerSideMessageSending");
+                dataOutputStream.writeUTF(string);
+                dataOutputStream.flush();
+                String time = dataInputStream.readUTF();
+                time = RSASecretGeneratorForBank.getInstance().getTheDecodedMessageViaRSA(time.split(" /// ")[0]);
+                System.out.println("ServerSideMessageReceiving");
+                System.out.println(time);
+                System.out.println("ServerSideMessageReceiving");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                String string = RSASecretGeneratorForBank.getInstance()
+                        .getTheEncodedWithRSA("0@@getTime@",RSASecretGeneratorForBank.getInstance().getAnotherPublicKey());
+                dataOutputStream.writeUTF(string);
+                dataOutputStream.flush();
+                String time = dataInputStream.readUTF();
+                time = RSASecretGeneratorForBank.getInstance().getTheDecodedMessageViaRSA(time.split(" /// ")[0]);
+                String string1 = RSASecretGeneratorForBank.getInstance()
+                        .getTheEncodedWithRSA(time + "@" + data,RSASecretGeneratorForBank.getInstance().getAnotherPublicKey());
+                dataOutputStream.writeUTF(string1);
+                dataOutputStream.flush();
+                response = dataInputStream.readUTF();
+                response = RSASecretGeneratorForBank.getInstance().getTheDecodedMessageViaRSA(response.split(" /// ")[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return response;
     }
@@ -108,9 +146,9 @@ public class ServerController {
                 Inet4Address in4addr = (Inet4Address) inaddr;
                 String ip4string = in4addr.toString();
                 socketIp.put(socket, ip4string);
-                if(!ipDosChecker.containsKey(socketIp.get(socket)))
-                ipDosChecker.put(socketIp.get(socket), new ArrayList<Long>());
-                if(!errorCounterForIp.containsKey(socketIp.get(socket)))
+                if (!ipDosChecker.containsKey(socketIp.get(socket)))
+                    ipDosChecker.put(socketIp.get(socket), new ArrayList<Long>());
+                if (!errorCounterForIp.containsKey(socketIp.get(socket)))
                     errorCounterForIp.put(socketIp.get(socket), new ArrayList<>());
             } catch (IOException e) {
                 break;
@@ -145,15 +183,13 @@ public class ServerController {
     public void getMessageFromClient(Socket socket) throws IOException {
         DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-        socketDataOutputStreamHashMap.put(dataOutputStream,socket);
+        socketDataOutputStreamHashMap.put(dataOutputStream, socket);
         while (true) {
             String string;
             try {
                 string = dataInputStream.readUTF();
                 long time = new Date().getTime();
                 ipDosChecker.get(socketIp.get(socket)).add(time);
-                System.out.println("               algorithm");
-                System.out.println("\u001B[35m" +time + "\u001B[0m");
                 if (checkDosAttack(socketIp.get(socket))) {
                     if (!blackList.contains(socketIp.get(socket))) {
                         blackList.add(socketIp.get(socket));
@@ -165,14 +201,14 @@ public class ServerController {
                     sendMessageToClient("@Error@" + "You are rushing take it easy little boy.", dataOutputStream);
                     socket.close();
                 } else if (temporaryBlackList.containsKey(socketIp.get(socket))) {
-                    if(new Date().getTime()-temporaryBlackList.get(socketIp.get(socket))>300000) {
+                    if (new Date().getTime() - temporaryBlackList.get(socketIp.get(socket)) > 300000) {
                         temporaryBlackList.remove(socketIp.get(socket));
                         errorCounterForIp.get(socketIp.get(socket)).clear();
                         ServerMessageController.getInstance().processMessage(string, dataOutputStream, socket);
                     } else {
-                        sendMessageToClient("@Error@You are temporary banned for "+(300000-(new Date().getTime()-temporaryBlackList.get(socketIp.get(socket))))+" milliseconds", dataOutputStream);
+                        sendMessageToClient("@Error@You are temporary banned for " + (300000 - (new Date().getTime() - temporaryBlackList.get(socketIp.get(socket)))) + " milliseconds", dataOutputStream);
                     }
-                }  else {
+                } else {
                     ServerMessageController.getInstance().processMessage(string, dataOutputStream, socket);
                 }
             } catch (IOException e) {
@@ -198,8 +234,8 @@ public class ServerController {
         if (errorCounterForIp.get(ip).size() > 10) {
             if (errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 1) - errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 9) < 20000) {
                 System.out.println("\u001B[32m" + (errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 1) - errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 9)) + "\u001B[0m");
-                if(!temporaryBlackList.containsKey(ip))
-                temporaryBlackList.put (ip,new Date().getTime());
+                if (!temporaryBlackList.containsKey(ip))
+                    temporaryBlackList.put(ip, new Date().getTime());
                 return true;
             }
         }
@@ -208,10 +244,10 @@ public class ServerController {
 
     public void sendMessageToClient(String message, DataOutputStream dataOutputStream) {
         String codedMessage;
-        if(message.startsWith("@Error")&&!temporaryBlackList.containsKey(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream)))){
+        if (message.startsWith("@Error") && !temporaryBlackList.containsKey(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream)))) {
             errorCounterForIp.get(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream))).add(new Date().getTime());
-            if(checkBruteForce(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream)))) {
-                codedMessage = TokenGenerator.getInstance().getTheCodedMessage(dataOutputStream,"@Error@You are banned for 5 minutes.");
+            if (checkBruteForce(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream)))) {
+                codedMessage = TokenGenerator.getInstance().getTheCodedMessage(dataOutputStream, "@Error@You are banned for 5 minutes.");
                 try {
                     dataOutputStream.writeUTF(codedMessage);
                     dataOutputStream.flush();
