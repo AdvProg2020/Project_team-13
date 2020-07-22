@@ -59,7 +59,7 @@ public class UserCenter {
                                 System.out.println("\u001B[35m" + "This is test to see suction finishd" + "\u001B[0m");
                                 Cart cart = new Cart();
                                 cart.setCustomerID(user);
-                                cart.addProduct(product,true);
+                                cart.addProduct(product, true);
                                 CartCenter.getInstance().pay(cart);
                             }
                             break;
@@ -214,7 +214,11 @@ public class UserCenter {
                 DataBase.getInstance().updateAllCustomers(arrayData);
                 String accountResponse = ServerController.getInstance().handleBankConnection("create_account " + customer.getFirstName() + " " +
                         customer.getLastName() + " " + customer.getUsername() + " " + customer.getPassword() + " " + customer.getPassword());
-                ServerController.getInstance().sendMessageToClient("@Successfulrc@" + accountResponse + "&" + new Gson().toJson(customer), dataOutputStream);
+                if (accountResponse.startsWith("@Errors")) {
+                    ServerController.getInstance().sendMessageToClient("@Error@" + "Bank server error :" + accountResponse.substring(8), dataOutputStream);
+                } else {
+                    ServerController.getInstance().sendMessageToClient("@Successfulrc@" + accountResponse + "&" + new Gson().toJson(customer), dataOutputStream);
+                }
             } else {
                 ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username", dataOutputStream);
             }
@@ -228,7 +232,11 @@ public class UserCenter {
                 RequestCenter.getIncstance().addRequest(request);
                 String accountResponse = ServerController.getInstance().handleBankConnection("create_account " + seller.getFirstName() + " " +
                         seller.getLastName() + " " + seller.getUsername() + " " + seller.getPassword() + " " + seller.getPassword());
-                ServerController.getInstance().sendMessageToClient("@Successfulrs@" + accountResponse + "&" + "Register was sent to Manager for review", dataOutputStream);
+                if (accountResponse.startsWith("@Errors")) {
+                    ServerController.getInstance().sendMessageToClient("@Error@" + "Bank server error :" + accountResponse.substring(8), dataOutputStream);
+                } else {
+                    ServerController.getInstance().sendMessageToClient("@Successfulrs@" + accountResponse + "&" + "Register was sent to Manager for review", dataOutputStream);
+                }
             } else {
                 ServerController.getInstance().sendMessageToClient("@Error@There is a User With this username", dataOutputStream);
             }
@@ -550,12 +558,18 @@ public class UserCenter {
                         DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
                     }
                     ServerController.getInstance().sendMessageToClient("@Successfulcredit@" + "Your Credit Has been charged!!" + "//" + amount, dataOutputStream);
+                } else if (finalResponse.startsWith("@Errors")) {
+                    ServerController.getInstance().sendMessageToClient("@Error@" + "Bank server error :" + finalResponse.substring(8), dataOutputStream);
                 } else {
                     ServerController.getInstance().sendMessageToClient("@Error@" + finalResponse, dataOutputStream);
                 }
+            } else if (finalResponse.startsWith("@Errors")) {
+                ServerController.getInstance().sendMessageToClient("@Error@" + "Bank server error :" + finalResponse.substring(8), dataOutputStream);
             } else {
                 ServerController.getInstance().sendMessageToClient("@Error@" + finalResponse, dataOutputStream);
             }
+        } else if (response.startsWith("@Errors")) {
+            ServerController.getInstance().sendMessageToClient("@Error@" + "Bank server error :" + response.substring(8), dataOutputStream);
         } else {
             ServerController.getInstance().sendMessageToClient("@Error@" + response, dataOutputStream);
         }
@@ -575,12 +589,18 @@ public class UserCenter {
                     userAccount.setCredit(userAccount.getCredit() - Double.parseDouble(amount));
                     DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
                     ServerController.getInstance().sendMessageToClient("@decreaseCredit@" + "Your Credit Has been charged!!" + "//" + amount, dataOutputStream);
+                } else if (finalResponse.startsWith("@Errors")) {
+                    ServerController.getInstance().sendMessageToClient("@Error@" + "Bank server error :" + finalResponse.substring(8), dataOutputStream);
                 } else {
                     ServerController.getInstance().sendMessageToClient("@Error@" + finalResponse, dataOutputStream);
                 }
+            } else if (finalResponse.startsWith("@Errors")) {
+                ServerController.getInstance().sendMessageToClient("@Error@" + "Bank server error :" + finalResponse.substring(8), dataOutputStream);
             } else {
                 ServerController.getInstance().sendMessageToClient("@Error@" + finalResponse, dataOutputStream);
             }
+        } else if (response.startsWith("@Errors")) {
+            ServerController.getInstance().sendMessageToClient("@Error@" + "Bank server error :" + response.substring(8), dataOutputStream);
         } else {
             ServerController.getInstance().sendMessageToClient("@Error@" + response, dataOutputStream);
         }

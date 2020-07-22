@@ -14,7 +14,8 @@ import java.util.HashMap;
 public class CartCenter {
     private static CartCenter cartCenter;
     String lastLogId = "";
-    private double wage,atLeastAmount;
+    private double wage, atLeastAmount;
+
     public void setLastLogId(String lastLogId) {
         this.lastLogId = lastLogId;
     }
@@ -158,7 +159,7 @@ public class CartCenter {
                         sellerAndProducts += product.getProductId() + " ";
                     }
                 }
-                UserCenter.getIncstance().findSellerWithUsername(seller).setCredit(UserCenter.getIncstance().findSellerWithUsername(seller).getCredit() + (cost-wage*cost/100));
+                UserCenter.getIncstance().findSellerWithUsername(seller).setCredit(UserCenter.getIncstance().findSellerWithUsername(seller).getCredit() + (cost - wage * cost / 100));
                 sellerAndProducts += "\n";
                 SellLog sellLog = new SellLog(makeLogID(), new Date(), seller, customer.getUsername(), allProducts, ReceivingStatus.DeliveredToThePost, reducedPrice);
                 sellLog.setPrice(price + reducedPrice);
@@ -196,11 +197,11 @@ public class CartCenter {
         int amount = (int) cart.getTotalPrice();
         String token = ServerController.getInstance().handleBankConnection("get_token " + cart.getCustomerID() + " " + UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID()).getPassword());
         String response = ServerController.getInstance().handleBankConnection("create_receipt " + token + " " + String.valueOf(ReceiptType.WITHDRAW).toLowerCase() + " " + String.valueOf(amount) + " " +
-        accountId + " " + "-1" + " " + "NoDescription");
+                accountId + " " + "-1" + " " + "NoDescription");
         response = ServerController.getInstance().handleBankConnection("pay " + response);
-        response = ServerController.getInstance().handleBankConnection("processTransaction " + String.valueOf(ReceiptType.DEPOSIT).toLowerCase() + " " + amount );
-        if(response.equals("done successfully for market")){
-         if (discountCode != null) {
+        response = ServerController.getInstance().handleBankConnection("processTransaction " + String.valueOf(ReceiptType.DEPOSIT).toLowerCase() + " " + amount);
+        if (response.equals("done successfully for market")) {
+            if (discountCode != null) {
                 DiscountCodeCenter.getIncstance().usedDiscountCode(discountCode.getDiscountCodeID(), customer.getUsername(), dataOutputStream);
             }
             customer.setTotalBuyAmount(customer.getTotalBuyAmount() + price);
@@ -229,7 +230,7 @@ public class CartCenter {
                         sellerAndProducts += product.getProductId() + " ";
                     }
                 }
-                UserCenter.getIncstance().findSellerWithUsername(seller).setCredit(UserCenter.getIncstance().findSellerWithUsername(seller).getCredit() + (cost-wage*cost/100));
+                UserCenter.getIncstance().findSellerWithUsername(seller).setCredit(UserCenter.getIncstance().findSellerWithUsername(seller).getCredit() + (cost - wage * cost / 100));
                 sellerAndProducts += "\n";
                 SellLog sellLog = new SellLog(makeLogID(), new Date(), seller, customer.getUsername(), allProducts, ReceivingStatus.DeliveredToThePost, reducedPrice);
                 sellLog.setPrice(price + reducedPrice);
@@ -244,7 +245,9 @@ public class CartCenter {
             DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(DiscountCodeCenter.getIncstance().getAllDiscountCodes()));
             DataBase.getInstance().updateAllOffers(new Gson().toJson(OffCenter.getInstance().getAllOffers()));
             ServerController.getInstance().sendMessageToClient("@payed@" + new Gson().toJson(customer), dataOutputStream);
-        }else{
+        } else if (response.startsWith("@Errors")) {
+            ServerController.getInstance().sendMessageToClient("@Error@" + "Bank server error :" + response.substring(8), dataOutputStream);
+        } else {
             ServerController.getInstance().sendMessageToClient("@Error@" + "you dont have money to pay ", dataOutputStream);
         }
     }
