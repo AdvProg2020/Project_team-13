@@ -1,13 +1,11 @@
 package Controller.Server;
 
-import Controller.Client.ClientController;
-import Models.UserAccount.UserAccount;
+import org.omg.CORBA.LongHolder;
 
 import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,10 +13,16 @@ public class ServerController {
     private static ServerController serverController;
     private ServerSocket serverSocket;
     private Map<DataOutputStream, String> allClients;
-    private HashMap<String, DataOutputStream> SellerSockets=new HashMap<>();
+    private HashMap<String, DataOutputStream> SellerSockets = new HashMap<>();
     private Socket socket;
     private DataInputStream dataInputStream;
     private DataOutputStream dataOutputStream;
+    private HashMap<String, ArrayList<Long>> ipDosChecker = new HashMap<>();
+    private HashMap<Socket, String> socketIp = new HashMap<>();
+    private HashMap<DataOutputStream, Socket> socketDataOutputStreamHashMap = new HashMap<>();
+    private ArrayList<String> blackList = new ArrayList<>();
+    private HashMap<String, Long> temporaryBlackList = new HashMap<>();
+    private HashMap<String, ArrayList<Long>> errorCounterForIp = new HashMap<>();
 
     public Map<String, DataOutputStream> getSellerSockets() {
         return SellerSockets;
@@ -31,14 +35,15 @@ public class ServerController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try{
+        try {
             dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
             dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
         allClients = new HashMap<>();
     }
+
     private HashMap<String, Integer> onlineSupporters = new HashMap<>();
 
     public DataOutputStream findDataStreamWithUsername(String username) {
@@ -72,13 +77,13 @@ public class ServerController {
         ServerController.getInstance().startProcess();
     }
 
-    public String handleBankConnection(String data){
+    public String handleBankConnection(String data) {
         String response = null;
         try {
             dataOutputStream.writeUTF(data);
             dataOutputStream.flush();
             response = dataInputStream.readUTF();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return response;
@@ -95,6 +100,15 @@ public class ServerController {
             Socket socket;
             try {
                 socket = serverSocket.accept();
+                InetSocketAddress sockaddr = (InetSocketAddress) socket.getRemoteSocketAddress();
+                InetAddress inaddr = sockaddr.getAddress();
+                Inet4Address in4addr = (Inet4Address) inaddr;
+                String ip4string = in4addr.toString();
+                socketIp.put(socket, ip4string);
+                if(!ipDosChecker.containsKey(socketIp.get(socket)))
+                ipDosChecker.put(socketIp.get(socket), new ArrayList<Long>());
+                if(!errorCounterForIp.containsKey(socketIp.get(socket)))
+                    errorCounterForIp.put(socketIp.get(socket), new ArrayList<>());
             } catch (IOException e) {
                 break;
             }
@@ -125,15 +139,39 @@ public class ServerController {
     }
 
 
-
     public void getMessageFromClient(Socket socket) throws IOException {
         DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        socketDataOutputStreamHashMap.put(dataOutputStream,socket);
         while (true) {
             String string;
             try {
-                    string = dataInputStream.readUTF();
-                ServerMessageController.getInstance().processMessage(string, dataOutputStream);
+                string = dataInputStream.readUTF();
+                long time = new Date().getTime();
+                ipDosChecker.get(socketIp.get(socket)).add(time);
+                System.out.println("               algorithm");
+                System.out.println("\u001B[35m" +time + "\u001B[0m");
+                if (checkDosAttack(socketIp.get(socket))) {
+                    if (!blackList.contains(socketIp.get(socket))) {
+                        blackList.add(socketIp.get(socket));
+                    }
+                    ArrayList<Socket> blockedSockets = new ArrayList<>();
+                    sendMessageToClient("@Error@" + "You are rushing take it easy little boy.", dataOutputStream);
+                    socket.close();
+                } else if (blackList.contains(socketIp.get(socket))) {
+                    sendMessageToClient("@Error@" + "You are rushing take it easy little boy.", dataOutputStream);
+                    socket.close();
+                } else if (temporaryBlackList.containsKey(socketIp.get(socket))) {
+                    if(new Date().getTime()-temporaryBlackList.get(socketIp.get(socket))>300000) {
+                        temporaryBlackList.remove(socketIp.get(socket));
+                        errorCounterForIp.get(socketIp.get(socket)).clear();
+                        ServerMessageController.getInstance().processMessage(string, dataOutputStream, socket);
+                    } else {
+                        sendMessageToClient("@Error@You are temporary banned for "+(300000-(new Date().getTime()-temporaryBlackList.get(socketIp.get(socket))))+" milliseconds", dataOutputStream);
+                    }
+                }  else {
+                    ServerMessageController.getInstance().processMessage(string, dataOutputStream, socket);
+                }
             } catch (IOException e) {
                 System.out.println("Error in Connection...");
                 break;
@@ -143,8 +181,47 @@ public class ServerController {
         dataOutputStream.close();
     }
 
+    public boolean checkDosAttack(String ip) {
+        if (ipDosChecker.get(ip).size() > 10) {
+            if (ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 1) - ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 9) < 1000) {
+                System.out.println("\u001B[35m" + (ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 1) - ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 9)) + "\u001B[0m");
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean checkBruteForce(String ip) {
+        if (errorCounterForIp.get(ip).size() > 10) {
+            if (errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 1) - errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 9) < 20000) {
+                System.out.println("\u001B[32m" + (errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 1) - errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 9)) + "\u001B[0m");
+                if(!temporaryBlackList.containsKey(ip))
+                temporaryBlackList.put (ip,new Date().getTime());
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void sendMessageToClient(String message, DataOutputStream dataOutputStream) {
         String codedMessage;
+        if(message.startsWith("@Error")&&!temporaryBlackList.containsKey(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream)))){
+            errorCounterForIp.get(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream))).add(new Date().getTime());
+            if(checkBruteForce(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream)))) {
+                codedMessage = TokenGenerator.getInstance().getTheCodedMessage(dataOutputStream,"@Error@You are banned for 5 minutes.");
+                try {
+                    dataOutputStream.writeUTF(codedMessage);
+                    dataOutputStream.flush();
+                    return;
+                } catch (IOException e) {
+                    System.out.println("Error in Sending Packets...");
+                    try {
+                        dataOutputStream.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        }
         if (message.matches("@Login as \\w+@.*")) {
             codedMessage = TokenGenerator.getInstance().getTheToken(ServerController.getInstance().getAllClients().get(dataOutputStream), message);
         } else {
@@ -153,7 +230,6 @@ public class ServerController {
         try {
             dataOutputStream.writeUTF(codedMessage);
             dataOutputStream.flush();
-            System.out.println("cacaca");
         } catch (IOException e) {
             System.out.println("Error in Sending Packets...");
             try {

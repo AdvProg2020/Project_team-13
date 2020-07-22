@@ -11,19 +11,30 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class Product {
-
     private boolean existInOfferRegistered;
+    //
     private String productId;
+    //
     private ProductStatus productStatus;
+    //
     private String productName;
+    //
     private String productCompany;
+    //
     private String sellerUsername;
+    //
     private ArrayList<Score> allScores;
+    //
     private double productCost, costAfterOff;
+    //
     private String productsCategory;
+    //
     private String description;
+    //
     private ArrayList<Comment> commentList;
+    //
     private int numberOfAvailableProducts;
+    //
     private HashMap<String, String> featuresOfCategoryThatHas;
     private ArrayList<Customer> allBuyers = new ArrayList<>();
     private ArrayList<Offer> offers = new ArrayList<>();
@@ -41,6 +52,18 @@ public class Product {
         this.description = description;
         this.numberOfAvailableProducts = numberOfAvailableProducts;
         this.featuresOfCategoryThatHas = featuresOfCategoryThatHas;
+    }
+
+    public boolean isExistInOfferRegistered() {
+        return existInOfferRegistered;
+    }
+
+    public void setExistInOfferRegistered(boolean existInOfferRegistered) {
+        this.existInOfferRegistered = existInOfferRegistered;
+    }
+
+    public ArrayList<Offer> getOffers() {
+        return offers;
     }
 
     public Product(Product product) {
@@ -150,10 +173,6 @@ public class Product {
             commentList = new ArrayList<>();
         }
         this.commentList.add(comment);
-    }
-
-    public void setExistInOfferRegistered(boolean existInOfferRegistered) {
-        this.existInOfferRegistered = existInOfferRegistered;
     }
 
     public double getAverageScore() {
@@ -370,6 +389,14 @@ public class Product {
         }
         attributes += "ِDescriptions: " + getDescription() + "<br></html>";
         return attributes;
+    }
+
+    public void setAllScores(ArrayList<Score> allScores) {
+        this.allScores = allScores;
+    }
+
+    public void setOffers(ArrayList<Offer> offers) {
+        this.offers = offers;
     }
 
 }

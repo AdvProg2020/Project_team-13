@@ -1,6 +1,7 @@
 package Controller.Client;
 
 import Models.DiscountCode;
+import Models.Message;
 import Models.Product.Product;
 import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
@@ -11,6 +12,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.google.gson.Gson;
 import com.sun.xml.internal.messaging.saaj.util.Base64;
 import io.fusionauth.jwt.JWTExpiredException;
 import javafx.scene.media.MediaPlayer;
@@ -38,6 +40,7 @@ public class ClientController {
     private Date expirationDate;
     private static Algorithm algorithm;
     private int qq = 0;
+    private long time;
 
     static {
         try {
@@ -177,8 +180,31 @@ public class ClientController {
 
     public void sendMessageToServer(String message) {
         this.message = message;
-        System.out.println(message);
-        message = getTheEncodedMessage(message);
+//        System.out.println(message);
+//        if(currentUser==null) {
+//            message=new Gson().toJson(new Message(message,"null",""));
+//        }else {
+//            message=new Gson().toJson(new Message(message,currentUser.getUsername(),currentUser.getPassword()));
+//
+//        }
+
+        String message1 = getTheEncodedMessage("0@getTime@");
+        try {
+            System.out.println("a1111111111");
+            dataOutputStream.writeUTF(message1);
+            dataOutputStream.flush();
+            String string = "";
+                try {
+                    string = dataInputStream.readUTF();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("check depth of: " + dataInputStream.available());
+                getMessageFromServer(string);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        message = getTheEncodedMessage(String.valueOf(time) + message);
         try {
             System.out.println("a1111111111");
             dataOutputStream.writeUTF(message);
@@ -251,5 +277,9 @@ public class ClientController {
 
     public void getAllOrdersFromServer() {
         sendMessageToServer("@getAllOrders@");
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }

@@ -6,13 +6,10 @@ import Models.ReceiptType;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import io.fusionauth.jwt.JWTExpiredException;
-import io.fusionauth.jwt.JWTVerifierException;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -36,10 +33,10 @@ public class Bank {
     private Map<String, String> tokenMapper;
     private String lastReceiptId;
 
-    private Bank(){
+    private Bank() {
         allAccounts = new ArrayList<>();
         try {
-           algorithm = Algorithm.HMAC256(new String(Files.readAllBytes(Paths.get("secret.txt"))));
+            algorithm = Algorithm.HMAC256(new String(Files.readAllBytes(Paths.get("secret.txt"))));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,9 +48,9 @@ public class Bank {
         this.lastReceiptId = lastReceiptId;
     }
 
-    private static Bank getInstance(){
+    private static Bank getInstance() {
         if (bank == null) {
-            synchronized (Bank.class){
+            synchronized (Bank.class) {
                 if (bank == null) {
                     bank = new Bank();
                 }
@@ -63,14 +60,14 @@ public class Bank {
     }
 
     public static void main(String[] args) throws IOException {
-      Bank.getInstance().handleClientsConnection();
+        Bank.getInstance().handleClientsConnection();
     }
 
-    private synchronized String createNewAccount(String firstName, String lastName, String userName, String passWord, String repeatedPassword){
-        if(userExitsWithThisUserName(userName)){
+    private synchronized String createNewAccount(String firstName, String lastName, String userName, String passWord, String repeatedPassword) {
+        if (userExitsWithThisUserName(userName)) {
             return "username is not available";
         }
-        if(!passWord.equals(repeatedPassword)){
+        if (!passWord.equals(repeatedPassword)) {
             return "password do not match";
         }
         String accountId = getTheLastAccountId();
@@ -83,7 +80,7 @@ public class Bank {
         this.marketAccount = marketAccount;
     }
 
-    private boolean userExitsWithThisUserName(String userName){
+    private boolean userExitsWithThisUserName(String userName) {
         for (Account account : allAccounts) {
             if (account.getUsername().equals(userName)) {
                 return true;
@@ -93,7 +90,7 @@ public class Bank {
     }
 
 
-    private boolean passWordIsValid(String userName, String passWord){
+    private boolean passWordIsValid(String userName, String passWord) {
         for (Account account : allAccounts) {
             if (account.getUsername().equals(userName) && account.getPasWord().equals(passWord)) {
                 return true;
@@ -102,7 +99,7 @@ public class Bank {
         return false;
     }
 
-    private Account getAccountById(String accountId){
+    private Account getAccountById(String accountId) {
         for (Account account : allAccounts) {
             if (account.getAccountId().equals(accountId)) {
                 return account;
@@ -111,7 +108,7 @@ public class Bank {
         return null;
     }
 
-    private void handleClientsConnection(){
+    private void handleClientsConnection() {
         try {
             clientsServerSocket = new ServerSocket(3030);
         } catch (IOException e) {
@@ -121,7 +118,7 @@ public class Bank {
             try {
                 Socket socket = clientsServerSocket.accept();
                 new Thread(() -> handleClientRequests(socket)).start();
-            }catch (IOException e){
+            } catch (IOException e) {
                 System.out.println("Error in Client's Acceptance ...");
                 break;
             }
@@ -129,13 +126,13 @@ public class Bank {
 
     }
 
-    private void handleClientRequests(Socket socket){
+    private void handleClientRequests(Socket socket) {
         DataInputStream dataInputStream;
         DataOutputStream dataOutputStream;
         try {
             dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error in Starting Connection...");
             return;
         }
@@ -189,15 +186,15 @@ public class Bank {
                     }
                 } else if (command.startsWith("exit")) {
                     exit();
-                }else if(command.startsWith("processTransaction")){
+                } else if (command.startsWith("processTransaction")) {
                     String[] commands = command.split("\\s");
                     response = processTransactionForMarket(commands[1], commands[2]);
-                }else {
-                 response = "invalid input";
+                } else {
+                    response = "invalid input";
                 }
                 dataOutputStream.writeUTF(response);
                 dataOutputStream.flush();
-            }catch (IOException e){
+            } catch (IOException e) {
                 System.out.println(e.getMessage());
                 break;
             }
@@ -205,13 +202,13 @@ public class Bank {
         try {
             dataInputStream.close();
             dataOutputStream.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private String processTransactionForMarket(String type, String amount) {
-        switch (ReceiptType.valueOf(type.toUpperCase())){
+        switch (ReceiptType.valueOf(type.toUpperCase())) {
             case WITHDRAW:
                 marketAccount.setAmount(marketAccount.getAmount() - Double.parseDouble(amount));
                 break;
@@ -237,17 +234,17 @@ public class Bank {
     }
 
 
-    private String getToken(String userName, String passWord){
+    private String getToken(String userName, String passWord) {
         if (!userExitsWithThisUserName(userName)) {
             return "username is invalid";
         }
-        if(!passWordIsValid(userName, passWord)){
+        if (!passWordIsValid(userName, passWord)) {
             return "password is Invalid";
         }
         Account account = getAccountWithUserName(userName);
         assert account != null;
         String jwt = JWT.create().withIssuer(userName + "//" + passWord + "//" + account.getAccountId()).withExpiresAt(new Date(new Date().getTime() + 3600000)).sign(algorithm);
-        if(userAlreadyHasThisToken(userName, passWord)){
+        if (userAlreadyHasThisToken(userName, passWord)) {
             tokenMapper.remove(getTheTokenByUserNameAndPassWord(userName, passWord), userName + "//" + passWord);
         }
         tokenMapper.put(jwt, userName + "//" + passWord);
@@ -264,70 +261,70 @@ public class Bank {
     }
 
 
-    private boolean userAlreadyHasThisToken(String userName, String passWord){
+    private boolean userAlreadyHasThisToken(String userName, String passWord) {
         for (String token : tokenMapper.keySet()) {
             String[] details = tokenMapper.get(token).split("//");
-            if(details[0].equals(userName) && details[1].equals(passWord)){
+            if (details[0].equals(userName) && details[1].equals(passWord)) {
                 return true;
             }
         }
         return false;
     }
 
-    private String getTheTokenByUserNameAndPassWord(String userName, String passWord){
+    private String getTheTokenByUserNameAndPassWord(String userName, String passWord) {
         for (String token : tokenMapper.keySet()) {
             String[] details = tokenMapper.get(token).split("//");
-            if(details[0].equals(userName) && details[1].equals(passWord)){
+            if (details[0].equals(userName) && details[1].equals(passWord)) {
                 return token;
             }
         }
         return null;
     }
 
-    private String createReceipt(String token, String receiptType, String money, String sourceId, String destinationId, String description){
+    private String createReceipt(String token, String receiptType, String money, String sourceId, String destinationId, String description) {
         boolean equals1 = receiptType.equals(String.valueOf(ReceiptType.DEPOSIT).toLowerCase());
         boolean equals2 = receiptType.equals(String.valueOf(ReceiptType.WITHDRAW).toLowerCase());
         boolean equals5 = receiptType.equals(String.valueOf(ReceiptType.MOVE).toLowerCase());
-        if(!(equals1 ||
-                equals2 || equals5)){
-             return "invalid receipt type";
-         }
-         if(!money.matches("\\d+")){
-             return "invalid money";
-         }
-        if(!((sourceId.matches("@a\\d{5}") && destinationId.equals("-1") ||
-                 (sourceId.equals("-1") && destinationId.matches("@a\\d{5}")) ||
-                 (sourceId.matches("@a\\d{5}") && destinationId.matches("(@a\\d{5})|(@a231234@)") &&
-                         equals5)))){
-             return "invalid parameters passed";
-         }
-        if((!equals1 && sourceId.equals("-1") ||
-                (!equals2 && destinationId.equals("-1")))){
+        if (!(equals1 ||
+                equals2 || equals5)) {
+            return "invalid receipt type";
+        }
+        if (!money.matches("\\d+")) {
+            return "invalid money";
+        }
+        if (!((sourceId.matches("@a\\d{5}") && destinationId.equals("-1") ||
+                (sourceId.equals("-1") && destinationId.matches("@a\\d{5}")) ||
+                (sourceId.matches("@a\\d{5}") && destinationId.matches("(@a\\d{5})|(@a231234@)") &&
+                        equals5)))) {
+            return "invalid parameters passed";
+        }
+        if ((!equals1 && sourceId.equals("-1") ||
+                (!equals2 && destinationId.equals("-1")))) {
             return "account id invalid";
-         }
-         if(!equals1 && !isValidAccount(sourceId)){
-             return "source account id is invalid";
-         }
-         if(!equals2 && !isValidAccount(destinationId)){
-             return "destination account id is invalid";
-         }
-         if(sourceId.equals(destinationId)){
-             return "equal source and dest account";
-         }
+        }
+        if (!equals1 && !isValidAccount(sourceId)) {
+            return "source account id is invalid";
+        }
+        if (!equals2 && !isValidAccount(destinationId)) {
+            return "destination account id is invalid";
+        }
+        if (sourceId.equals(destinationId)) {
+            return "equal source and dest account";
+        }
 
-         Pattern pattern = Pattern.compile("\\W");
-         Matcher matcher = pattern.matcher(description);
-         if(matcher.find()){
-             return "your input contains invalid characters";
-         }
+        Pattern pattern = Pattern.compile("\\W");
+        Matcher matcher = pattern.matcher(description);
+        if (matcher.find()) {
+            return "your input contains invalid characters";
+        }
         try {
             String string = equals1 ? destinationId : sourceId;
             JWTVerifier jwtVerifier = JWT.require(algorithm).withIssuer(tokenMapper.get(token) + "//" + string).build();
             jwtVerifier.verify(token);
 
-        }catch (TokenExpiredException e){
+        } catch (TokenExpiredException e) {
             return "token is expired";
-        }catch (JWTVerificationException e){
+        } catch (JWTVerificationException e) {
             return "token is invalid";
         }
         synchronized (this) {
@@ -341,7 +338,7 @@ public class Bank {
     }
 
 
-    private String getTheLastReceiptId(){
+    private String getTheLastReceiptId() {
         try {
             Scanner scanner = new Scanner(new BufferedReader(new FileReader("lastReceiptId.txt")));
             StringBuilder stringBuilder = new StringBuilder();
@@ -354,14 +351,14 @@ public class Bank {
             PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter("lastReceiptId.txt")));
             printWriter.print(lastReceiptId);
             printWriter.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return lastReceiptId;
     }
 
 
-    private boolean isValidAccount(String accountId){
+    private boolean isValidAccount(String accountId) {
         for (Account account : allAccounts) {
             if (account.getAccountId().equals(accountId)) {
                 return true;
@@ -370,40 +367,40 @@ public class Bank {
         return false;
     }
 
-    private String getTheTransactions(String token, String type, String receiptId){
+    private String getTheTransactions(String token, String type, String receiptId) {
         Account account = getAccountWithUserName(tokenMapper.get(token).split("//")[0]);
-        try{
+        try {
             JWTVerifier jwtVerifier = JWT.require(algorithm).withIssuer(tokenMapper.get(token) + "//" + account.getAccountId()).build();
             jwtVerifier.verify(token);
-            if(!receiptId.equals("") && !isValidReceiptForThisAccount(receiptId)){
+            if (!receiptId.equals("") && !isValidReceiptForThisAccount(receiptId)) {
                 throw new NoSuchReceiptException();
             }
-        }catch (TokenExpiredException e){
+        } catch (TokenExpiredException e) {
             return "token expired";
-        }catch (JWTVerificationException e){
+        } catch (JWTVerificationException e) {
             return "token is invalid";
-        }catch (NoSuchReceiptException e){
+        } catch (NoSuchReceiptException e) {
             return "invalid receipt id";
         }
         if (!receiptId.equals("")) {
             return new Gson().toJson(getReceiptById(receiptId));
         }
-        if(type.equals("*")){
-          return new Gson().toJson(account.getAllReceipts()).replace("[{", "{").replace("}]", "}").replace("},{", "}*{");
-        }else if(type.equals("-")){
+        if (type.equals("*")) {
+            return new Gson().toJson(account.getAllReceipts()).replace("[{", "{").replace("}]", "}").replace("},{", "}*{");
+        } else if (type.equals("-")) {
             return new Gson().toJson(getAllTransactionsThatYourAccountIsSource(account.getAccountId())).replace("[{", "{").replace("}]", "}").replace("},{", "}*{");
-        }else if(type.equals("+")){
+        } else if (type.equals("+")) {
             return new Gson().toJson(getAllTransactionsThatYourAccountIsDestination(account.getAccountId())).replace("[{", "{").replace("}]", "}").replace("},{", "}*{");
         }
         return "invalid input";
     }
 
 
-    private List<Receipt> getAllTransactionsThatYourAccountIsDestination(String accountId){
+    private List<Receipt> getAllTransactionsThatYourAccountIsDestination(String accountId) {
         List<Receipt> allReceipt = new ArrayList<>();
         for (Account account : allAccounts) {
             for (Receipt receipt : account.getAllReceipts()) {
-                if(receipt.getDestinationId().equals(accountId)) {
+                if (receipt.getDestinationId().equals(accountId)) {
                     allReceipt.add(receipt);
                 }
             }
@@ -413,11 +410,11 @@ public class Bank {
     }
 
 
-    private List<Receipt>  getAllTransactionsThatYourAccountIsSource(String accountId){
+    private List<Receipt> getAllTransactionsThatYourAccountIsSource(String accountId) {
         List<Receipt> allReceipt = new ArrayList<>();
         for (Account account : allAccounts) {
             for (Receipt receipt : account.getAllReceipts()) {
-                if(receipt.getSourceId().equals(accountId)) {
+                if (receipt.getSourceId().equals(accountId)) {
                     allReceipt.add(receipt);
                 }
             }
@@ -430,7 +427,7 @@ public class Bank {
     private Receipt getReceiptById(String receiptId) {
         for (Account account : allAccounts) {
             for (Receipt receipt : account.getAllReceipts()) {
-                if(receipt.getReceiptId().equals(receiptId)){
+                if (receipt.getReceiptId().equals(receiptId)) {
                     return receipt;
                 }
             }
@@ -451,20 +448,20 @@ public class Bank {
     }
 
 
-    private synchronized String pay(String receiptId){
+    private synchronized String pay(String receiptId) {
         if (!isValidReceiptForThisAccount(receiptId)) {
             return "invalid receipt id";
         }
-        if(!isValidAccount(getReceiptById(receiptId).getSourceId()) && !isValidAccount(Objects.requireNonNull(getReceiptById(receiptId)).getDestinationId())){
+        if (!isValidAccount(getReceiptById(receiptId).getSourceId()) && !isValidAccount(Objects.requireNonNull(getReceiptById(receiptId)).getDestinationId())) {
             return "invalid account id";
         }
-        if(Objects.requireNonNull(getReceiptById(receiptId)).getPaid().equals("1")){
+        if (Objects.requireNonNull(getReceiptById(receiptId)).getPaid().equals("1")) {
             return "receipt is paid before";
         }
-        if(!getReceiptById(receiptId).getReceiptType().equals(ReceiptType.DEPOSIT) && Objects.requireNonNull(getReceiptById(receiptId)).getMoney()> Objects.requireNonNull(getAccountById(Objects.requireNonNull(getReceiptById(receiptId)).getSourceId())).getAmount()){
+        if (!getReceiptById(receiptId).getReceiptType().equals(ReceiptType.DEPOSIT) && Objects.requireNonNull(getReceiptById(receiptId)).getMoney() > Objects.requireNonNull(getAccountById(Objects.requireNonNull(getReceiptById(receiptId)).getSourceId())).getAmount()) {
             return "source account does not have enough money";
         }
-        switch (Objects.requireNonNull(getReceiptById(receiptId)).getReceiptType()){
+        switch (Objects.requireNonNull(getReceiptById(receiptId)).getReceiptType()) {
             case MOVE:
                 Objects.requireNonNull(getAccountById(getReceiptById(receiptId).getSourceId())).setAmount(Objects.requireNonNull(getAccountById(getReceiptById(receiptId).getSourceId())).getAmount() - getReceiptById(receiptId).getMoney());
                 Objects.requireNonNull(getAccountById(Objects.requireNonNull(getReceiptById(receiptId)).getDestinationId())).setAmount(Objects.requireNonNull(getAccountById(Objects.requireNonNull(getReceiptById(receiptId)).getDestinationId())).getAmount() + getReceiptById(receiptId).getMoney());
@@ -484,9 +481,9 @@ public class Bank {
         return "done successfully";
     }
 
-    private String getBalance(String token){
+    private String getBalance(String token) {
         Account account = getAccountWithUserName(tokenMapper.get(token).split("//")[0]);
-        try{
+        try {
             JWTVerifier jwtVerifier = null;
             if (account != null) {
                 jwtVerifier = JWT.require(algorithm).withIssuer(tokenMapper.get(token) + "//" + account.getAccountId()).build();
@@ -494,9 +491,9 @@ public class Bank {
             if (jwtVerifier != null) {
                 jwtVerifier.verify(token);
             }
-        }catch (TokenExpiredException e){
+        } catch (TokenExpiredException e) {
             return "token expired";
-        }catch (JWTVerificationException | NullPointerException e){
+        } catch (JWTVerificationException | NullPointerException e) {
             return "token is invalid";
         }
         assert account != null;
@@ -504,10 +501,9 @@ public class Bank {
     }
 
 
-    private void exit() throws IOException{
+    private void exit() throws IOException {
         throw new IOException("Connection is Closed...");
     }
-
 
 
     private void setAllAccounts() {
@@ -528,7 +524,7 @@ public class Bank {
             }
             setMarketAccount(new Gson().fromJson(String.valueOf(stringBuilder1), Account.class));
             scanner1.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error in Database Connection...");
         }
     }
@@ -550,7 +546,7 @@ public class Bank {
             PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter("lastAccountId.txt")));
             printWriter.print(lastAccountId);
             printWriter.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return lastAccountId;
@@ -560,7 +556,7 @@ public class Bank {
         this.lastAccountId = lastAccountId;
     }
 
-    private void updateAllAccounts(String json){
+    private void updateAllAccounts(String json) {
         PrintWriter printWriter = null;
         try {
             printWriter = new PrintWriter(new BufferedWriter(new FileWriter("allAccounts.txt")));
@@ -577,7 +573,7 @@ public class Bank {
 }
 
 
-class NoSuchReceiptException extends Exception{
+class NoSuchReceiptException extends Exception {
     public NoSuchReceiptException() {
     }
 }
