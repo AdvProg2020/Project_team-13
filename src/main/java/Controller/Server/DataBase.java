@@ -113,11 +113,11 @@ public class DataBase {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
             final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
             Connection connection = DriverManager.getConnection(url);
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM allSeller");
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM allSellers");
             preparedStatement.execute();
             PreparedStatement preparedStatementLog = connection.prepareStatement("DELETE FROM allLogs");
             preparedStatementLog.execute();
-            PreparedStatement preparedStatementForInsertCustomer = connection.prepareStatement("INSERT INTO allSeller (userName, passWord, firstName, lastName, email, phoneNumber, TYPETYPE, credit, allDiscountCodes, historyOfTransactions, companyName, isAccepted, allProducts, allOffers, allRequests, commercializedProduct, auction)" +
+            PreparedStatement preparedStatementForInsertCustomer = connection.prepareStatement("INSERT INTO allSellers (userName, passWord, firstName, lastName, email, phoneNumber, TYPETYPE, credit, allDiscountCodes, historyOfTransactions, companyName, isAccepted, allProducts, allOffers, allRequests, commercializedProduct, auction)" +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             PreparedStatement prepareForLog = connection.prepareStatement("INSERT INTO allLogs (logId, Datee, price, receiverUserName, otherSideUserName, allProducts, receivingStatus, reduceCostAfterOff)" +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
@@ -171,8 +171,8 @@ public class DataBase {
             Connection connection = DriverManager.getConnection(url);
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM allManagers");
             preparedStatement.execute();
-            PreparedStatement preparedStatementForInsertCustomer = connection.prepareStatement("INSERT INTO allCustomers (userName, passWord, firstName, lastName, email, phoneNumber, TYPETYPE, credit, allDiscountCodes, historyOfTransactions, totalBuyAmount)" +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement preparedStatementForInsertCustomer = connection.prepareStatement("INSERT INTO allManagers (userName, passWord, firstName, lastName, email, phoneNumber, TYPETYPE, credit, allDiscountCodes, historyOfTransactions)" +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             for (Manager manager : allManagers) {
                 preparedStatementForInsertCustomer.setString(1, manager.getUsername());
                 preparedStatementForInsertCustomer.setString(2, manager.getPassword());
@@ -282,6 +282,7 @@ public class DataBase {
     }
 
     public synchronized void setAllCategoriesFormDataBase() {
+
         //////
         try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
@@ -320,46 +321,6 @@ public class DataBase {
         //
         //
         //
-        FileReader fileReader = null;
-        try {
-            fileReader = new FileReader("allCategories.txt");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        BufferedReader br = new BufferedReader(fileReader);
-        try {
-            String allCategoriesInGsonForm = br.readLine().trim();
-            Gson gson = new Gson();
-            ArrayList<Category> allCategories = new ArrayList<>();
-            Type categoryListType = new TypeToken<ArrayList<Category>>() {
-            }.getType();
-            allCategories = gson.fromJson(allCategoriesInGsonForm, categoryListType);
-            if (allCategories == null) {
-                allCategories = new ArrayList<>();
-            }
-            int i = 0;
-            for (Category category : allCategories) {
-                if (category.getName().equals("File")) {
-                    i++;
-                    break;
-                }
-            }
-            if (i == 0) {
-                HashMap<String, ArrayList<String>> features = new HashMap<>();
-                ArrayList<String> modes = new ArrayList<>();
-                modes.add("TextFile");
-                modes.add("ImageFile");
-                modes.add("VideoFile");
-                modes.add("Other");
-                features.put("Format", modes);
-                allCategories.add(new Category("File", features));
-            }
-            CategoryCenter.getIncstance().setAllCategories(allCategories, true);
-            br.close();
-            fileReader.close();
-        } catch (IOException | NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     public synchronized void updateAllCategories(String json) {
@@ -575,22 +536,22 @@ public class DataBase {
             ArrayList<Seller> allSeller = new ArrayList<>();
             while (resultSet1.next()) {
                 String seller = "";
-                seller += resultSet.getString("userName") + "&&";
-                seller += resultSet.getString("passWord") + "&&";
-                seller += resultSet.getString("firstName") + "&&";
-                seller += resultSet.getString("lastName") + "&&";
-                seller += resultSet.getString("email") + "&&";
-                seller += resultSet.getString("phoneNumber") + "&&";
-                seller += resultSet.getString("TypeType") + "&&";
-                seller += resultSet.getString("credit") + "&&";
-                seller += resultSet.getString("allDiscountCodes") + "&&";
-                seller += resultSet.getString("historyOfTransactions") + "&&";
-                seller += resultSet.getString("companyName") + "&&";
-                seller += resultSet.getString("isAccepted") + "&&";
-                seller += resultSet.getString("allProducts") + "&&";
-                seller += resultSet.getString("allRequests") + "&&";
-                seller += resultSet.getString("commercializedProduct") + "&&";
-                seller += resultSet.getString("auction");
+                seller += resultSet1.getString("userName") + "&&";
+                seller += resultSet1.getString("passWord") + "&&";
+                seller += resultSet1.getString("firstName") + "&&";
+                seller += resultSet1.getString("lastName") + "&&";
+                seller += resultSet1.getString("email") + "&&";
+                seller += resultSet1.getString("phoneNumber") + "&&";
+                seller += resultSet1.getString("TypeType") + "&&";
+                seller += resultSet1.getString("credit") + "&&";
+                seller += resultSet1.getString("allDiscountCodes") + "&&";
+                seller += resultSet1.getString("historyOfTransactions") + "&&";
+                seller += resultSet1.getString("companyName") + "&&";
+                seller += resultSet1.getString("isAccepted") + "&&";
+                seller += resultSet1.getString("allProducts") + "&&";
+                seller += resultSet1.getString("allRequests") + "&&";
+                seller += resultSet1.getString("commercializedProduct") + "&&";
+                seller += resultSet1.getString("auction");
                 String[] data1 = seller.split("&&");
                 Seller seller1 = new Seller(data1[0], data1[1], data1[2], data1[3], data1[4], data1[5], data1[7].equals("null") ? 0 : Double.parseDouble(data1[7]), data1[10], data1[11].equals("true"));
                 if(!data1[12].equals("null")){
@@ -625,16 +586,16 @@ public class DataBase {
             ArrayList<Manager> allManagers = new ArrayList<>();
             while (resultSet2.next()) {
                 String manager = "";
-                manager += resultSet.getString("userName") + "&&";
-                manager += resultSet.getString("passWord") + "&&";
-                manager += resultSet.getString("firstName") + "&&";
-                manager += resultSet.getString("lastName") + "&&";
-                manager += resultSet.getString("email") + "&&";
-                manager += resultSet.getString("phoneNumber") + "&&";
-                manager += resultSet.getString("TypeType") + "&&";
-                manager += resultSet.getString("credit") + "&&";
-                manager += resultSet.getString("allDiscountCodes") + "&&";
-                manager += resultSet.getString("historyOfTransactions");
+                manager += resultSet2.getString("userName") + "&&";
+                manager += resultSet2.getString("passWord") + "&&";
+                manager += resultSet2.getString("firstName") + "&&";
+                manager += resultSet2.getString("lastName") + "&&";
+                manager += resultSet2.getString("email") + "&&";
+                manager += resultSet2.getString("phoneNumber") + "&&";
+                manager += resultSet2.getString("TypeType") + "&&";
+                manager += resultSet2.getString("credit") + "&&";
+                manager += resultSet2.getString("allDiscountCodes") + "&&";
+                manager += resultSet2.getString("historyOfTransactions");
                 String[] data2 = manager.split("&&");
                 Manager manager1 = new Manager(data2[0], data2[1], data2[2], data2[3], data2[4], data2[5], data2[7].equals("null") ? 0 : Double.parseDouble(data2[7]));
                 if(!data2[8].equals("null")){
@@ -658,16 +619,16 @@ public class DataBase {
             ArrayList<Supporter> allSupporters = new ArrayList<>();
             while (resultSet3.next()) {
                 String supporter = "";
-                supporter += resultSet.getString("userName") + "&&";
-                supporter += resultSet.getString("passWord") + "&&";
-                supporter += resultSet.getString("firstName") + "&&";
-                supporter += resultSet.getString("lastName") + "&&";
-                supporter += resultSet.getString("email") + "&&";
-                supporter += resultSet.getString("phoneNumber") + "&&";
-                supporter += resultSet.getString("TypeType") + "&&";
-                supporter += resultSet.getString("credit") + "&&";
-                supporter += resultSet.getString("allDiscountCodes") + "&&";
-                supporter += resultSet.getString("historyOfTransactions");
+                supporter += resultSet3.getString("userName") + "&&";
+                supporter += resultSet3.getString("passWord") + "&&";
+                supporter += resultSet3.getString("firstName") + "&&";
+                supporter += resultSet3.getString("lastName") + "&&";
+                supporter += resultSet3.getString("email") + "&&";
+                supporter += resultSet3.getString("phoneNumber") + "&&";
+                supporter += resultSet3.getString("TypeType") + "&&";
+                supporter += resultSet3.getString("credit") + "&&";
+                supporter += resultSet3.getString("allDiscountCodes") + "&&";
+                supporter += resultSet3.getString("historyOfTransactions");
                 String[] data4 = supporter.split("&&");
                 Supporter supporter1 = new Supporter(data4[0], data4[1], data4[2], data4[3], data4[4], data4[5], data4[7].equals("null") ? 0 : Double.parseDouble(data4[7]));
                 if(!data4[8].equals("null")){
@@ -912,22 +873,22 @@ public class DataBase {
             int column1 = resultSet1.getMetaData().getColumnCount();
             while (resultSet1.next()) {
                 String seller = "";
-                seller += resultSet.getString("userName") + "&&";
-                seller += resultSet.getString("passWord") + "&&";
-                seller += resultSet.getString("firstName") + "&&";
-                seller += resultSet.getString("lastName") + "&&";
-                seller += resultSet.getString("email") + "&&";
-                seller += resultSet.getString("phoneNumber") + "&&";
-                seller += resultSet.getString("TypeType") + "&&";
-                seller += resultSet.getString("credit") + "&&";
-                seller += resultSet.getString("allDiscountCodes") + "&&";
-                seller += resultSet.getString("historyOfTransactions") + "&&";
-                seller += resultSet.getString("companyName") + "&&";
-                seller += resultSet.getString("isAccepted") + "&&";
-                seller += resultSet.getString("allProducts") + "&&";
-                seller += resultSet.getString("allRequests") + "&&";
-                seller += resultSet.getString("commercializedProduct") + "&&";
-                seller += resultSet.getString("auction");
+                seller += resultSet1.getString("userName") + "&&";
+                seller += resultSet1.getString("passWord") + "&&";
+                seller += resultSet1.getString("firstName") + "&&";
+                seller += resultSet1.getString("lastName") + "&&";
+                seller += resultSet1.getString("email") + "&&";
+                seller += resultSet1.getString("phoneNumber") + "&&";
+                seller += resultSet1.getString("TypeType") + "&&";
+                seller += resultSet1.getString("credit") + "&&";
+                seller += resultSet1.getString("allDiscountCodes") + "&&";
+                seller += resultSet1.getString("historyOfTransactions") + "&&";
+                seller += resultSet1.getString("companyName") + "&&";
+                seller += resultSet1.getString("isAccepted") + "&&";
+                seller += resultSet1.getString("allProducts") + "&&";
+                seller += resultSet1.getString("allRequests") + "&&";
+                seller += resultSet1.getString("commercializedProduct") + "&&";
+                seller += resultSet1.getString("auction");
                 String[] data1 = seller.split("&&");
                 Seller seller1 = new Seller(data1[0], data1[1], data1[2], data1[3], data1[4], data1[5], data1[7].equals("null") ? 0 : Double.parseDouble(data1[7]), data1[10], data1[11].equals("true"));
                 if(!data1[12].equals("null")){
@@ -961,16 +922,16 @@ public class DataBase {
             int column2 = resultSet2.getMetaData().getColumnCount();
             while (resultSet2.next()) {
                 String manager = "";
-                manager += resultSet.getString("userName") + "&&";
-                manager += resultSet.getString("passWord") + "&&";
-                manager += resultSet.getString("firstName") + "&&";
-                manager += resultSet.getString("lastName") + "&&";
-                manager += resultSet.getString("email") + "&&";
-                manager += resultSet.getString("phoneNumber") + "&&";
-                manager += resultSet.getString("TypeType") + "&&";
-                manager += resultSet.getString("credit") + "&&";
-                manager += resultSet.getString("allDiscountCodes") + "&&";
-                manager += resultSet.getString("historyOfTransactions");
+                manager += resultSet2.getString("userName") + "&&";
+                manager += resultSet2.getString("passWord") + "&&";
+                manager += resultSet2.getString("firstName") + "&&";
+                manager += resultSet2.getString("lastName") + "&&";
+                manager += resultSet2.getString("email") + "&&";
+                manager += resultSet2.getString("phoneNumber") + "&&";
+                manager += resultSet2.getString("TypeType") + "&&";
+                manager += resultSet2.getString("credit") + "&&";
+                manager += resultSet2.getString("allDiscountCodes") + "&&";
+                manager += resultSet2.getString("historyOfTransactions");
                 String[] data2 = manager.split("&&");
                 Manager manager1 = new Manager(data2[0], data2[1], data2[2], data2[3], data2[4], data2[5], data2[7].equals("null") ? 0 : Double.parseDouble(data2[7]));
                 if(!data2[8].equals("null")){
@@ -994,16 +955,16 @@ public class DataBase {
             ArrayList<Supporter> allSupporters = new ArrayList<>();
             while (resultSet3.next()) {
                 String supporter = "";
-                supporter += resultSet.getString("userName") + "&&";
-                supporter += resultSet.getString("passWord") + "&&";
-                supporter += resultSet.getString("firstName") + "&&";
-                supporter += resultSet.getString("lastName") + "&&";
-                supporter += resultSet.getString("email") + "&&";
-                supporter += resultSet.getString("phoneNumber") + "&&";
-                supporter += resultSet.getString("TypeType") + "&&";
-                supporter += resultSet.getString("credit") + "&&";
-                supporter += resultSet.getString("allDiscountCodes") + "&&";
-                supporter += resultSet.getString("historyOfTransactions");
+                supporter += resultSet3.getString("userName") + "&&";
+                supporter += resultSet3.getString("passWord") + "&&";
+                supporter += resultSet3.getString("firstName") + "&&";
+                supporter += resultSet3.getString("lastName") + "&&";
+                supporter += resultSet3.getString("email") + "&&";
+                supporter += resultSet3.getString("phoneNumber") + "&&";
+                supporter += resultSet3.getString("TypeType") + "&&";
+                supporter += resultSet3.getString("credit") + "&&";
+                supporter += resultSet3.getString("allDiscountCodes") + "&&";
+                supporter += resultSet3.getString("historyOfTransactions");
                 String[] data4 = supporter.split("&&");
                 Supporter supporter1 = new Supporter(data4[0], data4[1], data4[2], data4[3], data4[4], data4[5], data4[7].equals("null") ? 0 : Double.parseDouble(data4[7]));
                 if(!data4[8].equals("null")){
@@ -1022,7 +983,7 @@ public class DataBase {
             //
             //
             //
-            resultSet.close();
+            resultSet3.close();
             resultSet1.close();
             resultSet3.close();
             statement.close();
