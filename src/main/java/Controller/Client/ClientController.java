@@ -52,7 +52,7 @@ public class ClientController {
 
     public void connectToServer() {
         try {
-            socket = new Socket("localhost", 8080);
+            socket = new Socket("127.0.0.1", 8080);
             dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
             dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
 
