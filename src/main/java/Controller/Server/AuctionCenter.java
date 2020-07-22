@@ -66,37 +66,49 @@ public class AuctionCenter {
                     if (new Date().after(auction.getEndTime())) {
                         break;
                     }
-                    if ((socket = serverSocket.accept())!=null) {
+                        socket = serverSocket.accept();
                         DataOutputStream dataOutputStream1 = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
                         allClients.get(serverSocket).add(dataOutputStream1);
-                        Socket finalSocket = socket;
+                        dataOutputStream1.writeUTF(new Gson().toJson(auction));
+                        Socket  finalSocket = socket;
                         ServerSocket finalServerSocket = serverSocket;
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                DataInputStream dataInputStream = null;
+                        new Thread(() -> {
+                            DataInputStream dataInputStream = null;
+                            try {
+                                dataInputStream = new DataInputStream(new BufferedInputStream(finalSocket.getInputStream()));
+                                dataOutputStream1.writeUTF(new Gson().toJson(auction));
+                                dataOutputStream1.flush();
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            while (true) {
+                                if (new Date().after(auction.getEndTime())) {
+                                    break;
+                                }
+                                String message = null;
                                 try {
-                                    dataInputStream = new DataInputStream(new BufferedInputStream(finalSocket.getInputStream()));
+                                    dataOutputStream1.writeUTF(new Gson().toJson(auction));
+                                    dataOutputStream1.flush();
+                                    message = dataInputStream.readUTF();
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-                                while (true) {
-                                    if (new Date().after(auction.getEndTime())) {
-                                        break;
-                                    }
-                                    String message = null;
+                                if (!message.isEmpty() && !message.equals("A")) {
+                                    addNewMessage(finalServerSocket, message, auction);
+                                }
+                                for (DataOutputStream dataOutputStream : allClients.get(serverSocket)) {
                                     try {
-                                        message = dataInputStream.readUTF();
+                                        dataOutputStream.writeUTF(new Gson().toJson(auction));
+                                        dataOutputStream.flush();
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
-                                    if (!message.isEmpty()) {
-                                        addNewMessage(finalServerSocket, message, auction);
-                                    }
                                 }
                             }
-                        }.start();
-                    }
+                        }).start();
+
                 } catch (IOException e) {
                     break;
                 }
@@ -106,13 +118,6 @@ public class AuctionCenter {
         public synchronized void addNewMessage(ServerSocket serverSocket, String message, Auction auction) {
             ChatMessage chatMessage = new Gson().fromJson(message, ChatMessage.class);
             UserCenter.getIncstance().editAuction(auction, chatMessage);
-            for (DataOutputStream dataOutputStream : allClients.get(serverSocket)) {
-                try {
-                    dataOutputStream.writeUTF(new Gson().toJson(auction));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
 
     }

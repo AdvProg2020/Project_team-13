@@ -47,13 +47,16 @@ public class AuctionController {
 
     public void getAuctionServerPort(){
         System.out.println(currentAuction==null);
+        System.out.println("mamad is here1");
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("gSPOA",new Gson().toJson(currentAuction)));
+        System.out.println("mamad is here2");
     }
 
     public void sendMessageToAuctionChat(String message) {
         try {
             dataOutputStream.writeUTF(new Gson().toJson(
                     new ChatMessage(ClientController.getInstance().getCurrentUser().getUsername(),"",message)));
+            dataOutputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,13 +75,11 @@ public class AuctionController {
             socket = new Socket("127.0.0.1",serverPort);
             dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-            System.out.println(serverPort);
         } catch (IOException e) {
             e.printStackTrace();
         }
         new Thread(() -> {
             while (true) {
-                System.out.println("aaaaaaaa");
                 String string = null;
                 try {
                     string = dataInputStream.readUTF();
@@ -86,7 +87,6 @@ public class AuctionController {
                     e.printStackTrace();
                 }
                 if(!string.isEmpty()) {
-                    System.out.println("bbbbbbbbb");
                     Auction auction = new Gson().fromJson(string,Auction.class);
                     auctionPage.setNewMessage(auction.getChatMessages());
                 }

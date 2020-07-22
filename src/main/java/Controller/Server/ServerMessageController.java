@@ -204,7 +204,7 @@ public class ServerMessageController {
                 RequestCenter.getIncstance().declineRequest(message, dataOutputStream);
             } else if (message.startsWith("@gSPOA@")) {
                 message = message.substring(7);
-                ServerController.getInstance().sendMessageToClient("@gSPOA"
+                ServerController.getInstance().sendMessageToClient("@gSPOA@"
                         + AuctionCenter.getInstance().getSocketPort(new Gson().fromJson(message,Auction.class)),dataOutputStream);
             }else if (message.startsWith("@rate@")) {
                 message = message.substring(6);

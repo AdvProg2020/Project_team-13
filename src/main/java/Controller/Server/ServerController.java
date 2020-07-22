@@ -120,7 +120,7 @@ public class ServerController {
         DataBase.getInstance().setAllProductsFormDataBase();
         DataBase.getInstance().setAllCategoriesFormDataBase();
         DataBase.getInstance().setAllOffersFromDatabase();
-//        AuctionCenter.getInstance().runAuctionServerSockets();
+        AuctionCenter.getInstance().runAuctionServerSockets();
     }
 
 
