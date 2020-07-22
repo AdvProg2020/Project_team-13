@@ -178,6 +178,9 @@ public class ManageCategoryMenu extends Menu implements EventHandler<ActionEvent
             edits.put(allCategories.get(i).getName(), imageView);
         }
         for (int i = 0; i < allCategories.size(); i++) {
+            if(allCategories.get(i).getName().equals("File")){
+                continue;
+            }
             ImageView imageView = new ImageView(new Image("file:src/trash1.png"));
             imageView.setFitHeight(45);
             imageView.setFitWidth(45);
@@ -239,18 +242,32 @@ public class ManageCategoryMenu extends Menu implements EventHandler<ActionEvent
             GridPane.setHalignment(allPanes[i], HPos.CENTER);
             gridPane.add(allPanes[i], i, row);
         }
-        Pane pane = new Pane();
-        Pane pane1 = new Pane();
-        Pane pane2 = new Pane();
-        pane.setStyle("-fx-background-color: #e6e6e6");
-        pane1.setStyle("-fx-background-color: #e6e6e6");
-        pane2.setStyle("-fx-background-color: #e6e6e6");
-        pane.getChildren().add(deletes.get(name));
-        pane1.getChildren().add(edits.get(name));
-        pane2.getChildren().add(viewDetails.get(name));
-        gridPane.add(pane, 2, row);
-        gridPane.add(pane1, 3, row);
-        gridPane.add(pane2, 4, row);
+        if(name.equals("File")){
+            Pane pane = new Pane();
+            Pane pane1 = new Pane();
+            Pane pane2 = new Pane();
+            pane.setStyle("-fx-background-color: #e6e6e6");
+            pane1.setStyle("-fx-background-color: #e6e6e6");
+            pane2.setStyle("-fx-background-color: #e6e6e6");
+            pane1.getChildren().add(edits.get(name));
+            pane2.getChildren().add(viewDetails.get(name));
+            gridPane.add(pane, 2, row);
+            gridPane.add(pane1, 3, row);
+            gridPane.add(pane2, 4, row);
+        }else {
+            Pane pane = new Pane();
+            Pane pane1 = new Pane();
+            Pane pane2 = new Pane();
+            pane.setStyle("-fx-background-color: #e6e6e6");
+            pane1.setStyle("-fx-background-color: #e6e6e6");
+            pane2.setStyle("-fx-background-color: #e6e6e6");
+            pane.getChildren().add(deletes.get(name));
+            pane1.getChildren().add(edits.get(name));
+            pane2.getChildren().add(viewDetails.get(name));
+            gridPane.add(pane, 2, row);
+            gridPane.add(pane1, 3, row);
+            gridPane.add(pane2, 4, row);
+        }
     }
 
     private Label[] labelMaker(String categoryName, String numOfProducts) {

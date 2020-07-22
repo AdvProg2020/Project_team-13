@@ -137,11 +137,7 @@ public class ServerMessageController {
                 CategoryCenter.getIncstance().updateAllCategories();
                 ArrayList<Category> allCategories = CategoryCenter.getIncstance().getAllCategories();
                 Gson gson = new Gson();
-                System.out.println("aaaaaaaaaaaaaa123123");
-                System.out.println(message);
                 ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("setAllCategories", gson.toJson(allCategories)), dataOutputStream);
-                System.out.println("bbbbbbbbbbbbbb123123");
-
             } else if (message.startsWith("@updateAllCategories@")) {
                 message = message.substring(21);
                 DataBase.getInstance().updateAllCategories(message);
@@ -226,7 +222,20 @@ public class ServerMessageController {
                 message = message.substring(9);
                 System.out.println(message);
                 CartCenter.getInstance().setWage(Double.parseDouble(message));
+                DataBase.getInstance().setWagePercent();
                 ServerController.getInstance().sendMessageToClient("@Successful@wage successfully changed",dataOutputStream);
+            }else if (message.startsWith("@getAtLeastCredit@")) {
+                ServerController.getInstance().sendMessageToClient("@getAtLeastCredit@"+CartCenter.getInstance().getAtLeastAmount(),dataOutputStream);
+            }else if (message.startsWith("@setAtLeastCredit@")) {
+                message = message.substring(18);
+                System.out.println(message);
+                CartCenter.getInstance().setAtLeastAmount(Double.parseDouble(message));
+                DataBase.getInstance().setAtLeastCredit();
+                ServerController.getInstance().sendMessageToClient("@Successful@wage successfully changed",dataOutputStream);
+            }else if(message.startsWith("@increaseCredit@")){
+                message = message.substring(16);
+                String[] details = message.split("//");
+                UserCenter.getIncstance().processIncreaseCredit(details[0], details[1], details[2], details[3], dataOutputStream);
             }
         }else{
             ServerController.getInstance().sendMessageToClient("@Error@your token is invalid", dataOutputStream);

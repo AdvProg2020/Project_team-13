@@ -12,12 +12,20 @@ import java.net.Socket;
 public class CartController {
     private Cart currentCart;
     private static CartController cartController;
-
+    private double atLeastCredit;
     private CartController() {
     }
 
     public Cart getCurrentCart() {
         return currentCart;
+    }
+
+    public double getAtLeastCredit() {
+        return atLeastCredit;
+    }
+
+    public void setAtLeastCredit(double atLeastCredit) {
+        this.atLeastCredit = atLeastCredit;
     }
 
     public void payed(String json) {
@@ -27,6 +35,10 @@ public class CartController {
 
     public void setCurrentCart(Cart currentCart) {
         this.currentCart = currentCart;
+    }
+
+    public void getAtLeastCreditFromServer() {
+        ClientController.getInstance().sendMessageToServer("@getAtLeastCredit@");
     }
 
     public static CartController getInstance() {
@@ -83,51 +95,51 @@ public class CartController {
                 for (String s : currentCart.getAllSeller().keySet()) {
                     System.out.println(s);
                 }
-                ClientController.getInstance().sendMessageToServer("@setCustomerPort@" + serverSocket.getLocalPort()+"&"+new Gson().toJson(currentCart.getAllSeller()));
-            int input=0;
-            while (true){
-                Socket socket=serverSocket.accept();
-                DataInputStream dataInputStream=new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-                DataOutputStream fileOutputStream=null;
-                do {
-                    if (dataInputStream != null) {
-                        input = dataInputStream.available();
+                ClientController.getInstance().sendMessageToServer("@setCustomerPort@" + serverSocket.getLocalPort() + "&" + new Gson().toJson(currentCart.getAllSeller()));
+                int input = 0;
+                while (true) {
+                    Socket socket = serverSocket.accept();
+                    DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+                    DataOutputStream fileOutputStream = null;
+                    do {
+                        if (dataInputStream != null) {
+                            input = dataInputStream.available();
+                        }
+                    } while (input == 0);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    String fileName = "";
+                    String fileData = "";
+                    while (true) {
+                        try {
+                            String s = dataInputStream.readUTF();
+                            fileName = s.split("&")[0];
+                            fileData = s.split("&")[1];
+                        } catch (IOException e) {
+                            break;
+                        }
                     }
-                } while (input == 0);
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                String fileName="";
-                String fileData="";
-                while(true){
-                    try{
-                        String s=dataInputStream.readUTF();
-                        fileName=s.split("&")[0];
-                        fileData=s.split("&")[1];
-                    }catch (IOException e){
-                        break;
+                    dataInputStream.close();
+                    System.out.println("file was creating: " + fileName);
+                    fileOutputStream = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(fileName)));
+                    String[] split = fileData.split(", ");
+                    byte[] bytes = new byte[split.length];
+                    for (int i = 0; i < split.length; i++) {
+                        bytes[i] = Byte.parseByte(split[i]);
                     }
+                    fileOutputStream.write(bytes);
+                    fileOutputStream.close();
+                    System.out.println("end of file");
                 }
-                dataInputStream.close();
-                System.out.println("file was creating: "+fileName);
-                fileOutputStream = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(fileName)));
-                String[] split=fileData.split(", ");
-                byte[] bytes=new byte[split.length];
-                for (int i = 0; i < split.length; i++) {
-                    bytes[i]=Byte.parseByte(split[i]);
-                }
-                fileOutputStream.write(bytes);
-                fileOutputStream.close();
-                System.out.println("end of file");
-            }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void sendFileToCustomer(int port,String filePath){
+    public void sendFileToCustomer(int port, String filePath) {
         new Thread(new Runnable() {
             public void run() {
-                System.out.println("step4"+filePath);
+                System.out.println("step4" + filePath);
                 Socket socket = null;
                 try {
                     socket = new Socket("127.0.0.1", port);
@@ -156,12 +168,12 @@ public class CartController {
                         }
                     }
                     try {
-                        String fileName=filePath.substring(filePath.lastIndexOf('/')+1);
-                        String data=fileName+"&";
-                        String s=data;
-                        byte[] bytes=byteArrayOutputStream.toByteArray();
-                        for(int i=0;i<bytes.length;i++){
-                            s+=String.valueOf(bytes[i])+", ";
+                        String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
+                        String data = fileName + "&";
+                        String s = data;
+                        byte[] bytes = byteArrayOutputStream.toByteArray();
+                        for (int i = 0; i < bytes.length; i++) {
+                            s += String.valueOf(bytes[i]) + ", ";
                         }
                         transactionStream.writeUTF(s);
                         transactionStream.flush();

@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Client.ClientController;
+import Controller.Client.MessageController;
 import Controller.Client.ProductController;
 import Controller.Client.UserController;
 import Models.Comment;
@@ -8,6 +9,7 @@ import Models.CommentStatus;
 import Models.UserAccount.Customer;
 import Models.UserAccount.UserAccount;
 import com.google.gson.Gson;
+import com.sun.security.ntlm.Client;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -402,7 +404,10 @@ public class UserMenuScene extends Menu {
                 addCommentButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                       popupwindow.hide();
+                        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("increaseCredit",  ClientController.getInstance().getCurrentUser().getUsername() + "//" + ClientController.getInstance().getCurrentUser().getPassword() +
+                                "//" + getContent.getText() + "//" + getTitle.getText()));
+                        //
+                        popupwindow.hide();
                     }
                 });
                 Scene scene1 = new Scene(gridPane, 400, 300);

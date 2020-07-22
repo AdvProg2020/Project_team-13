@@ -52,7 +52,6 @@ public class CategoryCenter {
                 }
             }
         }
-
         for (Category category : allCategories) {
             if (category.getName().equals(name)) {
                 allCategories.remove(category);

@@ -1,1 +1,1 @@
-[{"name":"File","features":{"Format":["TextFile","ImageFile","VideoFile","Other"]},"allProducts":[]},{"name":"Phone","features":{"Ram":["122","123","132"]},"allProducts":[{"existInOfferRegistered":false,"productId":"@p1046","productStatus":"accepted","productName":"Apple","productCompany":"Iphone","sellerUsername":"seller","productCost":123.0,"costAfterOff":123.0,"productsCategory":"Phone","description":"phone","numberOfAvailableProducts":123,"featuresOfCategoryThatHas":{"Ram":"123"},"allBuyers":[],"offers":[],"imagePath":"","videoPath":"","filePath":""}]}]
+[]

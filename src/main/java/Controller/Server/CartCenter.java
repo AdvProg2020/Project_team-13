@@ -17,9 +17,17 @@ import java.util.HashMap;
 public class CartCenter {
     private static CartCenter cartCenter;
     String lastLogId = "";
-    private double wage;
+    private double wage,atLeastAmount;
     public void setLastLogId(String lastLogId) {
         this.lastLogId = lastLogId;
+    }
+
+    public double getAtLeastAmount() {
+        return atLeastAmount;
+    }
+
+    public void setAtLeastAmount(double atLeastAmount) {
+        this.atLeastAmount = atLeastAmount;
     }
 
     public double getWage() {
@@ -153,7 +161,7 @@ public class CartCenter {
                         sellerAndProducts += product.getProductId() + " ";
                     }
                 }
-                UserCenter.getIncstance().findSellerWithUsername(seller).setCredit(UserCenter.getIncstance().findSellerWithUsername(seller).getCredit() + cost);
+                UserCenter.getIncstance().findSellerWithUsername(seller).setCredit(UserCenter.getIncstance().findSellerWithUsername(seller).getCredit() + (cost-wage*cost/100));
                 sellerAndProducts += "\n";
                 SellLog sellLog = new SellLog(makeLogID(), new Date(), seller, customer.getUsername(), allProducts, ReceivingStatus.DeliveredToThePost, reducedPrice);
                 sellLog.setPrice(price + reducedPrice);
