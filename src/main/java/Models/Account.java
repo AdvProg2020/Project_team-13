@@ -23,6 +23,21 @@ public class Account {
         allReceipts = new ArrayList<>();
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     public List<Receipt> getAllReceipts() {
         return allReceipts;
@@ -40,9 +55,10 @@ public class Account {
         return passWord;
     }
 
-    public Account(String accountId, String companyName) {
+    public Account(String accountId, String companyName, double amount) {
         this.accountId = accountId;
         this.companyName = companyName;
+        this.amount = amount;
         allReceipts = new ArrayList<>();
     }
 
@@ -52,6 +68,10 @@ public class Account {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public void setAllReceipts(List<Receipt> allReceipts) {
+        this.allReceipts = allReceipts;
     }
 }
 
