@@ -1,6 +1,4 @@
 package Controller.Bank;
-
-import Controller.Server.TokenGenerator;
 import Models.Account;
 import Models.Receipt;
 import Models.ReceiptType;

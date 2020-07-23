@@ -89,18 +89,28 @@ public class DataBase {
 
     public synchronized void setWagePercent() {
         try {
-            FileWriter fileWriter = new FileWriter("wage.txt");
-            fileWriter.write(String.valueOf(CartCenter.getInstance().getWage()));
-            fileWriter.close();
-        } catch (Exception e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection connection = DriverManager.getConnection("jdbc:ucanaccess://ProjectDatabase.accdb");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE allIds SET wage = ?");
+            preparedStatement.setString(1, String.valueOf(CartCenter.getInstance().getWage()));
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
     public synchronized void setAtLeastCredit() {
         try {
-            FileWriter fileWriter = new FileWriter("atLeastCredit.txt");
-            fileWriter.write(String.valueOf(CartCenter.getInstance().getAtLeastAmount()));
-            fileWriter.close();
-        } catch (Exception e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection connection = DriverManager.getConnection("jdbc:ucanaccess://ProjectDatabase.accdb");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE allIds SET atLeastCredit = ?");
+            preparedStatement.setString(1, String.valueOf(CartCenter.getInstance().getAtLeastAmount()));
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
     //
@@ -224,58 +234,55 @@ public class DataBase {
             }
     }
 
-    public void setLastAuctionIdFromDataBase() {
-        FileReader fileReader = null;
+    public synchronized void setLastAuctionIdFromDataBase() {
         try {
-            fileReader = new FileReader("lastAuctionId.txt");
-        } catch (FileNotFoundException e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection connection = DriverManager.getConnection("jdbc:ucanaccess://ProjectDatabase.accdb");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT lastAuctionId FROM allIds");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                AuctionCenter.getInstance().setLastAuctionId(resultSet.getString("lastAuctionId"));
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
-        }
-        BufferedReader br = new BufferedReader(fileReader);
-        try {
-            String lastAuctionId = br.readLine().trim();
-            AuctionCenter.getInstance().setLastAuctionId(lastAuctionId);
-            br.close();
-            fileReader.close();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
         }
     }
 
     public void getWagePercent() {
-        FileReader fileReader = null;
         try {
-            fileReader = new FileReader("wage.txt");
-        } catch (FileNotFoundException e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection connection = DriverManager.getConnection("jdbc:ucanaccess://ProjectDatabase.accdb");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT wage FROM allIds");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                CartCenter.getInstance().setWage(Double.parseDouble(resultSet.getString("wage")));
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
-        }
-        BufferedReader br = new BufferedReader(fileReader);
-        try {
-            String wage = br.readLine().trim();
-            CartCenter.getInstance().setWage(Double.parseDouble(wage));
-            br.close();
-            fileReader.close();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
         }
     }
 
 
     public synchronized void setLastProductIdFromDataBase() {
-        FileReader fileReader = null;
         try {
-            fileReader = new FileReader("lastProductId.txt");
-        } catch (FileNotFoundException e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection connection = DriverManager.getConnection("jdbc:ucanaccess://ProjectDatabase.accdb");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT lastProductId FROM allIds");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                ProductCenter.getInstance().setLastProductId(resultSet.getString("lastProductId"));
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
-        }
-        BufferedReader br = new BufferedReader(fileReader);
-        try {
-            String lastProductId = br.readLine().trim();
-            ProductCenter.getInstance().setLastProductId(lastProductId);
-            br.close();
-            fileReader.close();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
         }
     }
 
@@ -466,29 +473,44 @@ public class DataBase {
 
     public synchronized void replaceProductId(String productId) {
         try {
-            FileWriter fileWriter = new FileWriter("lastProductId.txt");
-            fileWriter.write(productId);
-            fileWriter.close();
-        } catch (IOException e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection connection = DriverManager.getConnection("jdbc:ucanaccess://ProjectDatabase.accdb");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE allIds SET lastProductId = ?");
+            preparedStatement.setString(1, productId);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 
 
     public synchronized void replaceAuctionId(String auctionId) {
         try {
-            FileWriter fileWriter = new FileWriter("lastAuctionId.txt");
-            fileWriter.write(auctionId);
-            fileWriter.close();
-        } catch (IOException e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection connection = DriverManager.getConnection("jdbc:ucanaccess://ProjectDatabase.accdb");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE allIds SET lastAuctionId = ?");
+            preparedStatement.setString(1, auctionId);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 
     public synchronized void replaceLogId(String logId) {
         try {
-            FileWriter fileWriter = new FileWriter("lastLogId.txt");
-            fileWriter.write(logId);
-            fileWriter.close();
-        } catch (IOException e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection connection = DriverManager.getConnection("jdbc:ucanaccess://ProjectDatabase.accdb");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE allIds SET lastLogId = ?");
+            preparedStatement.setString(1, logId);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 
@@ -785,91 +807,80 @@ public class DataBase {
 
     public synchronized void replaceRequestId(String lastRequestId) {
         try {
-            FileWriter fileWriter = new FileWriter("lastRequestId.txt");
-            fileWriter.write(lastRequestId);
-            fileWriter.close();
-        } catch (Exception e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection connection = DriverManager.getConnection("jdbc:ucanaccess://ProjectDatabase.accdb");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE allIds SET lastRequestId = ?");
+            preparedStatement.setString(1, lastRequestId);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 
     public synchronized void replaceDiscountCodeId(String lastDiscountCodeId) {
         try {
-            FileWriter fileWriter = new FileWriter("lastDiscountCodeId.txt");
-            fileWriter.write(lastDiscountCodeId);
-            fileWriter.close();
-        } catch (Exception e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection connection = DriverManager.getConnection("jdbc:ucanaccess://ProjectDatabase.accdb");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE allIds SET lastDiscountCodeId = ?");
+            preparedStatement.setString(1, lastDiscountCodeId);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 
     public synchronized void setLastRequestId() {
-        FileReader fileReader = null;
         try {
-            fileReader = new FileReader("lastRequestID.txt");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        BufferedReader br = new BufferedReader(fileReader);
-        try {
-            String lastRequestId;
-            while ((lastRequestId = br.readLine()) != null) {
-                RequestCenter.getIncstance().setLastRequestID(lastRequestId);
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection connection = DriverManager.getConnection("jdbc:ucanaccess://ProjectDatabase.accdb");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT lastRequestId FROM allIds");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                RequestCenter.getIncstance().setLastRequestID(resultSet.getString("lastRequestId"));
             }
-        } catch (IOException e) {
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
     public synchronized void setLastLogId() {
-        FileReader fileReader = null;
         try {
-            fileReader = new FileReader("lastLogID.txt");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        BufferedReader br = new BufferedReader(fileReader);
-        try {
-            String lastLogId;
-            while ((lastLogId = br.readLine()) != null) {
-                CartCenter.getInstance().setLastLogId(lastLogId);
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection connection = DriverManager.getConnection("jdbc:ucanaccess://ProjectDatabase.accdb");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT lastLog FROM allIds");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                CartCenter.getInstance().setLastLogId(resultSet.getString("lastLogId"));
             }
-        } catch (IOException e) {
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
     public synchronized void setLastDiscountCodeId() {
-        FileReader fileReader = null;
         try {
-            fileReader = new FileReader("lastDiscountCodeID.txt");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        BufferedReader br = new BufferedReader(fileReader);
-        try {
-            String lastDiscountCode;
-            while ((lastDiscountCode = br.readLine()) != null) {
-                DiscountCodeCenter.getIncstance().setLastDiscountCodeID(lastDiscountCode);
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection connection = DriverManager.getConnection("jdbc:ucanaccess://ProjectDatabase.accdb");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT lastDiscountCodeId FROM allIds");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                DiscountCodeCenter.getIncstance().setLastDiscountCodeID(resultSet.getString("lastDiscountCodeId"));
             }
-        } catch (IOException e) {
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -1184,49 +1195,33 @@ public class DataBase {
     }
 
     public synchronized void setLastOfferIdFromDataBase() {
-        FileReader fileReader = null;
-        Scanner scanner = null;
         try {
-            fileReader = new FileReader("lastOfferId.txt");
-        } catch (FileNotFoundException e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection connection = DriverManager.getConnection("jdbc:ucanaccess://ProjectDatabase.accdb");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT lastOfferId FROM allIds");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                OffCenter.getInstance().setLastOffId(resultSet.getString("lastOfferId"));
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }
-        try {
-            scanner = new Scanner(fileReader);
-        } catch (NullPointerException e) {
-            e.getCause();
-        }
-        try {
-            String lastOfferId;
-            while (scanner.hasNextLine()) {
-                lastOfferId = scanner.nextLine();
-                OffCenter.getInstance().setLastOffId(lastOfferId);
-            }
-        } catch (NullPointerException nullPointer) {
-            nullPointer.getCause();
-        } finally {
-            try {
-                fileReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (NullPointerException error) {
-                error.getCause();
-            }
-            try {
-                scanner.close();
-            } catch (NullPointerException error2) {
-                error2.getCause();
-            }
-        }
-
     }
 
     public synchronized void replaceOfferId(String lastOfferId) {
         try {
-            FileWriter fileWriter = new FileWriter("lastOfferId.txt");
-            fileWriter.write(lastOfferId);
-            fileWriter.close();
-        } catch (Exception e) {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            Connection connection = DriverManager.getConnection("jdbc:ucanaccess://ProjectDatabase.accdb");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE allIds SET lastOfferId = ?");
+            preparedStatement.setString(1, lastOfferId);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            connection.close();
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 
