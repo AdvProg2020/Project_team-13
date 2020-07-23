@@ -297,7 +297,7 @@ public class DataBase {
                 Type features = new TypeToken<HashMap<String, ArrayList<String>>>() {
                 }.getType();
                 Category category1 = new Category(data[0], new Gson().fromJson(data[1], features));
-                if(!data[2].equals("null")){
+                if(!data[2].equals("[]")){
                     Type allProductType = new TypeToken<ArrayList<Product>>() {
                     }.getType();
                     category1.setAllProducts(new Gson().fromJson(data[2], allProductType));
