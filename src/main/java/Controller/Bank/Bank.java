@@ -44,7 +44,7 @@ public class Bank {
     private Statement statement;
     private PreparedStatement preparedStatement;
     private Class<?> aclass;
-    private final String DB_URL = "jdbc:ucanaccess://ProjectDatabase.accdb";
+    private final String DB_URL = "jdbc:ucanaccess://BankDatabase.accdb";
 
     {
         try {
