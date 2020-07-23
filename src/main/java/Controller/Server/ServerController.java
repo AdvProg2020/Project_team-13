@@ -1,6 +1,9 @@
 package Controller.Server;
 
+import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
+import Models.UserAccount.Seller;
+import Models.UserAccount.Supporter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -50,10 +53,16 @@ public class ServerController {
         allClients = new HashMap<>();
     }
 
-    private synchronized String getKindOfCurrentUser(DataOutputStream dataOutputStream) {
-        if(allClients.containsKey(dataOutputStream)) {
-            if(UserCenter.getIncstance().getUserWithUsername(allClients.get(dataOutputStream)) instanceof Manager) {
+    public synchronized String getKindOfCurrentUser(DataOutputStream dataOutputStream) {
+        if (allClients.containsKey(dataOutputStream)) {
+            if (UserCenter.getIncstance().getUserWithUsername(allClients.get(dataOutputStream)) instanceof Manager) {
                 return "Manager";
+            } else if (UserCenter.getIncstance().getUserWithUsername(allClients.get(dataOutputStream)) instanceof Customer)  {
+                return "Customer";
+            } else if (UserCenter.getIncstance().getUserWithUsername(allClients.get(dataOutputStream)) instanceof Seller)  {
+                return "Seller";
+            } else if (UserCenter.getIncstance().getUserWithUsername(allClients.get(dataOutputStream)) instanceof Supporter)  {
+                return "Supporter";
             }
         }
         return "";
@@ -108,9 +117,6 @@ public class ServerController {
                 RSASecretGeneratorForBank.getInstance().setAnotherPublicKey(new Gson().fromJson(response, keyType));
                 String string = RSASecretGeneratorForBank.getInstance()
                         .getTheEncodedWithRSA("0@@getTime@", RSASecretGeneratorForBank.getInstance().getAnotherPublicKey());
-                System.out.println("ServerSideMessageSending");
-                System.out.println(string);
-                System.out.println("ServerSideMessageSending");
                 dataOutputStream.writeUTF(string);
                 dataOutputStream.flush();
                 String time = dataInputStream.readUTF();
@@ -158,8 +164,8 @@ public class ServerController {
                 Inet4Address in4addr = (Inet4Address) inaddr;
                 String ip4string = in4addr.toString();
                 socketIp.put(socket, ip4string);
-                if(!wrongPasswordCounter.containsKey(ip4string)) {
-                    wrongPasswordCounter.put(ip4string,0);
+                if (!wrongPasswordCounter.containsKey(ip4string)) {
+                    wrongPasswordCounter.put(ip4string, 0);
                 }
                 if (!ipDosChecker.containsKey(socketIp.get(socket)))
                     ipDosChecker.put(socketIp.get(socket), new ArrayList<Long>());
@@ -199,15 +205,15 @@ public class ServerController {
         DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         if (!socketDataOutputStreamHashMap.containsKey(dataOutputStream))
-        socketDataOutputStreamHashMap.put(dataOutputStream,socket);
+            socketDataOutputStreamHashMap.put(dataOutputStream, socket);
         while (true) {
             String string;
             try {
                 string = dataInputStream.readUTF();
                 long time = new Date().getTime();
-                System.out.println("message controller : "  +TokenGenerator.getInstance().getTheDecodedMessage(string) + "\ntime: "+ time );
-                if(!TokenGenerator.getInstance().getTheDecodedMessage(string).equals("0@getTime@"))
-                ipDosChecker.get(socketIp.get(socket)).add(time);
+                System.out.println("message controller : " + TokenGenerator.getInstance().getTheDecodedMessage(string) + "\ntime: " + time);
+                if (!TokenGenerator.getInstance().getTheDecodedMessage(string).equals("0@getTime@"))
+                    ipDosChecker.get(socketIp.get(socket)).add(time);
                 if (checkDosAttack(socketIp.get(socket))) {
                     if (!blackList.contains(socketIp.get(socket))) {
                         blackList.add(socketIp.get(socket));
@@ -222,26 +228,45 @@ public class ServerController {
                     if (new Date().getTime() - temporaryBlackList.get(socketIp.get(socket)) > 300000) {
                         temporaryBlackList.remove(socketIp.get(socket));
                         errorCounterForIp.get(socketIp.get(socket)).clear();
-                        if(TokenGenerator.getInstance().getTheDecodedMessage(string).startsWith("@getAllUsers@")) {
-                            if(getKindOfCurrentUser(dataOutputStream).equals("Manager")){
+                        if (TokenGenerator.getInstance().getTheDecodedMessage(string).startsWith("@getAllUsers@")) {
+                            if (getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
                                 ServerMessageController.getInstance().processMessage(TokenGenerator.getInstance().getTheDecodedMessage(string), dataOutputStream, socket);
-                            }else {
-                                ServerController.getInstance().sendMessageToClient("@Error@You don't have permission.",dataOutputStream);
+                            } else {
+                                ServerController.getInstance().sendMessageToClient("@Error@You don't have permission.", dataOutputStream);
                             }
-                        }else {
+                        } else {
                             ServerMessageController.getInstance().processMessage(string, dataOutputStream, socket);
                         }
                     } else {
                         sendMessageToClient("@Error@You are temporary banned for " + (300000 - (new Date().getTime() - temporaryBlackList.get(socketIp.get(socket)))) + " milliseconds", dataOutputStream);
                     }
                 } else {
-                    if(TokenGenerator.getInstance().getTheDecodedMessage(string).startsWith("@getAllUsers@")) {
-                        if(getKindOfCurrentUser(dataOutputStream).equals("Manager")){
+                    if (TokenGenerator.getInstance().getTheDecodedMessage(string).startsWith("@getAllUsers@")) {
+                        if (getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
                             ServerMessageController.getInstance().processMessage(string, dataOutputStream, socket);
-                        }else {
-                            ServerController.getInstance().sendMessageToClient("@Error@You don't have permission.",dataOutputStream);
+                        } else {
+                            ServerController.getInstance().sendMessageToClient("@Error@You don't have permission.", dataOutputStream);
                         }
-                    }else {
+                    }  if (TokenGenerator.getInstance().getTheDecodedMessage(string).startsWith("@acceptRequest@")) {
+                        if (getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
+                            ServerMessageController.getInstance().processMessage(string, dataOutputStream, socket);
+                        } else {
+                            ServerController.getInstance().sendMessageToClient("@Error@You don't have permission.", dataOutputStream);
+                        }
+                    }else if (TokenGenerator.getInstance().getTheDecodedMessage(string).startsWith("@getAllRequests@")) {
+                        if (getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
+                            ServerMessageController.getInstance().processMessage(string, dataOutputStream, socket);
+                        } else {
+                            ServerController.getInstance().sendMessageToClient("@Error@You don't have permission.", dataOutputStream);
+                        }
+                    }  else if (TokenGenerator.getInstance().getTheDecodedMessage(string).startsWith("@getUser@")) {
+                        if (allClients.containsKey(dataOutputStream) && allClients.get(dataOutputStream).
+                                equals(TokenGenerator.getInstance().getTheDecodedMessage(string).substring(9))) {
+                            ServerMessageController.getInstance().processMessage(string, dataOutputStream, socket);
+                        } else {
+                            ServerController.getInstance().sendMessageToClient("@Error@You don't have permission.", dataOutputStream);
+                        }
+                    } else {
                         ServerMessageController.getInstance().processMessage(string, dataOutputStream, socket);
                     }
                 }
@@ -281,12 +306,11 @@ public class ServerController {
 
     public void sendMessageToClient(String message, DataOutputStream dataOutputStream) {
         String codedMessage;
-        System.out.println("AaaaaaaaaaaaaAAAaa:   "+message);
         if (message.startsWith("@Error") && !temporaryBlackList.containsKey(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream)))) {
             System.out.println("TestStart");
-            System.out.println(socketDataOutputStreamHashMap.get(dataOutputStream)==null);
+            System.out.println(socketDataOutputStreamHashMap.get(dataOutputStream) == null);
             System.out.println(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream)));
-            System.out.println(errorCounterForIp.get(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream)))==null);
+            System.out.println(errorCounterForIp.get(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream))) == null);
             System.out.println("TestEnd");
             errorCounterForIp.get(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream))).add(new Date().getTime());
             if (checkBruteForce(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream)))) {
@@ -306,8 +330,8 @@ public class ServerController {
             }
         }
         if (message.startsWith("@Error@Password is incorrect")) {
-            wrongPasswordCounter.replace(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream)), (wrongPasswordCounter.get(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream)))+1));
-            if(wrongPasswordCounter.get(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream)))>5) {
+            wrongPasswordCounter.replace(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream)), (wrongPasswordCounter.get(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream))) + 1));
+            if (wrongPasswordCounter.get(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream))) > 5) {
                 if (!blackList.contains(socketIp.get(socket))) {
                     blackList.add(socketIp.get(socket));
                 }
@@ -319,7 +343,7 @@ public class ServerController {
                 }
             }
         }
-        if(message.startsWith("@Login as")) {
+        if (message.startsWith("@Login as")) {
             wrongPasswordCounter.replace(socketIp.get(socketDataOutputStreamHashMap.get(dataOutputStream)), 0);
         }
         if (message.matches("@Login as \\w+@.*")) {

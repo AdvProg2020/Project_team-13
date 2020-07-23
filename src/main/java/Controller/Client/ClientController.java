@@ -189,6 +189,7 @@ public class ClientController {
         this.message = message;
         String message1 = getTheEncodedMessage("0@getTime@");
         try {
+            System.out.println(message1);
             dataOutputStream.writeUTF(message1);
             dataOutputStream.flush();
             String string = "";
