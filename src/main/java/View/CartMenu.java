@@ -344,8 +344,56 @@ public class CartMenu extends Menu {
                                     seller.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                         @Override
                                         public void handle(MouseEvent event) {
-                                            popupwindow.hide();
-                                            //pay with bank account
+                                            Stage popupwindow = new Stage();
+                                            GridPane gridPane = new GridPane();
+                                            gridPane.setStyle("-fx-background-color: Blue");
+                                            Button button = new Button("X");
+                                            button.setStyle("-fx-background-color: rgba(236, 213, 220, 0.85);-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 25px; -fx-padding: 3,3,3,3;-fx-font-weight: bold;-fx-text-fill: Red");
+                                            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    popupwindow.hide();
+                                                    scene.setFill(null);
+                                                }
+                                            });
+                                            gridPane.add(button, 0, 0);
+                                            gridPane.add(new Text(""), 1, 0);
+                                            gridPane.setStyle("-fx-background-color: rgba(255,145,200,0.85);");
+                                            GridPane commentPane = new GridPane();
+                                            gridPane.add(commentPane, 1, 1);
+                                            Text titleText = new Text("Account ID:");
+                                            Text contentText = new Text("Account ID:");
+                                            TextField getTitle = new TextField();
+                                            TextField getContent = new TextField();
+                                            getTitle.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
+                                            getContent.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;");
+                                            getContent.setMaxWidth(300);
+
+                                            Button addCommentButton = new Button("Increase Credit");
+                                            addCommentButton.setStyle("-fx-background-color: #E85D9E;");
+                                            addCommentButton.setMinWidth(100);
+                                            commentPane.setVgap(10);
+                                            commentPane.setHgap(10);
+                                            addCommentButton.setTextFill(Color.WHITE);
+                                            commentPane.add(titleText, 0, 0);
+                                            commentPane.add(getTitle, 1, 0);
+                                            commentPane.add(addCommentButton, 1, 6);
+                                            addCommentButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    if(checkAmountIsValid(getTitle.getText())){
+                                                        CartController.getInstance().payWithBankAccount(getTitle.getText());
+                                                    }else {
+                                                        ClientController.getInstance().getCurrentMenu().showMessage("Your input is invalid", MessageKind.ErrorWithoutBack);
+                                                    }
+                                                    popupwindow.hide();
+                                                }
+                                            });
+                                            Scene scene1 = new Scene(gridPane, 400, 300);
+                                            popupwindow.initModality(Modality.APPLICATION_MODAL);
+                                            popupwindow.initStyle(StageStyle.UNDECORATED);
+                                            popupwindow.setScene(scene1);
+                                            popupwindow.showAndWait();
                                         }
                                     });
                                     seller.setFitWidth(100);
@@ -595,4 +643,8 @@ public class CartMenu extends Menu {
     private boolean checkEmailIsvalid(String email) {
         return Pattern.matches("\\w+\\.?\\w*@\\w+\\.\\w+", email);
     }
+    private boolean checkAmountIsValid(String amount){
+        return amount.matches("\\d+");
+    }
+
 }

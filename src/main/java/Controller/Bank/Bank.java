@@ -300,7 +300,7 @@ public class Bank {
          }
         if(!((sourceId.matches("@a\\d{5}") && destinationId.equals("-1") ||
                  (sourceId.equals("-1") && destinationId.matches("@a\\d{5}")) ||
-                 (sourceId.matches("@a\\d{5}") && destinationId.matches("@a\\d{5}") &&
+                 (sourceId.matches("@a\\d{5}") && destinationId.matches("(@a\\d{5})|(@a231234@)") &&
                          equals5)))){
              return "invalid parameters passed";
          }
@@ -483,6 +483,7 @@ public class Bank {
 
         }
         Objects.requireNonNull(getReceiptById(receiptId)).setPaid("1");
+        updateMarketAccount(new Gson().toJson(marketAccount));
         updateAllAccounts(new Gson().toJson(allAccounts));
         return "done successfully";
     }
@@ -530,6 +531,7 @@ public class Bank {
                 stringBuilder1.append(scanner1.nextLine());
             }
             setMarketAccount(new Gson().fromJson(String.valueOf(stringBuilder1), Account.class));
+            allAccounts.add(marketAccount);
             scanner1.close();
         }catch (IOException e){
             System.out.println("Error in Database Connection...");

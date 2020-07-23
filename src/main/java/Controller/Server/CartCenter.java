@@ -1,11 +1,8 @@
 package Controller.Server;
 
-import Models.BuyLog;
-import Models.DiscountCode;
+import Models.*;
 import Models.Product.Cart;
 import Models.Product.Product;
-import Models.ReceivingStatus;
-import Models.SellLog;
 import Models.UserAccount.Customer;
 import com.google.gson.Gson;
 
@@ -130,7 +127,7 @@ public class CartCenter {
 
             }
         }
-        if (customer.getCredit() - price >= 0) {
+        if (customer.getCredit() - price >= atLeastAmount) {
             if (discountCode != null) {
                 DiscountCodeCenter.getIncstance().usedDiscountCode(discountCode.getDiscountCodeID(), customer.getUsername(), dataOutputStream);
             }
@@ -178,6 +175,76 @@ public class CartCenter {
             ServerController.getInstance().sendMessageToClient("@payed@" + new Gson().toJson(customer), dataOutputStream);
         } else {
             ServerController.getInstance().sendMessageToClient("@Error@You don't have enough credit", dataOutputStream);
+        }
+    }
+
+    public synchronized void payWithBankAccount(String accountId, Cart cart, DataOutputStream dataOutputStream) {
+        System.out.println(UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID()));
+        Customer customer = UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID());
+        double price = cart.getTotalPrice(), reducedPrice = 0;
+        DiscountCode discountCode = cart.getDiscountCode();
+        if (discountCode != null) {
+            if (price * ((double) discountCode.getDiscountPercent() / 100) < discountCode.getMaxDiscountAmount()) {
+                reducedPrice = price * ((double) discountCode.getDiscountPercent() / 100);
+                price -= reducedPrice;
+            } else {
+                reducedPrice = discountCode.getMaxDiscountAmount();
+                price -= reducedPrice;
+
+            }
+        }
+        int amount = (int) cart.getTotalPrice();
+        String token = ServerController.getInstance().handleBankConnection("get_token " + cart.getCustomerID() + " " + UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID()).getPassword());
+        String response = ServerController.getInstance().handleBankConnection("create_receipt " + token + " " + String.valueOf(ReceiptType.MOVE).toLowerCase() + " " + String.valueOf(amount) + " " +
+        accountId + " " + "@a231234@" + " " + "NoDescription");
+        response = ServerController.getInstance().handleBankConnection("pay " + response);
+        if(response.equals("done successfully")){
+         if (discountCode != null) {
+                DiscountCodeCenter.getIncstance().usedDiscountCode(discountCode.getDiscountCodeID(), customer.getUsername(), dataOutputStream);
+            }
+            customer.setTotalBuyAmount(customer.getTotalBuyAmount() + price);
+            if (customer.getTotalBuyAmount() > 1000000) {
+                makeDiscountCodeForGift(customer.getUsername());
+            }
+            ArrayList<String> sellers = new ArrayList<>();
+            for (Product product : cart.getAllproduct()) {
+                ProductCenter.getInstance().findProductWithID(product.getProductId()).addToAllBuyers(UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID()));
+                UserCenter.getIncstance().findSellerWithUsername(product.getSeller()).findProductWithID(product.getProductId()).addToAllBuyers(customer);
+                ProductCenter.getInstance().decreaseProductCount(product.getProductId(), cart.getCountOfEachProduct().get(product.getProductId()));
+                System.out.println("in CART: " + product.getProductName() + cart.getCountOfEachProduct().get(product.getProductId()));
+                if (!sellers.contains(product.getSeller())) {
+                    sellers.add(product.getSeller());
+                }
+            }
+            String sellerAndProducts = "";
+            for (String seller : sellers) {
+                ArrayList<Product> allProducts = new ArrayList<>();
+                sellerAndProducts += seller + ": ";
+                double cost = 0;
+                for (Product product : cart.getAllproduct()) {
+                    if (seller.equals(product.getSeller())) {
+                        allProducts.add(product);
+                        cost += product.getCostAfterOff();
+                        sellerAndProducts += product.getProductId() + " ";
+                    }
+                }
+                UserCenter.getIncstance().findSellerWithUsername(seller).setCredit(UserCenter.getIncstance().findSellerWithUsername(seller).getCredit() + (cost-wage*cost/100));
+                sellerAndProducts += "\n";
+                SellLog sellLog = new SellLog(makeLogID(), new Date(), seller, customer.getUsername(), allProducts, ReceivingStatus.DeliveredToThePost, reducedPrice);
+                sellLog.setPrice(price + reducedPrice);
+                UserCenter.getIncstance().findSellerWithUsername(seller).addLog(sellLog);
+            }
+            BuyLog buyLog = new BuyLog(makeLogID(), price, new Date(), customer.getUsername(), sellerAndProducts, cart.getAllproduct(), ReceivingStatus.DeliveredToThePost, reducedPrice);
+            buyLog.setPrice(price);
+            customer.addLog(buyLog);
+            DataBase.getInstance().updateAllSellers(new Gson().toJson(UserCenter.getIncstance().getAllSeller()));
+            DataBase.getInstance().updateAllCustomers(new Gson().toJson(UserCenter.getIncstance().getAllCustomer()));
+            DataBase.getInstance().updateAllProducts(new Gson().toJson(ProductCenter.getInstance().getAllProducts()));
+            DataBase.getInstance().updateAllDiscountCode(new Gson().toJson(DiscountCodeCenter.getIncstance().getAllDiscountCodes()));
+            DataBase.getInstance().updateAllOffers(new Gson().toJson(OffCenter.getInstance().getAllOffers()));
+            ServerController.getInstance().sendMessageToClient("@payed@" + new Gson().toJson(customer), dataOutputStream);
+        }else{
+            ServerController.getInstance().sendMessageToClient("@Error@" + "you dont have money to pay ", dataOutputStream);
         }
     }
 
