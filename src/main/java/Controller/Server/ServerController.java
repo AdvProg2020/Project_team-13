@@ -95,7 +95,7 @@ public class ServerController {
                 }.getType();
                 RSASecretGeneratorForBank.getInstance().setAnotherPublicKey(new Gson().fromJson(response, keyType));
                 String string = RSASecretGeneratorForBank.getInstance()
-                        .getTheEncodedWithRSA("0@@getTime@",RSASecretGeneratorForBank.getInstance().getAnotherPublicKey());
+                        .getTheEncodedWithRSA("0@@getTime@", RSASecretGeneratorForBank.getInstance().getAnotherPublicKey());
                 System.out.println("ServerSideMessageSending");
                 System.out.println(string);
                 System.out.println("ServerSideMessageSending");
@@ -112,13 +112,13 @@ public class ServerController {
         } else {
             try {
                 String string = RSASecretGeneratorForBank.getInstance()
-                        .getTheEncodedWithRSA("0@@getTime@",RSASecretGeneratorForBank.getInstance().getAnotherPublicKey());
+                        .getTheEncodedWithRSA("0@@getTime@", RSASecretGeneratorForBank.getInstance().getAnotherPublicKey());
                 dataOutputStream.writeUTF(string);
                 dataOutputStream.flush();
                 String time = dataInputStream.readUTF();
                 time = RSASecretGeneratorForBank.getInstance().getTheDecodedMessageViaRSA(time.split(" /// ")[0]);
                 String string1 = RSASecretGeneratorForBank.getInstance()
-                        .getTheEncodedWithRSA(time + "@" + data,RSASecretGeneratorForBank.getInstance().getAnotherPublicKey());
+                        .getTheEncodedWithRSA(time + "@" + data, RSASecretGeneratorForBank.getInstance().getAnotherPublicKey());
                 dataOutputStream.writeUTF(string1);
                 dataOutputStream.flush();
                 response = dataInputStream.readUTF();
@@ -189,6 +189,8 @@ public class ServerController {
             try {
                 string = dataInputStream.readUTF();
                 long time = new Date().getTime();
+                System.out.println("message controller : "  +TokenGenerator.getInstance().getTheDecodedMessage(string) + "\ntime: "+ time );
+                if(!TokenGenerator.getInstance().getTheDecodedMessage(string).equals("0@getTime@"))
                 ipDosChecker.get(socketIp.get(socket)).add(time);
                 if (checkDosAttack(socketIp.get(socket))) {
                     if (!blackList.contains(socketIp.get(socket))) {
@@ -196,9 +198,11 @@ public class ServerController {
                     }
                     ArrayList<Socket> blockedSockets = new ArrayList<>();
                     sendMessageToClient("@Error@" + "You are rushing take it easy little boy.", dataOutputStream);
+                    System.out.println("123");
                     socket.close();
                 } else if (blackList.contains(socketIp.get(socket))) {
                     sendMessageToClient("@Error@" + "You are rushing take it easy little boy.", dataOutputStream);
+                    System.out.println("12345");
                     socket.close();
                 } else if (temporaryBlackList.containsKey(socketIp.get(socket))) {
                     if (new Date().getTime() - temporaryBlackList.get(socketIp.get(socket)) > 300000) {
@@ -221,10 +225,13 @@ public class ServerController {
     }
 
     public boolean checkDosAttack(String ip) {
-        if (ipDosChecker.get(ip).size() > 10) {
-            if (ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 1) - ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 9) < 1000) {
-                System.out.println("\u001B[35m" + (ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 1) - ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 9)) + "\u001B[0m");
-                return true;
+        if (ipDosChecker.containsKey(ip)) {
+            if (ipDosChecker.get(ip).size() > 10) {
+                if (ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 1) - ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 10) < 800) {
+                    System.out.println("Dos time checker" + String.valueOf(ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 1) - ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 10)));
+                    System.out.println("\u001B[35m" + (ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 1) - ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 9)) + "\u001B[0m");
+                    return true;
+                }
             }
         }
         return false;
