@@ -24,14 +24,18 @@ public class AuctionController {
         this.allAuctions = new ArrayList<>();
     }
 
+    private void getAllAuctionsFromServer() {
+        ClientController.getInstance().sendMessageToServer("@getAllAuctions@");
+    }
+
     public void updateAllAuctions() {
         allAuctions.clear();
-        UserController.getInstance().getAllUserFromServer();
-        for (Seller seller : UserController.getInstance().getAllSellers()) {
-            if (seller.getAuction() != null) {
-                allAuctions.add(seller.getAuction());
-            }
-        }
+        getAllAuctionsFromServer();
+//        for (Seller seller : UserController.getInstance().getAllSellers()) {
+//            if (seller.getAuction() != null) {
+//                allAuctions.add(seller.getAuction());
+//            }
+//        }
         if(currentAuction!=null) {
             for (Auction auction : allAuctions) {
                 if(auction.getAuctionId().equals(currentAuction.getAuctionId())) {
@@ -121,5 +125,9 @@ public class AuctionController {
         String product0 = gson.toJson(auction);
         ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("AddAuction", product0));
         System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    }
+
+    public void setAllAuctions(ArrayList<Auction> allAuctions) {
+        this.allAuctions = allAuctions;
     }
 }

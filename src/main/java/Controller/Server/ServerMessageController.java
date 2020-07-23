@@ -81,7 +81,7 @@ public class ServerMessageController {
                 //    ServerController.getInstance().sendMessageToClient("@successfulChat@",dataOutputStream);
                 message = message.substring(17);
                 //  UserCenter.getIncstance().sendChat(message,dataOutputStream);
-            } else if (message.startsWith("@getAllRequests@")) {
+            } else if (message.startsWith("@getAllRequests@") && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
                 ServerController.getInstance().sendMessageToClient("@AllRequests@" + new Gson().toJson(RequestCenter.getIncstance().getAllRequests()), dataOutputStream);
             } else if (message.startsWith("@getOnlineSupporter@")) {
                 ServerController.getInstance().sendMessageToClient("@OnlineUsers@" + new Gson().toJson(ServerController.getInstance().getOnlineSupporters()), dataOutputStream);
@@ -100,7 +100,7 @@ public class ServerMessageController {
                     e.printStackTrace();
                 }
                 AuctionCenter.getInstance().createNewAuctionRequest(message, dataOutputStream);
-            } else if (message.startsWith("@acceptRequest@")) {
+            } else if (message.startsWith("@acceptRequest@")  && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
                 message = message.substring(15);
                 RequestCenter.getIncstance().acceptRequest(message, dataOutputStream);
             } else if (message.startsWith("@editLog@")) {
@@ -118,26 +118,32 @@ public class ServerMessageController {
             }else if (message.startsWith("@getManagerCount@")) {
                 DataBase.getInstance().setAllUsersListFromDateBase();
                 ServerController.getInstance().sendMessageToClient("@AllManagerCount@" + UserCenter.getIncstance().getCountOfManager() ,dataOutputStream);
-            }  else if (message.startsWith("@deleteCustomer@")) {
+            }  else if (message.startsWith("@deleteCustomer@")  && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
                 UserCenter.getIncstance().removeCustomer(message.substring(16
                 ), dataOutputStream);
             } else if (message.startsWith("@getAllCommercializedProducts@")) {
                 DataBase.getInstance().setAllUsersListFromDateBase();
-                UserCenter.getIncstance().removeCustomer("@setAllCommercializedProducts@"
+                ServerController.getInstance().sendMessageToClient("@setAllCommercializedProducts@"
                         + new Gson().toJson(UserCenter.getIncstance().getAllCommercializedProducts()), dataOutputStream);
-            } else if (message.startsWith("@deleteSeller@")) {
+            } else if (message.startsWith("@deleteSeller@")  && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
                 UserCenter.getIncstance().removeSeller(message.substring(14), dataOutputStream);
-            } else if (message.startsWith("@deleteManager@")) {
+            } else if (message.startsWith("@getAllAuctions@")) {
+                ServerController.getInstance().sendMessageToClient("@setAllAuctions@"
+                        + new Gson().toJson(UserCenter.getIncstance().getAllAuctions()),dataOutputStream);
+            } else if (message.startsWith("@deleteManager@")  && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
                 UserCenter.getIncstance().removeManager(message.substring(15), dataOutputStream);
-            } else if (message.startsWith("@createManagerProfile@")) {
+            } else if (message.startsWith("@createManagerProfile@")  && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
                 UserCenter.getIncstance().createManagerProfile(message.substring(22), dataOutputStream);
-            } else if (message.startsWith("@createSupporterProfile@")) {
+            } else if (message.startsWith("@createSupporterProfile@")  && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
                 UserCenter.getIncstance().createSupporterProfile(message.substring(24), dataOutputStream);
             } else if (message.startsWith("@getAllProductsForManager@")) {
                 DataBase.getInstance().getAllProductsFromDataBase(dataOutputStream);
             } else if (message.startsWith("@getAllOffers@")) {
                 DataBase.getInstance().getAllOffersFromDataBase(dataOutputStream);
-            } else if (message.startsWith("@removeProductForManager@")) {
+            } else if (message.startsWith("@getUser@")) {
+                message = message.substring(9);
+                ServerController.getInstance().sendMessageToClient("@SetCurrentUser@" + new Gson().toJson(UserCenter.getIncstance().getUserWithUsername(message)),dataOutputStream);
+            }  else if (message.startsWith("@removeProductForManager@")  && (ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Manager")|| ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Seller"))) {
                 message = message.substring(25);
                 ProductCenter.getInstance().deleteProduct(message, dataOutputStream);
             } else if (message.startsWith("@setSupporterPort@")) {
@@ -164,40 +170,40 @@ public class ServerMessageController {
                 ArrayList<Category> allCategories = CategoryCenter.getIncstance().getAllCategories();
                 Gson gson = new Gson();
                 ServerController.getInstance().sendMessageToClient(ServerMessageController.getInstance().makeMessage("setAllCategories", gson.toJson(allCategories)), dataOutputStream);
-            } else if (message.startsWith("@updateAllCategories@")) {
+            } else if (message.startsWith("@updateAllCategories@") && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
                 message = message.substring(21);
                 DataBase.getInstance().updateAllCategories(message);
                 ServerController.getInstance().sendMessageToClient(MessageController.getInstance().makeMessage("category added", "category added"), dataOutputStream);
-            } else if (message.startsWith("@removeCategory@")) {
+            } else if (message.startsWith("@removeCategory@") && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Manager") ) {
                 message = message.substring(16);
                 CategoryCenter.getIncstance().removeCategory(message, dataOutputStream);
-            } else if (message.startsWith("@createDiscountCode@")) {
+            } else if (message.startsWith("@createDiscountCode@") && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
                 message = message.substring(20);
                 DiscountCodeCenter.getIncstance().createDiscountCode(message, dataOutputStream);
             } else if (message.startsWith("@getAllDiscountCodes@")) {
                 ServerController.getInstance().sendMessageToClient("@AllDiscountCodes@" + new Gson().toJson(DiscountCodeCenter.getIncstance().getAllDiscountCodes()), dataOutputStream);
-            } else if (message.startsWith("@editDiscountCode@")) {
+            } else if (message.startsWith("@editDiscountCode@") && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
                 message = message.substring(18);
                 DiscountCodeCenter.getIncstance().editDiscountCode(new Gson().fromJson(message, DiscountCode.class), dataOutputStream);
             } else if (message.startsWith("@AddOffer@")) {
                 message = message.substring(10);
                 OffCenter.getInstance().createOfferRequest(message, dataOutputStream);
-            } else if (message.startsWith("@removeDiscountCode@")) {
+            } else if (message.startsWith("@removeDiscountCode@") && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
                 message = message.substring(20);
                 DiscountCodeCenter.getIncstance().removeDiscountCode(message, dataOutputStream);
-            } else if (message.startsWith("@editManager@")) {
+            } else if (message.startsWith("@editManager@") && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
                 message = message.substring(13);
                 UserCenter.getIncstance().editManager(new Gson().fromJson(message, Manager.class), dataOutputStream);
-            } else if (message.startsWith("@editCustomer@")) {
+            } else if (message.startsWith("@editCustomer@") && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Customer")) {
                 message = message.substring(14);
                 UserCenter.getIncstance().editCustomer(new Gson().fromJson(message, Customer.class), dataOutputStream);
-            } else if (message.startsWith("@editSeller@")) {
+            } else if (message.startsWith("@editSeller@")  && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Seller")) {
                 message = message.substring(12);
                 UserCenter.getIncstance().editSeller(new Gson().fromJson(message, Seller.class), dataOutputStream);
-            } else if (message.startsWith("@editAuction@")) {
+            } else if (message.startsWith("@editAuction@")  && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Seller")) {
                 message = message.substring(13);
                 UserCenter.getIncstance().editAuction(new Gson().fromJson(message, Auction.class), dataOutputStream);
-            } else if (message.startsWith("@editCategory@")) {
+            } else if (message.startsWith("@editCategory@") && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
                 message = message.substring(14);
                 if (message.startsWith("add")) {
                     message = message.substring(3);
@@ -225,7 +231,7 @@ public class ServerMessageController {
                 message = message.substring(20);
                 String[] commands = message.split("//");
                 CartCenter.getInstance().payWithBankAccount(commands[0], new Gson().fromJson(commands[1], Cart.class), dataOutputStream);
-            } else if (message.startsWith("@declineRequest@")) {
+            } else if (message.startsWith("@declineRequest@") && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Manager")) {
                 message = message.substring(16);
                 RequestCenter.getIncstance().declineRequest(message, dataOutputStream);
             } else if (message.startsWith("@gSPOA@")) {
@@ -235,7 +241,7 @@ public class ServerMessageController {
             } else if (message.startsWith("@rate@")) {
                 message = message.substring(6);
                 ProductCenter.getInstance().rating(message);
-            } else if (message.startsWith("@cmc@")) {
+            } else if (message.startsWith("@cmc@") && ServerController.getInstance().getKindOfCurrentUser(dataOutputStream).equals("Seller")) {
                 message = message.substring(5);
                 ProductCenter.getInstance().addCommercialRequest(message, dataOutputStream);
             } else if (message.startsWith("@addComment@")) {
@@ -270,6 +276,8 @@ public class ServerMessageController {
                 message = message.substring(16);
                 String[] commands = message.split("//");
                 UserCenter.getIncstance().processDecreaseAmountForSeller(commands[0], commands[1], commands[2], commands[3], dataOutputStream);
+            } else {
+                ServerController.getInstance().sendMessageToClient("@Error@Invalid message.", dataOutputStream);
             }
         } else {
             ServerController.getInstance().sendMessageToClient("@Error@your token is invalid", dataOutputStream);

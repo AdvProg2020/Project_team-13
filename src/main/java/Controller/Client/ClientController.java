@@ -1,8 +1,9 @@
 package Controller.Client;
 
 import Models.DiscountCode;
-import Models.Message;
 import Models.Product.Product;
+import Models.UserAccount.Customer;
+import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
 import Models.UserAccount.UserAccount;
 import View.MainMenu;
@@ -176,6 +177,12 @@ public class ClientController {
         return clientController;
     }
 
+    public void updateCurrentUserFromServer() {
+        if (currentUser != null) {
+            sendMessageToServer("@getUser@" + currentUser.getUsername());
+        }
+    }
+
     public UserAccount getCurrentUser() {
         return currentUser;
     }
@@ -193,6 +200,7 @@ public class ClientController {
         this.message = message;
         String message1 = getTheEncodedMessage("0@getTime@");
         try {
+            System.out.println(message1);
             dataOutputStream.writeUTF(message1);
             dataOutputStream.flush();
             String string = "";
@@ -277,5 +285,16 @@ public class ClientController {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public void setCurrentUser(String message) {
+        if (currentUser instanceof Seller) {
+            System.out.println(message);
+            currentUser = new Gson().fromJson(message, Seller.class);
+        } else if (currentUser instanceof Customer) {
+            currentUser = new Gson().fromJson(message, Customer.class);
+        } else if (currentUser instanceof Manager) {
+            currentUser = new Gson().fromJson(message, Manager.class);
+        }
     }
 }

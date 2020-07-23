@@ -40,7 +40,6 @@ public class EditOffsMenu extends Menu{
 
     public EditOffsMenu(Stage stage) {
         super(stage);
-        UserController.getInstance().getAllUserFromServer();
         upGridPane = new GridPane();
         menuBarGridPane = new GridPane();
         centerGridPane = new GridPane();
@@ -101,7 +100,6 @@ public class EditOffsMenu extends Menu{
         menuBarGridPane.add(leftGridPane, 0, 0);
         menuBarGridPane.getRowConstraints().add(new RowConstraints(40, Control.USE_COMPUTED_SIZE, 40, Priority.NEVER, VPos.CENTER, false));
     }
-
 
     private void setCenterGridPane() {
         Offer offer= OffsController.getInstance().getCurrentOffer();
