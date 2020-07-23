@@ -69,7 +69,7 @@ public class CartCenter {
 
             }
         }
-        if (customer.getCredit() - price >= 0) {
+        if (customer.getCredit() - price >= atLeastAmount) {
             customer.setCredit(customer.getCredit() - price);
             customer.setTotalBuyAmount(customer.getTotalBuyAmount() + price);
             if (customer.getTotalBuyAmount() > 1000000) {

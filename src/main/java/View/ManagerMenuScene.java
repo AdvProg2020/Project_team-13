@@ -394,7 +394,7 @@ public class ManagerMenuScene extends Menu {
                 Text titleText = new Text("At Least Amount:");
                 TextField getTitle = new TextField();
                 getTitle.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;-fx-background-radius: 30; -fx-pref-height: 18px;-fx-pref-width: 110px;");
-                Button addCommentButton = new Button("Change Wage");
+                Button addCommentButton = new Button("Change At Least Credit");
                 addCommentButton.setStyle("-fx-background-color: #E85D9E;");
                 addCommentButton.setMinWidth(100);
                 commentPane.setVgap(10);
