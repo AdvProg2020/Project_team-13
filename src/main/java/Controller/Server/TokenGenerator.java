@@ -1,6 +1,7 @@
 package Controller.Server;
 
 
+import Controller.Bank.RSASecretGenerator;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -10,8 +11,12 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.sun.xml.internal.messaging.saaj.util.Base64;
 import io.fusionauth.jwt.JWTExpiredException;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -68,7 +73,8 @@ public class TokenGenerator {
         try {
             JWTVerifier jwt = JWT.require(algorithm).withIssuer(ServerController.getInstance().getAllClients().get(dataOutputStream)).build();
             jwt.verify(token);
-        }catch (JWTVerificationException | JWTExpiredException e){
+        }catch (JWTVerificationException e){
+            System.out.println("Foul");
             flag = false;
         }
         return flag;
@@ -84,5 +90,4 @@ public class TokenGenerator {
        }
        return finalMessage;
     }
-
 }

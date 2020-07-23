@@ -132,7 +132,7 @@ public class ServerController {
 
     private void startProcess() {
         try {
-            serverSocket = new ServerSocket(8080);
+            serverSocket = new ServerSocket(6666);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -143,7 +143,7 @@ public class ServerController {
                 socket = serverSocket.accept();
                 InetSocketAddress sockaddr = (InetSocketAddress) socket.getRemoteSocketAddress();
                 InetAddress inaddr = sockaddr.getAddress();
-                Inet4Address in4addr = (Inet4Address) inaddr;
+                Inet6Address in4addr = (Inet6Address) inaddr;
                 String ip4string = in4addr.toString();
                 socketIp.put(socket, ip4string);
                 if (!ipDosChecker.containsKey(socketIp.get(socket)))
