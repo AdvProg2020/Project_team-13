@@ -40,12 +40,12 @@ public class Product {
     private ArrayList<Offer> offers = new ArrayList<>();
     private String imagePath = "", videoPath = "",filePath="";
 
-    public Product(String productCompany, String productId, String productName, Seller seller, double productCost, String productsCategory, String description, int numberOfAvailableProducts, HashMap<String, String> featuresOfCategoryThatHas) {
+    public Product(String productCompany, String productId, String productName, String sellerUsername, double productCost, String productsCategory, String description, int numberOfAvailableProducts, HashMap<String, String> featuresOfCategoryThatHas) {
         this.productCompany = productCompany;
         this.productId = productId;
         this.productStatus = ProductStatus.inCreatingProgress;
         this.productName = productName;
-        this.sellerUsername = seller.getUsername();
+        this.sellerUsername = sellerUsername;
         this.productCost = productCost;
         this.costAfterOff = productCost;
         this.productsCategory = productsCategory;

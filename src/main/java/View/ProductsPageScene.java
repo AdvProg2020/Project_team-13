@@ -597,7 +597,7 @@ public class ProductsPageScene extends Menu {
         ProductController.getInstance().getAllProductsFromServer();
         ArrayList<GridPane> gridPanes = new ArrayList<>();
         ArrayList<GridPane> addGridPanes = new ArrayList<>();
-        UserController.getInstance().getAllUserFromServer();
+        UserController.getInstance().getAllCommercializedProductsFromServer();
         centerGridPaneTosh.getChildren().clear();
         for (int kk = 0; kk < showProductsAfterFilterAndSort().size(); kk++) {
             Product product = showProductsAfterFilterAndSort().get(kk);

@@ -298,10 +298,11 @@ public class DataBase {
                 }.getType();
                 Category category1 = new Category(data[0], new Gson().fromJson(data[1], features));
                 if(!data[2].equals("null")){
-                    Type allProductType = new TypeToken<ArrayList<String>>() {
+                    Type allProductType = new TypeToken<ArrayList<Product>>() {
                     }.getType();
                     category1.setAllProducts(new Gson().fromJson(data[2], allProductType));
                 }
+                allCategories.add(category1);
             }
             statement.close();
             connection.close();
@@ -368,7 +369,8 @@ public class DataBase {
                 String[] data = product.split("&&");
                 Type features = new TypeToken<HashMap<String, String>>() {
                 }.getType();
-                Product product1 = new Product(data[3], data[0], data[2], new Gson().fromJson(data[4], Seller.class), Double.parseDouble(data[6]), data[8], data[9],
+                System.out.println(data[4]);
+                Product product1 = new Product(data[3], data[0], data[2], data[4], Double.parseDouble(data[6]), data[8], data[9],
                         Integer.parseInt(data[11]), new Gson().fromJson(data[12], features));
                 if(!data[1].equals("null")){
                   product1.setProductStatus(ProductStatus.valueOf(data[1]));
@@ -430,7 +432,7 @@ public class DataBase {
             Connection connection = DriverManager.getConnection(url);
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM allProducts");
             preparedStatement.execute();
-            PreparedStatement preparedStatementForInsertCustomer = connection.prepareStatement("INSERT INTO allProducts (productId, productStatus, productName, productCompany, seller, allScores, productCost, costAfterOff, productsCategory, description, commentList, numberOfAvailableProducts, featuresOfCategroy, allBuyers, offers, imagePath, videoPathو filePathو existInOfferRegistered)" +
+            PreparedStatement preparedStatementForInsertCustomer = connection.prepareStatement("INSERT INTO allProducts (productId, productStatus, productName, productCompany, seller, allScores, productCost, costAfterOff, productsCategory, description, commentList, numberOfAvailableProducts, featuresOfCategroy, allBuyers, offers, imagePath, videoPath,filePath, existInOfferRegistered)" +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             for (Product product : allSeller) {
                 preparedStatementForInsertCustomer.setString(1, product.getProductId());
@@ -1122,7 +1124,7 @@ public class DataBase {
                 String[] data = product.split("&&");
                 Type features = new TypeToken<HashMap<String, String>>() {
                 }.getType();
-                Product product1 = new Product(data[3], data[0], data[2], new Gson().fromJson(data[4], Seller.class), Double.parseDouble(data[6]), data[8], data[9],
+                Product product1 = new Product(data[3], data[0], data[2], data[4], Double.parseDouble(data[6]), data[8], data[9],
                         Integer.parseInt(data[11]), new Gson().fromJson(data[12], features));
                 if(!data[1].equals("null")){
                     product1.setProductStatus(ProductStatus.valueOf(data[1]));

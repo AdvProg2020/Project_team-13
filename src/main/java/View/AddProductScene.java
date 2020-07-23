@@ -329,7 +329,7 @@ public class AddProductScene extends Menu {
                                 if (checkCreditIsvalid(cost.getText())) {
                                     if (categoryFeaturesForProduct.size() == CategoryController.getInstance().getCategoryWithName(selectedCategory.getText()).getFeatures().size()) {
                                         Product product = new Product(companyName1.getText().trim(), "", productName.getText().trim(),
-                                                (Seller) ClientController.getInstance().getCurrentUser(), Double.parseDouble(cost.getText().trim()), selectedCategory.getText().trim(), description.getText().trim(), Integer.parseInt(availableNumbers.getText().trim()), categoryFeaturesForProduct);
+                                                 ClientController.getInstance().getCurrentUser().getUsername(), Double.parseDouble(cost.getText().trim()), selectedCategory.getText().trim(), description.getText().trim(), Integer.parseInt(availableNumbers.getText().trim()), categoryFeaturesForProduct);
                                         product.setVideoPath(videoPath[0]);
                                         product.setImagePath(imagePath);
                                         ProductController.getInstance().addProduct(product);

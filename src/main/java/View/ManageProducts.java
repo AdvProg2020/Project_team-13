@@ -768,7 +768,7 @@ public class ManageProducts extends Menu {
                                 if (checkCreditIsValid(cost.getText())) {
                                     if (categoryFeaturesForProduct.size() == CategoryController.getInstance().getCategoryWithName(selectedCategory.getText().trim()).getFeatures().size()) {
                                         Product product = new Product(companyNameText.getText().trim(), currentProduct.getProductId(), productName.getText().trim(),
-                                                (Seller) ClientController.getInstance().getCurrentUser(), Double.parseDouble(cost.getText().trim()), selectedCategory.getText().trim(), description.getText().trim(), Integer.parseInt(availableNumbers.getText().trim()), categoryFeaturesForProduct);
+                                              ClientController.getInstance().getCurrentUser().getUsername(), Double.parseDouble(cost.getText().trim()), selectedCategory.getText().trim(), description.getText().trim(), Integer.parseInt(availableNumbers.getText().trim()), categoryFeaturesForProduct);
                                         product.setImagePath(imagePath[0]);
                                         ProductController.getInstance().editProduct(product);
                                     } else {

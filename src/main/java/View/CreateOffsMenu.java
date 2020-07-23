@@ -37,7 +37,6 @@ public class CreateOffsMenu extends Menu {
 
     public CreateOffsMenu(Stage stage) {
         super(stage);
-        UserController.getInstance().getAllUserFromServer();
         upGridPane = new GridPane();
         menuBarGridPane = new GridPane();
         centerGridPane = new GridPane();
@@ -98,7 +97,6 @@ public class CreateOffsMenu extends Menu {
         menuBarGridPane.add(leftGridPane, 0, 0);
         menuBarGridPane.getRowConstraints().add(new RowConstraints(40, Control.USE_COMPUTED_SIZE, 40, Priority.NEVER, VPos.CENTER, false));
     }
-
 
     private void setCenterGridPane() {
         userInfoGridPane.setVgap(10);

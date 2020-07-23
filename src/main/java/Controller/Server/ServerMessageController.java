@@ -121,6 +121,10 @@ public class ServerMessageController {
             }  else if (message.startsWith("@deleteCustomer@")) {
                 UserCenter.getIncstance().removeCustomer(message.substring(16
                 ), dataOutputStream);
+            } else if (message.startsWith("@getAllCommercializedProducts@")) {
+                DataBase.getInstance().setAllUsersListFromDateBase();
+                UserCenter.getIncstance().removeCustomer("@setAllCommercializedProducts@"
+                        + new Gson().toJson(UserCenter.getIncstance().getAllCommercializedProducts()), dataOutputStream);
             } else if (message.startsWith("@deleteSeller@")) {
                 UserCenter.getIncstance().removeSeller(message.substring(14), dataOutputStream);
             } else if (message.startsWith("@deleteManager@")) {

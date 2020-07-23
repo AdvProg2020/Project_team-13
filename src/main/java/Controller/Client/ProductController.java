@@ -45,7 +45,7 @@ public class ProductController {
     }
 
     public void addProduct(ArrayList<String> fields, HashMap<String, String> featuresOfCategory, Category category) {
-        Product product = new Product(fields.get(0), null, fields.get(1), (Seller) ClientController.getInstance().getCurrentUser()
+        Product product = new Product(fields.get(0), null, fields.get(1), ClientController.getInstance().getCurrentUser().getUsername()
                 , Double.parseDouble(fields.get(3)), category.getName(), fields.get(2), Integer.parseInt(fields.get(4))
                 , featuresOfCategory);
         Gson gson = new Gson();

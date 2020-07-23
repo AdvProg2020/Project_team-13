@@ -278,7 +278,7 @@ public class AddFileScene extends Menu {
                                 if (!imagePath.equals("")) {
                                     if (categoryFeaturesForProduct.size() == CategoryController.getInstance().getCategoryWithName(selectedCategory.getText()).getFeatures().size()) {
                                         Product product = new Product(companyName1.getText().trim(), "", productName.getText().trim(),
-                                                (Seller) ClientController.getInstance().getCurrentUser(), Double.parseDouble(cost.getText().trim()), selectedCategory.getText().trim(), description.getText().trim(), -1, categoryFeaturesForProduct);
+                                               ClientController.getInstance().getCurrentUser().getUsername(), Double.parseDouble(cost.getText().trim()), selectedCategory.getText().trim(), description.getText().trim(), -1, categoryFeaturesForProduct);
                                         if (categoryFeaturesForProduct.get("Format").equals("TextFile"))
                                             product.setImagePath("file:src/text_file.png");
                                         else if (categoryFeaturesForProduct.get("Format").equals("ImageFile"))

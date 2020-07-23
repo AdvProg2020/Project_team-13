@@ -634,6 +634,15 @@ public class UserCenter {
         ServerController.getInstance().sendMessageToClient("@Error@", dataOutputStream);
     }
 
+    public ArrayList<String> getAllCommercializedProducts() {
+        ArrayList<String> commercializedProduct = new ArrayList<>();
+        for (Seller seller : allSeller) {
+            if (seller.getCommercializedProduct() != null && !seller.getCommercializedProduct().isEmpty()) {
+                commercializedProduct.add(seller.getCommercializedProduct());
+            }
+        }
+        return commercializedProduct;
+    }
     public int getCountOfManager() {
         return allManager.size();
     }

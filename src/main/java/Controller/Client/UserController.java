@@ -7,7 +7,6 @@ import Models.UserAccount.*;
 import View.ChatSupporterMenu;
 import View.CustomerChatMenu;
 import View.MessageKind;
-import com.fasterxml.jackson.databind.type.ArrayType;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -30,6 +29,7 @@ public class UserController {
     private String currentChatUser;
     private ArrayList<Log> orders = new ArrayList<>();
     private int managerCount = 0;
+    private ArrayList<String> allCommercializedProducts = new ArrayList<>();
 
     public HashMap<String, Socket> getCustomerDataStreams() {
         return customerDataStreams;
@@ -73,14 +73,21 @@ public class UserController {
     }
 
     public ArrayList<String> getAllCommercializedProducts() {
-        ArrayList<String> commercializedProduct = new ArrayList<>();
-        for (Seller seller : getAllSellers()) {
-            if (seller.getCommercializedProduct() != null && !seller.getCommercializedProduct().isEmpty()) {
-                commercializedProduct.add(seller.getCommercializedProduct());
-            }
-        }
-        return commercializedProduct;
+        return allCommercializedProducts;
     }
+
+
+    public void getAllCommercializedProductsFromServer() {
+        ClientController.getInstance().sendMessageToServer("@getAllCommercializedProducts@");
+        ArrayList<String> commercializedProduct = new ArrayList<>();
+    }
+
+    public void setAllCommercializedProducts(String string) {
+        Type allCommercializedProducts = new TypeToken<ArrayList<String>>() {
+        }.getType();
+        this.allCommercializedProducts = new Gson().fromJson(string,allCommercializedProducts);
+    }
+
 
     public HashMap<String, Integer> getOnlineUsers() {
         return onlineUsers;

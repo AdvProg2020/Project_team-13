@@ -10,6 +10,7 @@ import Models.UserAccount.Seller;
 import Models.UserAccount.Supporter;
 import View.MessageKind;
 import com.google.gson.Gson;
+import org.hsqldb.rights.User;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -164,13 +165,20 @@ public class MessageController {
                 UserController.getInstance().setAllCustomers(split[0]);
                 UserController.getInstance().setAllSellers(split[1]);
                 UserController.getInstance().setAllManagers(split[2]);
+            } else if (message.startsWith("@setAllCommercializedProducts@")) {
+                message = message.substring(30);
+                UserController.getInstance().setAllCommercializedProducts(message);
+                System.out.println("@setAllCommercializedProducts@");
             } else if (message.startsWith("@getAllProductsForManager@")) {
                 message = message.substring(26);
                 ProductController.getInstance().updateAllProducts(message);
             } else if (message.startsWith("@setAllCategories@")) {
                 message = message.substring(18);
                 CategoryController.getInstance().setAllCategories(message);
-            } else if (message.startsWith("@category added@")) {
+            }  else if (message.startsWith("@setAllCategories@")) {
+                message = message.substring(18);
+                CategoryController.getInstance().setAllCategories(message);
+            }else if (message.startsWith("@category added@")) {
                 ClientController.getInstance().getCurrentMenu().showMessage("Category created", MessageKind.MessageWithBack);
             } else if (message.startsWith("@productRemoved@")) {
                 ClientController.getInstance().getCurrentMenu().showMessage("Category removed successfully", MessageKind.MessageWithoutBack);
