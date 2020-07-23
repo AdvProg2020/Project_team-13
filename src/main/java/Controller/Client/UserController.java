@@ -1,11 +1,13 @@
 package Controller.Client;
 
 import Models.ChatMessage;
+import Models.Log;
 import Models.Product.Product;
 import Models.UserAccount.*;
 import View.ChatSupporterMenu;
 import View.CustomerChatMenu;
 import View.MessageKind;
+import com.fasterxml.jackson.databind.type.ArrayType;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -26,6 +28,7 @@ public class UserController {
     private ArrayList<String> onlineClients = new ArrayList<>();
     private HashMap<String, Socket> customerDataStreams=new HashMap<>();
     private String currentChatUser;
+    private ArrayList<Log> orders = new ArrayList<>();
 
     public HashMap<String, Socket> getCustomerDataStreams() {
         return customerDataStreams;
@@ -276,5 +279,15 @@ public class UserController {
 
     public String getCurrentChatUser() {
         return currentChatUser;
+    }
+
+    public void setAllOrders(String json) {
+        Type orderListType = new TypeToken<ArrayList<Log>>() {
+        }.getType();
+        this.orders =  new Gson().fromJson(json, orderListType);
+    }
+
+    public ArrayList<Log> getOrders() {
+        return orders;
     }
 }

@@ -1,10 +1,9 @@
 package Controller.Server;
 
-import Controller.Client.AuctionController;
 import Controller.Client.MessageController;
-import Controller.Client.UserController;
 import Models.Auction;
 import Models.DiscountCode;
+import Models.Log;
 import Models.Offer;
 import Models.Product.Cart;
 import Models.Product.Category;
@@ -12,13 +11,11 @@ import Models.Product.Product;
 import Models.UserAccount.Customer;
 import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
-import Models.UserAccount.UserAccount;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +45,7 @@ public class ServerMessageController {
     }
 
     public void processMessage(String message, DataOutputStream dataOutputStream) {
-        if(TokenGenerator.getInstance().isTokenVerified(message, dataOutputStream)) {
+        if (TokenGenerator.getInstance().isTokenVerified(message, dataOutputStream)) {
             message = TokenGenerator.getInstance().getTheDecodedMessage(message);
             ServerController.getInstance().passTime(dataOutputStream);
             if (message.startsWith("@Register@")) {
@@ -77,7 +74,7 @@ public class ServerMessageController {
                     users.add(value);
                 }
                 ServerController.getInstance().sendMessageToClient("@setOnlineUsers@" + new Gson().toJson(users), dataOutputStream);
-            }else if (message.startsWith("@AddAuction@")) {
+            } else if (message.startsWith("@AddAuction@")) {
                 System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa45489776jhg");
                 message = message.substring(12);
                 try {
@@ -86,9 +83,14 @@ public class ServerMessageController {
                     e.printStackTrace();
                 }
                 AuctionCenter.getInstance().createNewAuctionRequest(message, dataOutputStream);
-            }else if (message.startsWith("@acceptRequest@")) {
+            } else if (message.startsWith("@acceptRequest@")) {
                 message = message.substring(15);
                 RequestCenter.getIncstance().acceptRequest(message, dataOutputStream);
+            } else if (message.startsWith("@editLog@")) {
+                message = message.substring(9);
+                UserCenter.getIncstance().updateLog(new Gson().fromJson(message, Log.class),dataOutputStream);
+            } else if (message.startsWith("@getAllOrders@")) {
+                ServerController.getInstance().sendMessageToClient("@setAllOrders@" + new Gson().toJson(UserCenter.getIncstance().getAllOrdersLogs()), dataOutputStream);
             } else if (message.startsWith("@AddProduct@")) {
                 message = message.substring(12);
                 Gson gson = new Gson();
@@ -201,8 +203,8 @@ public class ServerMessageController {
             } else if (message.startsWith("@gSPOA@")) {
                 message = message.substring(7);
                 ServerController.getInstance().sendMessageToClient("@gSPOA@"
-                        + AuctionCenter.getInstance().getSocketPort(new Gson().fromJson(message,Auction.class)),dataOutputStream);
-            }else if (message.startsWith("@rate@")) {
+                        + AuctionCenter.getInstance().getSocketPort(new Gson().fromJson(message, Auction.class)), dataOutputStream);
+            } else if (message.startsWith("@rate@")) {
                 message = message.substring(6);
                 ProductCenter.getInstance().rating(message);
             } else if (message.startsWith("@cmc@")) {
@@ -223,25 +225,25 @@ public class ServerMessageController {
                 System.out.println(message);
                 CartCenter.getInstance().setWage(Double.parseDouble(message));
                 DataBase.getInstance().setWagePercent();
-                ServerController.getInstance().sendMessageToClient("@Successful@wage successfully changed",dataOutputStream);
-            }else if (message.startsWith("@getAtLeastCredit@")) {
-                ServerController.getInstance().sendMessageToClient("@getAtLeastCredit@"+CartCenter.getInstance().getAtLeastAmount(),dataOutputStream);
-            }else if (message.startsWith("@setAtLeastCredit@")) {
+                ServerController.getInstance().sendMessageToClient("@Successful@wage successfully changed", dataOutputStream);
+            } else if (message.startsWith("@getAtLeastCredit@")) {
+                ServerController.getInstance().sendMessageToClient("@getAtLeastCredit@" + CartCenter.getInstance().getAtLeastAmount(), dataOutputStream);
+            } else if (message.startsWith("@setAtLeastCredit@")) {
                 message = message.substring(18);
                 System.out.println(message);
                 CartCenter.getInstance().setAtLeastAmount(Double.parseDouble(message));
                 DataBase.getInstance().setAtLeastCredit();
-                ServerController.getInstance().sendMessageToClient("@Successful@At Least Credit successfully changed",dataOutputStream);
-            }else if(message.startsWith("@increaseCredit@")){
+                ServerController.getInstance().sendMessageToClient("@Successful@At Least Credit successfully changed", dataOutputStream);
+            } else if (message.startsWith("@increaseCredit@")) {
                 message = message.substring(16);
                 String[] details = message.split("//");
                 UserCenter.getIncstance().processIncreaseCredit(details[0], details[1], details[2], details[3], dataOutputStream);
-            }else if(message.startsWith("@decreaseCredit@")){
+            } else if (message.startsWith("@decreaseCredit@")) {
                 message = message.substring(16);
                 String[] commands = message.split("//");
                 UserCenter.getIncstance().processDecreaseAmountForSeller(commands[0], commands[1], commands[2], commands[3], dataOutputStream);
             }
-        }else{
+        } else {
             ServerController.getInstance().sendMessageToClient("@Error@your token is invalid", dataOutputStream);
         }
     }

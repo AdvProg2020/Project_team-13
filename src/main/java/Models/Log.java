@@ -41,6 +41,10 @@ public class Log {
         this.date = date;
     }
 
+    public void setReceivingStatus(ReceivingStatus receivingStatus) {
+        this.receivingStatus = receivingStatus;
+    }
+
     public String viewOrders(){
         String order="";
         order+="Log Id: "+id+"\n";

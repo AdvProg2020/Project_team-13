@@ -248,4 +248,8 @@ public class ClientController {
         }
         return finalMessage;
     }
+
+    public void getAllOrdersFromServer() {
+        sendMessageToServer("@getAllOrders@");
+    }
 }

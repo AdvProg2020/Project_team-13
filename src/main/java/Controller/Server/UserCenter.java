@@ -532,9 +532,9 @@ public class UserCenter {
     }
 
     public void processIncreaseCredit(String userName, String passWord, String accountId, String amount, DataOutputStream dataOutputStream) {
-       String token = ServerController.getInstance().handleBankConnection("get_token " + userName + " " + passWord);
-       String response = ServerController.getInstance().handleBankConnection("create_receipt " + token + " " + String.valueOf(ReceiptType.WITHDRAW).toLowerCase() + " " + amount + " " +
-               accountId + " " + "-1" + " " + "NoDescription");
+        String token = ServerController.getInstance().handleBankConnection("get_token " + userName + " " + passWord);
+        String response = ServerController.getInstance().handleBankConnection("create_receipt " + token + " " + String.valueOf(ReceiptType.WITHDRAW).toLowerCase() + " " + amount + " " +
+                accountId + " " + "-1" + " " + "NoDescription");
         if (response.matches("@r\\d{5}")) {
             String receiptId = response;
             String finalResponse = ServerController.getInstance().handleBankConnection("pay " + receiptId);
@@ -543,20 +543,20 @@ public class UserCenter {
                 if (finalResponse.equals("done successfully for market")) {
                     UserAccount userAccount = getUserWithUsername(userName);
                     userAccount.setCredit(userAccount.getCredit() + Double.parseDouble(amount));
-                    if(userAccount instanceof Seller){
+                    if (userAccount instanceof Seller) {
                         DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
                     }
-                    if(userAccount instanceof Customer){
+                    if (userAccount instanceof Customer) {
                         DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
                     }
                     ServerController.getInstance().sendMessageToClient("@Successfulcredit@" + "Your Credit Has been charged!!" + "//" + amount, dataOutputStream);
-                }else{
+                } else {
                     ServerController.getInstance().sendMessageToClient("@Error@" + finalResponse, dataOutputStream);
                 }
-            }else {
+            } else {
                 ServerController.getInstance().sendMessageToClient("@Error@" + finalResponse, dataOutputStream);
             }
-        }else{
+        } else {
             ServerController.getInstance().sendMessageToClient("@Error@" + response, dataOutputStream);
         }
     }
@@ -575,14 +575,42 @@ public class UserCenter {
                     userAccount.setCredit(userAccount.getCredit() - Double.parseDouble(amount));
                     DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
                     ServerController.getInstance().sendMessageToClient("@decreaseCredit@" + "Your Credit Has been charged!!" + "//" + amount, dataOutputStream);
-                }else{
+                } else {
                     ServerController.getInstance().sendMessageToClient("@Error@" + finalResponse, dataOutputStream);
                 }
-            }else {
+            } else {
                 ServerController.getInstance().sendMessageToClient("@Error@" + finalResponse, dataOutputStream);
             }
-        }else{
+        } else {
             ServerController.getInstance().sendMessageToClient("@Error@" + response, dataOutputStream);
         }
+    }
+
+    public Object getAllOrdersLogs() {
+        ArrayList<Log> orders = new ArrayList<>();
+        DataBase.getInstance().setAllUsersListFromDateBase();
+        for (Customer customer : allCustomer) {
+            orders.addAll(customer.getHistoryOfTransaction());
+        }
+        return orders;
+    }
+
+    public void updateLog(Log log, DataOutputStream dataOutputStream) {
+        DataBase.getInstance().setAllUsersListFromDateBase();
+        for (Customer customer : allCustomer) {
+            if (log.getReceiverUserName().equals(customer.getUsername())) {
+                for (Log log1 : customer.getHistoryOfTransaction()) {
+                    if (log1.getId().equals(log.getId())) {
+                        log1.setReceivingStatus(ReceivingStatus.Received);
+                        System.out.println("aaaaaaaaaaaaaaa");
+                        ServerController.getInstance().sendMessageToClient("@Successful@", dataOutputStream);
+                        DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
+                        return;
+                    }
+                }
+            }
+        }
+        System.out.println("bbbbbbbbbbbbbbbb");
+        ServerController.getInstance().sendMessageToClient("@Error@", dataOutputStream);
     }
 }

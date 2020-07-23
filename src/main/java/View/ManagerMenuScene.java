@@ -3,6 +3,7 @@ package View;
 import Controller.Client.ClientController;
 import Models.UserAccount.Manager;
 import com.google.gson.Gson;
+import com.sun.rowset.internal.Row;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -204,7 +205,7 @@ public class ManagerMenuScene extends Menu {
         userInfoGridPane.add(editInfoButton, 9, 2, 1, 1);
         userInfoGridPane.add(editPhotoButton, 10, 2, 1, 1);
         GridPane leftMenuGridPane = new GridPane();
-        leftMenuGridPane.setMinHeight(400);
+        leftMenuGridPane.setMinHeight(500);
         leftMenuGridPane.setStyle("-fx-background-color:rgba(45, 156, 240, 1);");
         Button requestsButton = new Button("Requests");
         requestsButton.setStyle("-fx-font-size:  16;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
@@ -350,10 +351,24 @@ public class ManagerMenuScene extends Menu {
                 popupwindow.showAndWait();
             }
         });
-
-
-
         Button atLeastCreditAmountButton = new Button("At Least Credit");
+        Button manageOrders = new Button("Manage Orders");
+        manageOrders.setTextAlignment(TextAlignment.CENTER);
+        manageOrders.setStyle("-fx-font-size: 12 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
+        manageOrders.setMinHeight(50);
+        manageOrders.setMinWidth(150);
+        manageOrders.setOnMouseEntered((EventHandler) event -> {
+            System.out.println("11111111");
+            scene.setCursor(Cursor.HAND);
+        });
+        manageOrders.setOnMouseExited((EventHandler) event -> {
+            System.out.println("222222222");
+            scene.setCursor(Cursor.DEFAULT);
+        });
+        manageOrders.setOnMouseClicked(event -> {
+            System.out.println("3333333333");
+            new ManageOrders(stage,0).execute();
+        });
         atLeastCreditAmountButton.setTextAlignment(TextAlignment.CENTER);
         atLeastCreditAmountButton.setStyle("-fx-font-size: 12 ;-fx-background-color:rgba(45, 156, 240, 0);-fx-text-alignment: center;-fx-text-fill: White;-fx-font-weight: bold;");
         atLeastCreditAmountButton.setMinHeight(50);
@@ -511,15 +526,19 @@ public class ManagerMenuScene extends Menu {
                 new ManageProductsForManager(stage).execute();
             }
         });
-
-        leftMenuGridPane.add(requestsButton, 0, 0, 2, 2);
-        leftMenuGridPane.add(manageUsersButton, 0, 2, 2, 2);
-        leftMenuGridPane.add(manageCategoriesButton, 0, 6, 2, 2);
-        leftMenuGridPane.add(manageDiscountsButton, 0, 8, 2, 2);
-        leftMenuGridPane.add(manageProductsButton, 0, 10, 2, 2);
-        leftMenuGridPane.add(createSupporterButton, 0, 12, 2, 2);
-        leftMenuGridPane.add(wageButton, 0, 14, 2, 2);
-        leftMenuGridPane.add(atLeastCreditAmountButton, 0, 16, 2, 2);
+        for (int i = 0; i <9 ; i++) {
+            leftMenuGridPane.getRowConstraints().add(new RowConstraints(40, Control.USE_COMPUTED_SIZE, 40, Priority.NEVER, VPos.CENTER, true));
+        }
+        leftMenuGridPane.setHgap(3);
+        leftMenuGridPane.add(requestsButton, 0, 0, 2, 1);
+        leftMenuGridPane.add(manageUsersButton, 0, 1, 2, 1);
+        leftMenuGridPane.add(manageCategoriesButton, 0, 2, 2, 1);
+        leftMenuGridPane.add(manageDiscountsButton, 0, 3, 2, 1);
+        leftMenuGridPane.add(manageProductsButton, 0, 4, 2, 1);
+        leftMenuGridPane.add(createSupporterButton, 0, 5, 2, 1);
+        leftMenuGridPane.add(wageButton, 0, 6, 2, 1);
+        leftMenuGridPane.add(atLeastCreditAmountButton, 0, 7, 2, 1);
+        leftMenuGridPane.add(manageOrders, 0, 8, 2, 1);
         centerGridPane.add(leftMenuGridPane, 0, 1, 1, 6);
         centerGridPane.add(pageTitle, 0, 0, 1, 1);
         centerGridPane.add(userInfoGridPane, 3, 1, 2, 2);

@@ -150,6 +150,9 @@ public class MessageController {
             } else if (message.startsWith("@allManagers@")) {
                 message = message.substring(13);
                 UserController.getInstance().setAllManagers(message);
+            }  else if (message.startsWith("@setAllOrders@")) {
+                message = message.substring(14);
+                UserController.getInstance().setAllOrders(message);
             } else if (message.startsWith("@allUsers@")) {
                 message = message.substring(10);
                 String[] split = message.split("&");

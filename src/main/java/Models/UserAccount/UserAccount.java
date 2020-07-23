@@ -88,6 +88,9 @@ public abstract class UserAccount {
     }
 
     public ArrayList<Log> getHistoryOfTransaction() {
+        if(historyOfTransaction==null) {
+            historyOfTransaction = new ArrayList<>();
+        }
         return historyOfTransaction;
     }
 
