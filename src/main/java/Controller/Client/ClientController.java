@@ -142,13 +142,24 @@ public class ClientController {
                     DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
                     System.out.println("in thread");
                     String sellerMessage = "@setSellerSocket@" + currentUser.getUsername();
-                    sellerMessage = getTheEncodedMessage(sellerMessage);
+                    String message1 = getTheEncodedMessage("0@getTime@");
+                    dataOutputStream.writeUTF(message1);
+                    dataOutputStream.flush();
+                    String string = "";
+                    try {
+                        string = dataInputStream.readUTF();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    getMessageFromServer(string);
+                    sellerMessage = getTheEncodedMessage(time + sellerMessage);
                     dataOutputStream.writeUTF(sellerMessage);
+                    dataOutputStream.flush();
                     System.out.println("AFTER SEND");
                     while (true) {
                         //  if(dataInputStream.available()>0) {
-                        String string = dataInputStream.readUTF();
-                        getMessageFromServer(string);
+                        String string2 = dataInputStream.readUTF();
+                        getMessageFromServer(string2);
                         //   }
                     }
 

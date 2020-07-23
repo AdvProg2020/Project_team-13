@@ -161,7 +161,7 @@ public class ServerMessageController {
                 HashMap<String, ArrayList<String>> allSeller = new Gson().fromJson(split[1], userListType);
                 for (String seller : allSeller.keySet()) {
                     for (String filePath : allSeller.get(seller)) {
-                        System.out.println(seller + " " + filePath);
+                        System.out.println(seller + " " + filePath+" ** "+ServerController.getInstance().getSellerSockets().get(seller));
                         ServerController.getInstance().sendMessageToClient("@setCustomerPort@" + split[0] + "&" + filePath, ServerController.getInstance().getSellerSockets().get(seller));
                     }
                 }
