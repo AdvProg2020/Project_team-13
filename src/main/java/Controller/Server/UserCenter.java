@@ -42,7 +42,7 @@ public class UserCenter {
         return allAuctions;
     }
 
-    public void passTime() {
+    public synchronized void passTime() {
         for (Seller seller : allSeller) {
             if (seller.getAuction() != null) {
                 if (new Date().after(seller.getAuction().getEndTime())) {
@@ -51,10 +51,12 @@ public class UserCenter {
                     double bestPrice = seller.getAuction().getBestOffer();
                     Product product = seller.getAuction().getProduct();
                     product.setProductCost(bestPrice);
+                    System.out.println("\u001B[35m" + "best price: " + bestPrice + "\u001B[0m");
                     product.setOffer(null);
                     for (Customer customer : getAllCustomer()) {
                         if (customer.getUsername().equals(user)) {
                             if (customer.getCredit() >= bestPrice) {
+                                System.out.println("\u001B[35m" + "This is test to see suction finishd" + "\u001B[0m");
                                 Cart cart = new Cart();
                                 cart.setCustomerID(user);
                                 cart.addProduct(product);
