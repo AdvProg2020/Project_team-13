@@ -428,8 +428,7 @@ public class UserCenter {
                 DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
                 DataBase.getInstance().updateAllProducts(new Gson().toJson(ProductCenter.getInstance().getAllProducts()));
                 String response = ServerController.getInstance().handleBankConnection("remove " + seller.getUsername());
-                ServerController.getInstance().sendMessageToClient("@Successful@delete user " + response + "ly", dataOutputStream);
-                ServerController.getInstance().sendMessageToClient("@Successful@delete user successfully", dataOutputStream);
+                ServerController.getInstance().sendMessageToClient("@Successful@delete user " + response +"ly", dataOutputStream);
                 return;
             }
         }
