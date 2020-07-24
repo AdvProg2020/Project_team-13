@@ -4,10 +4,14 @@ import Models.Product.Cart;
 import Models.Product.Product;
 import Models.UserAccount.Customer;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
+import java.lang.reflect.Type;
+import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 
 public class CartController {
     private Cart currentCart;
@@ -30,7 +34,6 @@ public class CartController {
 
     public void payed(String json) {
         ClientController.getInstance().setCurrentUser(new Gson().fromJson(json, Customer.class));
-        setCurrentCart(new Cart());
     }
 
     public void setCurrentCart(Cart currentCart) {
@@ -100,11 +103,15 @@ public class CartController {
                     System.out.println(s);
                 }
                 ClientController.getInstance().sendMessageToServer("@setCustomerPort@" + serverSocket.getLocalPort() + "&" + new Gson().toJson(currentCart.getAllSeller()));
+                setCurrentCart(new Cart());
                 int input = 0;
                 while (true) {
                     Socket socket = serverSocket.accept();
                     DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                     DataOutputStream fileOutputStream = null;
+                    DataOutputStream dataOutputStream=new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+                    dataOutputStream.writeUTF(new Gson().toJson(RSASecretGenerator.getInstance().getPublicKey()));
+                    dataOutputStream.flush();
                     do {
                         if (dataInputStream != null) {
                             input = dataInputStream.available();
@@ -116,6 +123,10 @@ public class CartController {
                     while (true) {
                         try {
                             String s = dataInputStream.readUTF();
+                            if(RSASecretGenerator.getInstance().isVerified(s)){
+                                s=RSASecretGenerator.getInstance().getTheDecodedMessageViaRSA(s.split(" /// ")[0]);
+                                System.out.println("RSA decode:"+s);
+                            }
                             fileName = s.split("&")[0];
                             fileData = s.split("&")[1];
                         } catch (IOException e) {
@@ -150,9 +161,18 @@ public class CartController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
                 DataOutputStream transactionStream = null;
+                DataInputStream dataInputStream = null;
                 try {
+                    dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                     transactionStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                String key="";
+                try {
+                    key=dataInputStream.readUTF();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -179,6 +199,12 @@ public class CartController {
                         for (int i = 0; i < bytes.length; i++) {
                             s += String.valueOf(bytes[i]) + ", ";
                         }
+                        s=s.substring(0,s.length()-3);
+                        Type keyType = new TypeToken<Key<BigInteger,BigInteger>>() {
+                        }.getType();
+                        System.out.println("BEFOR ENCODE:"+s);
+                        s=RSASecretGenerator.getInstance().getTheEncodedWithRSA(s,new Gson().fromJson(key,keyType));
+                        System.out.println("rsa message: "+s);
                         transactionStream.writeUTF(s);
                         transactionStream.flush();
                     } catch (IOException e) {
