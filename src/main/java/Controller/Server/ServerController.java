@@ -66,7 +66,6 @@ public class ServerController {
             }
         }
         return "";
-
     }
 
     private HashMap<String, Integer> onlineSupporters = new HashMap<>();

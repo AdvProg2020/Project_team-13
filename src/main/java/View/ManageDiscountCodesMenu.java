@@ -69,7 +69,7 @@ public class  ManageDiscountCodesMenu extends Menu{
         addDiscountCode.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                ClientController.getInstance().getMenus().remove(this);
+                ClientController.getInstance().getMenus().remove(ClientController.getInstance().getCurrentMenu());
                 ClientController.getInstance().getMenus().trimToSize();
                 new CreateDiscountCodeMenu(stage).execute();
             }
