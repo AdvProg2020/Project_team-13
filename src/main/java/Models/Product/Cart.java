@@ -49,7 +49,16 @@ public class Cart {
     }
 
     public void addProduct(Product product) {
-        if (findProductWithID(product.getProductId()) == null) {
+        if(findProductWithID(product.getProductId())==null) {
+            countOfEachProduct.put(product.getProductId(), 1);
+            allproduct.add(product);
+            ClientController.getInstance().getCurrentMenu().showMessage("Product successfully added to cart", MessageKind.MessageWithoutBack);
+        }else{
+            ClientController.getInstance().getCurrentMenu().showMessage("This product has already been added to the cart", MessageKind.ErrorWithoutBack);
+        }
+    }
+    public void addProduct(Product product,boolean serverSideCheck) {
+        if(findProductWithID(product.getProductId())==null) {
             countOfEachProduct.put(product.getProductId(), 1);
             allproduct.add(product);
         }
