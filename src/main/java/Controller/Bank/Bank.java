@@ -337,6 +337,11 @@ public class Bank {
             response = processTransactionForMarket(commands[1], commands[2]);
         } else if (command.startsWith("@getTime@")) {
             response = String.valueOf(new Date().getTime());
+        } else if (command.startsWith("remove")) {
+            String[] commands = command.split("\\s");
+            allAccounts.remove(getAccountWithUserName(commands[1]));
+            updateAllAccounts(new Gson().toJson(allAccounts));
+            response = "successful";
         } else {
             response = "invalid input";
         }
