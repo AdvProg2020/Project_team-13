@@ -84,9 +84,6 @@ public class Bank {
     }
 
     private boolean userExitsWithThisUserName(String userName){
-        if(allAccounts==null) {
-            allAccounts = new ArrayList<>();
-        }
         for (Account account : allAccounts) {
             if (account.getUsername().equals(userName)) {
                 return true;
@@ -483,7 +480,6 @@ public class Bank {
 
         }
         Objects.requireNonNull(getReceiptById(receiptId)).setPaid("1");
-        updateMarketAccount(new Gson().toJson(marketAccount));
         updateAllAccounts(new Gson().toJson(allAccounts));
         return "done successfully";
     }
@@ -531,7 +527,6 @@ public class Bank {
                 stringBuilder1.append(scanner1.nextLine());
             }
             setMarketAccount(new Gson().fromJson(String.valueOf(stringBuilder1), Account.class));
-            allAccounts.add(marketAccount);
             scanner1.close();
         }catch (IOException e){
             System.out.println("Error in Database Connection...");
