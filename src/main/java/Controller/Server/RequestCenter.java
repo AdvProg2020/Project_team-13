@@ -111,9 +111,13 @@ public class RequestCenter {
 
     public synchronized void acceptAddAuctionRequest(Request request, DataOutputStream dataOutputStream) {
         allRequests.remove(request);
+        System.out.println("requestControl: " + 1);
         AuctionCenter.getInstance().createAuction(new Gson().fromJson(request.getDetails(), Auction.class),dataOutputStream);
+        System.out.println("requestControl: " + 2);
         String arrayData = new Gson().toJson(allRequests);
+        System.out.println("requestControl: " + 3);
         DataBase.getInstance().updateAllRequests(arrayData);
+        System.out.println("requestControl: " + 4);
         ServerController.getInstance().sendMessageToClient("@SuccessfulNotBack@" + "request accepted successfully", dataOutputStream);
     }
 

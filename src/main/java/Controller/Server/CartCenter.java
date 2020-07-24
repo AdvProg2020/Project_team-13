@@ -56,6 +56,7 @@ public class CartCenter {
     public synchronized void pay(Cart cart) {
         Customer customer = UserCenter.getIncstance().findCustomerWithUsername(cart.getCustomerID());
         double price = cart.getTotalPrice(), reducedPrice = 0;
+        System.out.println("cart controller: " + price);
         DiscountCode discountCode = cart.getDiscountCode();
         if (discountCode != null) {
             if (price * ((double) discountCode.getDiscountPercent() / 100) < discountCode.getMaxDiscountAmount()) {
