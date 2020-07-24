@@ -282,7 +282,7 @@ public class ServerController {
     public boolean checkDosAttack(String ip) {
         if (ipDosChecker.containsKey(ip)) {
             if (ipDosChecker.get(ip).size() > 10) {
-                if (ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 1) - ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 10) < 150) {
+                if (ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 1) - ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 10) < 175) {
                     System.out.println("Dos time checker" + String.valueOf(ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 1) - ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 10)));
                     System.out.println("\u001B[35m" + (ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 1) - ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 9)) + "\u001B[0m");
                     return true;
@@ -294,7 +294,7 @@ public class ServerController {
 
     public boolean checkBruteForce(String ip) {
         if (errorCounterForIp.get(ip).size() > 10) {
-            if (errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 1) - errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 9) < 20000) {
+            if (errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 1) - errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 9) < 1000) {
                 System.out.println("\u001B[32m" + (errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 1) - errorCounterForIp.get(ip).get(errorCounterForIp.get(ip).size() - 9)) + "\u001B[0m");
                 if (!temporaryBlackList.containsKey(ip))
                     temporaryBlackList.put(ip, new Date().getTime());

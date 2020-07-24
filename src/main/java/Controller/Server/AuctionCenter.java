@@ -135,7 +135,8 @@ public class AuctionCenter {
                                     }
                                 }
                             }).start();
-                        } else if (!message.isEmpty() && !new Gson().fromJson(message, ChatMessage.class).getContent().startsWith("@Auction@")) {
+                        }
+                        else if (!message.isEmpty() && message.startsWith("@SupporterChat@")) {
 
                         }
 
