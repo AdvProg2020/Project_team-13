@@ -369,7 +369,7 @@ public class CartMenu extends Menu {
                                             getContent.setStyle("-fx-background-radius: 3,2,2,2;-fx-font-size: 12px;");
                                             getContent.setMaxWidth(300);
 
-                                            Button addCommentButton = new Button("Increase Credit");
+                                            Button addCommentButton = new Button("purchase");
                                             addCommentButton.setStyle("-fx-background-color: #E85D9E;");
                                             addCommentButton.setMinWidth(100);
                                             commentPane.setVgap(10);

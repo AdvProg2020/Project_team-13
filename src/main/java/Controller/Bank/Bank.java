@@ -140,8 +140,8 @@ public class Bank {
                 Socket socket = clientsServerSocket.accept();
                 InetSocketAddress sockaddr = (InetSocketAddress) socket.getRemoteSocketAddress();
                 InetAddress inaddr = sockaddr.getAddress();
-                Inet4Address in4addr = (Inet4Address) inaddr;
-                String ip4string = in4addr.toString();
+                Inet4Address in6addr = (Inet4Address) inaddr;
+                String ip4string = in6addr.toString();
                 socketIp.put(socket, ip4string);
                 if (!ipDosChecker.containsKey(socketIp.get(socket)))
                     ipDosChecker.put(socketIp.get(socket), new ArrayList<Long>());
@@ -278,10 +278,8 @@ public class Bank {
             }
             date = Long.parseLong(date1);
         }
-        System.out.println("fukh");
         System.out.println(date);
         if (new Date().getTime() - date > 20000 && !command.startsWith("@getTime@")) {
-            System.out.println("fuck php");
             return "@Errors@InvalidMessage";
         }
         if (command.startsWith("create_account")) {

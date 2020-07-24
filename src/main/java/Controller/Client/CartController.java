@@ -98,7 +98,7 @@ public class CartController {
         public void run() {
             System.out.println("step2");
             try {
-                ServerSocket serverSocket = new ServerSocket(0);
+                ServerSocket serverSocket = new ServerSocket(6668);
                 for (String s : currentCart.getAllSeller().keySet()) {
                     System.out.println(s);
                 }
@@ -157,7 +157,7 @@ public class CartController {
                 System.out.println("step4" + filePath);
                 Socket socket = null;
                 try {
-                    socket = new Socket("2.tcp.ngrok.io", 13492);
+                    socket = new Socket("0.tcp.ngrok.io", 18065);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -199,7 +199,7 @@ public class CartController {
                         for (int i = 0; i < bytes.length; i++) {
                             s += String.valueOf(bytes[i]) + ", ";
                         }
-                        s=s.substring(0,s.length()-3);
+                       // s=s.substring(0,s.length()-3);
                         Type keyType = new TypeToken<Key<BigInteger,BigInteger>>() {
                         }.getType();
                         System.out.println("BEFOR ENCODE:"+s);

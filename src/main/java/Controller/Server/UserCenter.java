@@ -542,15 +542,19 @@ public class UserCenter {
     }
 
     public void processIncreaseCredit(String userName, String passWord, String accountId, String amount, DataOutputStream dataOutputStream) {
+        System.out.println("karimi");
         String token = ServerController.getInstance().handleBankConnection("get_token " + userName + " " + passWord);
         String response = ServerController.getInstance().handleBankConnection("create_receipt " + token + " " + String.valueOf(ReceiptType.WITHDRAW).toLowerCase() + " " + amount + " " +
                 accountId + " " + "-1" + " " + "NoDescription");
         if (response.matches("@r\\d{5}")) {
+            System.out.println("1");
             String receiptId = response;
             String finalResponse = ServerController.getInstance().handleBankConnection("pay " + receiptId);
             if (finalResponse.equals("done successfully")) {
+                System.out.println("2");
                 finalResponse = ServerController.getInstance().handleBankConnection("processTransaction " + String.valueOf(ReceiptType.DEPOSIT).toLowerCase() + " " + amount);
                 if (finalResponse.equals("done successfully for market")) {
+                    System.out.println("3");
                     UserAccount userAccount = getUserWithUsername(userName);
                     userAccount.setCredit(userAccount.getCredit() + Double.parseDouble(amount));
                     if (userAccount instanceof Seller) {
@@ -559,6 +563,7 @@ public class UserCenter {
                     if (userAccount instanceof Customer) {
                         DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
                     }
+                    System.out.println("Su");
                     ServerController.getInstance().sendMessageToClient("@Successfulcredit@" + "Your Credit Has been charged!!" + "//" + amount, dataOutputStream);
                 } else if (finalResponse.startsWith("@Errors")) {
                     ServerController.getInstance().sendMessageToClient("@Error@" + "Bank server error :" + finalResponse.substring(8), dataOutputStream);

@@ -75,10 +75,11 @@ public class ServerMessageController {
                 UserCenter.getIncstance().login(split[0], split[1], dataOutputStream);
             } else if (message.startsWith("@logout@")) {
                 message = message.substring(8);
+                ServerController.getInstance().sendMessageToClient("@successfulChat@", dataOutputStream);
                 if(ServerController.getInstance().getAllClients().containsKey(dataOutputStream))
-                ServerController.getInstance().getAllClients().remove(dataOutputStream, message);
                 ServerController.getInstance().sendMessageToClient("@successfulChat@", dataOutputStream);
                 TokenGenerator.getInstance().getAllExpirationDates().remove(message, TokenGenerator.getInstance().getAllExpirationDates().get(message));
+                ServerController.getInstance().getAllClients().remove(dataOutputStream, message);
             } else if (message.startsWith("@sendChatMessage@")) {
                 //    ServerController.getInstance().sendMessageToClient("@successfulChat@",dataOutputStream);
                 message = message.substring(17);
