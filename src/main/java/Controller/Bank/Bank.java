@@ -18,7 +18,9 @@ import java.math.BigInteger;
 import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.*;
 import java.util.*;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,7 +30,6 @@ public class Bank {
     private List<Account> allAccounts;
     private Account marketAccount;
     private static Bank bank;
-    private int numberOfConnectedClients;
     private String lastAccountId;
     private Algorithm algorithm;
     private Map<String, String> tokenMapper;
@@ -39,6 +40,19 @@ public class Bank {
     private ArrayList<String> blackList = new ArrayList<>();
     private HashMap<String, Long> temporaryBlackList = new HashMap<>();
     private HashMap<String, ArrayList<Long>> errorCounterForIp = new HashMap<>();
+    private Connection connection;
+    private Statement statement;
+    private PreparedStatement preparedStatement;
+    private Class<?> aclass;
+    private final String DB_URL = "jdbc:ucanaccess://ProjectDatabase.accdb";
+
+    {
+        try {
+            aclass = Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     private Bank() {
         allAccounts = new ArrayList<>();
@@ -348,12 +362,22 @@ public class Bank {
     }
 
     private void updateMarketAccount(String json) {
-        try {
-            PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter("marketAccount.txt")));
-            printWriter.print(json);
-            printWriter.close();
-        } catch (IOException e) {
-            System.out.println("Error in Database...");
+        Account account = new Gson().fromJson(json, Account.class);
+        try{
+          connection = DriverManager.getConnection(DB_URL);
+          preparedStatement = connection.prepareStatement("UPDATE marketAccount SET amount = ?, allReceipts = ?");
+          preparedStatement.setString(1, String.valueOf(account.getAmount()));
+          preparedStatement.setString(2, new Gson().toJson(account.getAllReceipts()));
+          preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                preparedStatement.close();
+                connection.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -461,19 +485,28 @@ public class Bank {
 
     private String getTheLastReceiptId() {
         try {
-            Scanner scanner = new Scanner(new BufferedReader(new FileReader("lastReceiptId.txt")));
-            StringBuilder stringBuilder = new StringBuilder();
-            while (scanner.hasNextLine()) {
-                stringBuilder.append(scanner.nextLine());
+            connection = DriverManager.getConnection(DB_URL);
+            preparedStatement = connection.prepareStatement("SELECT lastReceiptId FROM lastReceiptId");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            StringBuilder last = new StringBuilder();
+            while (resultSet.next()) {
+                last.append(resultSet.getString("lastReceiptId"));
             }
-            scanner.close();
-            setLastReceiptId(String.valueOf(stringBuilder));
-            this.lastReceiptId = ("@r" + (Integer.parseInt(lastReceiptId.substring(2)) + 1));
-            PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter("lastReceiptId.txt")));
-            printWriter.print(lastReceiptId);
-            printWriter.close();
-        } catch (IOException e) {
+            resultSet.close();
+            setLastReceiptId(String.valueOf(last));
+            this.lastReceiptId = "@a" + (Integer.parseInt(lastReceiptId.substring(2)) + 1);
+            preparedStatement = connection.prepareStatement("UPDATE lastReceiptId SET lastReceiptId = ?");
+            preparedStatement.setString(1, lastReceiptId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                preparedStatement.close();
+                connection.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
         }
         return lastReceiptId;
     }
@@ -627,25 +660,41 @@ public class Bank {
 
 
     private void setAllAccounts() {
-        try {
-            Scanner scanner = new Scanner(new BufferedReader(new FileReader("allAccounts.txt")));
-            StringBuilder stringBuilder = new StringBuilder();
-            while (scanner.hasNextLine()) {
-                stringBuilder.append(scanner.nextLine());
+        List<Account> allAccounts= new ArrayList<>();
+        ResultSet resultSet = null;
+        try{
+            connection = DriverManager.getConnection(DB_URL);
+            preparedStatement = connection.prepareStatement("SELECT * FROM allAccounts");
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Account account = new Account(resultSet.getString("accountId"), resultSet.getString("firstName"), resultSet.getString("lastName"),
+                        resultSet.getString("userName"), resultSet.getString("passWord"), Double.parseDouble(resultSet.getString("amount")));
+               allAccounts.add(account);
+               if(!resultSet.getString("allReceipts").equals("null")){
+                   Type type = new TypeToken<ArrayList<Receipt>>(){}.getType();
+                   account.setAllReceipts(new Gson().fromJson(resultSet.getString("allReceipts"), type));
+               }
             }
-            scanner.close();
-            Type accountType = new TypeToken<ArrayList<Account>>() {
-            }.getType();
-            setAllAccounts(new Gson().fromJson(String.valueOf(stringBuilder), accountType));
-            Scanner scanner1 = new Scanner(new BufferedReader(new FileReader("marketAccount.txt")));
-            StringBuilder stringBuilder1 = new StringBuilder();
-            while (scanner1.hasNextLine()) {
-                stringBuilder1.append(scanner1.nextLine());
+            setAllAccounts(allAccounts);
+            preparedStatement = connection.prepareStatement("SELECT * FROM marketAccount");
+            resultSet = preparedStatement.executeQuery();
+            Account account = null;
+            while (resultSet.next()) {
+                account = new Account(resultSet.getString("accountId"), resultSet.getString("companyName"), Double.parseDouble(resultSet.getString("amount")));
             }
-            setMarketAccount(new Gson().fromJson(String.valueOf(stringBuilder1), Account.class));
-            scanner1.close();
-        } catch (IOException e) {
-            System.out.println("Error in Database Connection...");
+            setMarketAccount(account);
+        }catch (SQLException | NullPointerException e){
+            e.printStackTrace();
+        }finally {
+            try{
+                if(resultSet != null){
+                    resultSet.close();
+                }
+                preparedStatement.close();
+                connection.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -655,19 +704,28 @@ public class Bank {
 
     private String getTheLastAccountId() {
         try {
-            Scanner scanner = new Scanner(new BufferedReader(new FileReader("lastAccountId.txt")));
-            StringBuilder stringBuilder = new StringBuilder();
-            while (scanner.hasNextLine()) {
-                stringBuilder.append(scanner.nextLine());
+            connection = DriverManager.getConnection(DB_URL);
+            preparedStatement = connection.prepareStatement("SELECT lastAccountId FROM lastAccountId");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            StringBuilder last = new StringBuilder();
+            while (resultSet.next()) {
+                last.append(resultSet.getString("lastAccountId"));
             }
-            scanner.close();
-            setLastAccountId(String.valueOf(stringBuilder));
+            resultSet.close();
+            setLastAccountId(String.valueOf(last));
             this.lastAccountId = "@a" + (Integer.parseInt(lastAccountId.substring(2)) + 1);
-            PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter("lastAccountId.txt")));
-            printWriter.print(lastAccountId);
-            printWriter.close();
-        } catch (IOException e) {
+            preparedStatement = connection.prepareStatement("UPDATE lastAccountId SET lastAccountId = ?");
+            preparedStatement.setString(1, lastAccountId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                preparedStatement.close();
+                connection.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
         }
         return lastAccountId;
     }
@@ -677,17 +735,35 @@ public class Bank {
     }
 
     private void updateAllAccounts(String json) {
-        PrintWriter printWriter = null;
-        try {
-            printWriter = new PrintWriter(new BufferedWriter(new FileWriter("allAccounts.txt")));
-        } catch (IOException e) {
+        Type type = new TypeToken<ArrayList<Account>>(){}.getType();
+        ArrayList<Account> allAccounts = new Gson().fromJson(json, type);
+        try{
+            connection = DriverManager.getConnection(DB_URL);
+            preparedStatement = connection.prepareStatement("DELETE FROM allAccounts");
+            preparedStatement.executeUpdate();
+            preparedStatement = connection.prepareStatement("INSERT INTO allAccounts (accountId, firstName, lastName, userName, passWord, amount, allReceipts, companyName)" +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            for (Account account : allAccounts) {
+                preparedStatement.setString(1, account.getAccountId());
+                preparedStatement.setString(2, account.getFirstName());
+                preparedStatement.setString(3, account.getLastName());
+                preparedStatement.setString(4, account.getUsername());
+                preparedStatement.setString(5, account.getPassWord());
+                preparedStatement.setString(6, String.valueOf(account.getAmount()));
+                preparedStatement.setString(7, new Gson().toJson(account.getAllReceipts()));
+                preparedStatement.setString(8, "null");
+                preparedStatement.executeUpdate();
+            }
+        }catch (SQLException e){
             e.printStackTrace();
+        }finally {
+            try {
+                preparedStatement.close();
+                connection.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
         }
-        if (printWriter != null) {
-            printWriter.print(json);
-        }
-        assert printWriter != null;
-        printWriter.close();
     }
 
 }

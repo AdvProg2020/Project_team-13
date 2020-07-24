@@ -1,1 +1,0 @@
-[{"accountId":"@a12347","firstName":"pone","lastName":"hasani","username":"seller","passWord":"123456789","amount":1.0E8,"allReceipts":[]},{"accountId":"@a12348","firstName":"ali","lastName":"rezaie","username":"customer","passWord":"123456789","amount":1.0E8,"allReceipts":[]}]

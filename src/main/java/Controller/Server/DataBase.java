@@ -192,7 +192,7 @@ public class DataBase {
         }
     }
 
-    public void updateAllSupporter(String json) {
+    public synchronized void updateAllSupporter(String json) {
         Type type = new TypeToken<ArrayList<Supporter>>(){}.getType();
             ArrayList<Supporter> allSupporters = new Gson().fromJson(json, type);
             try {
@@ -279,7 +279,7 @@ public class DataBase {
         }
     }
 
-    public synchronized void setAllCategoriesFormDataBase() {
+    public void setAllCategoriesFormDataBase() {
         try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
             final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";
@@ -336,7 +336,7 @@ public class DataBase {
         }
     }
 
-    public synchronized void setAllProductsFormDataBase() {
+    public void setAllProductsFormDataBase() {
         try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
             final String url = "jdbc:ucanaccess://ProjectDatabase.accdb";

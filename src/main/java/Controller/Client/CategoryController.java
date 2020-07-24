@@ -37,8 +37,7 @@ public class CategoryController {
     }
 
     public void updateAllCategories() {
-        ClientController.getInstance().sendMessageToServer(MessageController.getInstance().makeMessage("getAllCategories", "getAllCategories"));
-        System.out.println("secondleve11111111111");
+        ClientController.getInstance().sendMessageToServer("@getAllCategories@");
     }
 
     public ArrayList<Category> getAllCategories() {
