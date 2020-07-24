@@ -129,24 +129,4 @@ public class ChatSupporterMenu extends Menu {
         stage.show();
     }
 
-    private boolean checkPasswordIsvalid(String word) {
-        if (word.length() > 8 && word.length() < 18) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkNameIsvalid(String name) {
-        if (Pattern.matches("(([a-z]|[A-Z])+ )*(([a-z]|[A-Z])+)", name) && !name.isEmpty()) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkEmailIsvalid(String email) {
-        if (Pattern.matches("\\w+\\.?\\w*@\\w+\\.\\w+", email)) {
-            return true;
-        }
-        return false;
-    }
 }

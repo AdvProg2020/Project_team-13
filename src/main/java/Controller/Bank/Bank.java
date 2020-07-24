@@ -215,7 +215,6 @@ public class Bank {
                         try {
                             dataOutputStream.writeUTF(response);
                             dataOutputStream.flush();
-                            return;
                         } catch (IOException e) {
                             System.out.println("Error in Sending Packets...");
                             try {
@@ -230,7 +229,6 @@ public class Bank {
                 System.out.println("QQQQQQQQQQ");
                 dataOutputStream.writeUTF(response);
                 dataOutputStream.flush();
-
             } catch (IOException e) {
                 System.out.println(e.getMessage());
                 break;
@@ -280,10 +278,8 @@ public class Bank {
             }
             date = Long.parseLong(date1);
         }
-        System.out.println("fukh");
         System.out.println(date);
         if (new Date().getTime() - date > 20000 && !command.startsWith("@getTime@")) {
-            System.out.println("fuck php");
             return "@Errors@InvalidMessage";
         }
         if (command.startsWith("create_account")) {

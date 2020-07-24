@@ -83,7 +83,7 @@ public class AuctionPage extends Menu {
         inputMessage.setPromptText("Enter your message...");
         inputMessage.setMinWidth(260);
         Button sendMessageButton = new Button("Send");
-        AuctionController.getInstance().sendMessageToAuctionChat("A");
+        AuctionController.getInstance().connectChatInAuctionPage();
         sendMessageButton.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {

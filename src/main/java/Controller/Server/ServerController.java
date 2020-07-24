@@ -150,7 +150,7 @@ public class ServerController {
 
     private void startProcess() {
         try {
-            serverSocket = new ServerSocket(6667);
+            serverSocket = new ServerSocket(6666);
         } catch (IOException e) {
             e.printStackTrace();
         }

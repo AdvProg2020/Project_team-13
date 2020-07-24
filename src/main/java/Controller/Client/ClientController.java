@@ -53,8 +53,8 @@ public class ClientController {
 
     public void connectToServer() {
         try {
-//            socket = new Socket("0.tcp.ngrok.io", 16150);
-            socket = new Socket("2.tcp.ngrok.io", 10718);
+//            socket = new Socket("0.tcp.ngrok.io", 13729);
+            socket = new Socket("0.tcp.ngrok.io", 13729);
             dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
             dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
 
@@ -138,9 +138,9 @@ public class ClientController {
             @Override
             public void run() {
                 try {
-                    Socket socket = new Socket("2.tcp.ngrok.io", 10718);
-                    DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-                    DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+                    Socket socket = new Socket("0.tcp.ngrok.io", 13729);
+                    DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                    DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
                     System.out.println("in thread");
                     String sellerMessage = "@setSellerSocket@" + currentUser.getUsername();
                     String message1 = getTheEncodedMessage("0@getTime@");
