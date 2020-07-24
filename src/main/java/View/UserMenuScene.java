@@ -253,6 +253,7 @@ public class UserMenuScene extends Menu {
         ordersButton.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
+                ClientController.getInstance().updateCurrentUserFromServer();
                 new OrdersMenu(stage, 0).execute();
             }
         });

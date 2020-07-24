@@ -122,8 +122,10 @@ public class ManageOrders extends Menu {
             if (allBuyLog.get(i).getReceivingStatus().equals(ReceivingStatus.Received)) {
                 button1.setText("Received");
                 button1.setDisable(true);
+                button1.setMaxHeight(20);
             } else {
-                button1.setText("Receive");
+                button1.setText("Receive");                button1.setMaxHeight(20);
+
                 int finalI1 = i;
                 button1.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -143,7 +145,8 @@ public class ManageOrders extends Menu {
                     String[] details = allBuyLog.get(finalI).viewOrders().split("\n");
                     Label[] label = new Label[details.length];
                     Label label1 = new Label("Details :\n\n");
-                    label1.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 30));
+                    label1.setMaxHeight(20);
+                    label1.setFont(Font.loadFont("file:src/BalooBhai2-Bold.ttf", 10));
                     vBox.getChildren().add(label1);
                     for (int j = 0; j < label.length; j++) {
                         label[j] = new Label(details[j]);
@@ -154,6 +157,8 @@ public class ManageOrders extends Menu {
                 }
             });
             ArrayList<Button> buttons = new ArrayList<>();
+            button.setMaxHeight(10);
+            button1.setMaxHeight(10);
             buttons.add(button);
             buttons.add(button1);
             viewDetails.put(allBuyLog.get(i).getId(),buttons );
@@ -234,7 +239,7 @@ public class ManageOrders extends Menu {
             GridPane.setHalignment(allPanes[i], HPos.CENTER);
             gridPane.add(allPanes[i], i, row);
         }
-        VBox vBox = new VBox();
+        HBox vBox = new HBox();
         vBox.setStyle("-fx-background-color: #e6e6e6");
         vBox.getChildren().add(viewDetails.get(id).get(0));
         vBox.getChildren().add(viewDetails.get(id).get(1));
