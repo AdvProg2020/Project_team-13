@@ -140,8 +140,8 @@ public class Bank {
                 Socket socket = clientsServerSocket.accept();
                 InetSocketAddress sockaddr = (InetSocketAddress) socket.getRemoteSocketAddress();
                 InetAddress inaddr = sockaddr.getAddress();
-                Inet4Address in4addr = (Inet4Address) inaddr;
-                String ip4string = in4addr.toString();
+                Inet4Address in6addr = (Inet4Address) inaddr;
+                String ip4string = in6addr.toString();
                 socketIp.put(socket, ip4string);
                 if (!ipDosChecker.containsKey(socketIp.get(socket)))
                     ipDosChecker.put(socketIp.get(socket), new ArrayList<Long>());
@@ -498,7 +498,7 @@ public class Bank {
             }
             resultSet.close();
             setLastReceiptId(String.valueOf(last));
-            this.lastReceiptId = "@a" + (Integer.parseInt(lastReceiptId.substring(2)) + 1);
+            this.lastReceiptId = "@r" + (Integer.parseInt(lastReceiptId.substring(2)) + 1);
             preparedStatement = connection.prepareStatement("UPDATE lastReceiptId SET lastReceiptId = ?");
             preparedStatement.setString(1, lastReceiptId);
             preparedStatement.executeUpdate();

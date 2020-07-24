@@ -13,7 +13,7 @@ public class SimpleClient {
         Socket socket = null;
         Scanner scanner = new Scanner(System.in);
         try {
-            socket = new Socket("localhost", 3030);
+            socket = new Socket("2.tcp.ngrok.io", 15317);
         } catch (IOException e) {
             e.printStackTrace();
         }
