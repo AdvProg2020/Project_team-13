@@ -53,8 +53,9 @@ public class ClientController {
 
     public void connectToServer() {
         try {
-//            socket = new Socket("0.tcp.ngrok.io", 13729);
-            socket = new Socket("2.tcp.ngrok.io", 15317);
+//            socket = new Socket("0.tcp.ngrok.io", 16150);
+            socket = new Socket("localhost", 8080);
+//            socket = new Socket("0.tcp.ngrok.io", 16827);
             dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
             dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
 
@@ -138,7 +139,7 @@ public class ClientController {
             @Override
             public void run() {
                 try {
-                    Socket socket = new Socket("2.tcp.ngrok.io", 15317);
+                    Socket socket = new Socket("127.0.0.1", 8080);
                     DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
                     DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
                     System.out.println("in thread");
