@@ -375,7 +375,7 @@ public class DataBase {
                 if(!data[1].equals("null")){
                   product1.setProductStatus(ProductStatus.valueOf(data[1]));
                 }
-                if(!data[5].equals("null")){
+                if(!data[5].equals("[]")){
                   Type scoreType = new TypeToken<ArrayList<Score>>(){
                   }.getType();
                   product1.setAllScores(new Gson().fromJson(data[5], scoreType));
@@ -386,32 +386,32 @@ public class DataBase {
                 if(!data[7].equals("null")){
                   product1.setCostAfterOff(Double.parseDouble(data[7]));
                 }
-                if(!data[11].equals("null")){
+                if(!data[10].equals("[]")){
                     Type commentType = new TypeToken<ArrayList<Comment>>(){
                     }.getType();
-                  product1.setCommentList(new Gson().fromJson(data[11], commentType));
+                  product1.setCommentList(new Gson().fromJson(data[10], commentType));
                 }
-                if(!data[14].equals("null")){
+                if(!data[13].equals("[]")){
                     Type customer = new TypeToken<ArrayList<Customer>>(){
                     }.getType();
-                    product1.setAllBuyers(new Gson().fromJson(data[14], customer));
+                    product1.setAllBuyers(new Gson().fromJson(data[13], customer));
                 }
-                if(!data[15].equals("null")){
+                if(!data[14].equals("[]")){
                    Type offerType = new TypeToken<ArrayList<Offer>>(){
                    }.getType();
-                   product1.setOffers(new Gson().fromJson(data[15], offerType));
+                   product1.setOffers(new Gson().fromJson(data[14], offerType));
+                }
+                if(!data[15].equals("null")){
+                   product1.setImagePath(data[15]);
                 }
                 if(!data[16].equals("null")){
-                   product1.setImagePath(data[16]);
+                   product1.setVideoPath(data[16]);
                 }
                 if(!data[17].equals("null")){
-                   product1.setVideoPath(data[17]);
+                  product1.setFilePath(data[17]);
                 }
                 if(!data[18].equals("null")){
-                  product1.setFilePath(data[18]);
-                }
-                if(!data[19].equals("null")){
-                  product1.setExistInOfferRegistered(data[19].equals("true"));
+                  product1.setExistInOfferRegistered(data[18].equals("true"));
                 }
                 allProducts.add(product1);
             }
@@ -516,12 +516,12 @@ public class DataBase {
                 customer += resultSet.getString("totalBuyAmount");
                 String[] data = customer.split("&&");
                 Customer customer1 = new Customer(data[0], data[1], data[2], data[3], data[4], data[5], data[7].equals("null") ? 0 : Double.parseDouble(data[7]));
-                if(!data[8].equals("null")){
+                if(!data[8].equals("[]")){
                     Type discountType = new TypeToken<ArrayList<DiscountCode>>(){
                     }.getType();
                     customer1.setAllDiscountCodes(new Gson().fromJson(data[8], discountType));
                 }
-                if(!data[9].equals("null")){
+                if(!data[9].equals("[]")){
                     Type logType = new TypeToken<ArrayList<Log>>(){
                     }.getType();
                     customer1.setHistoryOfTransaction(new Gson().fromJson(data[9], logType));
@@ -559,17 +559,17 @@ public class DataBase {
                 seller += resultSet1.getString("auction");
                 String[] data1 = seller.split("&&");
                 Seller seller1 = new Seller(data1[0], data1[1], data1[2], data1[3], data1[4], data1[5], data1[7].equals("null") ? 0 : Double.parseDouble(data1[7]), data1[10], data1[11].equals("true"));
-                if(!data1[12].equals("null")){
+                if(!data1[12].equals("[]")){
                   Type allProducts = new TypeToken<ArrayList<Product>>(){
                   }.getType();
                   seller1.setAllProducts(new Gson().fromJson(data1[12], allProducts));
                 }
-                if(!data1[13].equals("null")){
+                if(!data1[13].equals("[]")){
                     Type allOffers = new TypeToken<ArrayList<Offer>>(){
                     }.getType();
                     seller1.setAllOffer(new Gson().fromJson(data1[13], allOffers));
                 }
-                if(!data1[14].equals("null")){
+                if(!data1[14].equals("[]")){
                     Type allRequest = new TypeToken<ArrayList<Request>>(){
                     }.getType();
                     seller1.setAllRequests(new Gson().fromJson(data1[14], allRequest));
@@ -603,12 +603,12 @@ public class DataBase {
                 manager += resultSet2.getString("historyOfTransactions");
                 String[] data2 = manager.split("&&");
                 Manager manager1 = new Manager(data2[0], data2[1], data2[2], data2[3], data2[4], data2[5], data2[7].equals("null") ? 0 : Double.parseDouble(data2[7]));
-                if(!data2[8].equals("null")){
+                if(!data2[8].equals("[]")){
                     Type discountType = new TypeToken<ArrayList<DiscountCode>>(){
                     }.getType();
                     manager1.setAllDiscountCodes(new Gson().fromJson(data2[8], discountType));
                 }
-                if(!data2[9].equals("null")){
+                if(!data2[9].equals("[]")){
                     Type logType = new TypeToken<ArrayList<Log>>(){
                     }.getType();
                     manager1.setHistoryOfTransaction(new Gson().fromJson(data2[9], logType));
@@ -636,12 +636,12 @@ public class DataBase {
                 supporter += resultSet3.getString("historyOfTransactions");
                 String[] data4 = supporter.split("&&");
                 Supporter supporter1 = new Supporter(data4[0], data4[1], data4[2], data4[3], data4[4], data4[5], data4[7].equals("null") ? 0 : Double.parseDouble(data4[7]));
-                if(!data4[8].equals("null")){
+                if(!data4[8].equals("[]")){
                     Type discountType = new TypeToken<ArrayList<DiscountCode>>(){
                     }.getType();
                     supporter1.setAllDiscountCodes(new Gson().fromJson(data4[8], discountType));
                 }
-                if(!data4[9].equals("null")){
+                if(!data4[9].equals("[]")){
                     Type logType = new TypeToken<ArrayList<Log>>(){
                     }.getType();
                     supporter1.setHistoryOfTransaction(new Gson().fromJson(data4[9], logType));
@@ -899,12 +899,12 @@ public class DataBase {
                 customer += resultSet.getString("totalBuyAmount");
                 String[] data = customer.split("&&");
                 Customer customer1 = new Customer(data[0], data[1], data[2], data[3], data[4], data[5], data[7].equals("null") ? 0 : Double.parseDouble(data[7]));
-                if(!data[8].equals("null")){
+                if(!data[8].equals("[]")){
                     Type discountType = new TypeToken<ArrayList<DiscountCode>>(){
                     }.getType();
                     customer1.setAllDiscountCodes(new Gson().fromJson(data[8], discountType));
                 }
-                if(!data[9].equals("null")){
+                if(!data[9].equals("[]")){
                     Type logType = new TypeToken<ArrayList<Log>>(){
                     }.getType();
                     customer1.setHistoryOfTransaction(new Gson().fromJson(data[9], logType));
@@ -941,17 +941,17 @@ public class DataBase {
                 seller += resultSet1.getString("auction");
                 String[] data1 = seller.split("&&");
                 Seller seller1 = new Seller(data1[0], data1[1], data1[2], data1[3], data1[4], data1[5], data1[7].equals("null") ? 0 : Double.parseDouble(data1[7]), data1[10], data1[11].equals("true"));
-                if(!data1[12].equals("null")){
+                if(!data1[12].equals("[]")){
                     Type allProducts = new TypeToken<ArrayList<Product>>(){
                     }.getType();
                     seller1.setAllProducts(new Gson().fromJson(data1[12], allProducts));
                 }
-                if(!data1[13].equals("null")){
+                if(!data1[13].equals("[]")){
                     Type allOffers = new TypeToken<ArrayList<Offer>>(){
                     }.getType();
                     seller1.setAllOffer(new Gson().fromJson(data1[13], allOffers));
                 }
-                if(!data1[14].equals("null")){
+                if(!data1[14].equals("[]")){
                     Type allRequest = new TypeToken<ArrayList<Request>>(){
                     }.getType();
                     seller1.setAllRequests(new Gson().fromJson(data1[14], allRequest));
@@ -984,12 +984,12 @@ public class DataBase {
                 manager += resultSet2.getString("historyOfTransactions");
                 String[] data2 = manager.split("&&");
                 Manager manager1 = new Manager(data2[0], data2[1], data2[2], data2[3], data2[4], data2[5], data2[7].equals("null") ? 0 : Double.parseDouble(data2[7]));
-                if(!data2[8].equals("null")){
+                if(!data2[8].equals("[]")){
                     Type discountType = new TypeToken<ArrayList<DiscountCode>>(){
                     }.getType();
                     manager1.setAllDiscountCodes(new Gson().fromJson(data2[8], discountType));
                 }
-                if(!data2[9].equals("null")){
+                if(!data2[9].equals("[]")){
                     Type logType = new TypeToken<ArrayList<Log>>(){
                     }.getType();
                     manager1.setHistoryOfTransaction(new Gson().fromJson(data2[9], logType));
@@ -1017,12 +1017,12 @@ public class DataBase {
                 supporter += resultSet3.getString("historyOfTransactions");
                 String[] data4 = supporter.split("&&");
                 Supporter supporter1 = new Supporter(data4[0], data4[1], data4[2], data4[3], data4[4], data4[5], data4[7].equals("null") ? 0 : Double.parseDouble(data4[7]));
-                if(!data4[8].equals("null")){
+                if(!data4[8].equals("[]")){
                     Type discountType = new TypeToken<ArrayList<DiscountCode>>(){
                     }.getType();
                     supporter1.setAllDiscountCodes(new Gson().fromJson(data4[8], discountType));
                 }
-                if(!data4[9].equals("null")){
+                if(!data4[9].equals("[]")){
                     Type logType = new TypeToken<ArrayList<Log>>(){
                     }.getType();
                     supporter1.setHistoryOfTransaction(new Gson().fromJson(data4[9], logType));
@@ -1114,7 +1114,7 @@ public class DataBase {
                 product += resultSet.getString("description") + "&&";
                 product += resultSet.getString("commentList") + "&&";
                 product += resultSet.getString("numberOfAvailableProducts") + "&&";
-                product += resultSet.getString("featuresOfCategory") + "&&";
+                product += resultSet.getString("featuresOfCategroy") + "&&";
                 product += resultSet.getString("allBuyers") + "&&";
                 product += resultSet.getString("offers") + "&&";
                 product += resultSet.getString("imagePath") + "&&";
@@ -1129,7 +1129,7 @@ public class DataBase {
                 if(!data[1].equals("null")){
                     product1.setProductStatus(ProductStatus.valueOf(data[1]));
                 }
-                if(!data[5].equals("null")){
+                if(!data[5].equals("[]")){
                     Type scoreType = new TypeToken<ArrayList<Score>>(){
                     }.getType();
                     product1.setAllScores(new Gson().fromJson(data[5], scoreType));
@@ -1140,32 +1140,32 @@ public class DataBase {
                 if(!data[7].equals("null")){
                     product1.setCostAfterOff(Double.parseDouble(data[7]));
                 }
-                if(!data[11].equals("null")){
+                if(!data[10].equals("[]")){
                     Type commentType = new TypeToken<ArrayList<Comment>>(){
                     }.getType();
-                    product1.setCommentList(new Gson().fromJson(data[11], commentType));
+                    product1.setCommentList(new Gson().fromJson(data[10], commentType));
                 }
-                if(!data[14].equals("null")){
+                if(!data[13].equals("[]")){
                     Type customer = new TypeToken<ArrayList<Customer>>(){
                     }.getType();
-                    product1.setAllBuyers(new Gson().fromJson(data[14], customer));
+                    product1.setAllBuyers(new Gson().fromJson(data[13], customer));
                 }
-                if(!data[15].equals("null")){
+                if(!data[14].equals("[]")){
                     Type offerType = new TypeToken<ArrayList<Offer>>(){
                     }.getType();
-                    product1.setOffers(new Gson().fromJson(data[15], offerType));
+                    product1.setOffers(new Gson().fromJson(data[14], offerType));
+                }
+                if(!data[15].equals("null")){
+                    product1.setImagePath(data[15]);
                 }
                 if(!data[16].equals("null")){
-                    product1.setImagePath(data[16]);
+                    product1.setVideoPath(data[16]);
                 }
                 if(!data[17].equals("null")){
-                    product1.setVideoPath(data[17]);
+                    product1.setFilePath(data[17]);
                 }
                 if(!data[18].equals("null")){
-                    product1.setFilePath(data[18]);
-                }
-                if(!data[19].equals("null")){
-                    product1.setExistInOfferRegistered(data[19].equals("true"));
+                    product1.setExistInOfferRegistered(data[18].equals("true"));
                 }
                 allProducts.add(product1);
             }

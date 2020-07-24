@@ -78,7 +78,7 @@ public class UserController {
 
 
     public void getAllCommercializedProductsFromServer() {
-        ClientController.getInstance().sendMessageToServer("@getAllCommercializedProducts@");
+      //  ClientController.getInstance().sendMessageToServer("@getAllCommercializedProducts@");
         ArrayList<String> commercializedProduct = new ArrayList<>();
     }
 
