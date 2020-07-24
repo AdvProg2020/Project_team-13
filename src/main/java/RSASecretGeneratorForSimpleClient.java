@@ -1,24 +1,16 @@
-package Controller.Bank;
 
-import Controller.Server.DataBase;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
-import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class RSASecretGenerator {
+public class RSASecretGeneratorForSimpleClient {
     private static final SecureRandom secureRandom = new SecureRandom();
     private BigInteger p;
     private BigInteger q;
@@ -29,7 +21,7 @@ public class RSASecretGenerator {
     private BigInteger rand2;
     private BigInteger rnd3;
     private final BigInteger e;
-    private static RSASecretGenerator rsaSecretGenerator;
+    private static RSASecretGeneratorForSimpleClient rsaSecretGenerator;
     private final Key<BigInteger, BigInteger> privateKey;
     private final Key<BigInteger, BigInteger> publicKey;
     private Key<BigInteger,BigInteger> anotherPublicKey;
@@ -37,7 +29,7 @@ public class RSASecretGenerator {
 
 
 
-    private RSASecretGenerator() {
+    private RSASecretGeneratorForSimpleClient() {
         BigInteger q1;
         BigInteger p1;
         do {
@@ -74,9 +66,9 @@ public class RSASecretGenerator {
         return x == 1;
     }
 
-    public static RSASecretGenerator getInstance() {
+    public static RSASecretGeneratorForSimpleClient getInstance() {
         if (rsaSecretGenerator == null) {
-            rsaSecretGenerator = new RSASecretGenerator();
+            rsaSecretGenerator = new RSASecretGeneratorForSimpleClient();
         }
         return rsaSecretGenerator;
     }
@@ -176,10 +168,6 @@ public class RSASecretGenerator {
         }
         return hashMessage.equals(expectedHashed);
     }
-
-
-
-
 }
 
 

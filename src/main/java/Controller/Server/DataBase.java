@@ -854,7 +854,7 @@ public class DataBase {
         try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
             Connection connection = DriverManager.getConnection("jdbc:ucanaccess://ProjectDatabase.accdb");
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT lastLog FROM allIds");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT lastLogId FROM allIds");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 CartCenter.getInstance().setLastLogId(resultSet.getString("lastLogId"));
