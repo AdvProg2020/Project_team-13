@@ -203,8 +203,8 @@ public class MessageController {
                 System.out.println("step3");
                 CartController.getInstance().sendFileToCustomer(Integer.parseInt(split[0]), split[1]);
             } else if (message.startsWith("@gSPOA@")) {
-                System.out.println("helllllllllllloooooooooooooooooo auccccccccccccccccction");
-                AuctionController.getInstance().connectChatInAuctionPage(Integer.parseInt(message.substring(7)));
+//                System.out.println("helllllllllllloooooooooooooooooo auccccccccccccccccction");
+//                AuctionController.getInstance().connectChatInAuctionPage(Integer.parseInt(message.substring(7)));
             } else if (message.startsWith("@getAtLeastCredit@")) {
                 message = message.substring(18);
                 CartController.getInstance().setAtLeastCredit(Double.parseDouble(message));

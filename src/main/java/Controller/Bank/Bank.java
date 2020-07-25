@@ -215,7 +215,6 @@ public class Bank {
                         try {
                             dataOutputStream.writeUTF(response);
                             dataOutputStream.flush();
-                            return;
                         } catch (IOException e) {
                             System.out.println("Error in Sending Packets...");
                             try {
@@ -230,7 +229,6 @@ public class Bank {
                 System.out.println("QQQQQQQQQQ");
                 dataOutputStream.writeUTF(response);
                 dataOutputStream.flush();
-
             } catch (IOException e) {
                 System.out.println(e.getMessage());
                 break;
@@ -496,7 +494,7 @@ public class Bank {
             }
             resultSet.close();
             setLastReceiptId(String.valueOf(last));
-            this.lastReceiptId = "@a" + (Integer.parseInt(lastReceiptId.substring(2)) + 1);
+            this.lastReceiptId = "@r" + (Integer.parseInt(lastReceiptId.substring(2)) + 1);
             preparedStatement = connection.prepareStatement("UPDATE lastReceiptId SET lastReceiptId = ?");
             preparedStatement.setString(1, lastReceiptId);
             preparedStatement.executeUpdate();

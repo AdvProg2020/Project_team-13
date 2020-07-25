@@ -10,6 +10,7 @@ import Models.UserAccount.Manager;
 import Models.UserAccount.Seller;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.hsqldb.Server;
 
 import javax.xml.crypto.Data;
 import java.io.DataOutputStream;
@@ -74,6 +75,8 @@ public class ServerMessageController {
                 UserCenter.getIncstance().login(split[0], split[1], dataOutputStream);
             } else if (message.startsWith("@logout@")) {
                 message = message.substring(8);
+                ServerController.getInstance().sendMessageToClient("@successfulChat@", dataOutputStream);
+                if(ServerController.getInstance().getAllClients().containsKey(dataOutputStream))
                 ServerController.getInstance().sendMessageToClient("@successfulChat@", dataOutputStream);
                 TokenGenerator.getInstance().getAllExpirationDates().remove(message, TokenGenerator.getInstance().getAllExpirationDates().get(message));
                 ServerController.getInstance().getAllClients().remove(dataOutputStream, message);
