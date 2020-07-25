@@ -280,10 +280,8 @@ public class Bank {
             }
             date = Long.parseLong(date1);
         }
-        System.out.println("fukh");
         System.out.println(date);
         if (new Date().getTime() - date > 20000 && !command.startsWith("@getTime@")) {
-            System.out.println("fuck php");
             return "@Errors@InvalidMessage";
         }
         if (command.startsWith("create_account")) {
