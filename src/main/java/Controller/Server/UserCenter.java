@@ -389,7 +389,8 @@ public class UserCenter {
             if (customer.getUsername().equals(username)) {
                 allCustomer.remove(customer);
                 DataBase.getInstance().updateAllCustomers(new Gson().toJson(allCustomer));
-                ServerController.getInstance().sendMessageToClient("@Successful@delete user successfully", dataOutputStream);
+                String response = ServerController.getInstance().handleBankConnection("remove " + customer.getUsername());
+                ServerController.getInstance().sendMessageToClient("@Successful@delete user " + response + "ly", dataOutputStream);
                 return;
             }
         }
@@ -426,7 +427,8 @@ public class UserCenter {
                 }
                 DataBase.getInstance().updateAllSellers(new Gson().toJson(allSeller));
                 DataBase.getInstance().updateAllProducts(new Gson().toJson(ProductCenter.getInstance().getAllProducts()));
-                ServerController.getInstance().sendMessageToClient("@Successful@delete user successfully", dataOutputStream);
+                String response = ServerController.getInstance().handleBankConnection("remove " + seller.getUsername());
+                ServerController.getInstance().sendMessageToClient("@Successful@delete user " + response +"ly", dataOutputStream);
                 return;
             }
         }
