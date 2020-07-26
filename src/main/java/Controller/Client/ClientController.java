@@ -53,7 +53,8 @@ public class ClientController {
 
     public void connectToServer() {
         try {
-            socket = new Socket("0.tcp.ngrok.io", 16150);
+//            socket = new Socket("0.tcp.ngrok.io", 16150);
+            socket = new Socket("0.tcp.ngrok.io", 16827);
             dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
             dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
 

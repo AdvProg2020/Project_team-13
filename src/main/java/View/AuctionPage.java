@@ -76,8 +76,8 @@ public class AuctionPage extends Menu {
 
     private GridPane setChatMessages() {
         setNewMessage(new ArrayList<>());
-        chatMessages.setMaxHeight(300);
-        chatMessages.setMaxWidth(300);
+        chatMessages.setMaxHeight(500);
+        chatMessages.setMaxWidth(400);
         GridPane chatPane = new GridPane();
         TextField inputMessage = new TextField();
         inputMessage.setPromptText("Enter your message...");
@@ -251,7 +251,7 @@ public class AuctionPage extends Menu {
         productInfoGridPane.add(attributes, 12, 2, 5, 12);
         centerGridPane.add(title, 2, 0, 1, 4);
         centerGridPane.add(productInfoGridPane, 0, 5, 5, 5);
-        centerGridPane.add(setChatMessages(), 0, 10);
+        centerGridPane.add(setChatMessages(), 2, 10);
         Circle redCircle = new Circle();
         redCircle.setFill(Color.rgb(222, 0, 0));
         redCircle.setRadius(30);

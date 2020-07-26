@@ -87,6 +87,7 @@ public class AuctionController {
                 String string = null;
                 try {
                     string = dataInputStream.readUTF();
+                    System.out.println("message received");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -34,8 +34,10 @@ public class AuctionCenter {
 
     public void runAuctionServerSockets() {
         allAuctions = UserCenter.getIncstance().getAllAuctions();
+        System.out.println(allAuctions.size());
         for (Auction auction : allAuctions) {
             if (new Date().after(auction.getStartTime()) && !auctionsChatBoxes.containsKey(auction.getAuctionId())) {
+                System.out.println("auction controlling: " + 1);
                 AuctionThread auctionThread = new AuctionThread(auction);
                 auctionThread.start();
                 if(-new Date().getTime()+auction.getEndTime().getTime()>0)
@@ -80,6 +82,7 @@ public class AuctionCenter {
                         break;
                     }
                         socket = serverSocket.accept();
+                    System.out.println("auctionSide: clientConnected");
                         DataOutputStream dataOutputStream1 = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
                         allClients.get(serverSocket).add(dataOutputStream1);
                         dataOutputStream1.writeUTF(new Gson().toJson(auction));
@@ -103,14 +106,19 @@ public class AuctionCenter {
                                     dataOutputStream1.writeUTF(new Gson().toJson(auction));
                                     dataOutputStream1.flush();
                                     message = dataInputStream.readUTF();
+                                    System.out.println("auctionSide: messageReceived: " + message);
+
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-                                if (!message.isEmpty() && !message.equals("A")) {
+                                if (!message.isEmpty() && !new Gson().fromJson(message,ChatMessage.class).getContent().equals("A")) {
+                                    System.out.println("auctionSide: message will be processed " + auction.getChatMessages().size() );
                                     addNewMessage(finalServerSocket, message, auction);
+                                    auction.getChatMessages().add(new Gson().fromJson(message,ChatMessage.class));
                                 }
                                 for (DataOutputStream dataOutputStream : allClients.get(serverSocket)) {
                                     try {
+                                        System.out.println("auctionSide: message has been processed " + auction.getChatMessages().size() );
                                         dataOutputStream.writeUTF(new Gson().toJson(auction));
                                         dataOutputStream.flush();
                                     } catch (IOException e) {
