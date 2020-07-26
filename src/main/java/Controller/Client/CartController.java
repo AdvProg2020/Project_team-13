@@ -157,7 +157,7 @@ public class CartController {
                 System.out.println("step4" + filePath);
                 Socket socket = null;
                 try {
-                    socket = new Socket("127.0.0.1", port);
+                    socket = new Socket("2.tcp.ngrok.io", 13492);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
