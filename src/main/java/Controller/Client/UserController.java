@@ -268,7 +268,7 @@ public class UserController {
     }
 
     public void sendChatMessage(String content) {
-        ChatMessage message = new ChatMessage(ClientController.getInstance().getCurrentUser().getUsername(),currentChatUser,content);
+        ChatMessage message = new ChatMessage(ClientController.getInstance().getCurrentUser().getUsername(),currentChatUser,content,"Supporter");
         try {
             DataOutputStream dataOutputStream=new DataOutputStream(ClientController.getInstance().getCustomerSocket().getOutputStream());
             dataOutputStream.writeUTF(new Gson().toJson(message));

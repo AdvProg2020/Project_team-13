@@ -56,6 +56,7 @@ public class MangeOffsMenu extends Menu implements EventHandler<ActionEvent> {
     }
 
     private void setScene(int pageNumber) {
+        ClientController.getInstance().updateCurrentUserFromServer();
         Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
         allOffers = seller.getAllOffer();
         addOffer = new Button("Add Offer");

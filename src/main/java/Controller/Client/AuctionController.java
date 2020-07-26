@@ -58,8 +58,9 @@ public class AuctionController {
 
     public void sendMessageToAuctionChat(String message) {
         try {
+            System.out.println(dataInputStream==null);
             dataOutputStream.writeUTF(new Gson().toJson(
-                    new ChatMessage(ClientController.getInstance().getCurrentUser().getUsername(),"",message)));
+                    new ChatMessage(ClientController.getInstance().getCurrentUser().getUsername(),"",message,currentAuction.getAuctionId())));
             dataOutputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -74,11 +75,13 @@ public class AuctionController {
         return auctionPage;
     }
 
-    public void connectChatInAuctionPage(int serverPort) {
+    public void connectChatInAuctionPage() {
         try {
-            socket = new Socket("127.0.0.1",serverPort);
+            socket = new Socket("localhost",12000);
             dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            dataOutputStream.writeUTF("@Auction@" + currentAuction.getAuctionId());
+            dataOutputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -87,7 +90,7 @@ public class AuctionController {
                 String string = null;
                 try {
                     string = dataInputStream.readUTF();
-                    System.out.println("message received");
+                    System.out.println("message received: " + string);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

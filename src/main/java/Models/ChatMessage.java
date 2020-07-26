@@ -4,11 +4,17 @@ public class ChatMessage {
     private String username;
     private String receiverUsername;
     private String content;
+    private String objectId;
 
-    public ChatMessage(String username, String receiverUsername, String content) {
+    public ChatMessage(String username, String receiverUsername, String content,String objectId) {
         this.username = username;
+        this.objectId = objectId;
         this.receiverUsername = receiverUsername;
         this.content = content;
+    }
+
+    public String getObjectId() {
+        return objectId;
     }
 
     public String getReceiverUsername() {
