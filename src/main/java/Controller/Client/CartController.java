@@ -98,7 +98,7 @@ public class CartController {
         public void run() {
             System.out.println("step2");
             try {
-                ServerSocket serverSocket = new ServerSocket(6668);
+                ServerSocket serverSocket = new ServerSocket(0);
                 for (String s : currentCart.getAllSeller().keySet()) {
                     System.out.println(s);
                 }
@@ -157,7 +157,7 @@ public class CartController {
                 System.out.println("step4" + filePath);
                 Socket socket = null;
                 try {
-                    socket = new Socket("0.tcp.ngrok.io", 18065);
+                    socket = new Socket("localhost", port);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

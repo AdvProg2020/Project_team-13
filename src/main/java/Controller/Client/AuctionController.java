@@ -77,7 +77,7 @@ public class AuctionController {
 
     public void connectChatInAuctionPage() {
         try {
-            socket = new Socket("localhost",12000);
+            socket = new Socket("localhost",8080);
             dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
             dataOutputStream.writeUTF("@Auction@" + currentAuction.getAuctionId());
