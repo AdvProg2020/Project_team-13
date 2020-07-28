@@ -123,10 +123,13 @@ public class ServerMessageController {
                 ), dataOutputStream);
             } else if (message.startsWith("@getAllCommercializedProducts@")) {
                 DataBase.getInstance().setAllUsersListFromDateBase();
-                UserCenter.getIncstance().removeCustomer("@setAllCommercializedProducts@"
+                ServerController.getInstance().sendMessageToClient("@setAllCommercializedProducts@"
                         + new Gson().toJson(UserCenter.getIncstance().getAllCommercializedProducts()), dataOutputStream);
             } else if (message.startsWith("@deleteSeller@")) {
                 UserCenter.getIncstance().removeSeller(message.substring(14), dataOutputStream);
+            } else if (message.startsWith("@getAllAuctions@")) {
+                ServerController.getInstance().sendMessageToClient("@setAllAuctions@"
+                        + new Gson().toJson(UserCenter.getIncstance().getAllAuctions()),dataOutputStream);
             } else if (message.startsWith("@deleteManager@")) {
                 UserCenter.getIncstance().removeManager(message.substring(15), dataOutputStream);
             } else if (message.startsWith("@createManagerProfile@")) {
@@ -137,7 +140,10 @@ public class ServerMessageController {
                 DataBase.getInstance().getAllProductsFromDataBase(dataOutputStream);
             } else if (message.startsWith("@getAllOffers@")) {
                 DataBase.getInstance().getAllOffersFromDataBase(dataOutputStream);
-            } else if (message.startsWith("@removeProductForManager@")) {
+            } else if (message.startsWith("@getUser@")) {
+                message = message.substring(9);
+                ServerController.getInstance().sendMessageToClient("@SetCurrentUser@" + new Gson().toJson(UserCenter.getIncstance().getUserWithUsername(message)),dataOutputStream);
+            }  else if (message.startsWith("@removeProductForManager@")) {
                 message = message.substring(25);
                 ProductCenter.getInstance().deleteProduct(message, dataOutputStream);
             } else if (message.startsWith("@setSupporterPort@")) {

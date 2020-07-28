@@ -78,13 +78,14 @@ public class UserController {
 
 
     public void getAllCommercializedProductsFromServer() {
-      //  ClientController.getInstance().sendMessageToServer("@getAllCommercializedProducts@");
+        ClientController.getInstance().sendMessageToServer("@getAllCommercializedProducts@");
         ArrayList<String> commercializedProduct = new ArrayList<>();
     }
 
     public void setAllCommercializedProducts(String string) {
         Type allCommercializedProducts = new TypeToken<ArrayList<String>>() {
         }.getType();
+        System.out.println("setAllCommercializedProducts :                :        :       :");
         this.allCommercializedProducts = new Gson().fromJson(string,allCommercializedProducts);
     }
 

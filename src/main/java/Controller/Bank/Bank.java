@@ -161,6 +161,7 @@ public class Bank {
                 String response = "";
                 String command = dataInputStream.readUTF();
                 long time = new Date().getTime();
+                if(!RSASecretGenerator.getInstance().getTheDecodedMessageViaRSA(command.split(" /// ")[0]).equals("0@@getTime@"))
                 ipDosChecker.get(socketIp.get(socket)).add(time);
                 System.out.println("               algorithm");
                 System.out.println("\u001B[35m" + time + "\u001B[0m");
@@ -233,7 +234,7 @@ public class Bank {
 
     public boolean checkDosAttack(String ip) {
         if (ipDosChecker.get(ip).size() > 10) {
-            if (ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 1) - ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 9) < 1000) {
+            if (ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 1) - ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 10) < 150) {
                 System.out.println("\u001B[35m" + (ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 1) - ipDosChecker.get(ip).get(ipDosChecker.get(ip).size() - 9)) + "\u001B[0m");
                 return true;
             }

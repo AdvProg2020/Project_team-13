@@ -1,6 +1,7 @@
 package Controller.Client;
 
 import Controller.Server.UserCenter;
+import Models.Auction;
 import Models.ChatMessage;
 import Models.Log;
 import Models.Message;
@@ -10,11 +11,14 @@ import Models.UserAccount.Seller;
 import Models.UserAccount.Supporter;
 import View.MessageKind;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.hsqldb.rights.User;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class MessageController {
 
@@ -42,25 +46,28 @@ public class MessageController {
                 message = message.substring(7);
                 String finalMessage = message;
                 ClientController.getInstance().getCurrentMenu().showMessage(finalMessage, MessageKind.ErrorWithoutBack);
-            }   else if(message.startsWith("@decreaseCredit@")){
+            } else if (message.startsWith("@decreaseCredit@")) {
                 message = message.substring(16);
                 String[] commands = message.split("//");
                 ClientController.getInstance().getCurrentUser().setCredit(ClientController.getInstance().getCurrentUser().getCredit() - Double.parseDouble(commands[1]));
                 ClientController.getInstance().getCurrentMenu().showMessage(commands[0], MessageKind.MessageWithBack);
-            }   else if (message.startsWith("@Successfulrc@")) {
+            } else if (message.startsWith("@Successfulrc@")) {
                 message = message.substring(14, message.length());
                 String[] split = message.split("&");
                 ClientController.getInstance().setCurrentUser(new Gson().fromJson(split[1], Customer.class));
                 ClientController.getInstance().getCurrentMenu().showMessage("Register Successful\nyour bank id is:" + split[0], MessageKind.MessageWithBack);
-            }   else if(message.startsWith("@Successfulcredit@")){
+            } else if (message.startsWith("@Successfulcredit@")) {
                 message = message.substring(18);
                 String[] strings = message.split("//");
                 ClientController.getInstance().getCurrentUser().setCredit(ClientController.getInstance().getCurrentUser().getCredit() + Double.parseDouble(strings[1]));
                 ClientController.getInstance().getCurrentMenu().showMessage(strings[0], MessageKind.MessageWithBack);
-            }   else if (message.startsWith("@Successful@")) {
+            } else if (message.startsWith("@SetCurrentUser@")) {
+                message = message.substring(16);
+                ClientController.getInstance().setCurrentUser(message);
+            } else if (message.startsWith("@Successful@")) {
                 message = message.substring(12, message.length());
                 ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.MessageWithBack);
-            }   else if (message.startsWith("@Successfulrs@")) {
+            } else if (message.startsWith("@Successfulrs@")) {
                 message = message.substring(14, message.length());
                 String[] split = message.split("&");
                 ClientController.getInstance().getCurrentMenu().showMessage(split[1] + "\nyour bank id is: " + split[0], MessageKind.MessageWithBack);
@@ -68,7 +75,7 @@ public class MessageController {
                 message = message.substring(19);
                 ClientController.getInstance().getCurrentMenu().showMessage(message, MessageKind.MessageWithoutBack);
             } else if (message.startsWith("@payed@")) {
-                message = message.substring(7, message.length());
+                message = message.substring(7);
                 CartController.getInstance().waitForDownload();
                 CartController.getInstance().payed(message);
                 int size = ((Customer) ClientController.getInstance().getCurrentUser()).getHistoryOfTransaction().size();
@@ -152,10 +159,10 @@ public class MessageController {
             } else if (message.startsWith("@allManagers@")) {
                 message = message.substring(13);
                 UserController.getInstance().setAllManagers(message);
-            }  else if (message.startsWith("@setAllOrders@")) {
+            } else if (message.startsWith("@setAllOrders@")) {
                 message = message.substring(14);
                 UserController.getInstance().setAllOrders(message);
-            }  else if (message.startsWith("@AllManagerCount@")) {
+            } else if (message.startsWith("@AllManagerCount@")) {
                 message = message.substring(17);
                 UserController.getInstance().setManagersCount(Integer.parseInt(message));
             } else if (message.startsWith("@allUsers@")) {
@@ -166,19 +173,25 @@ public class MessageController {
                 UserController.getInstance().setAllSellers(split[1]);
                 UserController.getInstance().setAllManagers(split[2]);
             } else if (message.startsWith("@setAllCommercializedProducts@")) {
+                System.out.println("@setAllCommercializedProducts@");
                 message = message.substring(30);
                 UserController.getInstance().setAllCommercializedProducts(message);
                 System.out.println("@setAllCommercializedProducts@");
             } else if (message.startsWith("@getAllProductsForManager@")) {
                 message = message.substring(26);
                 ProductController.getInstance().updateAllProducts(message);
+            } else if (message.startsWith("@setAllAuctions@")) {
+                message = message.substring(16);
+                Type type = new TypeToken<ArrayList<Auction>>() {
+                }.getType();
+                AuctionController.getInstance().setAllAuctions(new Gson().fromJson(message, type));
             } else if (message.startsWith("@setAllCategories@")) {
                 message = message.substring(18);
                 CategoryController.getInstance().setAllCategories(message);
-            }  else if (message.startsWith("@setAllCategories@")) {
+            } else if (message.startsWith("@setAllCategories@")) {
                 message = message.substring(18);
                 CategoryController.getInstance().setAllCategories(message);
-            }else if (message.startsWith("@category added@")) {
+            } else if (message.startsWith("@category added@")) {
                 ClientController.getInstance().getCurrentMenu().showMessage("Category created", MessageKind.MessageWithBack);
             } else if (message.startsWith("@productRemoved@")) {
                 ClientController.getInstance().getCurrentMenu().showMessage("Category removed successfully", MessageKind.MessageWithoutBack);
@@ -192,10 +205,10 @@ public class MessageController {
             } else if (message.startsWith("@gSPOA@")) {
                 System.out.println("helllllllllllloooooooooooooooooo auccccccccccccccccction");
                 AuctionController.getInstance().connectChatInAuctionPage(Integer.parseInt(message.substring(7)));
-            }else if (message.startsWith("@getAtLeastCredit@")) {
+            } else if (message.startsWith("@getAtLeastCredit@")) {
                 message = message.substring(18);
                 CartController.getInstance().setAtLeastCredit(Double.parseDouble(message));
-            }else if(message.startsWith("@Time@")) {
+            } else if (message.startsWith("@Time@")) {
                 ClientController.getInstance().setTime(Long.parseLong(message.substring(6)));
             }
         }

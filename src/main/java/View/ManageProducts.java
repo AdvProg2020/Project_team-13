@@ -80,6 +80,7 @@ public class ManageProducts extends Menu {
                 "    -fx-border-radius: 20px;";
         Text pageTitle = new Text("Manage Products");
         pageTitle.setStyle("-fx-font-size: 24;-fx-font-weight: bold ");
+        ClientController.getInstance().updateCurrentUserFromServer();
         Seller seller = (Seller) ClientController.getInstance().getCurrentUser();
         ArrayList<GridPane> gridPanes = new ArrayList<>();
         for (int kk = 0; kk < seller.getAllProducts().size(); kk++) {
